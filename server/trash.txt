@@ -1,0 +1,24 @@
+THGame.prototype.buildWalls = function (walls, squareSize, wallThickness) {
+    this.walls = [];
+
+    var sqSize = squareSize || this.squareSize;
+    var wallTh = wallThickness || this.wallThickness;
+    this.squareSize = sqSize;
+    this.wallThickness = wallTh;
+    var halfWallTh = wallTh / 2;
+
+    for (var x = 0; x < walls.length; x++) {
+        this.walls.push([]);
+        for (var y = 0; y < walls[x].length; y++) {
+            if (walls[x][y] === 1) { // Upper wall
+                this.walls[x][y] = new Geom.rect(x * sqSize - halfWallTh, y * sqSize - halfWallTh, sqSize + wallTh, wallTh);
+            } else if (walls[x][y] === 2) { // Right wall
+                this.walls[x][y] = new Geom.rect((x + 1) * sqSize - halfWallTh, y * sqSize - halfWallTh, wallTh, sqSize + wallTh);
+            } else if (walls[x][y] === 3) { // Bottom wall
+                this.walls[x][y] = new Geom.rect(x * sqSize - halfWallTh, (y + 1) * sqSize - halfWallTh, sqSize + wallTh, wallTh);
+            } else if (walls[x][y] === 4) { // Left wall
+                this.walls[x][y] = new Geom.rect(x * sqSize - halfWallTh, y * sqSize - halfWallTh, wallTh, sqSize + wallTh);
+            }
+        }
+    }
+}

@@ -1,0 +1,40 @@
+body {
+    background-image: url("images/clientBackground.png");
+    background-size: cover;
+    width: 100%;
+
+}
+
+.hidden {
+    display: none;
+}
+
+canvas {
+    
+}
+
+.mainCont {
+    position: absolute;
+    width: 35%;
+    background-color: #dfe0dd;
+    left: 0;
+    top: 12rem;
+    right: 0;
+    margin: auto;
+    border-radius: 10px;
+    border: 2px solid #5452ff;
+    box-shadow: 0px 0px 30px #000000;
+
+}
+
+.queueCont {
+    margin: 5rem auto 0 auto;
+    width: 30%;
+    height: 100%;
+    background-color: #dfe0dd;
+    border-radius: 10px;
+    border: 0px solid #5452ff;
+    box-shadow: 0px 0px 30px #000000;
+    display: none;
+    font-size: 3rem;
+}
