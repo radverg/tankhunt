@@ -1,4 +1,5 @@
 var GO = require("./GameObject");
+var mymath = require("./MyMath");
 
 // Shot constructor takes the weapon it was shot from as a parameter
 // This class is abstract (it is not included in module.exports)
@@ -18,6 +19,8 @@ class Shot extends GO {
 		if (weapon) this.owner = weapon.owner;
 
 		this.angle = startAng;
+
+		this.removeAfterHit = true;
 	}
 
 	getStartPacket() {
@@ -32,19 +35,44 @@ class Shot extends GO {
 		}
 	}
 
+	remove(game) {
+		var index = game.shots.indexOf(this);
+		if (index !== -1)
+			game.shots.splice(index, 1);
+	}
+
 }
 
 // APCR ------------------------------------------------------------------------------------
 class APCR extends Shot {
 
-	constructor(weapon, startX, startY, startAng) {
+	constructor(weapon, startX, startY, startAng, game) {
 		super(weapon, startX, startY, startAng);
 
 		this.type = "APCR";
-		this.maxSpeed = 10;
+		this.maxSpeed = 25;
 		this.fullForward();
 
-		// TODO: get the possible endpoint
+		// Get the end point
+		this.endPoint = game.level.wallCheckLoop(startX, startY, this.direction.x, this.direction.y);
+	}
+
+	getStartPacket() {
+		var packet = super.getStartPacket();
+		packet.endX = this.endPoint.x;
+		packet.endY = this.endPoint.y;
+		packet.speed = this.maxSpeed;
+		return packet;
+	}
+
+	isHittingPlayer(player) {
+		if (player.body.rectCircleVSCircle((this.x + this.prevBody.cX) / 2, (this.y + this.prevBody.cY) / 2, mymath.dist(this.x, this.y, this.prevBody.cX,
+			this.prevBody.cY) / 2)) {
+
+			return player.body.lineInt(this.x, this.y, this.prevBody.cX, this.prevBody.cY);
+		}
+
+		return false;
 	}
 }
 
@@ -55,6 +83,7 @@ class LaserDirect extends Shot {
 		super(weapon, startX, startY, startAng);
 
 		this.type = "LaserDirect";
+		this.removeAfterHit = false;
 		this.maxSpeed = 40;
 		this.fullForward();
 
@@ -71,6 +100,11 @@ class LaserDirect extends Shot {
 		packet.endY = this.endPoint.y;
 		packet.speed = this.maxSpeed;
 		return packet;
+	}
+
+	isHittingPlayer(player) {
+		if (player.id == this.owner.id) return false; // This laser cannot kill its owner
+		return player.body.lineInt(this.startX, this.startY, this.x, this.y);
 	}
 }
 

@@ -6,6 +6,7 @@ class Player {
 
     constructor(socket, name) {
         this.socket = socket;
+        this.id = socket.id;
         this.socket.player = this;
         this.name = name || "unnamed";
 

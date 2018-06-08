@@ -210,13 +210,31 @@ class THGame {
     }
 
     inpShotOn(player) {
-        if (player.tank.laserGun)
-            player.tank.laserGun.onPress(this);
+        if (player.tank.apcrGun)
+            player.tank.apcrGun.onPress(this);
     }
 
     inpShotOff(player) {
         if (player.tank.laserGun)
             player.tank.laserGun.onRelease(this);
+    }
+
+    inpShotSpecialOn(player) {
+        if (player.tank.specialGun) {
+            player.tank.specialGun.onPress(this);
+        }
+    }
+
+    inpShotSpecialOff(player) {
+        if (player.tank.specialGun) {
+            player.tank.specialGun.onRelease(this);
+        }
+    }
+
+    inpShotBouncingOn(player) {
+        if (player.tank.bouncerGun) {
+            player.tank.bouncerGun.onPress(this);
+        }
     }
 }
 

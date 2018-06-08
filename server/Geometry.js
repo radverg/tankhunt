@@ -1,4 +1,4 @@
-var Mt = require("./MyMath");
+var mymath = require("./MyMath");
 var li = require("line-intersect");
 
 class Rect {
@@ -12,7 +12,7 @@ class Rect {
         this.hWidth = this.w / 2;
         this.hHeight = this.h / 2;
 
-        this.hDiagonal = Math.sqrt(this.hWidth * this.hWidth + this.hHeight * this.hHeight) / 2;
+        this.hDiagonal = Math.sqrt(this.hWidth * this.hWidth + this.hHeight * this.hHeight);
         this.diagAng = Math.atan(this.hWidth / this.hHeight);
 
         this.cX = x || 0;
@@ -66,6 +66,19 @@ class Rect {
              this.cY - Math.cos(this.ang + (Math.PI + this.diagAng)) * this.hDiagonal);
     }
 
+    getClosestVertice(x, y) {
+        var closest = this.vertices[0];
+
+        for (var i = 1; i < this.vertices.length; i++) {
+            if (mymath.dist(this.vertices[i].x, this.vertices[i].y, x, y) < 
+                mymath.dist(closest.x, closest.y, x, y)) {
+                closest = this.vertices[i];
+            }
+        }
+
+        return closest;
+    }
+
     updateVerticesSimple() {
         this.vertices[0].set(this.left, this.top);
         this.vertices[1].set(this.right, this.top);
@@ -82,8 +95,8 @@ class Rect {
 
     rotContains(x, y) {
         // Do the point transfer
-        var ang = Mt.getAngleToAxis(this.cX, this.cY, x, y) - this.ang;
-        var dist = Mt.dist(this.cX, this.cY, x, y);
+        var ang = mymath.getAngleToAxis(this.cX, this.cY, x, y) - this.ang;
+        var dist = mymath.dist(this.cX, this.cY, x, y);
         
         return this.contains(this.cX + dist * Math.sin(ang), this.cY - dist * Math.cos(ang));
     }
@@ -106,6 +119,10 @@ class Rect {
             rect.cY + rect.r <= this.bottom && rect.cX - rect.r >= this.left;
     }
 
+    rectCircleVSCircle(x1, y1, r) {
+        return mymath.dist(x1, y1, this.cX, this.cY) < this.hDiagonal + r;
+    }
+
     simpleLineInt(x1, y1, x2, y2) {
         return (
             li.checkIntersection(x1, y1, x2, y2, this.left, this.top, this.right, this.top).point || // Top line
@@ -113,6 +130,33 @@ class Rect {
             li.checkIntersection(x1, y1, x2, y2, this.left, this.bottom, this.right, this.bottom).point || // Bottom line
             li.checkIntersection(x1, y1, x2, y2, this.left, this.top, this.left, this.bottom).point // Left line
         );
+    }
+
+    lineInt(x1, y1, x2, y2) {
+        return (
+            li.checkIntersection(x1, y1, x2, y2, this.vertices[0].x, this.vertices[0].y, this.vertices[1].x, this.vertices[1].y).point || // Top line
+            li.checkIntersection(x1, y1, x2, y2, this.vertices[1].x, this.vertices[1].y, this.vertices[2].x, this.vertices[2].y).point || // Right line
+            li.checkIntersection(x1, y1, x2, y2, this.vertices[2].x, this.vertices[2].y, this.vertices[3].x, this.vertices[3].y).point || // Bottom line
+            li.checkIntersection(x1, y1, x2, y2, this.vertices[0].x, this.vertices[0].y, this.vertices[3].x, this.vertices[3].y).point // Left line
+        );
+    }
+
+    lineIntPoints(x1, y1, x2, y2) {
+        var points = [];
+        
+        var point = li.checkIntersection(x1, y1, x2, y2, this.vertices[0].x, this.vertices[0].y, this.vertices[1].x, this.vertices[1].y).point;
+        if (point) points.push(point);
+
+        point = li.checkIntersection(x1, y1, x2, y2, this.vertices[1].x, this.vertices[1].y, this.vertices[2].x, this.vertices[2].y).point;
+        if (point) points.push(point);
+
+        point = li.checkIntersection(x1, y1, x2, y2, this.vertices[2].x, this.vertices[2].y, this.vertices[3].x, this.vertices[3].y).point;
+        if (point) points.push(point);
+
+        point = li.checkIntersection(x1, y1, x2, y2, this.vertices[0].x, this.vertices[0].y, this.vertices[3].x, this.vertices[3].y).point;
+        if (point) points.push(point);
+
+        return points;
     }
 
     simpleLineIntPoints(x1, y1, x2, y2) {
@@ -130,8 +174,7 @@ class Rect {
         point = li.checkIntersection(x1, y1, x2, y2, this.left, this.top, this.left, this.bottom).point;
         if (point) points.push(point);
 
-        if (points.length > 0) return points;
-        else return false;
+        return points;
     }
 
 }

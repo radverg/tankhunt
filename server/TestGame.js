@@ -19,12 +19,10 @@ class TestGame extends Gm {
 
         // Move, rotate, collide players
         for (var pl = 0; pl < this.players.length; pl++) {
-            // Check whether tank is in borders
-            if (this.level.levelRect.containsCircleRect(this.players[pl].tank.body)) // !!
-            {
-                
-            }
+            
             this.players[pl].tank.update(deltaSec);
+            this.players[pl].tank.wallCollide(this.level);
+
         }
 
         // Move, collide shots

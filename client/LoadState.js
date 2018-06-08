@@ -4,8 +4,10 @@ var LoadState = {
 	// Assets ----------------------------------------------------------------------------
 		images: [
 			{ assetName: "blackRect", path: "images/blackRect.png" },
+			{ assetName: "whiteRect", path: "images/whiteRect.png" },
 			{ assetName: "defaultTurret", path: "images/default_turret.png" },
-			{ assetName: "tankBody", path: "images/tank_body.png" }
+			{ assetName: "tankBody", path: "images/tank_body.png" },
+			{ assetName: "ammo", path: "images/ammo.png" }
 		],
 
 		spritesheets: [

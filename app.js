@@ -23,6 +23,7 @@ app.get("/", function(req, res) {
 });
 
 app.use("/client", express.static(__dirname + "/client"));
+app.use("/shared", express.static(__dirname + "/shared"));
 //</editor-fold>
  
 var allSockets = [];

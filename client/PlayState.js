@@ -71,17 +71,25 @@ var PlayState = {
 		left.onDown.add(this.sendInput); left.onUp.add(this.sendInput);
         left.name = "inpLeft";
 
-        var turrLeft = game.input.keyboard.addKey(Phaser.Keyboard.Q);
+        var turrLeft = game.input.keyboard.addKey(Phaser.Keyboard.A);
         turrLeft.onDown.add(this.sendInput); turrLeft.onUp.add(this.sendInput);
         turrLeft.name = "inpTurrLeft";
 
-        var turrRight = game.input.keyboard.addKey(Phaser.Keyboard.E);
+        var turrRight = game.input.keyboard.addKey(Phaser.Keyboard.D);
         turrRight.onDown.add(this.sendInput); turrRight.onUp.add(this.sendInput);
         turrRight.name = "inpTurrRight";
 
-        var shot = game.input.keyboard.addKey(Phaser.Keyboard.D);
+        var shot = game.input.keyboard.addKey(Phaser.Keyboard.S);
         shot.onDown.add(this.sendInput); 
         shot.name = "inpShot";
+
+        var shotBouncing = game.input.keyboard.addKey(Phaser.Keyboard.W);
+        shotBouncing.onDown.add(this.sendInput);
+        shotBouncing.name = "inpShotBouncing";
+
+        var shotSpecial = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
+        shotSpecial.onDown.add(this.sendInput);
+        shotSpecial.name = "inpShotSpecial"; shot.onUp.add(this.sendInput);
 
 
 	},

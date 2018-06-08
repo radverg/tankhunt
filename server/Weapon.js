@@ -20,7 +20,6 @@ class Weapon {
 	}
 
 	canShoot() {
-		console.log(this._ammoCount);
 		return (this._ammoCount > 0) && ((Date.serverTime - this._lastShotTime) > this._reloadTime);
 	}
 
@@ -37,15 +36,20 @@ class Laser extends Weapon {
 	constructor(owner) {
 		super(owner);
 
-		this._ammoCount = 3;
+		this._ammoCount = 100;
 		this._shotType = "LaserDirect";
 	}
 
 	onPress(game) {
 		// Shoot here
 		if (this.canShoot()) {
-			this.shoot();
 			var shps = this.owner.tank.getLaserPosition();
+
+			if (!game.level.levelRect.contains(shps.x, shps.y)) {
+				return;
+			}
+
+			this.shoot();
 			var shot = new Shts.LaserDirect(this, shps.x, shps.y, this.owner.tank.angle, game);
 			game.shoot(shot);
 		}
@@ -53,7 +57,34 @@ class Laser extends Weapon {
 }
 // ---------------------------------------------------------------------------------------
 
+// APCR ----------------------------------------------------------------------------------
+class APCRGun extends Weapon {
+
+	constructor(owner) {
+		super(owner);
+
+		this._ammoCount = 10000;
+		this._shotType = "APCRGun";
+		this._reloadTime = 1000;
+	}
+
+	onPress(game) {
+		// Shoot here
+		if (this.canShoot()) {
+			var shps = this.owner.tank.getShotPosition();
+
+			if (!game.level.levelRect.contains(shps.x, shps.y)) {
+				return;
+			}
+
+			this.shoot();
+			var shot = new Shts.APCR(this, shps.x, shps.y, this.owner.tank.turret.angle, game);
+			game.shoot(shot);
+		}
+	}
+}
+
 module.exports = {
-	Weapon: Weapon,
-	Laser: Laser
+	Laser: Laser,
+	APCRGun: APCRGun
 }

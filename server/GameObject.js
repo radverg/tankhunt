@@ -100,21 +100,21 @@ class GameObject {
         }
     }
 
-    multiOverlap(obj) {
-        var dx = this.body.cX - this.prevBody.cX;
-        var dy = this.body.cY - this.prevBody.cY;
+    // multiOverlap(obj) {
+    //     var dx = this.body.cX - this.prevBody.cX;
+    //     var dy = this.body.cY - this.prevBody.cY;
 
-        var dist = Math.sqrt(dx * dx + dy * dy);
+    //     var dist = Math.sqrt(dx * dx + dy * dy);
 
-        var count = Math.ceil(dist / this.r);
+    //     var count = Math.ceil(dist / this.r);
 
-        var subdist = dist / count;
-        var tmpRect = new G.rect(this.body.cX - subdist * dx, this.body.cY - subdist * dy, this.body.w, this.body.h);
+    //     var subdist = dist / count;
+    //     var tmpRect = new G.rect(this.body.cX - subdist * dx, this.body.cY - subdist * dy, this.body.w, this.body.h);
 
-        for (var i = 0; i < count; i++) {
-            tmpRect.setPos(tmpRect.cX + subdist * dx, tmpRect.cY + subdist * dy);
-        }
-    }
+    //     for (var i = 0; i < count; i++) {
+    //         tmpRect.setPos(tmpRect.cX + subdist * dx, tmpRect.cY + subdist * dy);
+    //     }
+    // }
 
     overlap(obj) {
     }
