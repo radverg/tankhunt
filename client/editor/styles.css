@@ -1,0 +1,51 @@
+html, body {
+	width: 100%;
+	margin: 0;
+	font-family: Verdana;
+	background-color: black;
+}
+
+#panel {
+	width: 250px;
+	height: 100%;
+	background-color: #68A3F8;
+	color: white;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#levelTextArea {
+	display: block;
+	width: 90%;
+	height: 160px;
+	margin: 0 auto;
+}
+
+#propTable {
+	display: block;
+	width: 90%;
+	margin: 0 auto;
+}
+
+#workSpace {
+	position: absolute;
+	background-color: white;
+}
+
+.levelBlock {
+	position: absolute;
+}
+
+.wall {
+	background-color: black;
+	position: absolute;
+}
+
+.hovered {
+	background-color: yellow;
+}
+
+.greenBlock {
+	background-color: green;
+}

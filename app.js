@@ -21,6 +21,9 @@ console.log("Server is successfully listening at port " + port);
 app.get("/", function(req, res) {
     res.sendFile(__dirname + "/client/index.html");
 });
+app.get("/editor", function(req, res) {
+    res.sendFile(__dirname + "/client/editor/index.html");
+});
 
 app.use("/client", express.static(__dirname + "/client"));
 app.use("/shared", express.static(__dirname + "/shared"));
