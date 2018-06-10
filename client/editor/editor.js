@@ -1,3 +1,6 @@
+// Tankhunt level editor
+// CAUTION: SPAGHETTI CODE!! DO NOT EVEN TRY TO LOOK AT IT
+
 $(function() {
 
 	$(window).on("contextmenu", function() {return false;});
@@ -10,6 +13,9 @@ $(function() {
 		level[$(this).attr("name")] = $(this).val();
 		putJSONText();
 	});
+
+	$("#propTable input[name='tilesCountX']").off().on("change", sizeInputChanged);
+	$("#propTable input[name='tilesCountY']").off().on("change", sizeInputChanged);
 
 	$("#inversions input").on("change", invertInputChange);
 	$("input[name='editTypeRadio']").on("change", updateMode)
@@ -36,7 +42,7 @@ var level = {
 
 }
 
-var viewSquareSize = 60;
+var viewSquareSize = 90;
 var viewThickness = 5;
 
 function blockEdit(e) {
@@ -79,10 +85,67 @@ function blockEdit(e) {
 
 	// Spawns 1
 	if ($("input[value='spawns1']").prop("checked") == true && e.buttons == 1) {
-		if ($(this).hasAttr("spawns1")) {
+		if ($(this).is("[spawns1]")) {
+
+			$(this).removeAttr("spawns1");
+			$(this).removeClass("greenBlock");
+			level.spawns1.splice(level.spawns1.indexOf(blockToString(blockX, blockY)), 1);
+
+		} else {
+
+			$(this).attr("spawns1", "");
+			$(this).addClass("greenBlock");
+			level.spawns1.push(blockToString(blockX, blockY));
 
 		}
+
+		putJSONText();
 	}
+
+	// Spawns 2 
+	if ($("input[value='spawns2']").prop("checked") == true && e.buttons == 1) {
+		if ($(this).is("[spawns2]")) {
+
+			$(this).removeAttr("spawns2");
+			$(this).removeClass("greenBlock");
+			level.spawns2.splice(level.spawns2.indexOf(blockToString(blockX, blockY)), 1);
+
+		} else {
+
+			$(this).attr("spawns2", "");
+			$(this).addClass("greenBlock");
+			level.spawns2.push(blockToString(blockX, blockY));
+
+		}
+
+		putJSONText();
+	}
+
+	// Spawns items 
+	if ($("input[value='spawnsItems']").prop("checked") == true && e.buttons == 1) {
+		if ($(this).is("[spawnsItems]")) {
+
+			$(this).removeAttr("spawnsItems");
+			$(this).removeClass("greenBlock");
+			level.spawnsItems.splice(level.spawns2.indexOf(blockToString(blockX, blockY)), 1);
+
+		} else {
+
+			$(this).attr("spawnsItems", "");
+			$(this).addClass("greenBlock");
+			level.spawnsItems.push(blockToString(blockX, blockY));
+
+		}
+
+		putJSONText();
+	}
+}
+
+function sizeInputChanged() {
+	var x = $(this).is("[name='tilesCountX']") ? $(this).val() : level.tilesCountX;
+	var y = $(this).is("[name='tilesCountY']") ? $(this).val() : level.tilesCountY;
+	changeLevelSize(x, y);
+	putJSONText();
 }
 
 function invertInputChange() {
@@ -123,19 +186,13 @@ function copyJSON() {
 	document.execCommand("copy");
 }
 
-// function createDefaultLevel() {
-// 	for (var x = 0; x < level.tilesCountX; x++) {
-// 		level.walls.push([]);
-// 		for (var y = 0; y < level.tilesCountY; y++) {
-// 			level.walls[x].push([false, false]);
-// 		}
-// 	}
-// }
 
 function rebuildLevel() {
 	$workSpace = $("#workSpace");
 
 	$workSpace.empty();
+
+	viewSquareSize = window.innerHeight / level.tilesCountY;
 
 	$workSpace.css({ width: pixelize(viewSquareSize * level.tilesCountX),
 						height: pixelize(viewSquareSize * level.tilesCountY), left: "260px" });
@@ -178,6 +235,8 @@ function rebuildLevel() {
 			}
 		}
 	}
+
+	updateMode();
 }
 
 function updateMode() {
@@ -225,19 +284,33 @@ function newWall(x, y, type) {
 }
 
 function changeLevelSize(tilesX, tilesY) {
-	// level.tilesCountX = tilesX;
-	// // level.tilesCountY = tilesY;
-	// var prevX = level.tilesCountX;
-	// var prevY = level.tilesCountY;
+	
+	var prevX = level.tilesCountX;
+	var prevY = level.tilesCountY;
 
-	// if (prevX < tilesX) {
-	// 	var diff = tilesX - prevX;
-	// 	for (var i = prevX; i < tilesX; i++) {
-			
-	// 	}
-	// }
+	level.tilesCountX = tilesX;
+	level.tilesCountY = tilesY;
 
-	// if (level.walls.length <)
+	if (prevX > tilesX || prevY > tilesY) {
+	 	// Delete all items that are not within the range 
+	 	deleteOutOfRange();
+	}
+
+	rebuildLevel();
+}
+
+function deleteOutOfRange() {
+	var iterate = [level.walls, level.spawns1, level.spawns2, level.spawnsItems];
+
+	for (var z = 0; z < iterate.length; z++) {
+		for (var i = 0; i < iterate[z].length; i++) {
+			var data = iterate[z][i].split("|");
+			if (parseInt(data[0]) >= level.tilesCountX || parseInt(data[1]) >= level.tilesCountY) {
+				iterate[z].splice(i, 1);
+				i--;
+			}
+		}
+	}	
 }
 
 function wallToString(squareX, squareY, type) {
