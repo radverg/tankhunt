@@ -1,9 +1,8 @@
-var Geom = require("./Geometry");
-var GO = require("./GameObject");
-var Prop = require("./AllProperties");
-var Mt = require("./MyMath");
-var Level = require("./LevelCreator");
-var Levels = require("../shared/Levels.js");
+var Geom = require("../utils/Geometry");
+var GO = require("../utils/GameObject");
+var Mt = require("../utils/MyMath");
+var Level = require("../Level");
+var Levels = require("../../../shared/Levels.js");
 var Gm = require("./THGame");
 
 class TestGame extends Gm {

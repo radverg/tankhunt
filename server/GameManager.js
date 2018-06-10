@@ -1,4 +1,4 @@
-var TestGame = require("./TestGame");
+var TestGame = require("./gameplay/gamemodes/TestGame");
 
 class GameManager {
 

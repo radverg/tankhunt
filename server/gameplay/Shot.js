@@ -1,5 +1,5 @@
-var GO = require("./GameObject");
-var mymath = require("./MyMath");
+var GO = require("./utils/GameObject");
+var mymath = require("./utils/MyMath");
 
 // Shot constructor takes the weapon it was shot from as a parameter
 // This class is abstract (it is not included in module.exports)

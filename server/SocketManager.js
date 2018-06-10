@@ -1,5 +1,5 @@
 // Manage clients and their sockets
-var Player = require("./Player");
+var Player = require("./gameplay/Player");
 
 class SocketManager {
 

@@ -1,5 +1,4 @@
-var GO = require("./GameObject");
-var Prop = require("./AllProperties");
+var GO = require("./utils/GameObject");
 var Tk = require("./Tank");
 
 class Player {

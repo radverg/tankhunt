@@ -1,5 +1,5 @@
-var mymath = require("./MyMath");
-var Geom = require("./Geometry");
+var mymath = require("./utils/MyMath");
+var Geom = require("./utils/Geometry");
 
 
 class Level {

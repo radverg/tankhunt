@@ -1,4 +1,4 @@
-var GO = require("./GameObject");
+var GO = require("./utils/GameObject");
 var Wp = require("./Weapon");
 
 class Tank extends GO {

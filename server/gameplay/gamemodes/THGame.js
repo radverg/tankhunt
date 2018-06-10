@@ -1,8 +1,6 @@
-var Geom = require("./Geometry");
-var GO = require("./GameObject");
-var Prop = require("./AllProperties");
-var Mt = require("./MyMath");
-var LC = require("./LevelCreator");
+var Geom = require("../utils/Geometry");
+var GO = require("../utils/GameObject");
+var Mt = require("../utils/MyMath");
 
 class THGame {
 
