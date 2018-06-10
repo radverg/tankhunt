@@ -129,6 +129,10 @@ class THGame {
         player.socket.emit(emName, data);
     }
 
+    emitRemove(id) {
+        this.emitData("removePlayer", { id: id });
+    }
+
     // Creates and sends packet that contains positions, rotations and velocities of every MOVING object in the game - shots and tanks
     emitMovable() {
         var packet = {}

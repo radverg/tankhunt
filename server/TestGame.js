@@ -12,7 +12,8 @@ class TestGame extends Gm {
         super();
         this.running = true;
         this.level = new Level();
-        this.level.parseJSONLevel(Levels.arena1);    
+        this.level.parseJSONLevel(Levels.arena1);  
+        console.log("Starting test game...");  
     }
 
     update(deltaSec) {
@@ -70,7 +71,7 @@ class TestGame extends Gm {
             this.players.splice(index, 1);
         }
 
-        this.manager.sendTo(this.players, "removePlayer", player.socket.id);
+        this.emitRemove(player.socket.id);
     }
 
     emitLevelPl(player) {
