@@ -1,13 +1,6 @@
 var mymath = require("./MyMath");
 var Geom = require("./Geometry");
 
-module.exports = {
-
-    newDefaultLevel: function() {
-        return new Level();
-    }
-
-}
 
 class Level {
 
@@ -27,6 +20,70 @@ class Level {
 
         this.generateBorders();
         this.generateRandomLevel();
+    }
+
+    parseJSONLevel(jsonString) {
+
+        var lvl = null;
+
+        // Parse string representation of the level to the object
+        try {
+            lvl = JSON.parse(jsonString);
+        } catch(error) {
+            console.log("Cannot parse JSON string! " + error.message);
+        }
+
+        // Import properties
+        this.tilesCountX = lvl.tilesCountX;
+        this.tilesCountY = lvl.tilesCountY;
+        this.wallThickness = lvl.wallThickness;
+        this.squareSize = lvl.squareSize;
+
+        // Create level rectangle
+        var width = this.tilesCountX * this.squareSize;
+        var height = this.tilesCountY * this.squareSize;
+        this.levelRect = new Geom.rect(width / 2, height / 2, width, height);
+
+        // Prepare wall array
+        this.emptyWalls();
+        
+        for (var i in lvl.walls) {
+            var splitted = lvl.walls[i].split("|");
+            var x = parseInt(splitted[0]);
+            var y = parseInt(splitted[1]);
+            var type = parseInt(splitted[2]);
+            this.walls[x][y][type] = this.generateWall(x, y, type);
+        }
+
+        // Prepare spawns
+        var spwns = ["spawns1", "spawns2", "spawnsItems"];
+        this.spawns1 = []; this.spawns2 = []; this.spawnsItems = [];
+
+        for (var sp in spwns) {
+
+            if (!lvl["invert" + spwns[sp]]) { // No inversion
+                for (var block in lvl[spwns[sp]]) {
+                    var splitted = lvl[spwns[sp]][block].split("|");
+                    var x = parseInt(splitted[0]);
+                    var y = parseInt(splitted[1]);
+                    this[spwns[sp]].push(new Geom.vec2(x, y));
+                }
+            } else { // Inversion
+
+                for (var x = 0; x < this.tilesCountX; x++) {
+                    for (var y = 0; y < this.tilesCountY; y++) {
+                        var index = lvl[spwns[sp]].indexOf(x + "|" + y);
+
+                        if (index == -1) {
+                            this[spwns[sp]].push(new Geom.vec2(x, y));
+                        }
+                    }
+                }
+            }
+        }
+
+        // Add borders
+        this.generateBorders();
     }
 
     generateRandomLevel() {
@@ -58,6 +115,27 @@ class Level {
         }
     }
 
+    generateWall(squareX, squareY, type) {
+
+        // Horizontal?
+        if (type == 0) {
+            return new Geom.rect(squareX * this.squareSize + this.squareSize / 2, squareY * this.squareSize,
+                            this.squareSize + this.wallThickness, this.wallThickness);
+        }
+
+        // Vertical?
+        if (type == 1) {
+            return new Geom.rect(squareX * this.squareSize, squareY * this.squareSize + this.squareSize / 2,
+                            this.wallThickness, this.squareSize + this.wallThickness);
+        }
+
+        return null;
+    }
+
+    getSquareCentre(squareX, squareY) {
+        return new Geom.vec2(squareSize * squareX + squareSize / 2, squareSize * squareY + squareSize / 2);
+    }
+
     generateBorders() {
         var borderOver = 3;
         this.borders[0] = new Geom.rect(this.levelRect.hWidth, -borderOver / 2, this.levelRect.w + borderOver * 2, borderOver);
@@ -66,20 +144,16 @@ class Level {
         this.borders[3] = new Geom.rect(-borderOver / 2, this.levelRect.hHeight, borderOver, this.levelRect.w + borderOver * 2);
     }
 
-    // recursiveWallCheck(x1, y1, dirX, dirY) {
-    //     var x2 = x1 + dirX * this.squareSize;
-    //     var y2 = y1 + dirY * this.squareSize;
+    emptyWalls() {
+        this.walls = [];
 
-    //     var squareX = Math.floor(x / this.squareSize); 
-    //     var squareY = Math.floor(y / this.squareSize);
-
-    //     // Check whether the second point is out of bounds
-    //     if (x2 <= 0 || x2 >= this.levelRect.right || y2 <= 0 || y2 >= this.levelRect.bottom) {
-    //         return this.levelRect.body.simpleLineIntPoints(x1, y1, x2, y2);
-    //     }
-
-
-    // }
+        for (var x = 0; x < this.tilesCountX; x++) {
+            this.walls.push([]);
+            for (var y = 0; y < this.tilesCountY; y++) {
+                   this.walls[x][y] = [null, null];
+            }   
+        }
+    }
 
     getSqrX(x) {
         return Math.floor(x / this.squareSize);
@@ -289,3 +363,6 @@ class Level {
 
     }
 }
+
+module.exports = Level;
+

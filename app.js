@@ -1,6 +1,5 @@
 /* Tank hunt node.js server, basic start file */
 
-var LC = require("./server/LevelCreator");
 var THGame = require("./server/THGame");
 var TG = require("./server/TestGame");
 var Manager = require("./server/Manager");

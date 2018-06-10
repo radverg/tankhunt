@@ -2,7 +2,8 @@ var Geom = require("./Geometry");
 var GO = require("./GameObject");
 var Prop = require("./AllProperties");
 var Mt = require("./MyMath");
-var LC = require("./LevelCreator");
+var Level = require("./LevelCreator");
+var Levels = require("../shared/Levels.js");
 var Gm = require("./THGame");
 
 class TestGame extends Gm {
@@ -10,7 +11,8 @@ class TestGame extends Gm {
     constructor() {
         super();
         this.running = true;
-        this.level = LC.newDefaultLevel();    
+        this.level = new Level();
+        this.level.parseJSONLevel(Levels.arena1);    
     }
 
     update(deltaSec) {

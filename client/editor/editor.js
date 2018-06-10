@@ -36,9 +36,9 @@ var level = {
 	spawns1: [],
 	spawns2: [],
 	spawnsItems: [],
-	invert1: false,
-	invert2: false,
-	invertItem: false
+	invertspawns1: false,
+	invertspawns2: false,
+	invertspawnsItems: false
 
 }
 
@@ -172,9 +172,9 @@ function setValues() {
 	$("#squareCountXInp").val(level.tilesCountX);
 	$("#squareCountYInp").val(level.tilesCountY);
 	$("#wallThicknessInp").val(level.wallThickness);
-	$("#invert1").prop("checked", level.invert1);
-	$("#invert2").prop("checked", level.invert2);
-	$("#invertItem").prop("checked", level.invertItem);
+	$("#invertspawns1").prop("checked", level.invertspawns1);
+	$("#invertspawns2").prop("checked", level.invertspawns2);
+	$("#invertspawnsItems").prop("checked", level.invertspawnsItems);
 }
 
 function putJSONText() {
