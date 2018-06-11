@@ -1,5 +1,5 @@
 body {
-    background-image: url("images/clientBackground.png");
+    background-image: url("assets/images/clientBackground.png");
     background-size: cover;
     width: 100%;
 
@@ -7,10 +7,6 @@ body {
 
 .hidden {
     display: none;
-}
-
-canvas {
-    
 }
 
 .mainCont {

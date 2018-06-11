@@ -1,6 +1,7 @@
 class THGame {
 
-	constructor() {
+	constructor(socketManager) {
+		this.socketManager = socketManager;
 		this.players = {};
 		this.playerMe = null;
 		this.shots = {};
@@ -48,7 +49,7 @@ class THGame {
 				this.players[data.players[i].id] = new Player(new DefaultTank(), data.players[i].id);
 				this.players[data.players[i].id].tank.addToScene();
 				// check if its me
-				if (data.players[i].id == socket.id) {
+				if (data.players[i].id == this.socketManager.getID()) {
 					this.playerMe = this.players[data.players[i].id];
 					console.log("I found myself!");
 					this.setCamera();

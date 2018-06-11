@@ -7,68 +7,30 @@
     <base href="client/">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="phaser.min.js"></script>
-    <!-- <script src="http://cdn.jsdelivr.net/npm/phaser@3.6.0/dist/phaser.min.js"></script> -->
-    <script type="text/javascript" src="Tank.js"></script>
-    <script type="text/javascript" src="DefaultTank.js"></script>
-    <script type="text/javascript" src="Player.js"></script>
-    <script type="text/javascript" src="THGame.js"></script>
-    <script type="text/javascript" src="ShotClient.js"></script>
-    <script type="text/javascript" src="LoadState.js"></script>
-    <script type="text/javascript" src="PlayState.js"></script>
+    <script src="libs/phaser.min.js"></script>
+
+    <script type="text/javascript" src="gameplay/Tank.js"></script>
+    <script type="text/javascript" src="gameplay/DefaultTank.js"></script>
+    <script type="text/javascript" src="gameplay/Player.js"></script>
+    <script type="text/javascript" src="gameplay/THGame.js"></script>
+    <script type="text/javascript" src="gameplay/ShotClient.js"></script>
+    <script type="text/javascript" src="LoadManager.js"></script>
+    <script type="text/javascript" src="PlayManager.js"></script>
+    <script type="text/javascript" src="utils/ExtendSprite.js"></script>
+    <script type="text/javascript" src="TankHuntClient.js"></script>
+    <script type="text/javascript" src="SocketManager.js"></script>
     <script type="text/javascript" src="../shared/Data.js"></script>
     <script type="text/javascript" src="../shared/Levels.js"></script>
-
-    <script src="client.js"></script>
     
-
-
+    <script src="Run.js"></script>
+    
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
-
-</head>
-<body>
-    <script>
-        
-
-    </script>
     
-    <!-- <div class="mainCont">
-       <div class="panel panel-default">
-            <div class="panel-heading">
-                <img class="img-responsive" style="margin: 0 auto" src="images/logo.png">
-            </div>
-       </div>
+</head>
 
-        <div class="panel-body">
-            <div class="form-group">
-                <label for="usr">Enter your name:</label>
-                <input type="text" class="form-control input-lg" id="usr">
-            </div>
-            <button id="playButton" class="btn btn-primary" style="padding: 20px 20px 20px 20px; width: 100%; margin: 0 auto; font-size: 3rem">PLAY</button>
-        </div>
+<body>
 
-
-
-    </div>
-
-    <div class="queueCont">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h1 align="center" >Players in the queue:</h1>
-            </div>
-            <div class="panel-body">
-                <ul class="list-group" id="queueMembers">
-
-                </ul>
-
-            </div>
-
-            <div class="panel-footer">
-
-            </div>
-
-        </div>
-    </div> -->
 </body>
+
 </html>
