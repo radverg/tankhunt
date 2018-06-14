@@ -4,7 +4,7 @@ var Mt = require("../utils/MyMath");
 
 class THGame {
 
-    constructor(wallThickness, squareSize, wallArray) {
+    constructor() {
          this.players = [];
          this.shots = [];
          this.items = [];

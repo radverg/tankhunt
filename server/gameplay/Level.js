@@ -330,8 +330,6 @@ class Level {
 
     verticalLineSeparation(tank, points, sqrX, sqrY) 
     {
-       
-
         if (points.length == 2) {
 
             var ctrX = (points[0].x + points[1].x) / 2;
@@ -357,6 +355,30 @@ class Level {
 
         tank.body.updateVertices();
 
+    }
+
+    getRandomSpawnPos(sqrX, sqrY, width, height) {
+        var minX = sqrX * this.squareSize + width / 2;
+        var maxX = (sqrX + 1) * this.squareSize - width / 2;
+        var minY = sqrY * this.squareSize + height / 2;
+        var maxY = (sqrY + 1) * this.squareSize - height / 2;
+        
+        return new Geom.vec2(minX + Math.random() * (maxX - minX), minY + Math.random() * (maxY - minY));
+    }
+    
+    getRandomSpawn1(width, height) {
+        var index = Math.floor(Math.random() * this.spawns1.length);
+        this.getRandomSpawnPos(this.spawns1[index].x, this.spawns1[index].y, width, height);
+    }
+
+    getRandomSpawn2(width, height) {
+        var index = Math.floor(Math.random() * this.spawns2.length);
+        this.getRandomSpawnPos(this.spawns2[index].x, this.spawns2[index].y, width, height);
+    }
+
+    getRandomSpawnItems(width, height) {
+        var index = Math.floor(Math.random() * this.spawnsItems.length);
+        this.getRandomSpawnPos(this.spawnsItems[index].x, this.spawnsItems[index].y, width, height);
     }
 }
 
