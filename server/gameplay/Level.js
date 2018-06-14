@@ -323,7 +323,6 @@ class Level {
 
             // Final move
             tank.body.cX += (dx + 0.001);
-            console.log("one move: " + dx);
         }
 
         tank.body.updateVertices();
@@ -354,9 +353,6 @@ class Level {
 
             // Final move
             tank.body.cY += (dy + 0.001);
-
-            console.log("one move: " + dy);
-
         }
 
         tank.body.updateVertices();

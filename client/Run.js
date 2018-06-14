@@ -1,4 +1,4 @@
-// The main client file, start of the application
+/* The main client file, start of the application */
 
 var game = null; // Phaser instance
 var TankHunt = new TankHuntClient(); // TankHunt instance
@@ -10,19 +10,10 @@ $(function () {
     }
 });
 
-function showQueue() {
-    $(".mainCont").fadeOut();
-    $(".queueCont").fadeIn();
-}
+// function hideCanvas() {
+//     $(game.canvas).addClass("hidden");
+// }
 
-function hideQueue() {
-    $(".queueCont").hide();
-}
-
-function hideCanvas() {
-    $(game.canvas).addClass("hidden");
-}
-
-function showCanvas() {
-    $(game.canvas).removeClass("hidden");
-}
+// function showCanvas() {
+//     $(game.canvas).removeClass("hidden");
+// }

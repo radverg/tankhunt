@@ -11,6 +11,8 @@ class Shot extends GO {
 		this.startX = startX;
 		this.startY = startY;
 
+		this.endPoint = { x: startX, y: startY };
+
 		this.type = "unknown";
 
 		this.startTime = Date.serverTime;
@@ -35,11 +37,17 @@ class Shot extends GO {
 		}
 	}
 
-	remove(game) {
-		var index = game.shots.indexOf(this);
-		if (index !== -1)
-			game.shots.splice(index, 1);
+	// remove(game) {
+	// 	var index = game.shots.indexOf(this);
+	// 	if (index !== -1)
+	// 		game.shots.splice(index, 1);
+	// }
+
+	isBeyond() {
+		return mymath.dist(this.x, this.y, this.startX, this.startY) >= mymath.dist(this.startX, this.startY, this.endPoint.x, this.endPoint.y);
 	}
+
+
 
 }
 
@@ -65,14 +73,19 @@ class APCR extends Shot {
 		return packet;
 	}
 
-	isHittingPlayer(player) {
-		if (player.body.rectCircleVSCircle((this.x + this.prevBody.cX) / 2, (this.y + this.prevBody.cY) / 2, mymath.dist(this.x, this.y, this.prevBody.cX,
+	isHittingTank(tank) {
+		if (tank.body.rectCircleVSCircle((this.x + this.prevBody.cX) / 2, (this.y + this.prevBody.cY) / 2, mymath.dist(this.x, this.y, this.prevBody.cX,
 			this.prevBody.cY) / 2)) {
 
-			return player.body.lineInt(this.x, this.y, this.prevBody.cX, this.prevBody.cY);
+			return tank.body.lineInt(this.x, this.y, this.prevBody.cX, this.prevBody.cY);
 		}
 
 		return false;
+	}
+
+	update(deltaSec) {
+		GO.prototype.update.call(this, deltaSec);
+		this.remove = this.isBeyond();
 	}
 }
 
@@ -102,9 +115,14 @@ class LaserDirect extends Shot {
 		return packet;
 	}
 
-	isHittingPlayer(player) {
-		if (player.id == this.owner.id) return false; // This laser cannot kill its owner
-		return player.body.lineInt(this.startX, this.startY, this.x, this.y);
+	isHittingTank(tank) {
+		if (tank.owner == this.owner) return false; // This laser cannot kill its owner
+		return tank.body.lineInt(this.startX, this.startY, this.x, this.y);
+	}
+
+	update(deltaSec) {
+		GO.prototype.update.call(this, deltaSec);
+		this.remove = this.isBeyond();
 	}
 }
 

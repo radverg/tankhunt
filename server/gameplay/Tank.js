@@ -6,7 +6,7 @@ class Tank extends GO {
 	constructor(owner) {
 		super(2, 2, 1, 1.4375);
 
-		this.owner = this;
+		this.owner = owner;
 
 		this.turret = new Turret();
 		this.maxSpeed = 4; // !!!
@@ -14,8 +14,7 @@ class Tank extends GO {
 
 		// Weapons: ------------------------
 		this.apcrGun = new Wp.APCRGun(owner);
-		this.laserGun = new Wp.Laser(owner);
-		this.specialGun = null;
+		this.specialGun = new Wp.Laser(owner);
 		this.bouncerGun = null;
 	}
 
