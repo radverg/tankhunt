@@ -4,12 +4,15 @@ var Mt = require("../utils/MyMath");
 var Level = require("../Level");
 var Levels = require("../../../shared/Levels.js");
 var Gm = require("./THGame");
+var ItemManager = require("../ItemManager");
 
 class TestGame extends Gm {
     
     constructor() {
         super();
         this.running = true;
+        this.itemManager = new ItemManager(this);
+        this.itemManager.startSpawning();
         this.level = new Level();
         this.level.parseJSONLevel(Levels.arena1);  
         console.log("Starting test game...");  
@@ -24,6 +27,9 @@ class TestGame extends Gm {
             
             this.players[pl].tank.update(deltaSec);
             this.players[pl].tank.wallCollide(this.level);
+
+            // Check players against items
+            this.itemManager.checkForTank(this.players[pl].tank);
             
             // Update shots
             for (let sh = 0; sh < this.shots.length; sh++) {
@@ -45,6 +51,9 @@ class TestGame extends Gm {
                 }  
             }
         }
+
+        // Update (spawn) items
+        this.itemManager.update();
         
         // Send players state every third frame ( 20 per second)
         if ((this.updateCounter % 3) == 0) {

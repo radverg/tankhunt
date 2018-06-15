@@ -368,17 +368,17 @@ class Level {
     
     getRandomSpawn1(width, height) {
         var index = Math.floor(Math.random() * this.spawns1.length);
-        this.getRandomSpawnPos(this.spawns1[index].x, this.spawns1[index].y, width, height);
+        return this.getRandomSpawnPos(this.spawns1[index].x, this.spawns1[index].y, width, height);
     }
 
     getRandomSpawn2(width, height) {
         var index = Math.floor(Math.random() * this.spawns2.length);
-        this.getRandomSpawnPos(this.spawns2[index].x, this.spawns2[index].y, width, height);
+        return this.getRandomSpawnPos(this.spawns2[index].x, this.spawns2[index].y, width, height);
     }
 
     getRandomSpawnItems(width, height) {
         var index = Math.floor(Math.random() * this.spawnsItems.length);
-        this.getRandomSpawnPos(this.spawnsItems[index].x, this.spawnsItems[index].y, width, height);
+        return this.getRandomSpawnPos(this.spawnsItems[index].x, this.spawnsItems[index].y, width, height);
     }
 }
 

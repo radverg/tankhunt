@@ -18,7 +18,7 @@ class TankHunt {
 		this.loopManager = new LoopManager(this); 
 
 		// Global ID
-		Math._currentID = "a1";
+		Math._currentID = 1;
 		Math.getNextID = function() {
 		    Math._currentID++;
 		    return "a" + Math._currentID;

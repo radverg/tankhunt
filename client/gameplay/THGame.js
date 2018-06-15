@@ -5,6 +5,7 @@ class THGame {
 		this.players = {};
 		this.playerMe = null;
 		this.shots = {};
+		this.items = {};
 		this.running = false;
 		this.level = null;
 	}
@@ -75,6 +76,17 @@ class THGame {
 		var sh = new Shots[type](data);
 		this.shots[data.id] = sh;
 	};
+
+	processNewItem(data) {
+		this.items[data.id] = new Item(data.x, data.y, data.typeIndex);
+	}
+
+	processItemCollect(data) {
+		// Collector id is in data.playerID
+		if (this.items[data.id]) {
+			this.items[data.id].getCollected();
+		}
+	}
 
 	processLevel(data) {
 		this.level = data;

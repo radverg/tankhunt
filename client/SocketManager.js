@@ -23,6 +23,8 @@ class SocketManager {
         this.socket.on("removePlayer", function(data) { that.th.playManager.onRemovePlayer(data); });
         this.socket.on("shot", function(data) { that.th.playManager.onNewShot(data); });
         this.socket.on("level", function(data) { that.th.playManager.onLevel(data); }); 
+        this.socket.on("itemSpawn", function(data) { that.th.playManager.onItemSpawn(data); }); 
+        this.socket.on("itemCollect", function(data) { that.th.playManager.onItemCollect(data); }); 
     } 
     
     onConnection() {

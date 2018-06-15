@@ -55,6 +55,18 @@ class PlayManager  {
 	onRemovePlayer(data) {
 		if (this.thGame.players[data]) this.thGame.removePlayer(this.thGame.players[data]);
 	}
+	
+	onItemSpawn(data) {
+		if (this.thGame) {
+			this.thGame.processNewItem(data);
+		}
+	}
+
+	onItemCollect(data) {
+		if (this.thGame) {
+			this.thGame.processItemCollect(data);
+		}
+	}
 
 	initInput() {
 		var that = this;

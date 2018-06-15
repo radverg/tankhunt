@@ -12,11 +12,14 @@ class Weapon {
 
 		this.owner = owner || null;
 		this.shots = [];
+
+		this.wornOut = false;
 	}
 
 	shoot() {
 		this._lastShotTime = Date.serverTime;
 		this._ammoCount--;
+		this.wornOut = (this._ammoCount < 1);
 	}
 
 	canShoot() {

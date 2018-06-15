@@ -109,6 +109,14 @@ class THGame {
         this.emitData("kill", { killerID: killerID, killedID: killedID, shotID: shotID });
     }
 
+    emitItemSpawn(item) {
+        this.emitData("itemSpawn", {typeIndex: item.typeIndex, x: item.x, y: item.y});
+    }
+
+    emitItemCollect(item, collector) {
+        this.emitData("itemCollect", { id: item.id, playerID: collector.id });
+    }
+
     emitDisappear(id) {
         this.emitData("disappear", { id: id });
     }
