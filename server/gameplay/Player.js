@@ -26,7 +26,22 @@ class Player {
     die() {
         this.stats.deaths++;
         this.alive = false;
-        this.emitable = false;
+       // this.emitable = false;
+    }
+
+    getInfoPacket() {
+        var packet = {
+            id: this.id,
+            name: this.name,
+            stats: this.stats,
+            alive: this.alive
+        }
+
+        if (this.tank) {
+            packet.tank = this.tank.getStatePacket();
+        }
+
+        return packet;
     }
 }
 

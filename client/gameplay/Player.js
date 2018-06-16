@@ -1,6 +1,6 @@
 class Player {
 
-	constructor(tank, id) {
+	constructor(tank, id, name) {
 		this.id = id;
 
 		this.name = name || "unnamed";
@@ -21,6 +21,14 @@ class Player {
 		this.tank.destroy();
 		this.tank = null;
 	};
+
+	/**
+	 * Sets properties of this player and his tank according to the player info packet received from the server
+	 * @param {*} packet Player packet from the server
+	 */
+	applyPacket(packet) {
+
+	}
 }
 
 

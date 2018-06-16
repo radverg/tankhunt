@@ -54,6 +54,16 @@ class ItemManager {
         }
 
     }
+
+    getItemsPacket() {
+        var packet = [];
+        
+        for (let i = 0; i < this.items.length; i++) {
+           packet.push(this.items[i].getStatePacket());
+        }
+
+        return packet;
+    }
 }
 
 module.exports = ItemManager;

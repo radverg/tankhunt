@@ -20,16 +20,18 @@ class THGame {
 			this.players[pkeys[i]].tank.updateTurret();
 			this.players[pkeys[i]].tank.turret.interpolateAngle();
 		}
-
-		// Move shots
-		// var skeys = Object.keys(this.shots);
-		// for (var i = 0; i < skeys.length; i++) {
-		// 	this.shots[skeys[i]].interpolate();
-		// }
 	}
 
 	addPlayer(player) {
 		this.players[player.id] = player;
+	}
+
+	/**
+	 * Determines if player with this id is in the game
+	 * @param {string} id Id of desired player
+	 */
+	hasPlayer(id) {
+		return this.players[id];
 	}
 
 	removePlayer(player) {
@@ -42,32 +44,18 @@ class THGame {
 		console.log("Game is running!");
 	}
 
+	newPlayerFromPacket(packet) {
+		return false;
+	}
+
 	processStateInfo(data) {
 		if (!this.running) return;
 
 		for (var i = 0; i < data.players.length; i++) {
-			if (!this.players[data.players[i].id]) { // Create the players as it's not yet in the game
-				this.players[data.players[i].id] = new Player(new DefaultTank(), data.players[i].id);
-				this.players[data.players[i].id].tank.addToScene();
-				// check if its me
-				if (data.players[i].id == this.socketManager.getID()) {
-					this.playerMe = this.players[data.players[i].id];
-					console.log("I found myself!");
-					this.setCamera();
-				}
-
-			} else { // Tank already exists, do standard process
-				this.players[data.players[i].id].tank.positionServerUpdate(data.players[i].posX, data.players[i].posY);
-				this.players[data.players[i].id].tank.rotationServerUpdate(data.players[i].rot);
-				this.players[data.players[i].id].tank.rotationTurretServerUpdate(data.players[i].turrRot);
-			}
+			if (!this.hasPlayer(data.players[i].plID)) continue;
+		
+			this.players[data.players[i].plID].tank.applyStatePacket(data.players[i]);			
 		}
-			
-		for (var i = 0; i < data.shots.length; i++) {
-			if (!this.shots[data.shots[i].id]) continue;
-			this.shots[data.shots[i].id].remX = data.shots[i].posX * game.sizeCoeff;
-			this.shots[data.shots[i].id].remY = data.shots[i].posY * game.sizeCoeff;
-		}	
 	}
 
 	processNewShot(data) {
@@ -86,6 +74,35 @@ class THGame {
 		if (this.items[data.id]) {
 			this.items[data.id].getCollected();
 		}
+	}
+
+	processGameInfo(data) {
+		// Generate players
+		for (var pl in data.players) {
+			
+			if (!this.hasPlayer(data.players[pl].id)) {
+				this.newPlayerFromPacket(data.players[pl]);
+			}
+		}
+
+		// Generate items
+		for (var it in data.items) {
+			if (!this.items[data.items[it].id])
+				this.processNewItem(data.items[it]);
+		}
+	}
+
+	processNewPlayer(data) {
+		if (this.players[data.id]) return;
+		this.newPlayerFromPacket(data);
+	}
+
+	processKill(data) {
+
+		if (this.hasPlayer(data.killedID)) {
+			this.players[data.killedID].tank.kill();
+		}
+
 	}
 
 	processLevel(data) {
@@ -128,6 +145,10 @@ class THGame {
 
 		console.log("Level is here!");
 	};
+
+	processRespawn(data) {
+		return false;
+	}
 
 	setCamera() {
 		game.camera.follow(this.playerMe.tank);

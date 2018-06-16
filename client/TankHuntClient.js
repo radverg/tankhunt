@@ -17,7 +17,14 @@ class TankHuntClient {
     }
     
     initPhaser() {
-        game = new Phaser.Game(1920, 1080, Phaser.AUTO, '');
+
+        var phaserConfig = {
+            width: 1920,
+            height: 1080,
+           // forceSetTimeOut: true
+        }
+
+        game = new Phaser.Game(phaserConfig);
         extendPhaserSprite();
         game.state.add("load", this.loadManager);
         game.state.add("play", this.playManager);

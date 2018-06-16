@@ -1,5 +1,5 @@
 var DefaultTankProps = {
-	ASSET_NAME: "tankBody",
+	ASSET_NAME: "tankBodys",
 	ANCHORX: 0.5,
 	ANCHORY: 0.5,
 	SIZEX: 1,
@@ -14,6 +14,8 @@ class DefaultTank extends Tank {
 		this.anchor.setTo(DefaultTankProps.ANCHORX, DefaultTankProps.ANCHORY);
 		this.width = DefaultTankProps.SIZEX * game.sizeCoeff;
 		this.height = DefaultTankProps.SIZEY * game.sizeCoeff;
+
+		this.framesInRow = 1;
 
 		this.turret = new Phaser.Sprite(game, this.x, this.y, "defaultTurret");
 		this.turret.remAngle = 0;

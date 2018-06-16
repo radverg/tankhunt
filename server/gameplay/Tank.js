@@ -64,6 +64,13 @@ class Tank extends GO {
 			level.squareLineWallColl(sqrX4, sqrY4, this);
 		}
 	}
+
+	getStatePacket() {
+		var pack = super.getStatePacket();
+		pack.turrRot = this.turret.angle;
+		pack.plID = this.owner.id;
+		return pack;
+	}
 }
 
 class Turret extends GO {

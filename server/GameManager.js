@@ -1,4 +1,5 @@
 var TestGame = require("./gameplay/gamemodes/TestGame");
+var Arena = require("./gameplay/gamemodes/Arena");
 
 class GameManager {
 
@@ -7,8 +8,8 @@ class GameManager {
 
 		this.games = [];
 
-		// Here starts the test game!!!!!
-		this.testGame = new TestGame();
+		// Here starts the arena game for testing!!!!!
+		this.testGame = new Arena(20);
 		this.games.push(this.testGame);
 	}
 

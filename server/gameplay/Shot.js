@@ -37,12 +37,6 @@ class Shot extends GO {
 		}
 	}
 
-	// remove(game) {
-	// 	var index = game.shots.indexOf(this);
-	// 	if (index !== -1)
-	// 		game.shots.splice(index, 1);
-	// }
-
 	isBeyond() {
 		return mymath.dist(this.x, this.y, this.startX, this.startY) >= mymath.dist(this.startX, this.startY, this.endPoint.x, this.endPoint.y);
 	}

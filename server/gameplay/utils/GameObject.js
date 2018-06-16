@@ -56,6 +56,10 @@ class GameObject {
         this.direction.x = Math.sin(ang || 0); 
         this.direction.y = -Math.cos(ang || 0);
     }
+
+    randomizeAngle() {
+        this.setAngle(Math.random() * Math.PI * 2);
+    }
     
     getAng() {
         return this._angle;
@@ -100,23 +104,13 @@ class GameObject {
         }
     }
     
-    // multiOverlap(obj) {
-    //     var dx = this.body.cX - this.prevBody.cX;
-    //     var dy = this.body.cY - this.prevBody.cY;
-    
-    //     var dist = Math.sqrt(dx * dx + dy * dy);
-    
-    //     var count = Math.ceil(dist / this.r);
-    
-    //     var subdist = dist / count;
-    //     var tmpRect = new G.rect(this.body.cX - subdist * dx, this.body.cY - subdist * dy, this.body.w, this.body.h);
-    
-    //     for (var i = 0; i < count; i++) {
-    //         tmpRect.setPos(tmpRect.cX + subdist * dx, tmpRect.cY + subdist * dy);
-    //     }
-    // }
-    
-    overlap(obj) {
+    getStatePacket() {
+        return  {
+            id: this._id,
+            x: this.x,
+            y: this.y,
+            rot: this.angle
+        }
     }
 }
 

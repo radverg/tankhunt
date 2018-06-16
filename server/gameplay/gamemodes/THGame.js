@@ -8,17 +8,12 @@ class THGame {
          this.players = [];
          this.shots = [];
          this.items = [];
-         this.walls = [];
          this.level = null;
 
          this.running = false;
          this.startTime = 0;
          this.updateCounter = 0;
-
-         this.sizeX = 20;
-         this.sizeY = 20;
-
-         this.manager = null;
+         this.capacity = 100;
     }
 
     addPlayer (player) {
@@ -57,48 +52,19 @@ class THGame {
         this.emitKill(killed.socket.id, killer.socket.id, shot.id);
     }
 
-    playerDisconnected(player) {
-
-    }
+    playerDisconnected(player) { }
 
     shoot(shot) {
         this.shots.push(shot);
         this.emitShot(shot.getStartPacket());
     }
 
-    emitCountDown(sec) {
-        this.emitData("countDown", sec);
-    }
-
-    emitStartInfo() {
-        var startObj = {
-            wallThickness: this.wallThickness,
-            squareSize: this.squareSize,
-            walls: this.walls,
-            players: []
-        }
-
-        for (var i = 0; i < this.players.length; i++) {
-            startObj.players.push( {
-                id: this.players[i].socket.id,
-                name: this.players[i].name,
-                x: this.players[i].tank.body.x,
-                y: this.players[i].tank.body.y
-            });
-        }
-        this.emitData("startInfo", startObj);
-    }
-
-    emitPlayersState() {
-        var emObj = [];
-        for (var i = 0; i < this.players.length; i++) {
-            emObj.push({"id": this.players[i].socket.id, "posX": this.players[i].tank.x, "posY": this.players[i].tank.y, "rot": this.players[i].tank.angle});
-        }
-        this.emitData("gameStateInfo", emObj);
-    }
-
     emitLevel() {
         this.emitData("level", this.level);
+    }
+
+    emitLevelPl(player) {
+        this.emitDataPl("level", this.level, player);
     }
 
     emitShot(packet) {
@@ -139,17 +105,18 @@ class THGame {
         this.emitData("removePlayer", { id: id });
     }
 
-    // Creates and sends packet that contains positions, rotations and velocities of every MOVING object in the game - shots and tanks
+    // Creates and sends packet that contains positions, rotations and velocities of the tanks
     emitMovable() {
-        var packet = {}
+        var packet = {};
         packet.players = []; 
 
         // Add players to the packet
         for (var pl = 0; pl < this.players.length; pl++) {
             if (this.players[pl].alive && this.players[pl].emitable) { // Include a player in the packet only if it's both alive and visible (emitable)
-                packet.players.push({"id": this.players[pl].socket.id, "posX": this.players[pl].tank.x, 
-                    "posY": this.players[pl].tank.y, "rot": this.players[pl].tank.angle, 
-                    "turrRot": this.players[pl].tank.turret.angle});
+                packet.players.push(this.players[pl].tank.getStatePacket());
+                // packet.players.push({"id": this.players[pl].socket.id, "posX": this.players[pl].tank.x, 
+                //     "posY": this.players[pl].tank.y, "rot": this.players[pl].tank.angle, 
+                //     "turrRot": this.players[pl].tank.turret.angle});
             }
         }
 

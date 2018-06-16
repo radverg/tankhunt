@@ -4,7 +4,7 @@ class PlayManager  {
 		this.th = tankhunt;
 
 		// Create test game
-		this.thGame = new THGame(tankhunt.socketManager);
+		this.thGame = new Arena(tankhunt.socketManager);
 	}
 
 	preload() { }
@@ -29,43 +29,7 @@ class PlayManager  {
 	}
 
 	render() {
-
-	}
-
-	onGameStateInfo(data) {
-		this.thGame.processStateInfo(data);
-	}
-
-	onNewShot(data) {
-		this.thGame.processNewShot(data);
-	}
-
-	onLevel(data) {
-		this.thGame.processLevel(data);
-	}
-
-	onStartInfo (data) {
-		for (var i = 0; i < data.players.length; i++) {
-			var spr = game.add.sprite(0, 0, "weapItem");
-			this.players[data.players[i].id] = spr;
-
-		}		
-	}
-
-	onRemovePlayer(data) {
-		if (this.thGame.players[data]) this.thGame.removePlayer(this.thGame.players[data]);
-	}
-	
-	onItemSpawn(data) {
-		if (this.thGame) {
-			this.thGame.processNewItem(data);
-		}
-	}
-
-	onItemCollect(data) {
-		if (this.thGame) {
-			this.thGame.processItemCollect(data);
-		}
+		// Debug shit here
 	}
 
 	initInput() {
