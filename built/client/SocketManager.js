@@ -1,25 +1,15 @@
-"use strict";
-var SocketManager = /** @class */ (function () {
+var SocketManager = (function () {
     function SocketManager(tankhunt) {
-        this.th = tankhunt;
         this.socket = null;
+        this.th = tankhunt;
     }
-    /**
-     * Creates websocket connection via socket.io and calls initSocket()
-     */
     SocketManager.prototype.connect = function () {
         this.socket = io.connect();
         this.initSocket();
     };
-    /**
-     * Returns ID of the socket
-     */
     SocketManager.prototype.getID = function () {
         return this.socket.id;
     };
-    /**
-     * Creates callback for all possible incoming emits via socket.io
-     */
     SocketManager.prototype.initSocket = function () {
         var that = this;
         this.socket.on("connect", this.onConnection);
@@ -44,16 +34,9 @@ var SocketManager = /** @class */ (function () {
         this.socket.on("kill", function (data) { if (that.th.playManager.thGame)
             that.th.playManager.thGame.processKill(data); });
     };
-    /**
-     * Called when Websocket connection is established, this refers to the new socket
-     */
     SocketManager.prototype.onConnection = function () {
-        console.log("Connected to the server! ID is: " + this.id);
+        console.log("Connected to the server! ID is: " + this.socket.id);
     };
-    /**
-     * Sends input information to the server
-     * @param {*} data Text representation of the input (example: inpTurrLeftOn)
-     */
     SocketManager.prototype.emitInput = function (data) {
         this.socket.emit("input", data);
     };

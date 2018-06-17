@@ -68,6 +68,11 @@ abstract class Tank extends Sprite {
 		this.turret.revive();
 	}
 
+	destroy(): any {
+		super.destroy();
+		this.turret.destroy();
+	}
+
 	hide() {
 		this.visible = false;
 		this.turret.visible = false;

@@ -1,7 +1,4 @@
-"use strict";
-/* The main client file, start of the application */
-var TankHunt = new TH(); // TankHunt instance
-// Initialize
+var TankHunt = new TH();
 window.onload = function () {
     TankHunt.init();
 };

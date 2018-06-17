@@ -13344,6 +13344,11 @@ declare module Phaser {
         */
         upDuration(duration?: number): boolean;
 
+        /**
+         * Custom key name
+         */
+        name: string;
+
     }
 
 
@@ -15836,7 +15841,7 @@ declare module Phaser {
         * @param y2
         * @return The distance between the two sets of coordinates.
         */
-        static distance(x1: number, y1: number, x2: number, y2: number): number;
+        distance(x1: number, y1: number, x2: number, y2: number): number;
 
         /**
         * Returns the euclidean distance squared between the two given set of

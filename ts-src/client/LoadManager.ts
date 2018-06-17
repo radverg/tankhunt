@@ -1,6 +1,9 @@
-
+/// <reference path="refs.ts" />
 
 class LoadManager  {
+
+	private images: any[];
+	private spritesheets: any[];
 	
 	constructor() {
 		var imagesPath = "assets/images/";
@@ -22,21 +25,21 @@ class LoadManager  {
 	
 	preload() {
 		// Load images --------------------------------
-		for (var i = 0; i < this.images.length; i++) {
+		for (var z = 0; z < this.images.length; z++) {
 			var img = this.images[i];
-			game.load.image(img.assetName, img.path);
+			TH.game.load.image(img.assetName, img.path);
 		}
 		// --------------------------------------------
 
 		// Load spritesheets --------------------------
 		for (var i in this.spritesheets) {
 			var sheet = this.spritesheets[i];
-			game.load.spritesheet(sheet.assetName, sheet.path, sheet.frameSizeX, sheet.frameSizeY, sheet.frameCount);
+			TH.game.load.spritesheet(sheet.assetName, sheet.path, sheet.frameSizeX, sheet.frameSizeY, sheet.frameCount);
 		}
 		
 	}
 	
 	create() {
-		game.state.start("play");
+		TH.game.state.start("play");
 	}
 }

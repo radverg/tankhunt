@@ -1,17 +1,21 @@
+/// <reference path="../refs.ts" />
+
 class THGame {
 
-	constructor(socketManager) {
+	public socketManager: SocketManager;
+	public players: any = {};
+	public playerMe: Player | null = null;
+	public shots: any = {};
+	public items: any = {};
+	public running: boolean = false;
+	public level: any = null;
+
+	constructor(socketManager: SocketManager) {
 		this.socketManager = socketManager;
-		this.players = {};
-		this.playerMe = null;
-		this.shots = {};
-		this.items = {};
-		this.running = false;
-		this.level = null;
+	
 	}
 
 	update() {
-		
 		// Move and rotate players
 		var pkeys = Object.keys(this.players);
 		for (var i = 0; i < pkeys.length; i++) {
@@ -22,7 +26,7 @@ class THGame {
 		}
 	}
 
-	addPlayer(player) {
+	addPlayer(player: Player) {
 		this.players[player.id] = player;
 	}
 
@@ -30,11 +34,11 @@ class THGame {
 	 * Determines if player with this id is in the game
 	 * @param {string} id Id of desired player
 	 */
-	hasPlayer(id) {
+	hasPlayer(id: string) {
 		return this.players[id];
 	}
 
-	removePlayer(player) {
+	removePlayer(player: Player) {
 		this.players[player.id].removeTank();
 		delete this.players[player.id];
 	}
@@ -44,8 +48,7 @@ class THGame {
 		console.log("Game is running!");
 	}
 
-	newPlayerFromPacket(packet) {
-		return false;
+	newPlayerFromPacket(packet: PacketPlayerInfo) {
 	}
 
 	processStateInfo(data) {
@@ -110,20 +113,20 @@ class THGame {
 		// Create borders 
 		for (var i = 0; i < this.level.borders.length; i++) {
 			var border = this.level.borders[i];
-			var borderSprite = new Phaser.Sprite(game, game.sizeCoeff * border.cX, game.sizeCoeff * border.cY, "blackRect");
-			borderSprite.width =  game.sizeCoeff * border.w;
-			borderSprite.height = game.sizeCoeff * border.h;
-			console.log("Border: " + (border.cX * game.sizeCoeff) + ", " + (border.cY * game.sizeCoeff) + ", " + 
-				(border.w * game.sizeCoeff) + ", " + (border.h * game.sizeCoeff));
+			var borderSprite = new Phaser.Sprite(TH.game, TH.sizeCoeff * border.cX, TH.sizeCoeff * border.cY, "blackRect");
+			borderSprite.width =  TH.sizeCoeff * border.w;
+			borderSprite.height = TH.sizeCoeff * border.h;
+			console.log("Border: " + (border.cX * TH.sizeCoeff) + ", " + (border.cY * TH.sizeCoeff) + ", " + 
+				(border.w * TH.sizeCoeff) + ", " + (border.h * TH.sizeCoeff));
 			borderSprite.anchor.setTo(0.5, 0.5);
 
-			game.add.existing(borderSprite);		
+			TH.game.add.existing(borderSprite);		
 		}
 
 		// Set world bounds
 		var woffset = 200;
-		game.world.setBounds(-woffset, -woffset, (this.level.levelRect.w * game.sizeCoeff) + 2*woffset, 
-			(this.level.levelRect.h * game.sizeCoeff) + 2*woffset);
+		TH.game.world.setBounds(-woffset, -woffset, (this.level.levelRect.w * TH.sizeCoeff) + 2*woffset, 
+			(this.level.levelRect.h * TH.sizeCoeff) + 2*woffset);
 
 		// Create wall sprites
 		for (var x = 0; x < this.level.walls.length; x++) {
@@ -132,11 +135,11 @@ class THGame {
 
 					var wallData = this.level.walls[x][y][i];
 					if (wallData) {
-						var wallSprite = new Phaser.Sprite(game, wallData.cX * game.sizeCoeff, wallData.cY * game.sizeCoeff, "blackRect");
+						var wallSprite = new Phaser.Sprite(TH.game, wallData.cX * TH.sizeCoeff, wallData.cY * TH.sizeCoeff, "blackRect");
 						wallSprite.anchor.setTo(0.5, 0.5);
-						wallSprite.width = wallData.w * game.sizeCoeff;
-						wallSprite.height = wallData.h * game.sizeCoeff;
-						game.add.existing(wallSprite);
+						wallSprite.width = wallData.w * TH.sizeCoeff;
+						wallSprite.height = wallData.h * TH.sizeCoeff;
+						TH.game.add.existing(wallSprite);
 
 					}	
 				}
@@ -147,12 +150,12 @@ class THGame {
 	};
 
 	processRespawn(data) {
-		return false;
+		
 	}
 
 	setCamera() {
-		game.camera.follow(this.playerMe.tank);
-		game.camera.lerp.setTo(0.1, 0.1);
+		TH.game.camera.follow(this.playerMe.tank);
+		TH.game.camera.lerp.setTo(0.1, 0.1);
 	}
 
 }

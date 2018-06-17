@@ -1,23 +1,31 @@
+/// <reference path="../refs.ts" />
+
 class Player {
 
-	constructor(tank, id, name) {
-		this.id = id;
+	public id: string;
+	
+	public name: string = "unnamed";
+	public tank: Tank | null = null;
 
+	public stats?: any;
+
+	constructor(id: string, tank?: Tank, name?: string) {
+		this.id = id;
 		this.name = name || "unnamed";
 
-		this.tank = null;
 		if (tank) { this.attachTank(tank); };
 	}
 
-	// Binds a player and a tank together
-	attachTank(tank) {
+	/**
+	 * Binds player and tank together
+	 */
+	attachTank(tank: Tank) {
 		this.tank = tank;
 		tank.player = this;
 	};
 
 	removeTank() {
 		if (!this.tank) return;
-		this.tank.turret.destroy();
 		this.tank.destroy();
 		this.tank = null;
 	};

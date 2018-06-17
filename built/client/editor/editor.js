@@ -1,6 +1,3 @@
-"use strict";
-// Tankhunt level editor
-// CAUTION: SPAGHETTI CODE!! DO NOT EVEN TRY TO LOOK AT IT
 $(function () {
     $(window).on("contextmenu", function () { return false; });
     $(window).on("dragstart", function () { return false; });
@@ -14,7 +11,6 @@ $(function () {
     $("#propTable input[name='tilesCountY']").off().on("change", sizeInputChanged);
     $("#inversions input").on("change", invertInputChange);
     $("input[name='editTypeRadio']").on("change", updateMode);
-    // createDefaultLevel();
     putJSONText();
     loadFromJSON();
 });
@@ -37,12 +33,10 @@ function blockEdit(e) {
     $(this).addClass("hovered");
     var blockX = $(this).attr("data-x");
     var blockY = $(this).attr("data-y");
-    // Building walls
     if ($("input[value='walls']").prop("checked") == true) {
-        if (e.buttons == 1) { // Left mouse button => horizontal wall
-            // Is there a horizontal wall already?
+        if (e.buttons == 1) {
             var index = level.walls.indexOf(wallToString(blockX, blockY, 0));
-            if (index !== -1) { // This wall is there
+            if (index !== -1) {
                 $(this).find("div[data-type='horizontal']").remove();
                 level.walls.splice(index, 1);
             }
@@ -52,8 +46,7 @@ function blockEdit(e) {
             }
             putJSONText();
         }
-        if (e.buttons == 2) { // right mouse button => vertical wall
-            // Is there a vertical wall already?
+        if (e.buttons == 2) {
             var index = level.walls.indexOf(wallToString(blockX, blockY, 1));
             if (index !== -1) {
                 $(this).find("div[data-type='vertical']").remove();
@@ -66,7 +59,6 @@ function blockEdit(e) {
             putJSONText();
         }
     }
-    // Spawns 1
     if ($("input[value='spawns1']").prop("checked") == true && e.buttons == 1) {
         if ($(this).is("[spawns1]")) {
             $(this).removeAttr("spawns1");
@@ -80,7 +72,6 @@ function blockEdit(e) {
         }
         putJSONText();
     }
-    // Spawns 2 
     if ($("input[value='spawns2']").prop("checked") == true && e.buttons == 1) {
         if ($(this).is("[spawns2]")) {
             $(this).removeAttr("spawns2");
@@ -94,7 +85,6 @@ function blockEdit(e) {
         }
         putJSONText();
     }
-    // Spawns items 
     if ($("input[value='spawnsItems']").prop("checked") == true && e.buttons == 1) {
         if ($(this).is("[spawnsItems]")) {
             $(this).removeAttr("spawnsItems");
@@ -154,7 +144,6 @@ function rebuildLevel() {
         height: pixelize(viewSquareSize * level.tilesCountY), left: "260px" });
     for (var x = 0; x < level.tilesCountX; x++) {
         for (var y = 0; y < level.tilesCountY; y++) {
-            // Firstly, create the block
             $block = $('<div class="levelBlock"></div>').css({
                 top: pixelize(y * viewSquareSize),
                 left: pixelize(x * viewSquareSize),
@@ -164,16 +153,14 @@ function rebuildLevel() {
             $block.attr("data-x", x).attr("data-y", y);
             $workSpace.append($block);
             $block.on("mouseover", blockEdit).on("mousedown", blockEdit).on("mouseout", function () { $(this).removeClass("hovered"); });
-            // Now lets add the walls, if any
-            if (level.walls.indexOf(wallToString(x, y, 0)) !== -1) { // Horizontal
+            if (level.walls.indexOf(wallToString(x, y, 0)) !== -1) {
                 $wall = newWall(x, y, 0);
                 $block.append($wall);
             }
-            if (level.walls.indexOf(wallToString(x, y, 1)) !== -1) { // Vertical
+            if (level.walls.indexOf(wallToString(x, y, 1)) !== -1) {
                 $wall = newWall(x, y, 1);
                 $block.append($wall);
             }
-            // Now the spawns
             if (level.spawns1.indexOf(blockToString(x, y)) !== -1) {
                 $block.attr("spawns1", "");
             }
@@ -191,7 +178,6 @@ function updateMode() {
     var mode = $("input[name='editTypeRadio']:checked").val();
     switch (mode) {
         case "walls":
-            // Turn of the background
             $("#workSpace > div").removeClass("greenBlock");
             break;
         case "spawns1":
@@ -210,14 +196,14 @@ function updateMode() {
 }
 function newWall(x, y, type) {
     var $wall = $("<div class='wall'></div>");
-    if (type == 0) { // Horizontal
+    if (type == 0) {
         $wall.attr("data-type", "horizontal");
         $wall.css({
             width: pixelize(viewSquareSize),
             height: pixelize(viewThickness)
         });
     }
-    else { // Vertical
+    else {
         $wall.attr("data-type", "vertical");
         $wall.css({
             width: pixelize(viewThickness),
@@ -232,7 +218,6 @@ function changeLevelSize(tilesX, tilesY) {
     level.tilesCountX = tilesX;
     level.tilesCountY = tilesY;
     if (prevX > tilesX || prevY > tilesY) {
-        // Delete all items that are not within the range 
         deleteOutOfRange();
     }
     rebuildLevel();

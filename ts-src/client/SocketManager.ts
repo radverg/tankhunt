@@ -1,8 +1,13 @@
+/// <reference path="refs.ts" />
+
 class SocketManager {
+
+    public th: TH;
+    
+    private socket: SocketIOClient.Socket | null = null;
     
     constructor(tankhunt) {
         this.th = tankhunt;
-        this.socket = null;
     }
     
     /**
@@ -43,7 +48,7 @@ class SocketManager {
      * Called when Websocket connection is established, this refers to the new socket
      */
     onConnection() {
-        console.log("Connected to the server! ID is: " + this.id);
+        console.log("Connected to the server! ID is: " + this.socket.id);
     }
 
     /**

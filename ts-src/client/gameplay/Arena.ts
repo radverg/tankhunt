@@ -1,11 +1,10 @@
+/// <reference path="../refs.ts" />
+
 class Arena extends THGame {
-
-    constructor(socketManager) {
+    constructor(socketManager: SocketManager) {
         super(socketManager);
-
-        
+      
     } 
-
     /**
 	 * Respawn packet contains:
 	 * serverTime, respawnDelay, immunityTime
@@ -17,14 +16,14 @@ class Arena extends THGame {
 		if (this.hasPlayer(data.plID)) {
 			this.players[data.plID].tank.applyStatePacket(data);
 		}
-		game.time.events.add(data.respawnDelay, this.players[data.plID].tank.revive, this.players[data.plID].tank);
+		TH.game.time.events.add(data.respawnDelay, this.players[data.plID].tank.revive, this.players[data.plID].tank);
     }
     
     newPlayerFromPacket(packet) {
 		// Handle tank type in future
 		var tank = new DefaultTank();
 
-		var player = new Player(tank, packet.id, packet.name);
+		var player = new Player(packet.id, tank, packet.name);
 		player.stats = packet.stats;
 
 		if (packet.tank) {

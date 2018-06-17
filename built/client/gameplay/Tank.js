@@ -1,5 +1,3 @@
-"use strict";
-/// <reference path="../refs.ts" />
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -10,13 +8,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var Tank = /** @class */ (function (_super) {
+var Tank = (function (_super) {
     __extends(Tank, _super);
     function Tank(asset) {
         var _this = _super.call(this, TH.game, 0, 0, asset) || this;
-        _this.remX = 0;
-        _this.remY = 0;
-        _this.remAngle = 0;
         _this.player = null;
         _this.frameStart = 1;
         _this._defaultColor = Color.Red;
@@ -38,38 +33,28 @@ var Tank = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Tank.prototype.positionServerUpdate = function (x, y) {
-        this.remX = x * TH.sizeCoeff;
-        this.remY = y * TH.sizeCoeff;
-    };
     Tank.prototype.updateTurret = function () {
         this.turret.x = this.x;
         this.turret.y = this.y;
     };
-    Tank.prototype.rotationServerUpdate = function (rot) {
-        this.remAngle = rot;
-    };
     Tank.prototype.rotationTurretServerUpdate = function (rot) {
-        this.turret.remAngle = rot;
+        this.turret.rotationServerUpdate(rot);
     };
     Tank.prototype.addToScene = function () {
         TH.game.add.existing(this);
         TH.game.add.existing(this.turret);
-        //if (!visible) this.kill();
     };
     Tank.prototype.applyStatePacket = function (packet) {
         this.rotationServerUpdate(packet.rot);
         this.rotationTurretServerUpdate(packet.turrRot);
         this.positionServerUpdate(packet.x, packet.y);
     };
-    /**
-     * Sets immediatelly tank's position, rotation and turret rotation to remote values, without interpolation
-     */
     Tank.prototype.jumpToRemote = function () {
         this.x = this.remX;
         this.y = this.remY;
         this.rotation = this.remAngle;
-        this.turret.rotation = this.turret.remAngle;
+        this.turret.jumpToRemote();
+        this.updateTurret();
     };
     Tank.prototype.kill = function () {
         _super.prototype.kill.call(this);
@@ -78,6 +63,10 @@ var Tank = /** @class */ (function (_super) {
     Tank.prototype.revive = function () {
         _super.prototype.revive.call(this);
         this.turret.revive();
+    };
+    Tank.prototype.destroy = function () {
+        _super.prototype.destroy.call(this);
+        this.turret.destroy();
     };
     Tank.prototype.hide = function () {
         this.visible = false;
@@ -88,4 +77,4 @@ var Tank = /** @class */ (function (_super) {
         this.turret.visible = true;
     };
     return Tank;
-}(Phaser.Sprite));
+}(Sprite));

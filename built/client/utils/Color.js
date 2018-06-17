@@ -1,5 +1,4 @@
-"use strict";
-var Color = /** @class */ (function () {
+var Color = (function () {
     function Color() {
     }
     Color.Blue = 0;
