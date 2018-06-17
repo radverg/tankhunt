@@ -26,7 +26,7 @@ class LoadManager  {
 	preload() {
 		// Load images --------------------------------
 		for (var z = 0; z < this.images.length; z++) {
-			var img = this.images[i];
+			var img = this.images[z];
 			TH.game.load.image(img.assetName, img.path);
 		}
 		// --------------------------------------------

@@ -34,8 +34,8 @@ var SocketManager = (function () {
         this.socket.on("kill", function (data) { if (that.th.playManager.thGame)
             that.th.playManager.thGame.processKill(data); });
     };
-    SocketManager.prototype.onConnection = function () {
-        console.log("Connected to the server! ID is: " + this.socket.id);
+    SocketManager.prototype.onConnection = function (socket) {
+        console.log("Connected to the server!");
     };
     SocketManager.prototype.emitInput = function (data) {
         this.socket.emit("input", data);

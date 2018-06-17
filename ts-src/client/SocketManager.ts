@@ -47,8 +47,8 @@ class SocketManager {
     /**
      * Called when Websocket connection is established, this refers to the new socket
      */
-    onConnection() {
-        console.log("Connected to the server! ID is: " + this.socket.id);
+    onConnection(socket: SocketIOClient.Socket) {
+        console.log("Connected to the server!");// + socket.id);
     }
 
     /**

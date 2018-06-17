@@ -15,5 +15,4 @@ var Data = {
 	}
  };
 
-
-
+ export {Data};
