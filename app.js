@@ -8,13 +8,13 @@ var server = require("http").createServer(app);
 server.listen(port);
 
 app.get("/", function(req, res) {
-    res.sendFile(__dirname + "/client/index.html");
+    res.sendFile(__dirname + "/built/client/index.html");
 });
 app.get("/editor", function(req, res) {
-    res.sendFile(__dirname + "/client/editor/index.html");
+    res.sendFile(__dirname + "/built/client/editor/index.html");
 });
 
-app.use("/client", express.static(__dirname + "/client"));
+app.use("/client", express.static(__dirname + "/built/client"));
 app.use("/shared", express.static(__dirname + "/shared"));
 
 console.log("Node js server is now successfully listening at port " + port);
