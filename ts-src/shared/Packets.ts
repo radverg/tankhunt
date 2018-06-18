@@ -57,7 +57,7 @@ interface PacketShotStart extends PacketGameObject {
     /**
      * Type of the shot
      */
-    type: number,
+    type: string,
     /**
      * X coordinate of the start position
      */
@@ -74,5 +74,44 @@ interface PacketShotStart extends PacketGameObject {
      * socket.io ID of the player that shoot this shot
      */
     ownerID: string
+    /**
+     * X coordinate of the shot's endpoint
+     */
+    endX?: number,
+    /**
+     * Y coordinate of the shot's endpoint
+     */
+    endY?: number,
+    /**
+     * Speed of the shot
+     */
+    speed?: number
 }
 
+interface PacketRespawn extends PacketTank {
+    /**
+     * Time when the respawn countdown starts
+     */
+    serverTime: number,
+    /**
+     * Time to the actual respawn
+     */
+    respawnDelay: number,
+    /**
+     * How long immunity is after tank is actually respawned
+     */
+    immunityTime: number
+}
+
+interface PacketItem extends PacketGameObject {
+
+}
+
+interface PacketGameInfo {
+    players: PacketPlayerInfo[],
+    items: PacketItem[]
+}
+
+interface PacketMovable {
+    players: PacketTank[]
+}

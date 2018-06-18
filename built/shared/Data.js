@@ -13,3 +13,4 @@ var Data = {
         sizeY: 1.4375
     }
 };
+module.exports = Data;

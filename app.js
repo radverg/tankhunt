@@ -15,9 +15,10 @@ app.get("/editor", function(req, res) {
 });
 
 app.use("/client", express.static(__dirname + "/built/client"));
-app.use("/shared", express.static(__dirname + "/shared"));
+app.use("/shared", express.static(__dirname + "/built/shared"));
 
 console.log("Node js server is now successfully listening at port " + port);
  
-var TankHunt = require("./server/TankHunt");
-var tankhunt = new TankHunt(server);
+// Create game
+var th = require("./built/server/TankHunt_SE");
+var tankhunt = new th.TankHunt_SE(server);

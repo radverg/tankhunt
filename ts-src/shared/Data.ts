@@ -15,4 +15,18 @@ var Data = {
 	}
  };
 
- export {Data};
+ interface Dat {
+	 Items: {
+		 size: number,
+		 types: string[]
+	 }
+	 DefaultTank: {
+		 asset: string,
+		 anchorX: string,
+		 anchorY:string,
+		 sizeX: number,
+		 sizeY: number
+	 }
+ }
+
+ module.exports = Data;
