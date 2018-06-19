@@ -1,5 +1,6 @@
 import { Rect, Vec2 } from "./utils/Geometry_SE";
 import { dist } from "./utils/MyMath_SE";
+import { Tank_SE } from "./Tank_SE";
 
 class Level_SE {
 
@@ -13,6 +14,7 @@ class Level_SE {
     spawns1: Vec2[];
     spawns2: Vec2[];
     spawnsItems: Vec2[];
+    [key: string] : any;
 
     constructor(tilesCountX?: number, tilesCountY?: number, squareSize?: number, wallThickness?: number) {
         this.walls = [];
@@ -32,7 +34,7 @@ class Level_SE {
         this.generateRandomLevel();
     }
 
-    parseJSONLevel(jsonString) {
+    parseJSONLevel(jsonString: string) {
 
         var lvl = null;
 
@@ -165,19 +167,19 @@ class Level_SE {
         }
     }
 
-    getSqrX(x) {
+    getSqrX(x: number) {
         return Math.floor(x / this.squareSize);
     }
 
-    getSqrY(y) {
+    getSqrY(y: number) {
         return Math.floor(y / this.squareSize);
     }
 
-    isSquareInBounds(sqrX, sqrY) {
+    isSquareInBounds(sqrX: number, sqrY: number) {
         return sqrX >= 0 && sqrY >= 0 && sqrX < this.tilesCountX && sqrY < this.tilesCountY;
     }
 
-    wallCheckLoop(startX, startY, dirX, dirY) {
+    wallCheckLoop(startX: number, startY: number, dirX: number, dirY: number) {
 
         var points = [];
 
@@ -226,7 +228,7 @@ class Level_SE {
         return closestPoint;
     }
 
-    doubleWallPointCheck(squareX, squareY, dirX, dirY, x1, y1, x2, y2) {
+    doubleWallPointCheck(squareX: number, squareY: number, dirX: number, dirY: number, x1: number, y1: number, x2: number, y2: number) {
         var points = [];
         // Check vertical 1
         if (dirX > 0) squareX++; 
@@ -250,7 +252,7 @@ class Level_SE {
         return points;
     }
 
-    squareLineWallColl(sqrX, sqrY, tank) {
+    squareLineWallColl(sqrX: number, sqrY: number, tank: Tank_SE) {
         // Is square out of bounds?
         if (!this.isSquareInBounds(sqrX, sqrY))
             return;
@@ -309,7 +311,7 @@ class Level_SE {
 
     }
 
-    horizontalLineSeparation(tank, points, sqrX, sqrY) {
+    horizontalLineSeparation(tank: Tank_SE, points: Vec2[], sqrX: number, sqrY: number) {
        
         if (points.length == 2) {
             
@@ -338,7 +340,7 @@ class Level_SE {
         tank.body.updateVertices();
     }
 
-    verticalLineSeparation(tank, points, sqrX, sqrY) 
+    verticalLineSeparation(tank: Tank_SE, points: Vec2[], sqrX: number, sqrY: number) 
     {
         if (points.length == 2) {
 
@@ -367,7 +369,7 @@ class Level_SE {
 
     }
 
-    getRandomSpawnPos(sqrX, sqrY, width, height) {
+    getRandomSpawnPos(sqrX: number, sqrY: number, width: number, height: number) {
         var minX = sqrX * this.squareSize + width / 2;
         var maxX = (sqrX + 1) * this.squareSize - width / 2;
         var minY = sqrY * this.squareSize + height / 2;
@@ -376,17 +378,17 @@ class Level_SE {
         return new Vec2(minX + Math.random() * (maxX - minX), minY + Math.random() * (maxY - minY));
     }
     
-    getRandomSpawn1(width, height) {
+    getRandomSpawn1(width: number, height: number) {
         var index = Math.floor(Math.random() * this.spawns1.length);
         return this.getRandomSpawnPos(this.spawns1[index].x, this.spawns1[index].y, width, height);
     }
 
-    getRandomSpawn2(width, height) {
+    getRandomSpawn2(width: number, height: number) {
         var index = Math.floor(Math.random() * this.spawns2.length);
         return this.getRandomSpawnPos(this.spawns2[index].x, this.spawns2[index].y, width, height);
     }
 
-    getRandomSpawnItems(width, height) {
+    getRandomSpawnItems(width: number, height: number) {
         var index = Math.floor(Math.random() * this.spawnsItems.length);
         return this.getRandomSpawnPos(this.spawnsItems[index].x, this.spawnsItems[index].y, width, height);
     }

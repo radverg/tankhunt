@@ -9,7 +9,7 @@ class GameManager_SE {
 	private games: THGame_SE[] = [];
 	private testGame: Arena_SE;
 
-	constructor(tankhunt) {
+	constructor(tankhunt: TankHunt_SE) {
 		this.th = tankhunt;
 
 		// Here starts the arena game for testing!!!!!

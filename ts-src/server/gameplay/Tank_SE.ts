@@ -1,6 +1,7 @@
 import { GameObject_SE } from "./utils/GameObject_SE";
 import { Player_SE } from "./Player_SE";
 import { Weapon_SE, APCRGun_SE, LaserGun_SE } from "./Weapon_SE";
+import { Level_SE } from "./Level_SE";
 
 class Tank_SE extends GameObject_SE {
 
@@ -36,7 +37,7 @@ class Tank_SE extends GameObject_SE {
 		}
 	}
 
-	update(deltaSec) {
+	update(deltaSec: number) {
 		this.turret.rotate(deltaSec);
 		this.move(deltaSec);
 		this.rotate(deltaSec);
@@ -44,7 +45,7 @@ class Tank_SE extends GameObject_SE {
 		this.turret.angle = this.turret.selfAngle + this.angle;
 	}
 
-	wallCollide(level) {
+	wallCollide(level: Level_SE) {
 		var sqrX1 = level.getSqrX(this.body.vertices[0].x);
 		var sqrY1 = level.getSqrY(this.body.vertices[0].y);
 
@@ -100,14 +101,14 @@ class Turret extends GameObject_SE {
 		this.maxAngularVel = 3;
 	}
 
-	countShotPos(fromX,fromY) {
+	countShotPos(fromX: number,fromY: number) {
 		return {
 			x: fromX + this._barrelDist * this.direction.x,
 			y: fromY + this._barrelDist * this.direction.y
 		}
 	}
 
-	rotate(deltaSec) {
+	rotate(deltaSec: number) {
 		if (this.angularVel) {
 			this.selfAngle += this.angularVel * deltaSec;
 		}

@@ -3,6 +3,7 @@ import { Player_SE } from "./Player_SE";
 import { dist } from "./utils/MyMath_SE";
 import { Tank_SE } from "./Tank_SE";
 import { Weapon_SE } from "./Weapon_SE";
+import { THGame_SE } from "./gamemodes/THGame_SE";
 
 // Shot constructor takes the weapon it was shot from as a parameter
 // This class is abstract (it is not included in module.exports)
@@ -60,7 +61,7 @@ abstract class Shot_SE extends GameObject_SE {
 // APCR ------------------------------------------------------------------------------------
 class APCR_SE extends Shot_SE {
 
-	constructor(weapon, startX, startY, startAng, game) {
+	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng);
 
 		this.type = "APCR";
@@ -89,7 +90,7 @@ class APCR_SE extends Shot_SE {
 		return false;
 	}
 
-	update(deltaSec) {
+	update(deltaSec: number) {
 		GameObject_SE.prototype.update.call(this, deltaSec);
 		this.remove = this.isBeyond();
 	}
@@ -98,7 +99,7 @@ class APCR_SE extends Shot_SE {
 // Laser direct -------------------------------------------------------------------------------------
 class LaserDirect_SE extends Shot_SE {
 
-	constructor(weapon, startX, startY, startAng, game) {
+	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng);
 
 		this.type = "LaserDirect";
@@ -126,7 +127,7 @@ class LaserDirect_SE extends Shot_SE {
 		return tank.body.lineInt(this.startX, this.startY, this.x, this.y);
 	}
 
-	update(deltaSec) {
+	update(deltaSec: number) {
 		GameObject_SE.prototype.update.call(this, deltaSec);
 		this.remove = this.isBeyond();
 	}

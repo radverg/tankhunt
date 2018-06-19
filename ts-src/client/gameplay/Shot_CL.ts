@@ -2,43 +2,53 @@ class Shot_CL extends Sprite {
 
 	protected delay: number = 16;
 	protected moveTween: Phaser.Tween | null = null;
-	protected endPoint?: any;
 
-	protected speed?: number;
+	protected speed: number;
 	protected dist?: number;
 	protected time?: number;
-	protected startX?: number;
-	protected startY?: number;
 
-	constructor(dataPack, asset?: string) {
+	protected startX: number;
+	protected startY: number;
+
+	protected endX?: number;
+	protected endY?: number;
+	protected startTime: number;
+
+	constructor(dataPack: PacketShotStart, asset?: string) {
 		super(TH.game, dataPack.startX * TH.sizeCoeff, dataPack.startY * TH.sizeCoeff, asset || "whiteRect");
 
 		// Extract datapack from server
-		// contains: id, rot, type, startX, startY, startTime, ownerID
-		var dataKeys = Object.keys(dataPack);
-		for (var i = 0; i < dataKeys.length; i++) {
-		 	this[dataKeys[i]] = dataPack[dataKeys[i]];
-		}
-		
-		this.x *= TH.sizeCoeff;
-		this.y *= TH.sizeCoeff;
+		this.startX = dataPack.startX * TH.sizeCoeff;
+		this.startY = dataPack.startY * TH.sizeCoeff;
 
+		this.endX = dataPack.endX * TH.sizeCoeff;
+		this.endY = dataPack.endY * TH.sizeCoeff;
+		
+		this.x = dataPack.startX * TH.sizeCoeff;
+		this.y = dataPack.startY * TH.sizeCoeff;
+
+		this.rotation = dataPack.rot;
+		
+		this.startTime = dataPack.startTime;
+
+		this.speed = dataPack.speed * TH.sizeCoeff;
+		
+		
 		this.delay = (Date.now() - dataPack.startTime) || 16;
 	}
 }
 
 class LaserDirect_CL extends Shot_CL {
 
-	constructor(dataPack) {
+	constructor(dataPack: PacketShotStart) {
 		super(dataPack);
 
 		this.anchor.set(0.5, 0);
 		this.width = 0.07 * TH.sizeCoeff;
-		this.rotation = dataPack.rot + Math.PI;
-		this.endPoint = { x: dataPack.endX * TH.sizeCoeff, y: dataPack.endY * TH.sizeCoeff };
+		this.rotation += Math.PI;
 		this.speed = dataPack.speed * TH.sizeCoeff;
 
-		this.dist = TH.game.math.distance(this.endPoint.x, this.endPoint.y, this.startX * TH.sizeCoeff, this.startY * TH.sizeCoeff);
+		this.dist = TH.game.math.distance(this.endX, this.endY, this.startX, this.startY);
 		this.time = (this.dist / this.speed) * 1000;
 
 		this.tint = 0xF80000;
@@ -57,29 +67,28 @@ class LaserDirect_CL extends Shot_CL {
 
 class APCR_CL extends Shot_CL {
 
-	constructor(dataPack) {
+	constructor(dataPack: PacketShotStart) {
 		super(dataPack, "ammo");
 
 		this.anchor.set(0.5, 0);
-		this.rotation = dataPack.rot;
 		this.width = 0.07 * TH.sizeCoeff;
 		this.height = 0.3 * TH.sizeCoeff;
-		this.endPoint = { x: dataPack.endX * TH.sizeCoeff, y: dataPack.endY * TH.sizeCoeff };
 		this.speed = dataPack.speed * TH.sizeCoeff;
 
-		this.dist = TH.game.math.distance(this.endPoint.x, this.endPoint.y, this.startX * TH.sizeCoeff, this.startY * TH.sizeCoeff);
+		this.dist = TH.game.math.distance(this.endX, this.endY, this.startX, this.startY);
 		this.time = (this.dist / this.speed) * 1000;
 
 		// Start the shot 
 		TH.game.add.existing(this);
 		this.moveTween = TH.game.add.tween(this);
-		this.moveTween.to({ x: this.endPoint.x, y: this.endPoint.y }, this.time);
+		this.moveTween.to({ x: this.endX, y: this.endY }, this.time);
 		this.moveTween.onComplete.add(function() { this.destroy(); }, this);
 		this.moveTween.start();
 	}
 }
 
-var Shots = {
+var Shots: { [key: string]: typeof Shot_CL } = {
+
 	LaserDirect: LaserDirect_CL,
-	APCR: APCR_CL
+	APCR: APCR_CL,
 }

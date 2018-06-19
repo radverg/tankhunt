@@ -11,9 +11,9 @@ abstract class Weapon_SE {
 	protected _lastShotTime: number = 0;
 	public owner: Player_SE;
 	protected shots: Shot_SE[] = [];
-	protected wornOut: boolean = false;
+	public wornOut: boolean = false;
 
-	constructor(owner) {
+	constructor(owner: Player_SE) {
 		this._reloadTime = 3000;
 		this._ammoCount = 10;
 		this._shotType = "none";
@@ -47,14 +47,14 @@ abstract class Weapon_SE {
 // Laser direct ------------------------------------------------------------------------------
 class LaserGun_SE extends Weapon_SE {
 
-	constructor(owner) {
+	constructor(owner: Player_SE) {
 		super(owner);
 
 		this._ammoCount = 100;
 		this._shotType = "LaserDirect";
 	}
 
-	onPress(game) {
+	onPress(game: THGame_SE) {
 		// Shoot here
 		if (this.canShoot()) {
 			var shps = this.owner.tank.getLaserPosition();
@@ -74,7 +74,7 @@ class LaserGun_SE extends Weapon_SE {
 // APCR ----------------------------------------------------------------------------------
 class APCRGun_SE extends Weapon_SE {
 
-	constructor(owner) {
+	constructor(owner: Player_SE) {
 		super(owner);
 
 		this._ammoCount = 10000;
@@ -82,7 +82,7 @@ class APCRGun_SE extends Weapon_SE {
 		this._reloadTime = 1000;
 	}
 
-	onPress(game) {
+	onPress(game: THGame_SE) {
 		// Shoot here
 		if (this.canShoot()) {
 			var shps = this.owner.tank.getShotPosition();

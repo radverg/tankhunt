@@ -30,13 +30,13 @@ class Player_CL {
 		this.tank = null;
 	};
 
-	/**
-	 * Sets properties of this player and his tank according to the player info packet received from the server
-	 * @param {*} packet Player packet from the server
-	 */
-	applyPacket(packet) {
+	// /**
+	//  * Sets properties of this player and his tank according to the player info packet received from the server
+	//  * @param {*} packet Player packet from the server
+	//  */
+	// applyPacket(packet) {
 
-	}
+	// }
 }
 
 

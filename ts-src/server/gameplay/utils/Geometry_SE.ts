@@ -149,7 +149,7 @@ class Rect {
         this.vertices[3].set(this.left, this.bottom);
     }
 
-    circularIntersect(anotherRect): boolean {
+    circularIntersect(anotherRect: Rect): boolean {
         var dx = this.cX - anotherRect.cX;
         var dy = this.cY - anotherRect.cY;
         var dist = Math.sqrt(dx * dx + dy * dy);
@@ -159,9 +159,9 @@ class Rect {
     rotContains(x: number, y: number): boolean {
         // Do the point transfer
         var ang = getAngleToAxis(this.cX, this.cY, x, y) - this.ang;
-        var dist = dist(this.cX, this.cY, x, y);
+        var dis: number = dist(this.cX, this.cY, x, y);
         
-        return this.contains(this.cX + dist * Math.sin(ang), this.cY - dist * Math.cos(ang));
+        return this.contains(this.cX + dis * Math.sin(ang), this.cY - dis * Math.cos(ang));
     }
 
     contains(x: number, y: number): boolean {
@@ -169,15 +169,15 @@ class Rect {
             y < this.top || y > this.bottom);
     }
 
-    intersects(rect): boolean {
+    intersects(rect: Rect): boolean {
         return !(this.left > rect.right || this.right < rect.left || this.top > rect.bottom || this.bottom < rect.top);
     }
 
-    containsRect(rect): boolean {
+    containsRect(rect: Rect): boolean {
         return rect.top >= this.top && rect.right <= this.right && rect.bottom <= this.bottom && rect.left >= this.left;
     }
 
-    containsCircleRect(rect): boolean {
+    containsCircleRect(rect: Rect): boolean {
         return rect.cY - rect.r >= this.top && rect.cX + rect.r <= this.right && 
             rect.cY + rect.r <= this.bottom && rect.cX - rect.r >= this.left;
     }

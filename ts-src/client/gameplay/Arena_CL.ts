@@ -11,7 +11,7 @@ class Arena_CL extends THGame_CL {
 	 * Player state info - his new position and rotation - packet can be passed to tank.applyStatePacket()
 	 * @param {*} data Packet
 	 */
-	processRespawn(data) {
+	processRespawn(data: PacketRespawn) {
 		
 		if (this.hasPlayer(data.plID)) {
 			this.players[data.plID].tank.applyStatePacket(data);
@@ -19,7 +19,7 @@ class Arena_CL extends THGame_CL {
 		TH.game.time.events.add(data.respawnDelay, this.players[data.plID].tank.revive, this.players[data.plID].tank);
     }
     
-    newPlayerFromPacket(packet) {
+    newPlayerFromPacket(packet: PacketPlayerInfo) {
 		// Handle tank type in future
 		var tank = new DefaultTank_CL();
 

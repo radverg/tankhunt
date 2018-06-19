@@ -2,8 +2,8 @@
 
 class LoadManager_CL  {
 
-	private images: any[];
-	private spritesheets: any[];
+	private images: ImageAsset[];
+	private spritesheets: SpritesheetAsset[];
 	
 	constructor() {
 		var imagesPath = "assets/images/";
@@ -42,4 +42,15 @@ class LoadManager_CL  {
 	create() {
 		TH.game.state.start("play");
 	}
+}
+
+interface ImageAsset {
+	assetName: string,
+	path: string
+}
+
+interface SpritesheetAsset extends ImageAsset {
+	frameSizeX: number,
+	frameSizeY: number,
+	frameCount: number
 }

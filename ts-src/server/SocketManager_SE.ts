@@ -7,7 +7,7 @@ class SocketManager_SE {
 	th: TankHunt_SE;
 	io: SocketIO.Server;
 
-	constructor(tankhunt, io: SocketIO.Server) {
+	constructor(tankhunt: TankHunt_SE, io: SocketIO.Server) {
 
 		this.th = tankhunt;
 		this.io = io;
@@ -15,7 +15,7 @@ class SocketManager_SE {
 		io.sockets.on("connection", (socket) => { this.onConnection(socket) });
 	}
 
-	onConnection(socket) {
+	onConnection(socket: SocketIO.Socket) {
 
     	console.log("New client has connected from " + socket.handshake.address + 
     		" with id " + socket.id +  "!");
@@ -27,7 +27,7 @@ class SocketManager_SE {
 
 	}
 
-	initSocket(socket) {
+	initSocket(socket: SocketIO.Socket) {
 
 		socket.on("disconnect", this.onDisconnect);
 		socket.on("input", this.onInput);

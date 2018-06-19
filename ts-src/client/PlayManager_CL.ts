@@ -5,7 +5,7 @@ class PlayManager_CL  {
     public th: TH;
     public thGame: THGame_CL;
 
-	constructor(tankhunt) {
+	constructor(tankhunt: TH) {
 		this.th = tankhunt;
 
 		// Create test game
@@ -37,7 +37,7 @@ class PlayManager_CL  {
 	}
 
 	initInput() {
-		var callback = (key) => {
+		var callback = (key: Phaser.Key) => {
 			this.sendInput(key);
 		}
 
@@ -79,7 +79,7 @@ class PlayManager_CL  {
         shotSpecial.name = "inpShotSpecial"; shot.onUp.add(callback);
 	}
 
-	sendInput(key) {
+	sendInput(key: Phaser.Key) {
 		var type = (key.isDown) ? key.name + "On" : key.name + "Off";
 		this.th.socketManager.emitInput(type);
 	}

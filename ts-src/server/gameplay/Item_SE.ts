@@ -5,9 +5,9 @@ var Data: Dat = require("../../shared/Data");
 
 class Item_SE extends GameObject_SE {
     
-    typeIndex: string;
+    typeIndex: number;
     
-    constructor(x, y, typeIndex) {
+    constructor(x: number, y: number, typeIndex: number) {
         super(x, y, Data.Items.size, Data.Items.size);
 
         this.typeIndex = typeIndex || getRandomInt(0, Data.Items.types.length);

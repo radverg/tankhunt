@@ -104,7 +104,10 @@ interface PacketRespawn extends PacketTank {
 }
 
 interface PacketItem extends PacketGameObject {
-
+    /**
+     * Type of the shot, proper object is generated according to this index
+     */
+    typeIndex: number
 }
 
 interface PacketGameInfo {
@@ -114,4 +117,19 @@ interface PacketGameInfo {
 
 interface PacketMovable {
     players: PacketTank[]
+}
+
+interface PacketKill {
+    /**
+     * Id of a player that was killing (not id of his tank!)
+     */
+    killerID: string,
+    /**
+     * Id of a player that was killed (not id of his tank!)
+     */
+    killedID: string,
+    /**
+     * Id of a shot that was killing
+     */
+    shotID: string
 }

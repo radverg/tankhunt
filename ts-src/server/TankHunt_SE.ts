@@ -11,7 +11,7 @@ class TankHunt_SE {
 	gameManager: GameManager_SE;
 	loopManager: LoopManager_SE;
 
-	constructor(server) {
+	constructor(server: SocketIO.Server) {
 
 		this.nodeserver = server;
 

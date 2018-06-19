@@ -41,7 +41,7 @@ abstract class Tank_CL extends Sprite {
 		//if (!visible) this.kill();
 	}
 
-	applyStatePacket(packet) {
+	applyStatePacket(packet: PacketTank) {
 		this.rotationServerUpdate(packet.rot);
 		this.rotationTurretServerUpdate(packet.turrRot);
 		this.positionServerUpdate(packet.x, packet.y);

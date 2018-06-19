@@ -38,9 +38,9 @@ class THGame_CL {
 		return this.players[id];
 	}
 
-	removePlayer(player: Player_CL) {
-		this.players[player.id].removeTank();
-		delete this.players[player.id];
+	removePlayer(playerID: string) {
+		this.players[playerID].removeTank();
+		delete this.players[playerID];
 	}
 
 	start() {
@@ -51,7 +51,7 @@ class THGame_CL {
 	newPlayerFromPacket(packet: PacketPlayerInfo) {
 	}
 
-	processStateInfo(data) {
+	processStateInfo(data: PacketMovable) {
 		if (!this.running) return;
 
 		for (var i = 0; i < data.players.length; i++) {
@@ -61,25 +61,25 @@ class THGame_CL {
 		}
 	}
 
-	processNewShot(data) {
+	processNewShot(data: PacketShotStart) {
 		if (!this.running) return;
 		var type = data.type;
-		var sh = new Shots[type](data);
+		var sh = new Shots[type.toString()](data);
 		this.shots[data.id] = sh;
 	};
 
-	processNewItem(data) {
+	processNewItem(data: PacketItem) {
 		this.items[data.id] = new Item_CL(data.x, data.y, data.typeIndex);
 	}
 
-	processItemCollect(data) {
+	processItemCollect(data: PacketItem) {
 		// Collector id is in data.playerID
 		if (this.items[data.id]) {
 			this.items[data.id].getCollected();
 		}
 	}
 
-	processGameInfo(data) {
+	processGameInfo(data: PacketGameInfo) {
 		// Generate players
 		for (var pl in data.players) {
 			
@@ -95,12 +95,12 @@ class THGame_CL {
 		}
 	}
 
-	processNewPlayer(data) {
+	processNewPlayer(data: PacketPlayerInfo) {
 		if (this.players[data.id]) return;
 		this.newPlayerFromPacket(data);
 	}
 
-	processKill(data) {
+	processKill(data: PacketKill) {
 
 		if (this.hasPlayer(data.killedID)) {
 			this.players[data.killedID].tank.kill();
@@ -108,7 +108,7 @@ class THGame_CL {
 
 	}
 
-	processLevel(data) {
+	processLevel(data: any) {
 		this.level = data;
 		// Create borders 
 		for (var i = 0; i < this.level.borders.length; i++) {
@@ -149,7 +149,7 @@ class THGame_CL {
 		console.log("Level is here!");
 	};
 
-	processRespawn(data) {
+	processRespawn(data: PacketRespawn) {
 		
 	}
 

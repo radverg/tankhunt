@@ -58,7 +58,7 @@ abstract class THGame_SE {
         this.emitKill(killed.socket.id, killer.socket.id, shot.id);
     }
 
-    abstract playerDisconnected(player: Player_SE);
+    abstract playerDisconnected(player: Player_SE): void;
 
     shoot(shot: Shot_SE) {
         this.shots.push(shot);
@@ -73,7 +73,7 @@ abstract class THGame_SE {
         this.emitDataPl("level", this.level, player);
     }
 
-    emitShot(packet) {
+    emitShot(packet: PacketShotStart) {
         this.emitData("shot", packet);
     }
 
@@ -85,7 +85,7 @@ abstract class THGame_SE {
         this.emitData("itemSpawn", {typeIndex: item.typeIndex, x: item.x, y: item.y});
     }
 
-    emitItemCollect(item: Item_SE, collector) {
+    emitItemCollect(item: Item_SE, collector: Player_SE) {
         this.emitData("itemCollect", { id: item.id, playerID: collector.id });
     }
 
@@ -97,18 +97,18 @@ abstract class THGame_SE {
         this.emitData("appear", { id: id });
     }
 
-    emitData(emName: string, data) {
+    emitData(emName: string, data: any) {
         for (var i = 0; i < this.players.length; i++) {
             this.players[i].socket.emit(emName, data);
         }
     }
 
-    emitDataPl(emName, data, player: Player_SE) {
+    emitDataPl(emName: string, data: any, player: Player_SE) {
         player.socket.emit(emName, data);
     }
 
     emitRemove(id: string) {
-        this.emitData("removePlayer", { id: id });
+        this.emitData("removePlayer", id);
     }
 
     // Creates and sends packet that contains positions, rotations and velocities of the tanks
@@ -131,8 +131,8 @@ abstract class THGame_SE {
 
     // Input handling ----------------------------------------------------------------------
     handleInput(inputType: string, player: Player_SE) {
-        if (this[inputType])
-            this[inputType](player);  
+        if ((this as any)[inputType])
+            (this as any)[inputType](player);  
     }
 
     inpForwOn(player: Player_SE) {

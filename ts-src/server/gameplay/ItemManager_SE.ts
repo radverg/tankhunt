@@ -1,5 +1,6 @@
 import { Item_SE } from "./Item_SE";
 import { THGame_SE } from "./gamemodes/THGame_SE";
+import { Tank_SE } from "./Tank_SE";
 
 var Data : Dat = require("../../shared/Data"); 
 
@@ -31,7 +32,7 @@ class ItemManager_SE {
 
     spawnItem() {
         var newPos = this.thGame.level.getRandomSpawnItems(Data.Items.size, Data.Items.size);
-        var newItem = new Item_SE(newPos.x, newPos.y, "typehere");
+        var newItem = new Item_SE(newPos.x, newPos.y, 0);
         this.lastTimeSpawn = Date.now();
         this.items.push(newItem);
 
@@ -40,7 +41,7 @@ class ItemManager_SE {
         return newItem;
     }
 
-    checkForTank(tank) {
+    checkForTank(tank: Tank_SE) {
 
         if (tank.specialGun === null || tank.specialGun.wornOut) {
             for (let i = 0; i < this.items.length; i++) {
