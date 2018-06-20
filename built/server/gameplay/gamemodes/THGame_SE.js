@@ -62,7 +62,7 @@ var THGame_SE = (function () {
         player.socket.emit(emName, data);
     };
     THGame_SE.prototype.emitRemove = function (id) {
-        this.emitData("removePlayer", { id: id });
+        this.emitData("removePlayer", id);
     };
     THGame_SE.prototype.emitMovable = function () {
         var packet = {};

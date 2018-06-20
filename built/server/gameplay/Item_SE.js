@@ -24,7 +24,9 @@ var Item_SE = (function (_super) {
         return tank.body.circularIntersect(this.body);
     };
     Item_SE.prototype.getStatePacket = function () {
-        return _super.prototype.getStatePacket.call(this);
+        var packet = _super.prototype.getStatePacket.call(this);
+        packet.typeIndex = this.typeIndex;
+        return packet;
     };
     return Item_SE;
 }(GameObject_SE_1.GameObject_SE));

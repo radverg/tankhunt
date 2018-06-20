@@ -21,7 +21,5 @@ var Player_CL = (function () {
         this.tank = null;
     };
     ;
-    Player_CL.prototype.applyPacket = function (packet) {
-    };
     return Player_CL;
 }());

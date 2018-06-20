@@ -14,10 +14,11 @@ var Arena_CL = (function (_super) {
         return _super.call(this, socketManager) || this;
     }
     Arena_CL.prototype.processRespawn = function (data) {
-        if (this.hasPlayer(data.plID)) {
-            this.players[data.plID].tank.applyStatePacket(data);
+        var player = this.playerGroup.getPlayer(data.plID);
+        if (player) {
+            player.tank.applyStatePacket(data);
         }
-        TH.game.time.events.add(data.respawnDelay, this.players[data.plID].tank.revive, this.players[data.plID].tank);
+        TH.game.time.events.add(data.respawnDelay, player.tank.revive, player.tank);
     };
     Arena_CL.prototype.newPlayerFromPacket = function (packet) {
         var tank = new DefaultTank_CL();
@@ -27,21 +28,17 @@ var Arena_CL = (function (_super) {
             tank.applyStatePacket(packet.tank);
             tank.jumpToRemote();
         }
-        this.players[packet.id] = player;
+        this.playerGroup.add(player);
         if (packet.id == this.socketManager.getID()) {
-            this.playerMe = player;
-            tank.defaultColor = Color.Blue;
-            tank.color = Color.Blue;
+            this.playerGroup.setMe(player);
             this.setCamera();
         }
         else {
-            tank.defaultColor = Color.Red;
-            tank.color = Color.Red;
+            this.playerGroup.setEnemy(player);
         }
         if (!packet.alive) {
             tank.hide();
         }
-        tank.addToScene();
     };
     return Arena_CL;
 }(THGame_CL));

@@ -24,22 +24,20 @@ abstract class Tank_CL extends Sprite {
 		this.frame = this.frameStart;
 	}
 
-	
-
-	updateTurret() {
-		this.turret.x = this.x;
-		this.turret.y = this.y;
-	}
+	// updateTurret() {
+	// 	this.turret.x = this.x;
+	// 	this.turret.y = this.y;
+	// }
 
 	rotationTurretServerUpdate(rot: number) {
-		this.turret.rotationServerUpdate(rot);
+		this.turret.rotationServerUpdate(rot - this.remAngle);
 	}
 
-	addToScene() {
-		TH.game.add.existing(this);
-		TH.game.add.existing(this.turret);
-		//if (!visible) this.kill();
-	}
+	// addToScene(group: Phaser.Group) {
+	// 	group.add(this);
+	// 	TH.game.add.existing(this.turret);
+	// 	if (!visible) this.kill();
+	// }
 
 	applyStatePacket(packet: PacketTank) {
 		this.rotationServerUpdate(packet.rot);
@@ -54,8 +52,9 @@ abstract class Tank_CL extends Sprite {
 		this.x = this.remX;
 		this.y = this.remY;
 		this.rotation = this.remAngle;
-		this.turret.jumpToRemote();
-		this.updateTurret();
+		
+		//this.turret.jumpToRemote();
+		//this.updateTurret();
 	}
 
 	kill(): any {
@@ -69,7 +68,7 @@ abstract class Tank_CL extends Sprite {
 	}
 
 	destroy(): any {
-		super.destroy();
+		super.destroy(true);
 		this.turret.destroy();
 	}
 
@@ -81,5 +80,12 @@ abstract class Tank_CL extends Sprite {
 	show() {
 		this.visible = true;
 		this.turret.visible = true;
+	}
+
+	interpolationUpdate() {
+		this.interpolate();
+		this.interpolateAngle();
+		//this.updateTurret();
+		this.turret.interpolateAngle();
 	}
 }

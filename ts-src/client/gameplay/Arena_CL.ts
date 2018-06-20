@@ -12,11 +12,12 @@ class Arena_CL extends THGame_CL {
 	 * @param {*} data Packet
 	 */
 	processRespawn(data: PacketRespawn) {
+		let player: Player_CL = this.playerGroup.getPlayer(data.plID);
 		
-		if (this.hasPlayer(data.plID)) {
-			this.players[data.plID].tank.applyStatePacket(data);
+		if (player) {
+			player.tank.applyStatePacket(data);
 		}
-		TH.game.time.events.add(data.respawnDelay, this.players[data.plID].tank.revive, this.players[data.plID].tank);
+		TH.game.time.events.add(data.respawnDelay, player.tank.revive, player.tank);
     }
     
     newPlayerFromPacket(packet: PacketPlayerInfo) {
@@ -31,26 +32,20 @@ class Arena_CL extends THGame_CL {
             tank.jumpToRemote();
 		}
 
-		this.players[packet.id] = player;
+		this.playerGroup.add(player);
 
 		// Check if its me
 		if (packet.id == this.socketManager.getID()) { // If so, make tank blue and bind camera with this
-			this.playerMe = player;
-			tank.defaultColor = Color.Blue;
-            tank.color = Color.Blue;
+			this.playerGroup.setMe(player);
 			this.setCamera();
 		} else { // if its an enemy, make it red
-			tank.defaultColor = Color.Red;
-			tank.color = Color.Red;
+			this.playerGroup.setEnemy(player);
         }
         
         // Hide it in case its not alive
         if (!packet.alive) {
             tank.hide();
         }
-
-		// Eventually add tank to the game
-		tank.addToScene();
 	}
 
 

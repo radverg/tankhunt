@@ -1,13 +1,11 @@
 var TH = (function () {
     function TH() {
         this.socketManager = new SocketManager_CL(this);
-        this.loadManager = new LoadManager_CL();
+        this.loadManager = new LoadManager_CL(this);
         this.playManager = new PlayManager_CL(this);
     }
     TH.prototype.init = function () {
-        var _this = this;
         this.initPhaser();
-        setTimeout(function () { _this.socketManager.connect(); }, 500);
     };
     TH.prototype.initPhaser = function () {
         var phaserConfig = {
@@ -19,6 +17,9 @@ var TH = (function () {
         TH.game.state.add("play", this.playManager);
         TH.game.state.start("load");
         TH.sizeCoeff = 70;
+    };
+    TH.prototype.onPhaserLoad = function () {
+        this.socketManager.connect();
     };
     return TH;
 }());

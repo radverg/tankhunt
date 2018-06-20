@@ -8,17 +8,15 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var Item_CL = (function (_super) {
-    __extends(Item_CL, _super);
-    function Item_CL(x, y, typeIndex) {
-        var _this = _super.call(this, TH.game, x * TH.sizeCoeff, y * TH.sizeCoeff, "blackRect") || this;
-        _this.anchor.setTo(0.5);
-        _this.width = Data.Items.size * TH.sizeCoeff;
-        _this.height = Data.Items.size * TH.sizeCoeff;
+var ItemGroup_CL = (function (_super) {
+    __extends(ItemGroup_CL, _super);
+    function ItemGroup_CL() {
+        var _this = _super.call(this, TH.game) || this;
+        _this.items = {};
         return _this;
     }
-    Item_CL.prototype.getCollected = function () {
-        this.destroy();
+    ItemGroup_CL.prototype.getItem = function (itemID) {
+        return this.items[itemID];
     };
-    return Item_CL;
-}(Sprite));
+    return ItemGroup_CL;
+}(Phaser.Group));

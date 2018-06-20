@@ -1,5 +1,6 @@
 var LoadManager_CL = (function () {
-    function LoadManager_CL() {
+    function LoadManager_CL(th) {
+        this.th = th;
         var imagesPath = "assets/images/";
         this.images = [
             { assetName: "blackRect", path: imagesPath + "blackRect.png" },
@@ -22,6 +23,7 @@ var LoadManager_CL = (function () {
         }
     };
     LoadManager_CL.prototype.create = function () {
+        this.th.onPhaserLoad();
         TH.game.state.start("play");
     };
     return LoadManager_CL;

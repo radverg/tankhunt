@@ -19,7 +19,7 @@ var ItemManager_SE = (function () {
     };
     ItemManager_SE.prototype.spawnItem = function () {
         var newPos = this.thGame.level.getRandomSpawnItems(Data.Items.size, Data.Items.size);
-        var newItem = new Item_SE_1.Item_SE(newPos.x, newPos.y, "typehere");
+        var newItem = new Item_SE_1.Item_SE(newPos.x, newPos.y, 0);
         this.lastTimeSpawn = Date.now();
         this.items.push(newItem);
         this.thGame.emitItemSpawn(newItem);

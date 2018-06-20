@@ -33,16 +33,8 @@ var Tank_CL = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Tank_CL.prototype.updateTurret = function () {
-        this.turret.x = this.x;
-        this.turret.y = this.y;
-    };
     Tank_CL.prototype.rotationTurretServerUpdate = function (rot) {
-        this.turret.rotationServerUpdate(rot);
-    };
-    Tank_CL.prototype.addToScene = function () {
-        TH.game.add.existing(this);
-        TH.game.add.existing(this.turret);
+        this.turret.rotationServerUpdate(rot - this.remAngle);
     };
     Tank_CL.prototype.applyStatePacket = function (packet) {
         this.rotationServerUpdate(packet.rot);
@@ -53,8 +45,6 @@ var Tank_CL = (function (_super) {
         this.x = this.remX;
         this.y = this.remY;
         this.rotation = this.remAngle;
-        this.turret.jumpToRemote();
-        this.updateTurret();
     };
     Tank_CL.prototype.kill = function () {
         _super.prototype.kill.call(this);
@@ -65,7 +55,7 @@ var Tank_CL = (function (_super) {
         this.turret.revive();
     };
     Tank_CL.prototype.destroy = function () {
-        _super.prototype.destroy.call(this);
+        _super.prototype.destroy.call(this, true);
         this.turret.destroy();
     };
     Tank_CL.prototype.hide = function () {
@@ -75,6 +65,11 @@ var Tank_CL = (function (_super) {
     Tank_CL.prototype.show = function () {
         this.visible = true;
         this.turret.visible = true;
+    };
+    Tank_CL.prototype.interpolationUpdate = function () {
+        this.interpolate();
+        this.interpolateAngle();
+        this.turret.interpolateAngle();
     };
     return Tank_CL;
 }(Sprite));

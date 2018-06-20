@@ -120,8 +120,8 @@ var Rect = (function () {
     };
     Rect.prototype.rotContains = function (x, y) {
         var ang = MyMath_SE_1.getAngleToAxis(this.cX, this.cY, x, y) - this.ang;
-        var dist = dist(this.cX, this.cY, x, y);
-        return this.contains(this.cX + dist * Math.sin(ang), this.cY - dist * Math.cos(ang));
+        var dis = MyMath_SE_1.dist(this.cX, this.cY, x, y);
+        return this.contains(this.cX + dis * Math.sin(ang), this.cY - dis * Math.cos(ang));
     };
     Rect.prototype.contains = function (x, y) {
         return !(x < this.left || x > this.right ||

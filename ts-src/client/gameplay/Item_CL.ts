@@ -10,7 +10,7 @@ class Item_CL extends Sprite {
         this.width = Data.Items.size * TH.sizeCoeff;
         this.height = Data.Items.size * TH.sizeCoeff;
 
-        TH.game.add.existing(this);
+      //  TH.game.add.existing(this);
     }
 
     public getCollected() {

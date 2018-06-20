@@ -22,6 +22,7 @@ class PlayManager_CL  {
         this.initInput();
         TH.game.stage.backgroundColor = "#ffffff";
         TH.game.stage.disableVisibilityChange = true;
+        this.thGame.init();
         this.thGame.start();
 	}
 
@@ -33,7 +34,10 @@ class PlayManager_CL  {
 	}
 
 	render() {
-		// Debug shit here
+        // Debug shit here
+        if (this.thGame.running) {
+            this.thGame.debug();
+        }
 	}
 
 	initInput() {

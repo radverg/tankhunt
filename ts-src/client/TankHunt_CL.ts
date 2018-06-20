@@ -13,15 +13,14 @@ class TH {
     constructor() {
         
         this.socketManager = new SocketManager_CL(this);
-        this.loadManager = new LoadManager_CL();
+        this.loadManager = new LoadManager_CL(this);
         this.playManager = new PlayManager_CL(this);
     }
 
     init() {
         this.initPhaser();
-
-        // Connect after some time - when Phaser is loaded
-        setTimeout(() => { this.socketManager.connect() }, 500);
+        // After phaser is completely loaded, onPhaserLoad will be called and Websocket connection will be
+        // established
     }
     
     initPhaser() {
@@ -37,5 +36,9 @@ class TH {
         TH.game.state.add("play", this.playManager);
         TH.game.state.start("load");
         TH.sizeCoeff = 70;
+    }
+
+    onPhaserLoad() {
+        this.socketManager.connect();
     }
 }

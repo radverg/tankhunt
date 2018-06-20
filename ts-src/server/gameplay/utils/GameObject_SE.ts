@@ -17,7 +17,7 @@ class GameObject_SE {
     /**
      * Angulare velocity in radians per second
      */
-    public angularVel: number = Math.PI / 3;
+    public angularVel: number = 0;
     maxAngularVel: number;
     remove: boolean = false;
     emitable: boolean = true;

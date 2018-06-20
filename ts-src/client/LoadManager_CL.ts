@@ -4,8 +4,10 @@ class LoadManager_CL  {
 
 	private images: ImageAsset[];
 	private spritesheets: SpritesheetAsset[];
+	private th: TH;
 	
-	constructor() {
+	constructor(th: TH) {
+		this.th = th;
 		var imagesPath = "assets/images/";
 
 		// Assets ----------------------------------------------------------------------------
@@ -40,6 +42,9 @@ class LoadManager_CL  {
 	}
 	
 	create() {
+		// Phaser is completely loaded - call method on TankHunt class
+		this.th.onPhaserLoad();
+
 		TH.game.state.start("play");
 	}
 }

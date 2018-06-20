@@ -1,31 +1,27 @@
 var THGame_CL = (function () {
     function THGame_CL(socketManager) {
-        this.players = {};
-        this.playerMe = null;
         this.shots = {};
-        this.items = {};
         this.running = false;
         this.level = null;
+        this.levelGroup = null;
+        this.itemGroup = null;
+        this.playerGroup = null;
+        this.onPlayerRemove = new Phaser.Signal();
+        this.onItemSpawn = new Phaser.Signal();
         this.socketManager = socketManager;
     }
     THGame_CL.prototype.update = function () {
-        var pkeys = Object.keys(this.players);
-        for (var i = 0; i < pkeys.length; i++) {
-            this.players[pkeys[i]].tank.interpolate();
-            this.players[pkeys[i]].tank.interpolateAngle();
-            this.players[pkeys[i]].tank.updateTurret();
-            this.players[pkeys[i]].tank.turret.interpolateAngle();
-        }
+        this.playerGroup.updateTanks();
     };
-    THGame_CL.prototype.addPlayer = function (player) {
-        this.players[player.id] = player;
+    THGame_CL.prototype.debug = function () {
+        if (this.playerGroup.me)
+            TH.game.debug.spriteInfo(this.playerGroup.me.tank, 10, 10, "black");
+        TH.game.debug.cameraInfo(TH.game.camera, 10, 500, "black");
     };
-    THGame_CL.prototype.hasPlayer = function (id) {
-        return this.players[id];
-    };
-    THGame_CL.prototype.removePlayer = function (player) {
-        this.players[player.id].removeTank();
-        delete this.players[player.id];
+    THGame_CL.prototype.processPlayerRemove = function (playerID) {
+        var player = this.playerGroup.getPlayer(playerID);
+        this.onPlayerRemove.dispatch(player);
+        this.playerGroup.removePlayer(playerID);
     };
     THGame_CL.prototype.start = function () {
         this.running = true;
@@ -37,46 +33,46 @@ var THGame_CL = (function () {
         if (!this.running)
             return;
         for (var i = 0; i < data.players.length; i++) {
-            if (!this.hasPlayer(data.players[i].plID))
+            var player = this.playerGroup.getPlayer(data.players[i].plID);
+            if (!player)
                 continue;
-            this.players[data.players[i].plID].tank.applyStatePacket(data.players[i]);
+            player.tank.applyStatePacket(data.players[i]);
         }
     };
     THGame_CL.prototype.processNewShot = function (data) {
         if (!this.running)
             return;
         var type = data.type;
-        var sh = new Shots[type](data);
+        var sh = new Shots[type.toString()](data);
         this.shots[data.id] = sh;
     };
     ;
     THGame_CL.prototype.processNewItem = function (data) {
-        this.items[data.id] = new Item_CL(data.x, data.y, data.typeIndex);
+        var newItem = new Item_CL(data.x, data.y, data.typeIndex);
+        this.itemGroup.items[data.id] = newItem;
+        this.onItemSpawn.dispatch(newItem);
     };
     THGame_CL.prototype.processItemCollect = function (data) {
-        if (this.items[data.id]) {
-            this.items[data.id].getCollected();
-        }
     };
     THGame_CL.prototype.processGameInfo = function (data) {
         for (var pl in data.players) {
-            if (!this.hasPlayer(data.players[pl].id)) {
+            if (!this.playerGroup.getPlayer(data.players[pl].id)) {
                 this.newPlayerFromPacket(data.players[pl]);
             }
         }
         for (var it in data.items) {
-            if (!this.items[data.items[it].id])
+            if (!this.itemGroup.getItem(data.items[it].id))
                 this.processNewItem(data.items[it]);
         }
     };
     THGame_CL.prototype.processNewPlayer = function (data) {
-        if (this.players[data.id])
+        if (this.playerGroup.getPlayer(data.id))
             return;
         this.newPlayerFromPacket(data);
     };
     THGame_CL.prototype.processKill = function (data) {
-        if (this.hasPlayer(data.killedID)) {
-            this.players[data.killedID].tank.kill();
+        if (this.playerGroup.getPlayer(data.killedID)) {
+            this.playerGroup.getTank(data.killedID).kill();
         }
     };
     THGame_CL.prototype.processLevel = function (data) {
@@ -89,10 +85,10 @@ var THGame_CL = (function () {
             console.log("Border: " + (border.cX * TH.sizeCoeff) + ", " + (border.cY * TH.sizeCoeff) + ", " +
                 (border._w * TH.sizeCoeff) + ", " + (border._h * TH.sizeCoeff));
             borderSprite.anchor.setTo(0.5, 0.5);
-            TH.game.add.existing(borderSprite);
+            this.levelGroup.add(borderSprite);
         }
         var woffset = 200;
-        TH.game.world.setBounds(-woffset, -woffset, (this.level.levelRect.w * TH.sizeCoeff) + 2 * woffset, (this.level.levelRect.h * TH.sizeCoeff) + 2 * woffset);
+        TH.game.world.setBounds(-woffset, -woffset, (this.level.levelRect._w * TH.sizeCoeff) + 2 * woffset, (this.level.levelRect._h * TH.sizeCoeff) + 2 * woffset);
         for (var x = 0; x < this.level.walls.length; x++) {
             for (var y = 0; y < this.level.walls[x].length; y++) {
                 for (var i = 0; i < 2; i++) {
@@ -102,7 +98,7 @@ var THGame_CL = (function () {
                         wallSprite.anchor.setTo(0.5, 0.5);
                         wallSprite.width = wallData._w * TH.sizeCoeff;
                         wallSprite.height = wallData._h * TH.sizeCoeff;
-                        TH.game.add.existing(wallSprite);
+                        this.levelGroup.add(wallSprite);
                     }
                 }
             }
@@ -110,11 +106,16 @@ var THGame_CL = (function () {
         console.log("Level is here!");
     };
     ;
-    THGame_CL.prototype.processRespawn = function (data) {
-    };
+    THGame_CL.prototype.processRespawn = function (data) { };
+    ;
     THGame_CL.prototype.setCamera = function () {
-        TH.game.camera.follow(this.playerMe.tank);
+        TH.game.camera.follow(this.playerGroup.me.tank);
         TH.game.camera.lerp.setTo(0.1, 0.1);
+    };
+    THGame_CL.prototype.init = function () {
+        this.levelGroup = TH.game.add.group();
+        this.itemGroup = new ItemGroup_CL();
+        this.playerGroup = new PlayerGroup_CL();
     };
     return THGame_CL;
 }());

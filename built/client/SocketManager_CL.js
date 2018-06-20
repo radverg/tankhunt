@@ -18,7 +18,7 @@ var SocketManager_CL = (function () {
         this.socket.on("gameInfo", function (data) { if (that.th.playManager.thGame)
             that.th.playManager.thGame.processGameInfo(data); });
         this.socket.on("removePlayer", function (data) { if (that.th.playManager.thGame)
-            that.th.playManager.thGame.removePlayer(data); });
+            that.th.playManager.thGame.processPlayerRemove(data); });
         this.socket.on("shot", function (data) { if (that.th.playManager.thGame)
             that.th.playManager.thGame.processNewShot(data); });
         this.socket.on("level", function (data) { if (that.th.playManager.thGame)

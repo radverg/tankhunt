@@ -11,6 +11,7 @@ var PlayManager_CL = (function () {
         this.initInput();
         TH.game.stage.backgroundColor = "#ffffff";
         TH.game.stage.disableVisibilityChange = true;
+        this.thGame.init();
         this.thGame.start();
     };
     PlayManager_CL.prototype.update = function () {
@@ -19,6 +20,9 @@ var PlayManager_CL = (function () {
         }
     };
     PlayManager_CL.prototype.render = function () {
+        if (this.thGame.running) {
+            this.thGame.debug();
+        }
     };
     PlayManager_CL.prototype.initInput = function () {
         var _this = this;

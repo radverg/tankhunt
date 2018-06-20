@@ -13,7 +13,9 @@ class DefaultTank_CL extends Tank_CL {
 
 		this.turret = new Sprite(TH.game, this.x, this.y, "defaultTurret");
 		this.turret.anchor.setTo(0.5, 0.8453);
-		this.turret.width = 0.625 * TH.sizeCoeff;
-		this.turret.height = 0.625 * 3.23 * TH.sizeCoeff;
+		this.turret.width = 0.825 * TH.sizeCoeff;
+		this.turret.height = 0.825 * 3.23 * TH.sizeCoeff;
+
+		this.addChild(this.turret);
 	}
 }

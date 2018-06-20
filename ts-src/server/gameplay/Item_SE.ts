@@ -19,7 +19,9 @@ class Item_SE extends GameObject_SE {
     }
 
     getStatePacket(): PacketItem {
-        return super.getStatePacket();
+        let packet: PacketItem = super.getStatePacket() as PacketItem;
+        packet.typeIndex = this.typeIndex;
+        return packet;
     }
 }
 

@@ -8,17 +8,18 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var Item_CL = (function (_super) {
-    __extends(Item_CL, _super);
-    function Item_CL(x, y, typeIndex) {
-        var _this = _super.call(this, TH.game, x * TH.sizeCoeff, y * TH.sizeCoeff, "blackRect") || this;
-        _this.anchor.setTo(0.5);
-        _this.width = Data.Items.size * TH.sizeCoeff;
-        _this.height = Data.Items.size * TH.sizeCoeff;
-        return _this;
+var PlayerGroup_CL = (function (_super) {
+    __extends(PlayerGroup_CL, _super);
+    function PlayerGroup_CL() {
+        return _super.call(this, TH.game) || this;
     }
-    Item_CL.prototype.getCollected = function () {
-        this.destroy();
+    PlayerGroup_CL.prototype.add = function (player) {
+        if (player.tank)
+            _super.prototype.add.call(this, player.tank);
+        this.players[player.id] = player;
     };
-    return Item_CL;
-}(Sprite));
+    PlayerGroup_CL.prototype.addTank = function (tank) {
+        _super.prototype.add.call(this, tank);
+    };
+    return PlayerGroup_CL;
+}(Phaser.Group));
