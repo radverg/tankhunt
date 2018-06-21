@@ -5,29 +5,13 @@ abstract class Tank_CL extends Sprite {
 
 	public frameStart: number = 1;
 
-	private _defaultColor: number = Color.Red
-	private _color: number = Color.Red;
-
 	protected turret: Sprite;
 
 
 	constructor(asset: string) {
 		super(TH.game, 0, 0, asset);
-		
-		this.color = Color.Red;
+	
 	}
-
-	set defaultColor(val: number) { this._defaultColor = val; }
-	set color(val: number) { 
-		this._color = val;
-		this.frameStart = val * (this.framesInRow || 1);
-		this.frame = this.frameStart;
-	}
-
-	// updateTurret() {
-	// 	this.turret.x = this.x;
-	// 	this.turret.y = this.y;
-	// }
 
 	rotationTurretServerUpdate(rot: number) {
 		this.turret.rotationServerUpdate(rot - this.remAngle);
@@ -55,6 +39,16 @@ abstract class Tank_CL extends Sprite {
 		
 		//this.turret.jumpToRemote();
 		//this.updateTurret();
+	}
+
+	setColor(colorIndex: number) {
+		this.colorIndex = colorIndex;
+		this.turret.colorIndex = colorIndex;
+	}
+
+	setDefaultColor(colorIndex: number) {
+		this.defaultColorIndex = colorIndex;
+		this.turret.defaultColorIndex = colorIndex;
 	}
 
 	kill(): any {

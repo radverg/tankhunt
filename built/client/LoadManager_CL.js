@@ -5,11 +5,11 @@ var LoadManager_CL = (function () {
         this.images = [
             { assetName: "blackRect", path: imagesPath + "blackRect.png" },
             { assetName: "whiteRect", path: imagesPath + "whiteRect.png" },
-            { assetName: "defaultTurret", path: imagesPath + "default_turret.png" },
             { assetName: "ammo", path: imagesPath + "ammo.png" }
         ];
         this.spritesheets = [
             { assetName: "tankBodys", path: imagesPath + "tank_bodys.png", frameSizeX: 96, frameSizeY: 138, frameCount: 4 },
+            { assetName: "defaultTurrets", path: imagesPath + "default_turrets.png", frameSizeX: 60, frameSizeY: 194, frameCount: 4 },
         ];
     }
     LoadManager_CL.prototype.preload = function () {

@@ -16,7 +16,7 @@ var DefaultTank_CL = (function (_super) {
         _this.width = Data.DefaultTank.sizeX * TH.sizeCoeff;
         _this.height = Data.DefaultTank.sizeY * TH.sizeCoeff;
         _this.framesInRow = 1;
-        _this.turret = new Sprite(TH.game, _this.x, _this.y, "defaultTurret");
+        _this.turret = new Sprite(TH.game, _this.x, _this.y, "defaultTurrets");
         _this.turret.anchor.setTo(0.5, 0.8453);
         _this.turret.width = 0.825 * TH.sizeCoeff;
         _this.turret.height = 0.825 * 3.23 * TH.sizeCoeff;

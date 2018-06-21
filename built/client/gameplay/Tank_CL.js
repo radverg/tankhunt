@@ -14,25 +14,8 @@ var Tank_CL = (function (_super) {
         var _this = _super.call(this, TH.game, 0, 0, asset) || this;
         _this.player = null;
         _this.frameStart = 1;
-        _this._defaultColor = Color.Red;
-        _this._color = Color.Red;
-        _this.color = Color.Red;
         return _this;
     }
-    Object.defineProperty(Tank_CL.prototype, "defaultColor", {
-        set: function (val) { this._defaultColor = val; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Tank_CL.prototype, "color", {
-        set: function (val) {
-            this._color = val;
-            this.frameStart = val * (this.framesInRow || 1);
-            this.frame = this.frameStart;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Tank_CL.prototype.rotationTurretServerUpdate = function (rot) {
         this.turret.rotationServerUpdate(rot - this.remAngle);
     };
@@ -45,6 +28,14 @@ var Tank_CL = (function (_super) {
         this.x = this.remX;
         this.y = this.remY;
         this.rotation = this.remAngle;
+    };
+    Tank_CL.prototype.setColor = function (colorIndex) {
+        this.colorIndex = colorIndex;
+        this.turret.colorIndex = colorIndex;
+    };
+    Tank_CL.prototype.setDefaultColor = function (colorIndex) {
+        this.defaultColorIndex = colorIndex;
+        this.turret.defaultColorIndex = colorIndex;
     };
     Tank_CL.prototype.kill = function () {
         _super.prototype.kill.call(this);

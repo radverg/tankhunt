@@ -51,16 +51,16 @@ var PlayerGroup_CL = (function (_super) {
     };
     PlayerGroup_CL.prototype.setMe = function (player) {
         this.myID = player.id;
-        player.tank.defaultColor = Color.Blue;
-        player.tank.color = Color.Blue;
+        player.tank.setDefaultColor(Color.Blue);
+        player.tank.setColor(Color.Blue);
     };
     PlayerGroup_CL.prototype.setEnemy = function (player) {
-        player.tank.defaultColor = Color.Enemy;
-        player.tank.color = Color.Enemy;
+        player.tank.setDefaultColor(Color.Enemy);
+        player.tank.setColor(Color.Enemy);
     };
     PlayerGroup_CL.prototype.setFriend = function (player) {
-        player.tank.defaultColor = Color.Friend;
-        player.tank.color = Color.Friend;
+        player.tank.setDefaultColor(Color.Friend);
+        player.tank.setColor(Color.Friend);
     };
     return PlayerGroup_CL;
 }(Phaser.Group));

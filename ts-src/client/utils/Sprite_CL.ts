@@ -10,10 +10,17 @@ class Sprite extends Phaser.Sprite {
 
     public frameStart: number = 1;
     public framesInRow: number = 1;
+
+    public defaultColorIndex: number = 1;
     
     constructor(game: Phaser.Game, x: number, y: number, asset: string) {
         super(game, x, y, asset);
     }
+
+    set colorIndex(val: number) { 
+		this.frameStart = val * (this.framesInRow || 1);
+		this.frame = this.frameStart;
+	}
 
     interpolate() {
         let diffX = this.remX - this.x;

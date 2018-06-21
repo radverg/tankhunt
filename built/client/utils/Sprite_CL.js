@@ -18,8 +18,17 @@ var Sprite = (function (_super) {
         _this.remAngle = 0;
         _this.frameStart = 1;
         _this.framesInRow = 1;
+        _this.defaultColorIndex = 1;
         return _this;
     }
+    Object.defineProperty(Sprite.prototype, "colorIndex", {
+        set: function (val) {
+            this.frameStart = val * (this.framesInRow || 1);
+            this.frame = this.frameStart;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Sprite.prototype.interpolate = function () {
         var diffX = this.remX - this.x;
         var diffY = this.remY - this.y;

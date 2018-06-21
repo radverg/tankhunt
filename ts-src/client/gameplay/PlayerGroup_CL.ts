@@ -75,17 +75,17 @@ class PlayerGroup_CL extends Phaser.Group {
 
     public setMe(player: Player_CL) {
         this.myID = player.id;
-        player.tank.defaultColor = Color.Blue;
-        player.tank.color = Color.Blue;
+        player.tank.setDefaultColor(Color.Blue);
+        player.tank.setColor(Color.Blue);
     }
 
     public setEnemy(player: Player_CL) {
-        player.tank.defaultColor = Color.Enemy;
-        player.tank.color = Color.Enemy;
+        player.tank.setDefaultColor(Color.Enemy);
+        player.tank.setColor(Color.Enemy);
     }
 
     public setFriend(player: Player_CL) {
-        player.tank.defaultColor = Color.Friend;
-        player.tank.color = Color.Friend;
+        player.tank.setDefaultColor(Color.Friend);
+        player.tank.setColor(Color.Friend);
     }
 }
