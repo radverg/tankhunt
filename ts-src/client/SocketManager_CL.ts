@@ -42,6 +42,7 @@ class SocketManager_CL {
         this.socket.on("newPlayer", function(data: PacketPlayerInfo) { if (that.th.playManager.thGame) that.th.playManager.thGame.processNewPlayer(data); }); 
         this.socket.on("respawn", function(data: PacketRespawn) { if (that.th.playManager.thGame) that.th.playManager.thGame.processRespawn(data); }); 
         this.socket.on("kill", function(data: PacketKill) { if (that.th.playManager.thGame) that.th.playManager.thGame.processKill(data); }); 
+        this.socket.on("gameStart", function(data: PacketGameStart) { that.th.playManager.processGameStart(data); }); 
     } 
     
     /**
@@ -57,5 +58,9 @@ class SocketManager_CL {
      */
     emitInput(data: string) {
         this.socket.emit("input", data);
+    }
+
+    emitGameRequest(data: PacketGameRequest) {
+        this.socket.emit("gameRequest", data);
     }
 }

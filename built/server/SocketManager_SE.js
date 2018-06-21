@@ -15,19 +15,25 @@ var SocketManager_SE = (function () {
         this.th.gameManager.newPlayer(new Player_SE_1.Player_SE(socket, "noname"));
     };
     SocketManager_SE.prototype.initSocket = function (socket) {
-        socket.on("disconnect", this.onDisconnect);
-        socket.on("input", this.onInput);
+        var _this = this;
+        socket.on("disconnect", function () { return _this.onDisconnect(socket); });
+        socket.on("input", function (data) { return _this.onInput(socket, data); });
+        socket.on("gameRequest", function (data) { return _this.onGameRequest(socket, data); });
     };
-    SocketManager_SE.prototype.onDisconnect = function () {
-        console.log("Client " + this.handshake.address + " has disconnected!");
-        if (this.player && this.player.game) {
-            this.player.game.playerDisconnected(this.player);
+    SocketManager_SE.prototype.onDisconnect = function (socket) {
+        console.log("Client " + socket.handshake.address + " has disconnected!");
+        if (socket.player && socket.player.game) {
+            socket.player.game.playerDisconnected(socket.player);
         }
     };
-    SocketManager_SE.prototype.onInput = function (data) {
-        if (this.player && this.player.game) {
-            this.player.game.handleInput(data, this.player);
+    SocketManager_SE.prototype.onInput = function (socket, data) {
+        if (socket.player && socket.player.game) {
+            socket.player.game.handleInput(data, socket.player);
         }
+    };
+    SocketManager_SE.prototype.onGameRequest = function (socket, data) {
+        socket.player = new Player_SE_1.Player_SE(socket, data.playerName);
+        this.th.gameManager.processGameRequest(socket.player, data);
     };
     return SocketManager_SE;
 }());

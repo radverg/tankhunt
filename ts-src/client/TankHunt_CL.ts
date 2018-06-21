@@ -18,9 +18,8 @@ class TH {
     }
 
     init() {
-        this.initPhaser();
-        // After phaser is completely loaded, onPhaserLoad will be called and Websocket connection will be
-        // established
+        this.initPhaser(); // Create and initialize Phaser instance
+        this.socketManager.connect(); // Create websocket connection
     }
     
     initPhaser() {
@@ -36,9 +35,5 @@ class TH {
         TH.game.state.add("play", this.playManager);
         TH.game.state.start("load");
         TH.sizeCoeff = 70;
-    }
-
-    onPhaserLoad() {
-        this.socketManager.connect();
     }
 }

@@ -1,9 +1,13 @@
 /// <reference path="../refs.ts" />
 
 class Arena_CL extends THGame_CL {
-    constructor(socketManager: SocketManager_CL) {
+    constructor(socketManager: SocketManager_CL, packet: PacketGameStart) {
         super(socketManager);
-      
+	  
+		this.processLevel(packet.level);
+		this.processGameInfo(packet);
+		this.running = true;
+		
     } 
     /**
 	 * Respawn packet contains:

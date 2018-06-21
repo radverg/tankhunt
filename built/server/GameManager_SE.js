@@ -9,11 +9,15 @@ var GameManager_SE = (function () {
         this.games.push(this.testGame);
     }
     GameManager_SE.prototype.newPlayer = function (pl) {
-        this.testGame.addPlayer(pl);
     };
     GameManager_SE.prototype.loopTick = function (deltaSec) {
         for (var i = 0; i < this.games.length; i++) {
             this.games[i].update(deltaSec);
+        }
+    };
+    GameManager_SE.prototype.processGameRequest = function (player, packet) {
+        if (packet.gameType == "Arena") {
+            this.testGame.addPlayer(player);
         }
     };
     return GameManager_SE;

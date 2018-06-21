@@ -4,8 +4,8 @@ import { LoopManager_SE } from "./LoopManager_SE";
 
 class TankHunt_SE {
 	
-	nodeserver: any;
-	io: SocketIO.Server;
+	private nodeserver: any;
+	private io: SocketIO.Server;
 	startTime: number;
 	socketManager: SocketManager_SE;
 	gameManager: GameManager_SE;

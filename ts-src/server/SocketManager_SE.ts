@@ -28,28 +28,30 @@ class SocketManager_SE {
 	}
 
 	initSocket(socket: SocketIO.Socket) {
-
-		socket.on("disconnect", this.onDisconnect);
-		socket.on("input", this.onInput);
+		socket.on("disconnect", () => this.onDisconnect(socket));
+		socket.on("input", (data: string) => this.onInput(socket, data));
+		socket.on("gameRequest", (data: PacketGameRequest) => this.onGameRequest(socket, data))
 	}
 
 	// Socket emit callbacks -------------------------
-	onDisconnect() {
-		console.log("Client " + this.handshake.address + " has disconnected!");
+	onDisconnect(socket: SocketIO.Socket) {
+		console.log("Client " + socket.handshake.address + " has disconnected!");
 
-		if (this.player && this.player.game) {
-			this.player.game.playerDisconnected(this.player);		
+		if (socket.player && socket.player.game) {
+			socket.player.game.playerDisconnected(socket.player);		
 		}
 	}
 
-	onInput(data: string) {
-		if (this.player && this.player.game) {
-		    this.player.game.handleInput(data, this.player);
+	onInput(socket: SocketIO.Socket, data: string) {
+		if (socket.player && socket.player.game) {
+		    socket.player.game.handleInput(data, socket.player);
 		}
 	}
 
-	// To make compiler silent 
-	[x: string]: any;
+	onGameRequest(socket: SocketIO.Socket, data: PacketGameRequest) {
+		socket.player = new Player_SE(socket, data.playerName);
+		this.th.gameManager.processGameRequest(socket.player, data);
+	}
 }
 
 export {SocketManager_SE};

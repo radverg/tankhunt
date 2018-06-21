@@ -14,4 +14,9 @@ class ItemGroup_CL extends Phaser.Group {
     getItem(itemID: string): Item_CL | undefined {
         return this.items[itemID];
     }
+
+    addItem(item: Item_CL, itemID: string) {
+        this.add(item);
+        this.items[itemID] = item;
+    }
 }

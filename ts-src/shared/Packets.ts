@@ -115,6 +115,16 @@ interface PacketGameInfo {
     items: PacketItem[]
 }
 
+interface PacketGameStart extends PacketGameInfo {
+    gameType: string,
+    level: any
+}
+
+interface PacketGameRequest {
+    gameType: string,
+    playerName: string
+}
+
 interface PacketMovable {
     players: PacketTank[]
 }

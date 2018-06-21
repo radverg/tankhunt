@@ -19,6 +19,8 @@ abstract class THGame_SE {
 
     protected updateCounter: number = 0;
     protected capacity: number = 100;
+
+    protected gameType: string;
     
     constructor() { }
 

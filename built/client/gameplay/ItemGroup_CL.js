@@ -18,5 +18,9 @@ var ItemGroup_CL = (function (_super) {
     ItemGroup_CL.prototype.getItem = function (itemID) {
         return this.items[itemID];
     };
+    ItemGroup_CL.prototype.addItem = function (item, itemID) {
+        this.add(item);
+        this.items[itemID] = item;
+    };
     return ItemGroup_CL;
 }(Phaser.Group));

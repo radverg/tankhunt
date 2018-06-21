@@ -8,8 +8,6 @@ class PlayManager_CL  {
 	constructor(tankhunt: TH) {
 		this.th = tankhunt;
 
-		// Create test game
-		this.thGame = new Arena_CL(tankhunt.socketManager);
 	}
 
 	preload() { }
@@ -20,22 +18,32 @@ class PlayManager_CL  {
         TH.game.scale.pageAlignHorizontally = true;
         TH.game.world.setBounds(-400, -400, 3000, 2000);
         this.initInput();
-        TH.game.stage.backgroundColor = "#ffffff";
+        TH.game.stage.backgroundColor = "#D4DBE1";
         TH.game.stage.disableVisibilityChange = true;
-        this.thGame.init();
-        this.thGame.start();
-	}
+
+        // Everything is ready => send game request
+        this.th.socketManager.emitGameRequest({ playerName: "unnamed", gameType: "Arena" });
+        console.log("Requesting arena game...");
+    }
+    
+    processGameStart(packet: PacketGameStart) {
+        if (packet.gameType == "Arena") {
+            this.thGame = new Arena_CL(this.th.socketManager, packet);
+        } else {
+            console.log("Unknown game type!");
+        }
+    }
 
 	// This method is called by Phaser, it's the main game loop
 	update() {
-		if (this.thGame.running) {
+		if (this.thGame && this.thGame.running) {
 			this.thGame.update();
 		}
 	}
 
+    // This method is called by Phaser, useful for debugging
 	render() {
-        // Debug shit here
-        if (this.thGame.running) {
+        if (this.thGame && this.thGame.running) {
             this.thGame.debug();
         }
 	}

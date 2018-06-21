@@ -16,19 +16,11 @@ class THGame_CL {
 
 	constructor(socketManager: SocketManager_CL) {
 		this.socketManager = socketManager;
+		this.init();
 	
 	}
 
 	update() {
-		// Move and rotate players
-		// var pkeys = Object.keys(this.players);
-		// for (var i = 0; i < pkeys.length; i++) {
-		// 	this.players[pkeys[i]].tank.interpolate();
-		// 	this.players[pkeys[i]].tank.interpolateAngle();
-		// 	this.players[pkeys[i]].tank.updateTurret();
-		// 	this.players[pkeys[i]].tank.turret.interpolateAngle();
-		// }
-
 		this.playerGroup.updateTanks();
 	}
 
@@ -74,7 +66,7 @@ class THGame_CL {
 
 	processNewItem(data: PacketItem) {
 		let newItem = new Item_CL(data.x, data.y, data.typeIndex);
-		this.itemGroup.items[data.id] = newItem;
+		this.itemGroup.addItem(newItem, data.id);
 		this.onItemSpawn.dispatch(newItem);
 	}
 

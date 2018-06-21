@@ -10,8 +10,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Arena_CL = (function (_super) {
     __extends(Arena_CL, _super);
-    function Arena_CL(socketManager) {
-        return _super.call(this, socketManager) || this;
+    function Arena_CL(socketManager, packet) {
+        var _this = _super.call(this, socketManager) || this;
+        _this.processLevel(packet.level);
+        _this.processGameInfo(packet);
+        _this.running = true;
+        return _this;
     }
     Arena_CL.prototype.processRespawn = function (data) {
         var player = this.playerGroup.getPlayer(data.plID);

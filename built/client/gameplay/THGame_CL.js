@@ -9,6 +9,7 @@ var THGame_CL = (function () {
         this.onPlayerRemove = new Phaser.Signal();
         this.onItemSpawn = new Phaser.Signal();
         this.socketManager = socketManager;
+        this.init();
     }
     THGame_CL.prototype.update = function () {
         this.playerGroup.updateTanks();
@@ -49,7 +50,7 @@ var THGame_CL = (function () {
     ;
     THGame_CL.prototype.processNewItem = function (data) {
         var newItem = new Item_CL(data.x, data.y, data.typeIndex);
-        this.itemGroup.items[data.id] = newItem;
+        this.itemGroup.addItem(newItem, data.id);
         this.onItemSpawn.dispatch(newItem);
     };
     THGame_CL.prototype.processItemCollect = function (data) {

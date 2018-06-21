@@ -15,7 +15,7 @@ class Arena_SE extends THGame_SE {
 
     constructor(capacity: number) {
         super();
-        
+        this.gameType = "Arena";
         this.capacity = capacity || 20;
         this.running = true;
         this.itemManager = new ItemManager_SE(this);
@@ -38,8 +38,7 @@ class Arena_SE extends THGame_SE {
 
         this.players.push(player);
 
-        this.emitLevelPl(player);
-        this.emitInfoToPl(player);
+        this.emitGameStartToPl(player);
         this.emitNewPl(player);
         this.respawn(player);
 
@@ -168,6 +167,21 @@ class Arena_SE extends THGame_SE {
         }
 
         this.emitDataPl("gameInfo", packet, player);
+    }
+
+    emitGameStartToPl(player: Player_SE) {
+        var packet: PacketGameStart = {
+            players: [],
+            items: this.itemManager.getItemsPacket(),
+            gameType: this.gameType,
+            level: this.level
+        }
+
+        for (let i = 0; i < this.players.length; i++) {
+           packet.players.push(this.players[i].getInfoPacket());
+        }
+        this.emitDataPl("gameStart", packet, player);
+
     }
 
     /**

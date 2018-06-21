@@ -42,9 +42,6 @@ class LoadManager_CL  {
 	}
 	
 	create() {
-		// Phaser is completely loaded - call method on TankHunt class
-		this.th.onPhaserLoad();
-
 		TH.game.state.start("play");
 	}
 }

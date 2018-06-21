@@ -21,6 +21,7 @@ var Arena_SE = (function (_super) {
         var _this = _super.call(this) || this;
         _this.respawnDelay = 1000;
         _this.immunityTime = 3000;
+        _this.gameType = "Arena";
         _this.capacity = capacity || 20;
         _this.running = true;
         _this.itemManager = new ItemManager_SE_1.ItemManager_SE(_this);
@@ -35,8 +36,7 @@ var Arena_SE = (function (_super) {
         player.tank = new Tank_SE_1.Tank_SE(player);
         player.alive = false;
         this.players.push(player);
-        this.emitLevelPl(player);
-        this.emitInfoToPl(player);
+        this.emitGameStartToPl(player);
         this.emitNewPl(player);
         this.respawn(player);
         console.log("New player joined the arena!");
@@ -107,6 +107,18 @@ var Arena_SE = (function (_super) {
             packet.players.push(this.players[i].getInfoPacket());
         }
         this.emitDataPl("gameInfo", packet, player);
+    };
+    Arena_SE.prototype.emitGameStartToPl = function (player) {
+        var packet = {
+            players: [],
+            items: this.itemManager.getItemsPacket(),
+            gameType: this.gameType,
+            level: this.level
+        };
+        for (var i = 0; i < this.players.length; i++) {
+            packet.players.push(this.players[i].getInfoPacket());
+        }
+        this.emitDataPl("gameStart", packet, player);
     };
     Arena_SE.prototype.emitNewPl = function (player) {
         this.emitData("newPlayer", player.getInfoPacket());

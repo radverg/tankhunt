@@ -6,6 +6,7 @@ var TH = (function () {
     }
     TH.prototype.init = function () {
         this.initPhaser();
+        this.socketManager.connect();
     };
     TH.prototype.initPhaser = function () {
         var phaserConfig = {
@@ -17,9 +18,6 @@ var TH = (function () {
         TH.game.state.add("play", this.playManager);
         TH.game.state.start("load");
         TH.sizeCoeff = 70;
-    };
-    TH.prototype.onPhaserLoad = function () {
-        this.socketManager.connect();
     };
     return TH;
 }());

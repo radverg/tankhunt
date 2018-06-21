@@ -1,7 +1,6 @@
 var PlayManager_CL = (function () {
     function PlayManager_CL(tankhunt) {
         this.th = tankhunt;
-        this.thGame = new Arena_CL(tankhunt.socketManager);
     }
     PlayManager_CL.prototype.preload = function () { };
     PlayManager_CL.prototype.create = function () {
@@ -9,18 +8,26 @@ var PlayManager_CL = (function () {
         TH.game.scale.pageAlignHorizontally = true;
         TH.game.world.setBounds(-400, -400, 3000, 2000);
         this.initInput();
-        TH.game.stage.backgroundColor = "#ffffff";
+        TH.game.stage.backgroundColor = "#D4DBE1";
         TH.game.stage.disableVisibilityChange = true;
-        this.thGame.init();
-        this.thGame.start();
+        this.th.socketManager.emitGameRequest({ playerName: "unnamed", gameType: "Arena" });
+        console.log("Requesting arena game...");
+    };
+    PlayManager_CL.prototype.processGameStart = function (packet) {
+        if (packet.gameType == "Arena") {
+            this.thGame = new Arena_CL(this.th.socketManager, packet);
+        }
+        else {
+            console.log("Unknown game type!");
+        }
     };
     PlayManager_CL.prototype.update = function () {
-        if (this.thGame.running) {
+        if (this.thGame && this.thGame.running) {
             this.thGame.update();
         }
     };
     PlayManager_CL.prototype.render = function () {
-        if (this.thGame.running) {
+        if (this.thGame && this.thGame.running) {
             this.thGame.debug();
         }
     };

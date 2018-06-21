@@ -33,12 +33,16 @@ var SocketManager_CL = (function () {
             that.th.playManager.thGame.processRespawn(data); });
         this.socket.on("kill", function (data) { if (that.th.playManager.thGame)
             that.th.playManager.thGame.processKill(data); });
+        this.socket.on("gameStart", function (data) { that.th.playManager.processGameStart(data); });
     };
     SocketManager_CL.prototype.onConnection = function (socket) {
         console.log("Connected to the server!");
     };
     SocketManager_CL.prototype.emitInput = function (data) {
         this.socket.emit("input", data);
+    };
+    SocketManager_CL.prototype.emitGameRequest = function (data) {
+        this.socket.emit("gameRequest", data);
     };
     return SocketManager_CL;
 }());

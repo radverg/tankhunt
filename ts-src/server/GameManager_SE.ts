@@ -18,13 +18,20 @@ class GameManager_SE {
 	}
 
 	newPlayer(pl: Player_SE) {
-		this.testGame.addPlayer(pl);
+		//this.testGame.addPlayer(pl);
 	}
 
 	loopTick(deltaSec: number) {
 
 		for (var i = 0; i < this.games.length; i++) {
 			this.games[i].update(deltaSec);
+		}
+	}
+
+	processGameRequest(player: Player_SE, packet: PacketGameRequest) {
+		if (packet.gameType == "Arena") {
+			// For debugging, put player in test game
+			this.testGame.addPlayer(player);
 		}
 	}
 }
