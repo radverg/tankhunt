@@ -114,6 +114,16 @@ interface PacketGameInfo {
     players: PacketPlayerInfo[],
     items: PacketItem[]
 }
+interface PacketItemCollect {
+    /**
+     * Id of collected item
+     */
+    id: string;
+    /**
+     * Id of player that collected this item
+     */
+    playerID: string;
+}
 
 interface PacketGameStart extends PacketGameInfo {
     gameType: string,

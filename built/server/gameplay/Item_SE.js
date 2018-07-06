@@ -15,18 +15,30 @@ var GameObject_SE_1 = require("./utils/GameObject_SE");
 var Data = require("../../shared/Data");
 var Item_SE = (function (_super) {
     __extends(Item_SE, _super);
-    function Item_SE(x, y, typeIndex) {
-        var _this = _super.call(this, x, y, Data.Items.size, Data.Items.size) || this;
+    function Item_SE(typeIndex) {
+        var _this = _super.call(this, 0, 0, Data.Items.size, Data.Items.size) || this;
+        _this.owner = null;
+        _this.wornOut = false;
         _this.typeIndex = typeIndex || MyMath_SE_1.getRandomInt(0, Data.Items.types.length);
         return _this;
     }
     Item_SE.prototype.overlapsTank = function (tank) {
-        return tank.body.circularIntersect(this.body);
+        if (tank.body.circularIntersect(this.body)) {
+            return true;
+        }
+        return false;
     };
     Item_SE.prototype.getStatePacket = function () {
         var packet = _super.prototype.getStatePacket.call(this);
         packet.typeIndex = this.typeIndex;
         return packet;
+    };
+    Item_SE.prototype.bindOwner = function (player) {
+        this.owner = player;
+    };
+    Item_SE.prototype.onPress = function (game) {
+    };
+    Item_SE.prototype.onRelease = function (game) {
     };
     return Item_SE;
 }(GameObject_SE_1.GameObject_SE));

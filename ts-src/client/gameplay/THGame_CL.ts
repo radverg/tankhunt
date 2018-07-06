@@ -13,6 +13,7 @@ class THGame_CL {
 
 	onPlayerRemove: Phaser.Signal = new Phaser.Signal();
 	onItemSpawn: Phaser.Signal = new Phaser.Signal();
+	onItemCollect: Phaser.Signal = new Phaser.Signal();
 
 	constructor(socketManager: SocketManager_CL) {
 		this.socketManager = socketManager;
@@ -70,7 +71,19 @@ class THGame_CL {
 		this.onItemSpawn.dispatch(newItem);
 	}
 
-	processItemCollect(data: PacketItem) {
+	processItemCollect(data: PacketItemCollect) {
+		console.log("Item collected!");
+		
+		var item = this.itemGroup.getItem(data.id);
+		if (!item) return;
+
+		var collector = this.playerGroup.getPlayer(data.playerID);
+
+		if (collector === this.playerGroup.me) {
+			// This happens if item was collected by THIS player
+		}
+		item.getCollected();
+		this.onItemCollect.dispatch(item);		
 		// Collector id is in data.playerID
 		// if (this.items[data.id]) {
 		// 	this.items[data.id].getCollected();

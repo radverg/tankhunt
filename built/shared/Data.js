@@ -1,9 +1,9 @@
 var Data = {
     Items: {
-        size: 0.6,
-        types: [
-            "Laser"
-        ]
+        size: 0.9,
+        types: {
+            "LaserGun": 5
+        }
     },
     DefaultTank: {
         asset: "tankBodys",

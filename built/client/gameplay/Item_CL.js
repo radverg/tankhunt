@@ -11,14 +11,21 @@ var __extends = (this && this.__extends) || (function () {
 var Item_CL = (function (_super) {
     __extends(Item_CL, _super);
     function Item_CL(x, y, typeIndex) {
-        var _this = _super.call(this, TH.game, x * TH.sizeCoeff, y * TH.sizeCoeff, "blackRect") || this;
+        var _this = _super.call(this, TH.game, x * TH.sizeCoeff, y * TH.sizeCoeff, "items") || this;
         _this.anchor.setTo(0.5);
+        _this.frame = typeIndex || 1;
         _this.width = Data.Items.size * TH.sizeCoeff;
         _this.height = Data.Items.size * TH.sizeCoeff;
         return _this;
     }
-    Item_CL.prototype.getCollected = function () {
-        this.destroy();
+    Item_CL.prototype.getCollected = function (noeffect) {
+        if (noeffect === void 0) { noeffect = false; }
+        if (noeffect) {
+            this.destroy();
+            return;
+        }
+        var twn = TH.game.add.tween(this);
+        twn.to({ "width": 0, "height": 0 }, 500, Phaser.Easing.Back.In, true);
     };
     return Item_CL;
 }(Sprite));

@@ -88,7 +88,6 @@ class APCR_CL extends Shot_CL {
 }
 
 var Shots: { [key: string]: typeof Shot_CL } = {
-
 	LaserDirect: LaserDirect_CL,
 	APCR: APCR_CL,
 }

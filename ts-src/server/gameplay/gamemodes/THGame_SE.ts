@@ -84,7 +84,7 @@ abstract class THGame_SE {
     }
 
     emitItemSpawn(item: Item_SE) {
-        this.emitData("itemSpawn", {typeIndex: item.typeIndex, x: item.x, y: item.y});
+        this.emitData("itemSpawn", {typeIndex: item.typeIndex, x: item.x, y: item.y, id: item.id});
     }
 
     emitItemCollect(item: Item_SE, collector: Player_SE) {

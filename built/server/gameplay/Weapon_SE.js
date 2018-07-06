@@ -11,20 +11,23 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Shot_SE_1 = require("./Shot_SE");
-var Weapon_SE = (function () {
-    function Weapon_SE(owner) {
-        this._currentShot = null;
-        this._lastShotTime = 0;
-        this.shots = [];
-        this.wornOut = false;
-        this._reloadTime = 3000;
-        this._ammoCount = 10;
-        this._shotType = "none";
-        this._currentShot = null;
-        this._lastShotTime = 0;
-        this.owner = owner || null;
-        this.shots = [];
-        this.wornOut = false;
+var Item_SE_1 = require("./Item_SE");
+var Weapon_SE = (function (_super) {
+    __extends(Weapon_SE, _super);
+    function Weapon_SE(owner, typeIndex) {
+        if (typeIndex === void 0) { typeIndex = 0; }
+        var _this = _super.call(this, typeIndex) || this;
+        _this._currentShot = null;
+        _this._lastShotTime = 0;
+        _this.shots = [];
+        _this._reloadTime = 3000;
+        _this._ammoCount = 10;
+        _this._shotType = "none";
+        _this._currentShot = null;
+        _this._lastShotTime = 0;
+        _this.owner = owner || null;
+        _this.shots = [];
+        return _this;
     }
     Weapon_SE.prototype.shoot = function () {
         this._lastShotTime = Date.now();
@@ -34,18 +37,14 @@ var Weapon_SE = (function () {
     Weapon_SE.prototype.canShoot = function () {
         return (this._ammoCount > 0) && ((Date.now() - this._lastShotTime) > this._reloadTime);
     };
-    Weapon_SE.prototype.onPress = function (game) { };
-    ;
-    Weapon_SE.prototype.onRelease = function (game) { };
-    ;
     return Weapon_SE;
-}());
+}(Item_SE_1.Item_SE));
 exports.Weapon_SE = Weapon_SE;
 var LaserGun_SE = (function (_super) {
     __extends(LaserGun_SE, _super);
     function LaserGun_SE(owner) {
-        var _this = _super.call(this, owner) || this;
-        _this._ammoCount = 100;
+        var _this = _super.call(this, owner, 4) || this;
+        _this._ammoCount = 1;
         _this._shotType = "LaserDirect";
         return _this;
     }
@@ -86,8 +85,19 @@ var APCRGun_SE = (function (_super) {
     return APCRGun_SE;
 }(Weapon_SE));
 exports.APCRGun_SE = APCRGun_SE;
+var PulsarGun = (function (_super) {
+    __extends(PulsarGun, _super);
+    function PulsarGun(owner) {
+        var _this = _super.call(this, owner) || this;
+        _this._ammoCount = 10;
+        _this._shotType = "APCR";
+        _this._reloadTime = 150;
+        return _this;
+    }
+    return PulsarGun;
+}(Weapon_SE));
 var Guns = {
-    Laser: LaserGun_SE,
+    LaserGun: LaserGun_SE,
     APCRGun: APCRGun_SE
 };
 exports.Guns = Guns;

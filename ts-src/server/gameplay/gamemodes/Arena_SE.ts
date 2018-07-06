@@ -21,7 +21,7 @@ class Arena_SE extends THGame_SE {
         this.itemManager = new ItemManager_SE(this);
         this.itemManager.startSpawning();
         this.level = new Level_SE();
-        this.level.parseJSONLevel(Levels.arena1);  
+        this.level.parseJSONLevel(Levels.arena2);  
 
         console.log("Starting Arena game...");  
     }

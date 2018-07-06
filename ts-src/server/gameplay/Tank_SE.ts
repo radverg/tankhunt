@@ -2,13 +2,14 @@ import { GameObject_SE } from "./utils/GameObject_SE";
 import { Player_SE } from "./Player_SE";
 import { Weapon_SE, APCRGun_SE, LaserGun_SE } from "./Weapon_SE";
 import { Level_SE } from "./Level_SE";
+import { Item_SE } from "./Item_SE";
 
 class Tank_SE extends GameObject_SE {
 
 	owner: Player_SE;
 	turret: Turret;
 	apcrGun: Weapon_SE;
-	specialGun: Weapon_SE;
+	specialGun: Item_SE;
 	bouncerGun: Weapon_SE;
 
 	constructor(owner: Player_SE) {
@@ -22,7 +23,7 @@ class Tank_SE extends GameObject_SE {
 
 		// Weapons: ------------------------
 		this.apcrGun = new APCRGun_SE(owner);
-		this.specialGun = new LaserGun_SE(owner);
+		this.specialGun = null;
 		this.bouncerGun = null;
 	}
 

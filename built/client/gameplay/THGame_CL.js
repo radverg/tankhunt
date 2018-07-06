@@ -8,6 +8,7 @@ var THGame_CL = (function () {
         this.playerGroup = null;
         this.onPlayerRemove = new Phaser.Signal();
         this.onItemSpawn = new Phaser.Signal();
+        this.onItemCollect = new Phaser.Signal();
         this.socketManager = socketManager;
         this.init();
     }
@@ -54,6 +55,15 @@ var THGame_CL = (function () {
         this.onItemSpawn.dispatch(newItem);
     };
     THGame_CL.prototype.processItemCollect = function (data) {
+        console.log("Item collected!");
+        var item = this.itemGroup.getItem(data.id);
+        if (!item)
+            return;
+        var collector = this.playerGroup.getPlayer(data.playerID);
+        if (collector === this.playerGroup.me) {
+        }
+        item.getCollected();
+        this.onItemCollect.dispatch(item);
     };
     THGame_CL.prototype.processGameInfo = function (data) {
         for (var pl in data.players) {

@@ -27,7 +27,7 @@ var Arena_SE = (function (_super) {
         _this.itemManager = new ItemManager_SE_1.ItemManager_SE(_this);
         _this.itemManager.startSpawning();
         _this.level = new Level_SE_1.Level_SE();
-        _this.level.parseJSONLevel(Levels.arena1);
+        _this.level.parseJSONLevel(Levels.arena2);
         console.log("Starting Arena game...");
         return _this;
     }

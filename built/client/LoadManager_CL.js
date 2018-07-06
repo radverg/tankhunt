@@ -10,6 +10,7 @@ var LoadManager_CL = (function () {
         this.spritesheets = [
             { assetName: "tankBodys", path: imagesPath + "tank_bodys.png", frameSizeX: 96, frameSizeY: 138, frameCount: 4 },
             { assetName: "defaultTurrets", path: imagesPath + "default_turrets.png", frameSizeX: 60, frameSizeY: 194, frameCount: 4 },
+            { assetName: "items", path: imagesPath + "items.png", frameSizeX: 46, frameSizeY: 46, frameCount: 8 },
         ];
     }
     LoadManager_CL.prototype.preload = function () {

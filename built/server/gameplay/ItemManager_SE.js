@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Item_SE_1 = require("./Item_SE");
+var Weapon_SE_1 = require("./Weapon_SE");
 var Data = require("../../shared/Data");
 var ItemManager_SE = (function () {
     function ItemManager_SE(thGame) {
@@ -10,7 +10,7 @@ var ItemManager_SE = (function () {
         this.thGame = thGame;
     }
     ItemManager_SE.prototype.update = function () {
-        if (this.spawning && this.thGame.players.length > 0 && Date.now() - this.lastTimeSpawn > 500 * (1 + this.items.length)) {
+        if (this.spawning && this.thGame.players.length > 0 && Date.now() - this.lastTimeSpawn > 1000 * (1 + this.items.length)) {
             this.spawnItem();
         }
     };
@@ -19,7 +19,8 @@ var ItemManager_SE = (function () {
     };
     ItemManager_SE.prototype.spawnItem = function () {
         var newPos = this.thGame.level.getRandomSpawnItems(Data.Items.size, Data.Items.size);
-        var newItem = new Item_SE_1.Item_SE(newPos.x, newPos.y, 0);
+        var newItem = new Weapon_SE_1.Guns.LaserGun();
+        newItem.setPos(newPos.x, newPos.y);
         this.lastTimeSpawn = Date.now();
         this.items.push(newItem);
         this.thGame.emitItemSpawn(newItem);
@@ -29,6 +30,8 @@ var ItemManager_SE = (function () {
         if (tank.specialGun === null || tank.specialGun.wornOut) {
             for (var i = 0; i < this.items.length; i++) {
                 if (this.items[i].overlapsTank(tank)) {
+                    tank.specialGun = this.items[i];
+                    this.items[i].bindOwner(tank.owner);
                     this.thGame.emitItemCollect(this.items[i], tank.owner);
                     this.items.splice(i, 1);
                     break;

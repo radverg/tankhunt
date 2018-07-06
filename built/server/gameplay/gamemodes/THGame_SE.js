@@ -42,7 +42,7 @@ var THGame_SE = (function () {
         this.emitData("kill", { killerID: killerID, killedID: killedID, shotID: shotID });
     };
     THGame_SE.prototype.emitItemSpawn = function (item) {
-        this.emitData("itemSpawn", { typeIndex: item.typeIndex, x: item.x, y: item.y });
+        this.emitData("itemSpawn", { typeIndex: item.typeIndex, x: item.x, y: item.y, id: item.id });
     };
     THGame_SE.prototype.emitItemCollect = function (item, collector) {
         this.emitData("itemCollect", { id: item.id, playerID: collector.id });

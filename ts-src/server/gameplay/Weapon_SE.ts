@@ -1,19 +1,19 @@
 import { Player_SE } from "./Player_SE";
 import { APCR_SE, LaserDirect_SE, Shot_SE } from "./Shot_SE";
 import { THGame_SE } from "./gamemodes/THGame_SE";
+import { Item_SE } from "./Item_SE";
 
-abstract class Weapon_SE {
+abstract class Weapon_SE extends Item_SE {
 
 	protected _reloadTime: number;
 	protected _ammoCount: number;
 	protected _shotType: string;
 	protected _currentShot: Shot_SE | null = null;
 	protected _lastShotTime: number = 0;
-	public owner: Player_SE;
 	protected shots: Shot_SE[] = [];
-	public wornOut: boolean = false;
-
-	constructor(owner: Player_SE) {
+	
+	constructor(owner: Player_SE, typeIndex: number = 0) {
+		super(typeIndex);
 		this._reloadTime = 3000;
 		this._ammoCount = 10;
 		this._shotType = "none";
@@ -23,8 +23,6 @@ abstract class Weapon_SE {
 
 		this.owner = owner || null;
 		this.shots = [];
-
-		this.wornOut = false;
 	}
 
 	shoot() {
@@ -36,10 +34,6 @@ abstract class Weapon_SE {
 	canShoot() {
 		return (this._ammoCount > 0) && ((Date.now() - this._lastShotTime) > this._reloadTime);
 	}
-
-	onPress(game: THGame_SE){};
-	onRelease(game: THGame_SE){};
-
 }
 
 
@@ -47,10 +41,10 @@ abstract class Weapon_SE {
 // Laser direct ------------------------------------------------------------------------------
 class LaserGun_SE extends Weapon_SE {
 
-	constructor(owner: Player_SE) {
-		super(owner);
+	constructor(owner?: Player_SE) {
+		super(owner, 4);
 
-		this._ammoCount = 100;
+		this._ammoCount = 1;
 		this._shotType = "LaserDirect";
 	}
 
@@ -98,8 +92,20 @@ class APCRGun_SE extends Weapon_SE {
 	}
 }
 
+// Pulsar ----------------------------------------------------------------------------------
+class PulsarGun extends Weapon_SE {
+
+	constructor(owner: Player_SE) {
+		super(owner); 
+
+		this._ammoCount = 10;
+		this._shotType = "APCR";
+		this._reloadTime = 150;
+	}
+}
+
  var Guns = {
- 	Laser: LaserGun_SE,
+ 	LaserGun: LaserGun_SE,
  	APCRGun: APCRGun_SE
  }
 

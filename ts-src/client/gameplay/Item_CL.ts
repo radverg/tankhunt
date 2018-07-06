@@ -3,9 +3,10 @@
 class Item_CL extends Sprite {
 
     constructor(x: number, y: number, typeIndex: number) {
-        super(TH.game, x * TH.sizeCoeff, y * TH.sizeCoeff, "blackRect"); // For now tits black rect, but it will be spritesheet
+        super(TH.game, x * TH.sizeCoeff, y * TH.sizeCoeff, "items"); // For now tits black rect, but it will be spritesheet
 
         this.anchor.setTo(0.5);
+        this.frame = typeIndex || 1;
         
         this.width = Data.Items.size * TH.sizeCoeff;
         this.height = Data.Items.size * TH.sizeCoeff;
@@ -13,7 +14,16 @@ class Item_CL extends Sprite {
       //  TH.game.add.existing(this);
     }
 
-    public getCollected() {
-        this.destroy();
+    getCollected(noeffect: boolean = false) {
+
+        if (noeffect) {
+            this.destroy();
+            return;
+        }
+
+        // Effect
+        let twn = TH.game.add.tween(this);
+        twn.to({ "width": 0, "height": 0 }, 500, Phaser.Easing.Back.In, true);        
+
     }
 }
