@@ -3,10 +3,12 @@
 class TH {
 
     static game: Phaser.Game;
+    static timeManager: TimeManager_CL;
 
     public socketManager: SocketManager_CL;
     public loadManager: LoadManager_CL;
     public playManager: PlayManager_CL;
+    public tManager: TimeManager_CL;
 
     static sizeCoeff: number;
     
@@ -15,6 +17,9 @@ class TH {
         this.socketManager = new SocketManager_CL(this);
         this.loadManager = new LoadManager_CL(this);
         this.playManager = new PlayManager_CL(this);
+
+        this.tManager = new TimeManager_CL(this.socketManager);
+        TH.timeManager = this.tManager;
     }
 
     init() {
@@ -23,7 +28,7 @@ class TH {
     }
     
     initPhaser() {
-
+        
         var phaserConfig = {
             width: 1920,
             height: 1080,

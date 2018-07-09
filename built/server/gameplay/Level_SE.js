@@ -256,6 +256,12 @@ var Level_SE = (function () {
         }
         tank.body.updateVertices();
     };
+    Level_SE.prototype.getPointBounce = function (x, y) {
+        var offset = this.squareSize / 2;
+        var left = this.getSqrX(x) + offset;
+        var right = this.getSqrX(x) + this.squareSize - offset;
+        return x === left || x === right;
+    };
     Level_SE.prototype.getRandomSpawnPos = function (sqrX, sqrY, width, height) {
         var minX = sqrX * this.squareSize + width / 2;
         var maxX = (sqrX + 1) * this.squareSize - width / 2;

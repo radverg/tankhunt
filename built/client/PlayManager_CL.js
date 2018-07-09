@@ -12,6 +12,9 @@ var PlayManager_CL = (function () {
         TH.game.stage.disableVisibilityChange = true;
         this.th.socketManager.emitGameRequest({ playerName: "unnamed", gameType: "Arena" });
         console.log("Requesting arena game...");
+        this.pingerTimer = TH.game.time.create(false);
+        this.pingerTimer.loop(3000, TH.timeManager.synchronizeRequest, TH.timeManager);
+        this.pingerTimer.start(1000);
     };
     PlayManager_CL.prototype.processGameStart = function (packet) {
         if (packet.gameType == "Arena") {

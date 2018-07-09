@@ -12,6 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameObject_SE_1 = require("./utils/GameObject_SE");
 var MyMath_SE_1 = require("./utils/MyMath_SE");
+var Geometry_SE_1 = require("./utils/Geometry_SE");
 var Shot_SE = (function (_super) {
     __extends(Shot_SE, _super);
     function Shot_SE(weapon, startX, startY, startAng) {
@@ -80,8 +81,8 @@ var LaserDirect_SE = (function (_super) {
         _this.removeAfterHit = false;
         _this.maxSpeed = 40;
         _this.fullForward();
-        var points = game.level.levelRect.simpleLineIntPoints(startX, startY, startX + Math.sin(startAng) * 1000, startY
-            - Math.cos(startAng) * 1000);
+        var points = game.level.levelRect.simpleLineIntPoints(startX, startY, startX + Math.sin(startAng) * 10000, startY
+            - Math.cos(startAng) * 10000);
         _this.endPoint = points[0];
         return _this;
     }
@@ -104,8 +105,107 @@ var LaserDirect_SE = (function (_super) {
     return LaserDirect_SE;
 }(Shot_SE));
 exports.LaserDirect_SE = LaserDirect_SE;
+var FlatLaser_SE = (function (_super) {
+    __extends(FlatLaser_SE, _super);
+    function FlatLaser_SE(weapon, startX, startY, startAng, game) {
+        var _this = _super.call(this, weapon, startX, startY, startAng) || this;
+        _this.point1 = new Geometry_SE_1.Vec2(0, 0);
+        _this.point2 = new Geometry_SE_1.Vec2(0, 0);
+        _this.size = 3;
+        _this.type = "FlatLaser";
+        _this.removeAfterHit = false;
+        _this.maxSpeed = 20;
+        _this.fullForward();
+        var points = game.level.levelRect.simpleLineIntPoints(startX, startY, startX + Math.sin(startAng) * 10000, startY
+            - Math.cos(startAng) * 10000);
+        _this.endPoint = points[0];
+        _this.setPoints();
+        return _this;
+    }
+    FlatLaser_SE.prototype.setPoints = function () {
+        this.point1.set(this.x + (Math.sin(this.angle + (Math.PI / 2))) * (this.size / 2), this.y - (Math.cos(this.angle + (Math.PI / 2))) * (this.size / 2));
+        this.point2.set(this.x + (Math.sin(this.angle - (Math.PI / 2))) * (this.size / 2), this.y - (Math.cos(this.angle - (Math.PI / 2))) * (this.size / 2));
+    };
+    FlatLaser_SE.prototype.getStartPacket = function () {
+        var packet = _super.prototype.getStartPacket.call(this);
+        packet.endX = this.endPoint.x;
+        packet.endY = this.endPoint.y;
+        packet.speed = this.maxSpeed;
+        return packet;
+    };
+    FlatLaser_SE.prototype.isHittingTank = function (tank) {
+        if (tank.owner == this.owner)
+            return false;
+        return tank.body.lineInt(this.point1.x, this.point1.y, this.point2.x, this.point2.y);
+    };
+    FlatLaser_SE.prototype.update = function (deltaSec) {
+        GameObject_SE_1.GameObject_SE.prototype.update.call(this, deltaSec);
+        this.setPoints();
+        this.remove = this.isBeyond();
+    };
+    return FlatLaser_SE;
+}(Shot_SE));
+exports.FlatLaser_SE = FlatLaser_SE;
+var Bouncer_SE = (function (_super) {
+    __extends(Bouncer_SE, _super);
+    function Bouncer_SE(weapon, startX, startY, startAng, game) {
+        var _this = _super.call(this, weapon, startX, startY, startAng) || this;
+        _this.maxLength = 30;
+        _this.maxBounces = 5;
+        _this.type = "Bouncer";
+        _this.removeAfterHit = true;
+        _this.maxSpeed = 5;
+        _this.fullForward();
+        var currLength = 0;
+        var currBounces = 0;
+        var nextStartX = startX;
+        var nextStartY = startY;
+        var nextDirX = _this.direction.x;
+        var nextDirY = _this.direction.y;
+        while (currLength < _this.maxLength) {
+            var point = game.level.wallCheckLoop(nextStartX, nextStartY, nextDirX, nextDirY);
+            var newLength = MyMath_SE_1.dist(point.x, point.y, nextStartX, nextStartY);
+            if (currLength + newLength > _this.maxLength) {
+                newLength = _this.maxLength - currLength;
+                point.x = nextStartX + nextDirX * newLength;
+                point.y = nextStartY + nextDirY * newLength;
+            }
+            if (game.level.getPointBounce(point.x, point.y)) {
+                nextDirX *= -1;
+            }
+            else {
+                nextDirY *= -1;
+            }
+            nextStartX = point.x;
+            nextStartY = point.y;
+            currLength += newLength;
+            _this.bouncePoints.push({ x: point.x, y: point.y, ang: Math.atan2(nextDirX, -nextDirY) });
+        }
+        return _this;
+    }
+    Bouncer_SE.prototype.getStartPacket = function () {
+        var packet = _super.prototype.getStartPacket.call(this);
+        packet.endX = this.endPoint.x;
+        packet.endY = this.endPoint.y;
+        packet.speed = this.maxSpeed;
+        packet.pts = this.bouncePoints;
+        return packet;
+    };
+    Bouncer_SE.prototype.isHittingTank = function (tank) {
+        if (tank.body.rectCircleVSCircle((this.x + this.prevBody.cX) / 2, (this.y + this.prevBody.cY) / 2, MyMath_SE_1.dist(this.x, this.y, this.prevBody.cX, this.prevBody.cY) / 2)) {
+            return tank.body.lineInt(this.x, this.y, this.prevBody.cX, this.prevBody.cY);
+        }
+        return false;
+    };
+    Bouncer_SE.prototype.update = function (deltaSec) {
+        GameObject_SE_1.GameObject_SE.prototype.update.call(this, deltaSec);
+        this.remove = this.isBeyond();
+    };
+    return Bouncer_SE;
+}(Shot_SE));
 var Shots = {
     APCR_SE: APCR_SE,
-    LaserDirect_SE: LaserDirect_SE
+    LaserDirect_SE: LaserDirect_SE,
+    FlatLaser_SE: FlatLaser_SE
 };
 exports.Shots = Shots;

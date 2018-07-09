@@ -4,6 +4,7 @@ import { dist } from "./utils/MyMath_SE";
 import { Tank_SE } from "./Tank_SE";
 import { Weapon_SE } from "./Weapon_SE";
 import { THGame_SE } from "./gamemodes/THGame_SE";
+import { Vec2 } from "./utils/Geometry_SE";
 
 // Shot constructor takes the weapon it was shot from as a parameter
 // This class is abstract (it is not included in module.exports)
@@ -108,8 +109,8 @@ class LaserDirect_SE extends Shot_SE {
 		this.fullForward();
 
 		// Get the end point (at level border)
-		var points = game.level.levelRect.simpleLineIntPoints(startX, startY, startX + Math.sin(startAng) * 1000, startY 
-			- Math.cos(startAng) * 1000);
+		var points = game.level.levelRect.simpleLineIntPoints(startX, startY, startX + Math.sin(startAng) * 10000, startY 
+			- Math.cos(startAng) * 10000);
 		this.endPoint = points[0];
 
 	}
@@ -133,10 +134,142 @@ class LaserDirect_SE extends Shot_SE {
 	}
 }
 
+// Flat laser -------------------------------
+class FlatLaser_SE extends Shot_SE {
+	
+	private point1: Vec2 = new Vec2(0, 0);
+	private point2: Vec2 = new Vec2(0, 0);
+
+	private size: number = 3;
+
+	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
+		super(weapon, startX, startY, startAng);
+
+		this.type = "FlatLaser";
+		this.removeAfterHit = false;
+		this.maxSpeed = 20;
+		this.fullForward();
+
+		// Get the end point (at level border)
+		var points = game.level.levelRect.simpleLineIntPoints(startX, startY, startX + Math.sin(startAng) * 10000, startY 
+			- Math.cos(startAng) * 10000);
+		this.endPoint = points[0];
+
+		this.setPoints();
+
+	}
+
+	private setPoints() {
+		this.point1.set(this.x + (Math.sin(this.angle + (Math.PI / 2))) * (this.size / 2), 
+			this.y - (Math.cos(this.angle + (Math.PI / 2))) * (this.size / 2));
+
+		this.point2.set(this.x + (Math.sin(this.angle - (Math.PI / 2))) * (this.size / 2), 
+			this.y - (Math.cos(this.angle - (Math.PI / 2))) * (this.size / 2));
+	}
+
+	getStartPacket() {
+		var packet = super.getStartPacket();
+		packet.endX = this.endPoint.x;
+		packet.endY = this.endPoint.y;
+		packet.speed = this.maxSpeed;
+		return packet;
+	}
+
+	isHittingTank(tank: Tank_SE) {
+		if (tank.owner == this.owner) return false; // This laser cannot kill its owner
+		return tank.body.lineInt(this.point1.x, this.point1.y, this.point2.x, this.point2.y);
+	}
+
+	update(deltaSec: number) {
+		GameObject_SE.prototype.update.call(this, deltaSec);
+		this.setPoints();
+		this.remove = this.isBeyond();
+	}
+}
+
+// Bouncing shot -------------------------------
+class Bouncer_SE extends Shot_SE {
+	
+	private maxLength: number = 30;
+	private maxBounces: number = 5;
+	private bouncePoints: any[];
+
+	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
+		super(weapon, startX, startY, startAng);
+
+		this.type = "Bouncer";
+		this.removeAfterHit = true;
+		this.maxSpeed = 5;
+		this.fullForward();
+
+		// Get the end points (at level border)
+		let currLength = 0;
+		let currBounces = 0;
+		let nextStartX = startX;
+		let nextStartY = startY;
+		let nextDirX = this.direction.x;
+		let nextDirY = this.direction.y;
+
+		while (currLength < this.maxLength)
+		{
+			let point = game.level.wallCheckLoop(nextStartX, nextStartY, nextDirX, nextDirY);
+			let newLength = dist(point.x, point.y, nextStartX, nextStartY);
+
+			if (currLength + newLength > this.maxLength) {
+				// Well this was too much far away => make it short
+				newLength = this.maxLength - currLength;
+				point.x = nextStartX + nextDirX * newLength;
+				point.y = nextStartY + nextDirY * newLength;
+			}
+
+			if (game.level.getPointBounce(point.x, point.y)) {
+				nextDirX *= -1;
+			} else {
+				nextDirY *= -1;
+			}
+
+			nextStartX = point.x;
+			nextStartY = point.y;
+
+			currLength += newLength;
+
+			this.bouncePoints.push({x: point.x, y: point.y, ang: Math.atan2(nextDirX, -nextDirY)});
+		}
+
+
+	}
+
+	getStartPacket() {
+		var packet = super.getStartPacket();
+		packet.endX = this.endPoint.x;
+		packet.endY = this.endPoint.y;
+		packet.speed = this.maxSpeed;
+		packet.pts = this.bouncePoints;
+		return packet;
+	}
+
+	isHittingTank(tank: Tank_SE) {
+		if (tank.body.rectCircleVSCircle((this.x + this.prevBody.cX) / 2, (this.y + this.prevBody.cY) / 2, dist(this.x, this.y, this.prevBody.cX,
+			this.prevBody.cY) / 2)) {
+
+			return tank.body.lineInt(this.x, this.y, this.prevBody.cX, this.prevBody.cY);
+		}
+
+		return false;
+	}
+
+	update(deltaSec: number) {
+		GameObject_SE.prototype.update.call(this, deltaSec);
+		this.remove = this.isBeyond();
+	}
+}
+
+
 var Shots = {
  	APCR_SE: APCR_SE,
- 	LaserDirect_SE: LaserDirect_SE
+	LaserDirect_SE: LaserDirect_SE,
+	FlatLaser_SE: FlatLaser_SE
  }
 
- export { Shots, LaserDirect_SE, APCR_SE, Shot_SE };
+ export { Shots, LaserDirect_SE, APCR_SE, Shot_SE, FlatLaser_SE };
 

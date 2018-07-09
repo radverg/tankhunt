@@ -19,6 +19,8 @@ var THGame_CL = (function () {
         if (this.playerGroup.me)
             TH.game.debug.spriteInfo(this.playerGroup.me.tank, 10, 10, "black");
         TH.game.debug.cameraInfo(TH.game.camera, 10, 500, "black");
+        if (TH.timeManager.ping)
+            TH.game.debug.text(TH.timeManager.ping.toString(), 10, 1000);
     };
     THGame_CL.prototype.processPlayerRemove = function (playerID) {
         var player = this.playerGroup.getPlayer(playerID);

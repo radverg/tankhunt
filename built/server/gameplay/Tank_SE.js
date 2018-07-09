@@ -21,7 +21,7 @@ var Tank_SE = (function (_super) {
         _this.maxSpeed = 4;
         _this.maxAngularVel = Math.PI;
         _this.apcrGun = new Weapon_SE_1.APCRGun_SE(owner);
-        _this.specialGun = null;
+        _this.specialGun = new Weapon_SE_1.FlatLaserGun_SE(owner);
         _this.bouncerGun = null;
         return _this;
     }

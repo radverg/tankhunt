@@ -23,7 +23,7 @@ var Shot_CL = (function (_super) {
         _this.rotation = dataPack.rot;
         _this.startTime = dataPack.startTime;
         _this.speed = dataPack.speed * TH.sizeCoeff;
-        _this.delay = (Date.now() - dataPack.startTime) || 16;
+        _this.delay = TH.timeManager.getDelay(dataPack.startTime) || 16;
         return _this;
     }
     return Shot_CL;
@@ -38,7 +38,7 @@ var LaserDirect_CL = (function (_super) {
         _this.speed = dataPack.speed * TH.sizeCoeff;
         _this.dist = TH.game.math.distance(_this.endX, _this.endY, _this.startX, _this.startY);
         _this.time = (_this.dist / _this.speed) * 1000;
-        _this.tint = 0xF80000;
+        _this.tint = 0x7D1ADF;
         _this.height = (_this.speed / 1000) * _this.delay;
         TH.game.add.existing(_this);
         var twn = TH.game.add.tween(_this);
@@ -68,7 +68,28 @@ var APCR_CL = (function (_super) {
     }
     return APCR_CL;
 }(Shot_CL));
+var FlatLaser_CL = (function (_super) {
+    __extends(FlatLaser_CL, _super);
+    function FlatLaser_CL(dataPack) {
+        var _this = _super.call(this, dataPack) || this;
+        _this.size = 3 * TH.sizeCoeff;
+        _this.anchor.setTo(0.5);
+        _this.width = _this.size;
+        _this.height = 0.1 * TH.sizeCoeff;
+        _this.dist = TH.game.math.distance(_this.endX, _this.endY, _this.startX, _this.startY);
+        _this.time = (_this.dist / _this.speed) * 1000;
+        _this.tint = 0x7D1ADF;
+        TH.game.add.existing(_this);
+        var twn = TH.game.add.tween(_this);
+        twn.to({ x: _this.endX, y: _this.endY }, _this.time);
+        twn.onComplete.add(function () { this.destroy(); }, _this);
+        twn.start();
+        return _this;
+    }
+    return FlatLaser_CL;
+}(Shot_CL));
 var Shots = {
     LaserDirect: LaserDirect_CL,
     APCR: APCR_CL,
+    FlatLaser: FlatLaser_CL
 };

@@ -1,5 +1,5 @@
 import { Player_SE } from "./Player_SE";
-import { APCR_SE, LaserDirect_SE, Shot_SE } from "./Shot_SE";
+import { APCR_SE, LaserDirect_SE, Shot_SE, FlatLaser_SE } from "./Shot_SE";
 import { THGame_SE } from "./gamemodes/THGame_SE";
 import { Item_SE } from "./Item_SE";
 
@@ -104,9 +104,44 @@ class PulsarGun extends Weapon_SE {
 	}
 }
 
- var Guns = {
- 	LaserGun: LaserGun_SE,
- 	APCRGun: APCRGun_SE
+ 
+ //- ---------------------------
+
+ // Flat laser --------------------------------------------
+ class FlatLaserGun_SE extends Weapon_SE {
+
+	/**
+	 *
+	 */
+	constructor(owner: Player_SE = null) {
+		super(owner);
+		this._shotType = "FlatLaser";
+
+		this._ammoCount = 10;
+		this._reloadTime = 500;
+	}
+
+	onPress(game: THGame_SE) {
+		// Shoot here
+		if (this.canShoot()) {
+			var shps = this.owner.tank.getLaserPosition();
+
+			if (!game.level.levelRect.contains(shps.x, shps.y)) {
+				return;
+			}
+
+			this.shoot();
+			var shot = new FlatLaser_SE(this, shps.x, shps.y, this.owner.tank.angle, game);
+			game.shoot(shot);
+		}
+	}
  }
 
- export { Guns, APCRGun_SE, LaserGun_SE, Weapon_SE };
+ var Guns = {
+	LaserGun: LaserGun_SE,
+	APCRGun: APCRGun_SE,
+	FlatLaserGun: FlatLaserGun_SE
+}
+
+
+ export { Guns, APCRGun_SE, LaserGun_SE, Weapon_SE, FlatLaserGun_SE };

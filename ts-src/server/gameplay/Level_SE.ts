@@ -369,6 +369,21 @@ class Level_SE {
 
     }
 
+    /**
+     * Figures out on which "wall axis" is this point, allowing to change direction correctly
+     * True = horizontal
+     * False = vertical
+     * @param x 
+     * @param y 
+     */
+    getPointBounce(x: number, y: number): boolean {
+        let offset = this.squareSize / 2;
+        let left = this.getSqrX(x) + offset;
+        let right = this.getSqrX(x) + this.squareSize - offset;
+
+        return x === left || x === right;
+    }
+
     getRandomSpawnPos(sqrX: number, sqrY: number, width: number, height: number) {
         var minX = sqrX * this.squareSize + width / 2;
         var maxX = (sqrX + 1) * this.squareSize - width / 2;

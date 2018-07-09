@@ -34,7 +34,7 @@ class Shot_CL extends Sprite {
 		this.speed = dataPack.speed * TH.sizeCoeff;
 		
 		
-		this.delay = (Date.now() - dataPack.startTime) || 16;
+		this.delay = TH.timeManager.getDelay(dataPack.startTime) || 16;
 	}
 }
 
@@ -51,7 +51,7 @@ class LaserDirect_CL extends Shot_CL {
 		this.dist = TH.game.math.distance(this.endX, this.endY, this.startX, this.startY);
 		this.time = (this.dist / this.speed) * 1000;
 
-		this.tint = 0xF80000;
+		this.tint = 0x7D1ADF;
 
 		// Start laser
 		// Move laser forwards according to delay
@@ -87,7 +87,37 @@ class APCR_CL extends Shot_CL {
 	}
 }
 
+class FlatLaser_CL extends Shot_CL {
+
+	private size: number; 
+
+	constructor(dataPack: PacketShotStart) {
+		super(dataPack);
+
+		this.size = 3 * TH.sizeCoeff;
+
+		this.anchor.setTo(0.5);
+		this.width = this.size;
+		this.height = 0.1 * TH.sizeCoeff;
+
+		this.dist = TH.game.math.distance(this.endX, this.endY, this.startX, this.startY);
+		this.time = (this.dist / this.speed) * 1000;
+
+		this.tint = 0x7D1ADF;
+
+		// Start this shot
+		TH.game.add.existing(this);
+		let twn = TH.game.add.tween(this);
+		twn.to({ x: this.endX, y: this.endY }, this.time);
+		twn.onComplete.add(function() { this.destroy(); }, this);
+		twn.start();
+
+	
+	}
+}
+
 var Shots: { [key: string]: typeof Shot_CL } = {
 	LaserDirect: LaserDirect_CL,
 	APCR: APCR_CL,
+	FlatLaser: FlatLaser_CL
 }

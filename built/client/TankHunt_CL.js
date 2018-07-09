@@ -3,6 +3,8 @@ var TH = (function () {
         this.socketManager = new SocketManager_CL(this);
         this.loadManager = new LoadManager_CL(this);
         this.playManager = new PlayManager_CL(this);
+        this.tManager = new TimeManager_CL(this.socketManager);
+        TH.timeManager = this.tManager;
     }
     TH.prototype.init = function () {
         this.initPhaser();

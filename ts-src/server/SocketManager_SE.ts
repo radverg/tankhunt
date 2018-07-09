@@ -30,7 +30,8 @@ class SocketManager_SE {
 	initSocket(socket: SocketIO.Socket) {
 		socket.on("disconnect", () => this.onDisconnect(socket));
 		socket.on("input", (data: string) => this.onInput(socket, data));
-		socket.on("gameRequest", (data: PacketGameRequest) => this.onGameRequest(socket, data))
+		socket.on("gameRequest", (data: PacketGameRequest) => this.onGameRequest(socket, data));
+		socket.on("pingg", () => { socket.emit("pongg", Date.now()); });
 	}
 
 	// Socket emit callbacks -------------------------

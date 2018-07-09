@@ -85,7 +85,11 @@ interface PacketShotStart extends PacketGameObject {
     /**
      * Speed of the shot
      */
-    speed?: number
+    speed?: number,
+    /**
+     * Bounce points of the shot
+     */
+    pts?: {x:number, y: number, ang: number}[]
 }
 
 interface PacketRespawn extends PacketTank {

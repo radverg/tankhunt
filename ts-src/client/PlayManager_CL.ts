@@ -4,6 +4,7 @@ class PlayManager_CL  {
 
     public th: TH;
     public thGame: THGame_CL;
+    private pingerTimer: Phaser.Timer;
 
 	constructor(tankhunt: TH) {
 		this.th = tankhunt;
@@ -20,10 +21,14 @@ class PlayManager_CL  {
         this.initInput();
         TH.game.stage.backgroundColor = "#D4DBE1";
         TH.game.stage.disableVisibilityChange = true;
-
+        
         // Everything is ready => send game request
         this.th.socketManager.emitGameRequest({ playerName: "unnamed", gameType: "Arena" });
         console.log("Requesting arena game...");
+        this.pingerTimer = TH.game.time.create(false);
+        this.pingerTimer.loop(3000, TH.timeManager.synchronizeRequest, TH.timeManager);
+        this.pingerTimer.start(1000);
+       
     }
     
     processGameStart(packet: PacketGameStart) {

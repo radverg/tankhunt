@@ -96,8 +96,33 @@ var PulsarGun = (function (_super) {
     }
     return PulsarGun;
 }(Weapon_SE));
+var FlatLaserGun_SE = (function (_super) {
+    __extends(FlatLaserGun_SE, _super);
+    function FlatLaserGun_SE(owner) {
+        if (owner === void 0) { owner = null; }
+        var _this = _super.call(this, owner) || this;
+        _this._shotType = "FlatLaser";
+        _this._ammoCount = 10;
+        _this._reloadTime = 500;
+        return _this;
+    }
+    FlatLaserGun_SE.prototype.onPress = function (game) {
+        if (this.canShoot()) {
+            var shps = this.owner.tank.getLaserPosition();
+            if (!game.level.levelRect.contains(shps.x, shps.y)) {
+                return;
+            }
+            this.shoot();
+            var shot = new Shot_SE_1.FlatLaser_SE(this, shps.x, shps.y, this.owner.tank.angle, game);
+            game.shoot(shot);
+        }
+    };
+    return FlatLaserGun_SE;
+}(Weapon_SE));
+exports.FlatLaserGun_SE = FlatLaserGun_SE;
 var Guns = {
     LaserGun: LaserGun_SE,
-    APCRGun: APCRGun_SE
+    APCRGun: APCRGun_SE,
+    FlatLaserGun: FlatLaserGun_SE
 };
 exports.Guns = Guns;

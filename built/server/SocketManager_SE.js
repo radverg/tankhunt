@@ -19,6 +19,7 @@ var SocketManager_SE = (function () {
         socket.on("disconnect", function () { return _this.onDisconnect(socket); });
         socket.on("input", function (data) { return _this.onInput(socket, data); });
         socket.on("gameRequest", function (data) { return _this.onGameRequest(socket, data); });
+        socket.on("pingg", function () { socket.emit("pongg", Date.now()); });
     };
     SocketManager_SE.prototype.onDisconnect = function (socket) {
         console.log("Client " + socket.handshake.address + " has disconnected!");

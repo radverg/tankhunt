@@ -22,11 +22,13 @@ class LoopManager_SE {
 	}
 
 	serverLoop() {
+
 		var deltaSec = (Date.now() - this.lastTick) / 1000;
 
        	this.gm.loopTick(deltaSec);
 
-        this.lastTick += deltaSec * 1000;
+		this.lastTick += deltaSec * 1000;
+
     }
 }
 

@@ -34,6 +34,7 @@ var SocketManager_CL = (function () {
         this.socket.on("kill", function (data) { if (that.th.playManager.thGame)
             that.th.playManager.thGame.processKill(data); });
         this.socket.on("gameStart", function (data) { that.th.playManager.processGameStart(data); });
+        this.socket.on("pongg", function (data) { that.th.tManager.onSynchronizeResponse(data); });
     };
     SocketManager_CL.prototype.onConnection = function (socket) {
         console.log("Connected to the server!");
@@ -43,6 +44,9 @@ var SocketManager_CL = (function () {
     };
     SocketManager_CL.prototype.emitGameRequest = function (data) {
         this.socket.emit("gameRequest", data);
+    };
+    SocketManager_CL.prototype.emitPingRequest = function () {
+        this.socket.emit("pingg", {});
     };
     return SocketManager_CL;
 }());
