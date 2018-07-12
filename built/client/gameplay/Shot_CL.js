@@ -56,7 +56,6 @@ var APCR_CL = (function (_super) {
         _this.anchor.set(0.5, 0);
         _this.width = 0.07 * TH.sizeCoeff;
         _this.height = 0.3 * TH.sizeCoeff;
-        _this.speed = dataPack.speed * TH.sizeCoeff;
         _this.dist = TH.game.math.distance(_this.endX, _this.endY, _this.startX, _this.startY);
         _this.time = (_this.dist / _this.speed) * 1000;
         TH.game.add.existing(_this);
@@ -88,8 +87,45 @@ var FlatLaser_CL = (function (_super) {
     }
     return FlatLaser_CL;
 }(Shot_CL));
+var Bouncer_CL = (function (_super) {
+    __extends(Bouncer_CL, _super);
+    function Bouncer_CL(dataPack) {
+        var _this = _super.call(this, dataPack, "ammo") || this;
+        _this.currentBounce = 0;
+        _this.tweens = [];
+        _this.bouncePoints = [];
+        _this.bouncePoints = dataPack.pts;
+        _this.anchor.set(0.5, 0);
+        _this.width = 0.07 * TH.sizeCoeff;
+        _this.height = 0.3 * TH.sizeCoeff;
+        for (var i = 1; i < dataPack.pts.length; i++) {
+            var ptX = dataPack.pts[i].x * TH.sizeCoeff;
+            var ptY = dataPack.pts[i].y * TH.sizeCoeff;
+            var dist = TH.game.math.distance(ptX, ptY, dataPack.pts[i - 1].x * TH.sizeCoeff, dataPack.pts[i - 1].y * TH.sizeCoeff);
+            var time = (dist / _this.speed) * 1000;
+            var twn = TH.game.add.tween(_this);
+            twn.to({ x: ptX, y: ptY }, time);
+            twn.onComplete.add(function () {
+                this.currentBounce++;
+                if (this.tweens[this.currentBounce]) {
+                    this.rotation = this.bouncePoints[this.currentBounce].ang;
+                    this.tweens[this.currentBounce].start();
+                }
+                else {
+                    this.destroy();
+                }
+            }, _this);
+            _this.tweens.push(twn);
+        }
+        TH.game.add.existing(_this);
+        _this.tweens[0].start();
+        return _this;
+    }
+    return Bouncer_CL;
+}(Shot_CL));
 var Shots = {
     LaserDirect: LaserDirect_CL,
     APCR: APCR_CL,
-    FlatLaser: FlatLaser_CL
+    FlatLaser: FlatLaser_CL,
+    Bouncer: Bouncer_CL
 };

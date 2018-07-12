@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Geometry_SE_1 = require("./Geometry_SE");
+var MyMath_SE_1 = require("./MyMath_SE");
 var GameObject_SE = (function () {
     function GameObject_SE(x, y, w, h) {
         this._id = GameObject_SE.getNextID();
@@ -45,6 +46,9 @@ var GameObject_SE = (function () {
         this.prevBody.setPos(this.body.cX, this.body.cY);
         this.body.cX += this.direction.x * deltaSec * this.speed;
         this.body.cY += this.direction.y * deltaSec * this.speed;
+    };
+    GameObject_SE.prototype.distOfFrameMove = function () {
+        return MyMath_SE_1.dist(this.body.cX, this.body.cY, this.prevBody.cX, this.prevBody.cY);
     };
     GameObject_SE.prototype.setPos = function (x, y) {
         this.prevBody.setPos(this.body.cX, this.body.cY);

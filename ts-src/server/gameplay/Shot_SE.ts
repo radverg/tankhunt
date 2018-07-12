@@ -1,6 +1,6 @@
 import { GameObject_SE } from "./utils/GameObject_SE";
 import { Player_SE } from "./Player_SE";
-import { dist } from "./utils/MyMath_SE";
+import { dist, distVec } from "./utils/MyMath_SE";
 import { Tank_SE } from "./Tank_SE";
 import { Weapon_SE } from "./Weapon_SE";
 import { THGame_SE } from "./gamemodes/THGame_SE";
@@ -190,16 +190,18 @@ class FlatLaser_SE extends Shot_SE {
 // Bouncing shot -------------------------------
 class Bouncer_SE extends Shot_SE {
 	
-	private maxLength: number = 30;
+	private maxLength: number = 50;
 	private maxBounces: number = 5;
-	private bouncePoints: any[];
+	private bouncePoints: BouncePoint[] = [];
+	private totalDist: number = 0;
+	private currentBounce: number = 0;
 
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng);
 
 		this.type = "Bouncer";
 		this.removeAfterHit = true;
-		this.maxSpeed = 5;
+		this.maxSpeed = 10;
 		this.fullForward();
 
 		// Get the end points (at level border)
@@ -209,6 +211,9 @@ class Bouncer_SE extends Shot_SE {
 		let nextStartY = startY;
 		let nextDirX = this.direction.x;
 		let nextDirY = this.direction.y;
+
+		// Add the start point
+		this.bouncePoints.push({x: nextStartX, y: nextStartY, ang: Math.atan2(nextDirX, -nextDirY)});
 
 		while (currLength < this.maxLength)
 		{
@@ -222,14 +227,12 @@ class Bouncer_SE extends Shot_SE {
 				point.y = nextStartY + nextDirY * newLength;
 			}
 
-			if (game.level.getPointBounce(point.x, point.y)) {
-				nextDirX *= -1;
-			} else {
-				nextDirY *= -1;
-			}
 
-			nextStartX = point.x;
-			nextStartY = point.y;
+			nextDirX = game.level.dirXBounce(point.x, nextDirX);
+			nextDirY = game.level.dirYBounce(point.y, nextDirY);
+
+			nextStartX = point.x + 0.001 * (nextDirX / Math.abs(nextDirX));
+			nextStartY = point.y + 0.001 * (nextDirY / Math.abs(nextDirY));
 
 			currLength += newLength;
 
@@ -260,16 +263,37 @@ class Bouncer_SE extends Shot_SE {
 
 	update(deltaSec: number) {
 		GameObject_SE.prototype.update.call(this, deltaSec);
-		this.remove = this.isBeyond();
+		this.totalDist += this.distOfFrameMove();
+
+		// Check if it is finished
+		if (this.totalDist >= this.maxLength) {
+			this.remove = true;
+			return;
+		}
+
+		// Get the length of current line
+		let lineDist = distVec(this.bouncePoints[this.currentBounce] as any, this.bouncePoints[this.currentBounce + 1] as any);
+		let shotFromPointDist = dist(this.bouncePoints[this.currentBounce].x, this.bouncePoints[this.currentBounce].y, this.x, this.y);
+
+		if (shotFromPointDist >= lineDist) { // Next bounce line
+			this.currentBounce++;
+			this.setPos(this.bouncePoints[this.currentBounce].x, this.bouncePoints[this.currentBounce].y);
+			this.angle = this.bouncePoints[this.currentBounce].ang;
+		}
+
+		
 	}
 }
+
+
 
 
 var Shots = {
  	APCR_SE: APCR_SE,
 	LaserDirect_SE: LaserDirect_SE,
-	FlatLaser_SE: FlatLaser_SE
+	FlatLaser_SE: FlatLaser_SE,
+	Bouncer_SE: Bouncer_SE
  }
 
- export { Shots, LaserDirect_SE, APCR_SE, Shot_SE, FlatLaser_SE };
+ export { Shots, LaserDirect_SE, APCR_SE, Shot_SE, FlatLaser_SE, Bouncer_SE };
 

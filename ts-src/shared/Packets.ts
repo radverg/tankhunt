@@ -92,6 +92,16 @@ interface PacketShotStart extends PacketGameObject {
     pts?: {x:number, y: number, ang: number}[]
 }
 
+interface BouncePoint {
+	x: number,
+	y: number,
+	ang: number
+}
+
+interface PacketBouncerShotStart extends PacketShotStart {
+    pts: BouncePoint[]
+}
+
 interface PacketRespawn extends PacketTank {
     /**
      * Time when the respawn countdown starts

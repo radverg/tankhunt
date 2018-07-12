@@ -22,7 +22,7 @@ var Tank_SE = (function (_super) {
         _this.maxAngularVel = Math.PI;
         _this.apcrGun = new Weapon_SE_1.APCRGun_SE(owner);
         _this.specialGun = new Weapon_SE_1.FlatLaserGun_SE(owner);
-        _this.bouncerGun = null;
+        _this.bouncerGun = new Weapon_SE_1.BouncerGun_SE(owner);
         return _this;
     }
     Tank_SE.prototype.getShotPosition = function () {

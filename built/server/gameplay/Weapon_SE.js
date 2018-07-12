@@ -96,6 +96,29 @@ var PulsarGun = (function (_super) {
     }
     return PulsarGun;
 }(Weapon_SE));
+var BouncerGun_SE = (function (_super) {
+    __extends(BouncerGun_SE, _super);
+    function BouncerGun_SE(owner) {
+        var _this = _super.call(this, owner) || this;
+        _this._ammoCount = 10000;
+        _this._shotType = "BouncerGun";
+        _this._reloadTime = 2000;
+        return _this;
+    }
+    BouncerGun_SE.prototype.onPress = function (game) {
+        if (this.canShoot()) {
+            var shps = this.owner.tank.getShotPosition();
+            if (!game.level.levelRect.contains(shps.x, shps.y)) {
+                return;
+            }
+            this.shoot();
+            var shot = new Shot_SE_1.Bouncer_SE(this, shps.x, shps.y, this.owner.tank.turret.angle, game);
+            game.shoot(shot);
+        }
+    };
+    return BouncerGun_SE;
+}(Weapon_SE));
+exports.BouncerGun_SE = BouncerGun_SE;
 var FlatLaserGun_SE = (function (_super) {
     __extends(FlatLaserGun_SE, _super);
     function FlatLaserGun_SE(owner) {
@@ -123,6 +146,7 @@ exports.FlatLaserGun_SE = FlatLaserGun_SE;
 var Guns = {
     LaserGun: LaserGun_SE,
     APCRGun: APCRGun_SE,
-    FlatLaserGun: FlatLaserGun_SE
+    FlatLaserGun: FlatLaserGun_SE,
+    BouncerGun: BouncerGun_SE
 };
 exports.Guns = Guns;

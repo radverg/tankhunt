@@ -150,11 +150,14 @@ var Bouncer_SE = (function (_super) {
     __extends(Bouncer_SE, _super);
     function Bouncer_SE(weapon, startX, startY, startAng, game) {
         var _this = _super.call(this, weapon, startX, startY, startAng) || this;
-        _this.maxLength = 30;
+        _this.maxLength = 50;
         _this.maxBounces = 5;
+        _this.bouncePoints = [];
+        _this.totalDist = 0;
+        _this.currentBounce = 0;
         _this.type = "Bouncer";
         _this.removeAfterHit = true;
-        _this.maxSpeed = 5;
+        _this.maxSpeed = 10;
         _this.fullForward();
         var currLength = 0;
         var currBounces = 0;
@@ -162,6 +165,7 @@ var Bouncer_SE = (function (_super) {
         var nextStartY = startY;
         var nextDirX = _this.direction.x;
         var nextDirY = _this.direction.y;
+        _this.bouncePoints.push({ x: nextStartX, y: nextStartY, ang: Math.atan2(nextDirX, -nextDirY) });
         while (currLength < _this.maxLength) {
             var point = game.level.wallCheckLoop(nextStartX, nextStartY, nextDirX, nextDirY);
             var newLength = MyMath_SE_1.dist(point.x, point.y, nextStartX, nextStartY);
@@ -170,14 +174,10 @@ var Bouncer_SE = (function (_super) {
                 point.x = nextStartX + nextDirX * newLength;
                 point.y = nextStartY + nextDirY * newLength;
             }
-            if (game.level.getPointBounce(point.x, point.y)) {
-                nextDirX *= -1;
-            }
-            else {
-                nextDirY *= -1;
-            }
-            nextStartX = point.x;
-            nextStartY = point.y;
+            nextDirX = game.level.dirXBounce(point.x, nextDirX);
+            nextDirY = game.level.dirYBounce(point.y, nextDirY);
+            nextStartX = point.x + 0.001 * (nextDirX / Math.abs(nextDirX));
+            nextStartY = point.y + 0.001 * (nextDirY / Math.abs(nextDirY));
             currLength += newLength;
             _this.bouncePoints.push({ x: point.x, y: point.y, ang: Math.atan2(nextDirX, -nextDirY) });
         }
@@ -199,13 +199,26 @@ var Bouncer_SE = (function (_super) {
     };
     Bouncer_SE.prototype.update = function (deltaSec) {
         GameObject_SE_1.GameObject_SE.prototype.update.call(this, deltaSec);
-        this.remove = this.isBeyond();
+        this.totalDist += this.distOfFrameMove();
+        if (this.totalDist >= this.maxLength) {
+            this.remove = true;
+            return;
+        }
+        var lineDist = MyMath_SE_1.distVec(this.bouncePoints[this.currentBounce], this.bouncePoints[this.currentBounce + 1]);
+        var shotFromPointDist = MyMath_SE_1.dist(this.bouncePoints[this.currentBounce].x, this.bouncePoints[this.currentBounce].y, this.x, this.y);
+        if (shotFromPointDist >= lineDist) {
+            this.currentBounce++;
+            this.setPos(this.bouncePoints[this.currentBounce].x, this.bouncePoints[this.currentBounce].y);
+            this.angle = this.bouncePoints[this.currentBounce].ang;
+        }
     };
     return Bouncer_SE;
 }(Shot_SE));
+exports.Bouncer_SE = Bouncer_SE;
 var Shots = {
     APCR_SE: APCR_SE,
     LaserDirect_SE: LaserDirect_SE,
-    FlatLaser_SE: FlatLaser_SE
+    FlatLaser_SE: FlatLaser_SE,
+    Bouncer_SE: Bouncer_SE
 };
 exports.Shots = Shots;

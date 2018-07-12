@@ -2,6 +2,7 @@ Sound tips :
 https://freesound.org/people/jgrzinich/sounds/377970/
 https://freesound.org/people/Julien%20Matthey/sounds/268344/
 https://freesound.org/people/Juan_Merie_Venter/sounds/327687/
+https://freesound.org/people/EcoDTR/sounds/36847/
 
 potenciální řešení kolizního problému: separovat podle rychlejšího směru!
 

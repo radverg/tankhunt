@@ -257,10 +257,8 @@ var Level_SE = (function () {
         tank.body.updateVertices();
     };
     Level_SE.prototype.getPointBounce = function (x, y) {
-        var offset = this.squareSize / 2;
-        var left = this.getSqrX(x) + offset;
-        var right = this.getSqrX(x) + this.squareSize - offset;
-        return x === left || x === right;
+        var offset = this.wallThickness / 2;
+        return (((x - offset) % this.squareSize) == 0) || (((x + offset) % this.squareSize) == 0) || x == 0 || x == this.levelRect.right;
     };
     Level_SE.prototype.getRandomSpawnPos = function (sqrX, sqrY, width, height) {
         var minX = sqrX * this.squareSize + width / 2;
@@ -280,6 +278,28 @@ var Level_SE = (function () {
     Level_SE.prototype.getRandomSpawnItems = function (width, height) {
         var index = Math.floor(Math.random() * this.spawnsItems.length);
         return this.getRandomSpawnPos(this.spawnsItems[index].x, this.spawnsItems[index].y, width, height);
+    };
+    Level_SE.prototype.dirXBounce = function (x, dirX) {
+        var offset = this.wallThickness / 2;
+        x = parseFloat(x.toFixed(5));
+        if (((x + offset) % this.squareSize) == 0 || x == this.levelRect.right) {
+            return Math.abs(dirX) * (-1);
+        }
+        if (((x - offset) % this.squareSize) == 0 || x == 0) {
+            return Math.abs(dirX);
+        }
+        return dirX;
+    };
+    Level_SE.prototype.dirYBounce = function (y, dirY) {
+        var offset = this.wallThickness / 2;
+        y = parseFloat(y.toFixed(5));
+        if (((y + offset) % this.squareSize) == 0 || y == this.levelRect.bottom) {
+            return Math.abs(dirY) * (-1);
+        }
+        if (((y - offset) % this.squareSize) == 0 || y == 0) {
+            return Math.abs(dirY);
+        }
+        return dirY;
     };
     return Level_SE;
 }());

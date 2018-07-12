@@ -1,4 +1,5 @@
 import { Rect, Vec2 } from "./Geometry_SE";
+import { dist } from "./MyMath_SE";
 
 class GameObject_SE {
     /**
@@ -49,6 +50,13 @@ class GameObject_SE {
         
         this.body.cX += this.direction.x * deltaSec * this.speed;
         this.body.cY += this.direction.y * deltaSec * this.speed;
+    }
+
+    /**
+     * Gets the distance between current position and previous position
+     */
+    distOfFrameMove() {
+        return dist(this.body.cX, this.body.cY, this.prevBody.cX, this.prevBody.cY);
     }
     
     setPos(x: number, y: number) {

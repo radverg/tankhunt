@@ -377,11 +377,14 @@ class Level_SE {
      * @param y 
      */
     getPointBounce(x: number, y: number): boolean {
-        let offset = this.squareSize / 2;
-        let left = this.getSqrX(x) + offset;
-        let right = this.getSqrX(x) + this.squareSize - offset;
+        let offset = this.wallThickness / 2;
 
-        return x === left || x === right;
+        return (((x - offset) % this.squareSize) == 0) || (((x + offset) % this.squareSize) == 0) || x == 0 || x == this.levelRect.right;
+
+        // let left = this.getSqrX(x) + offset;
+        // let right = this.getSqrX(x) + this.squareSize - offset;
+
+        // return x === left || x === right;
     }
 
     getRandomSpawnPos(sqrX: number, sqrY: number, width: number, height: number) {
@@ -406,6 +409,38 @@ class Level_SE {
     getRandomSpawnItems(width: number, height: number) {
         var index = Math.floor(Math.random() * this.spawnsItems.length);
         return this.getRandomSpawnPos(this.spawnsItems[index].x, this.spawnsItems[index].y, width, height);
+    }
+
+    dirXBounce(x: number, dirX: number) {
+        let offset = this.wallThickness / 2;
+        x = parseFloat(x.toFixed(5));
+
+        if (((x + offset) % this.squareSize) == 0 || x == this.levelRect.right) {
+            return Math.abs(dirX) * (-1);
+    
+        }
+
+        if (((x - offset) % this.squareSize) == 0 || x == 0) {
+            return Math.abs(dirX);
+        }
+
+        return dirX;
+    }
+
+    dirYBounce(y: number, dirY: number) {
+        let offset = this.wallThickness / 2;
+        y = parseFloat(y.toFixed(5));
+
+        if (((y + offset) % this.squareSize) == 0 || y == this.levelRect.bottom) {
+            return Math.abs(dirY) * (-1);
+    
+        }
+
+        if (((y - offset) % this.squareSize) == 0 || y == 0) {
+            return Math.abs(dirY);
+        }
+
+        return dirY;
     }
 }
 
