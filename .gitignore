@@ -3,3 +3,5 @@
 /TankHuntNode.sublime-workspace
 /.vscode
 /TankHuntNode.code-workspace
+/built
+/node_modules
