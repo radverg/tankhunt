@@ -3,12 +3,12 @@
 class THGame_CL {
     
 	public socketManager: SocketManager_CL;
-	public shots: any = {};
 	public running: boolean = false;
 	public level: any = null;
 
 	protected levelGroup: Phaser.Group = null;
 	protected itemGroup: ItemGroup_CL = null;
+	shotGroup: ShotGroup_CL = null;
 	protected playerGroup: PlayerGroup_CL = null;
 
 	onPlayerRemove: Phaser.Signal = new Phaser.Signal();
@@ -17,6 +17,7 @@ class THGame_CL {
 
 	constructor(socketManager: SocketManager_CL) {
 		this.socketManager = socketManager;
+		TH.thGame = this;
 		this.init();
 	
 	}
@@ -64,9 +65,7 @@ class THGame_CL {
 
 	processNewShot(data: PacketShotStart) {
 		if (!this.running) return;
-		var type = data.type;
-		var sh = new Shots[type.toString()](data);
-		this.shots[data.id] = sh;
+		this.shotGroup.newShot(data);
 	};
 
 	processNewItem(data: PacketItem) {
@@ -181,6 +180,8 @@ class THGame_CL {
 		this.levelGroup = TH.game.add.group();
 		// Then we have items
 		this.itemGroup = new ItemGroup_CL();
+		// Than we have shots 
+		this.shotGroup = new ShotGroup_CL();
 		// Than we have players
 		this.playerGroup = new PlayerGroup_CL();
 		

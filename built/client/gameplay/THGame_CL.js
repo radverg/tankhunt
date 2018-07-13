@@ -1,15 +1,16 @@
 var THGame_CL = (function () {
     function THGame_CL(socketManager) {
-        this.shots = {};
         this.running = false;
         this.level = null;
         this.levelGroup = null;
         this.itemGroup = null;
+        this.shotGroup = null;
         this.playerGroup = null;
         this.onPlayerRemove = new Phaser.Signal();
         this.onItemSpawn = new Phaser.Signal();
         this.onItemCollect = new Phaser.Signal();
         this.socketManager = socketManager;
+        TH.thGame = this;
         this.init();
     }
     THGame_CL.prototype.update = function () {
@@ -46,9 +47,7 @@ var THGame_CL = (function () {
     THGame_CL.prototype.processNewShot = function (data) {
         if (!this.running)
             return;
-        var type = data.type;
-        var sh = new Shots[type.toString()](data);
-        this.shots[data.id] = sh;
+        this.shotGroup.newShot(data);
     };
     ;
     THGame_CL.prototype.processNewItem = function (data) {
@@ -128,6 +127,7 @@ var THGame_CL = (function () {
     THGame_CL.prototype.init = function () {
         this.levelGroup = TH.game.add.group();
         this.itemGroup = new ItemGroup_CL();
+        this.shotGroup = new ShotGroup_CL();
         this.playerGroup = new PlayerGroup_CL();
     };
     return THGame_CL;

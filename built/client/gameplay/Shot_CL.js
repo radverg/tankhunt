@@ -14,6 +14,7 @@ var Shot_CL = (function (_super) {
         var _this = _super.call(this, TH.game, dataPack.startX * TH.sizeCoeff, dataPack.startY * TH.sizeCoeff, asset || "whiteRect") || this;
         _this.delay = 16;
         _this.moveTween = null;
+        _this.shotGroup = TH.thGame.shotGroup;
         _this.startX = dataPack.startX * TH.sizeCoeff;
         _this.startY = dataPack.startY * TH.sizeCoeff;
         _this.endX = dataPack.endX * TH.sizeCoeff;
@@ -26,6 +27,10 @@ var Shot_CL = (function (_super) {
         _this.delay = TH.timeManager.getDelay(dataPack.startTime) || 16;
         return _this;
     }
+    Shot_CL.prototype.start = function () {
+    };
+    Shot_CL.prototype.stop = function () {
+    };
     return Shot_CL;
 }(Sprite));
 var LaserDirect_CL = (function (_super) {
@@ -58,13 +63,20 @@ var APCR_CL = (function (_super) {
         _this.height = 0.3 * TH.sizeCoeff;
         _this.dist = TH.game.math.distance(_this.endX, _this.endY, _this.startX, _this.startY);
         _this.time = (_this.dist / _this.speed) * 1000;
-        TH.game.add.existing(_this);
-        _this.moveTween = TH.game.add.tween(_this);
-        _this.moveTween.to({ x: _this.endX, y: _this.endY }, _this.time);
-        _this.moveTween.onComplete.add(function () { this.destroy(); }, _this);
-        _this.moveTween.start();
+        _this.start();
         return _this;
     }
+    APCR_CL.prototype.start = function () {
+        this.moveTween = TH.game.add.tween(this);
+        this.moveTween.to({ x: this.endX, y: this.endY }, this.time);
+        this.moveTween.onComplete.add(function () { this.destroy(); }, this);
+        this.moveTween.start();
+        this.shotGroup.add(this);
+    };
+    APCR_CL.prototype.stop = function () {
+        this.moveTween.stop();
+        this.destroy();
+    };
     return APCR_CL;
 }(Shot_CL));
 var FlatLaser_CL = (function (_super) {
@@ -78,7 +90,7 @@ var FlatLaser_CL = (function (_super) {
         _this.dist = TH.game.math.distance(_this.endX, _this.endY, _this.startX, _this.startY);
         _this.time = (_this.dist / _this.speed) * 1000;
         _this.tint = 0x7D1ADF;
-        TH.game.add.existing(_this);
+        _this.shotGroup.add(_this);
         var twn = TH.game.add.tween(_this);
         twn.to({ x: _this.endX, y: _this.endY }, _this.time);
         twn.onComplete.add(function () { this.destroy(); }, _this);
@@ -117,7 +129,7 @@ var Bouncer_CL = (function (_super) {
             }, _this);
             _this.tweens.push(twn);
         }
-        TH.game.add.existing(_this);
+        _this.shotGroup.add(_this);
         _this.tweens[0].start();
         return _this;
     }

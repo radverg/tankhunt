@@ -14,6 +14,8 @@ class Shot_CL extends Sprite {
 	protected endY?: number;
 	protected startTime: number;
 
+	protected shotGroup: ShotGroup_CL = TH.thGame.shotGroup;
+
 	constructor(dataPack: PacketShotStart, asset?: string) {
 		super(TH.game, dataPack.startX * TH.sizeCoeff, dataPack.startY * TH.sizeCoeff, asset || "whiteRect");
 
@@ -35,6 +37,14 @@ class Shot_CL extends Sprite {
 		
 		
 		this.delay = TH.timeManager.getDelay(dataPack.startTime) || 16;
+	}
+
+	start() {
+
+	}
+
+	stop() {
+
 	}
 }
 
@@ -77,12 +87,22 @@ class APCR_CL extends Shot_CL {
 		this.dist = TH.game.math.distance(this.endX, this.endY, this.startX, this.startY);
 		this.time = (this.dist / this.speed) * 1000;
 
-		// Start the shot 
-		TH.game.add.existing(this);
+		this.start();
+
+	}
+
+	start() {
 		this.moveTween = TH.game.add.tween(this);
 		this.moveTween.to({ x: this.endX, y: this.endY }, this.time);
 		this.moveTween.onComplete.add(function() { this.destroy(); }, this);
 		this.moveTween.start();
+
+		this.shotGroup.add(this);
+	}
+
+	stop() {
+		this.moveTween.stop();
+		this.destroy();
 	}
 }
 
@@ -105,7 +125,7 @@ class FlatLaser_CL extends Shot_CL {
 		this.tint = 0x7D1ADF;
 
 		// Start this shot
-		TH.game.add.existing(this);
+		this.shotGroup.add(this);
 		let twn = TH.game.add.tween(this);
 		twn.to({ x: this.endX, y: this.endY }, this.time);
 		twn.onComplete.add(function() { this.destroy(); }, this);
@@ -157,7 +177,7 @@ class Bouncer_CL extends Shot_CL {
 			this.tweens.push(twn);
 		}
 
-		TH.game.add.existing(this);
+		this.shotGroup.add(this);
 		this.tweens[0].start();
 
 	}

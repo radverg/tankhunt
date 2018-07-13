@@ -2,7 +2,15 @@
 
 class TH {
 
+    /**
+     * Instance of main Phaser game class
+     */
     static game: Phaser.Game;
+    /**
+     * Instance of currently running game
+     */
+    static thGame: THGame_CL;
+
     static timeManager: TimeManager_CL;
 
     public socketManager: SocketManager_CL;
