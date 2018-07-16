@@ -14,7 +14,7 @@
 /// <reference path="gameplay/Tank_CL.ts" />
 /// <reference path="libs/phaser.comments.d.ts" />
 /// <reference path="utils/Sprite_CL.ts" />
-/// <reference path="../shared/Data.ts" />
-/// <reference path="../shared/Packets.ts" />
-/// <reference path="../../node_modules/@types/socket.io-client/index.d.ts" />
+/// <reference path="../../shared/Data.ts" />
+/// <reference path="../../shared/Packets.ts" />
+/// <reference path="../../../node_modules/@types/socket.io-client/index.d.ts" />
 

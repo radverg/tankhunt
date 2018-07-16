@@ -4,7 +4,7 @@ import { Tank_SE } from "./Tank_SE";
 import { Weapon_SE, Guns } from "./Weapon_SE";
 
 
-var Data : Dat = require("../../shared/Data"); 
+var Data : Dat = require("../../../shared/Data"); 
 
 /**
  * Item manager can be used to manage items in the game.

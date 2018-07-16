@@ -4,7 +4,7 @@ import { Level_SE } from "../Level_SE";
 import { Tank_SE } from "../Tank_SE";
 import { Shot_SE } from "../Shot_SE";
 import { THGame_SE } from "./THGame_SE";
-var Levels : Lvls = require("../../../shared/Levels");
+var Levels : Lvls = require("../../../../shared/Levels");
 /**
  * Arena game class
  */
