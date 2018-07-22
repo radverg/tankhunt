@@ -18,9 +18,12 @@ abstract class Shot_SE extends GameObject_SE {
 	protected weapon: Weapon_SE;
 	public owner: Player_SE;
 	protected removeAfterHit: boolean;
+	protected game: THGame_SE;
 
-	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number) {
+	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(startX, startY, 0.2, 0.2);
+
+		this.game = game;
 
 		this.startX = startX;
 		this.startY = startY;
@@ -63,7 +66,7 @@ abstract class Shot_SE extends GameObject_SE {
 class APCR_SE extends Shot_SE {
 
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
-		super(weapon, startX, startY, startAng);
+		super(weapon, startX, startY, startAng, game);
 
 		this.type = "APCR";
 		this.maxSpeed = 25;
@@ -101,7 +104,7 @@ class APCR_SE extends Shot_SE {
 class LaserDirect_SE extends Shot_SE {
 
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
-		super(weapon, startX, startY, startAng);
+		super(weapon, startX, startY, startAng, game);
 
 		this.type = "LaserDirect";
 		this.removeAfterHit = false;
@@ -143,7 +146,7 @@ class FlatLaser_SE extends Shot_SE {
 	private size: number = 3;
 
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
-		super(weapon, startX, startY, startAng);
+		super(weapon, startX, startY, startAng, game);
 
 		this.type = "FlatLaser";
 		this.removeAfterHit = false;
@@ -190,34 +193,40 @@ class FlatLaser_SE extends Shot_SE {
 // Bouncing shot -------------------------------
 class Bouncer_SE extends Shot_SE {
 	
-	private maxLength: number = 50;
+	protected maxLength: number = 50;
 	private maxBounces: number = 5;
-	private bouncePoints: BouncePoint[] = [];
+	protected wayPoints: WayPoint[] = [];
 	private totalDist: number = 0;
-	private currentBounce: number = 0;
+	protected currentBounce: number = 0;
 
-	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
-		super(weapon, startX, startY, startAng);
+	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE, findPath: boolean = true) {
+		super(weapon, startX, startY, startAng, game);
 
 		this.type = "Bouncer";
 		this.removeAfterHit = true;
 		this.maxSpeed = 10;
 		this.fullForward();
 
+		this.createWayPoints();
+
+		
+	}
+
+	createWayPoints() {
 		// Get the end points (at level border)
 		let currLength = 0;
 		let currBounces = 0;
-		let nextStartX = startX;
-		let nextStartY = startY;
+		let nextStartX = this.startX;
+		let nextStartY = this.startY;
 		let nextDirX = this.direction.x;
 		let nextDirY = this.direction.y;
 
 		// Add the start point
-		this.bouncePoints.push({x: nextStartX, y: nextStartY, ang: Math.atan2(nextDirX, -nextDirY)});
+		this.wayPoints.push({x: nextStartX, y: nextStartY, ang: Math.atan2(nextDirX, -nextDirY)});
 
 		while (currLength < this.maxLength)
 		{
-			let point = game.level.wallCheckLoop(nextStartX, nextStartY, nextDirX, nextDirY);
+			let point = this.game.level.wallCheckLoop(nextStartX, nextStartY, nextDirX, nextDirY);
 			let newLength = dist(point.x, point.y, nextStartX, nextStartY);
 
 			if (currLength + newLength > this.maxLength) {
@@ -228,17 +237,16 @@ class Bouncer_SE extends Shot_SE {
 			}
 
 
-			nextDirX = game.level.dirXBounce(point.x, nextDirX);
-			nextDirY = game.level.dirYBounce(point.y, nextDirY);
+			nextDirX = this.game.level.dirXBounce(point.x, nextDirX);
+			nextDirY = this.game.level.dirYBounce(point.y, nextDirY);
 
 			nextStartX = point.x + 0.001 * (nextDirX / Math.abs(nextDirX));
 			nextStartY = point.y + 0.001 * (nextDirY / Math.abs(nextDirY));
 
 			currLength += newLength;
 
-			this.bouncePoints.push({x: point.x, y: point.y, ang: Math.atan2(nextDirX, -nextDirY)});
+			this.wayPoints.push({x: point.x, y: point.y, ang: Math.atan2(nextDirX, -nextDirY)});
 		}
-
 
 	}
 
@@ -247,7 +255,7 @@ class Bouncer_SE extends Shot_SE {
 		packet.endX = this.endPoint.x;
 		packet.endY = this.endPoint.y;
 		packet.speed = this.maxSpeed;
-		packet.pts = this.bouncePoints;
+		packet.pts = this.wayPoints;
 		return packet;
 	}
 
@@ -272,28 +280,132 @@ class Bouncer_SE extends Shot_SE {
 		}
 
 		// Get the length of current line
-		let lineDist = distVec(this.bouncePoints[this.currentBounce] as any, this.bouncePoints[this.currentBounce + 1] as any);
-		let shotFromPointDist = dist(this.bouncePoints[this.currentBounce].x, this.bouncePoints[this.currentBounce].y, this.x, this.y);
+		let lineDist = distVec(this.wayPoints[this.currentBounce] as any, this.wayPoints[this.currentBounce + 1] as any);
+		let shotFromPointDist = dist(this.wayPoints[this.currentBounce].x, this.wayPoints[this.currentBounce].y, this.x, this.y);
 
 		if (shotFromPointDist >= lineDist) { // Next bounce line
 			this.currentBounce++;
-			this.setPos(this.bouncePoints[this.currentBounce].x, this.bouncePoints[this.currentBounce].y);
-			this.angle = this.bouncePoints[this.currentBounce].ang;
+			this.setPos(this.wayPoints[this.currentBounce].x, this.wayPoints[this.currentBounce].y);
+			this.angle = this.wayPoints[this.currentBounce].ang;
 		}
 
 		
 	}
 }
 
+// Bouncing laser
+class BouncingLaser_SE extends Bouncer_SE {
+
+	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
+		super(weapon, startX, startY, startAng, game);
+
+		this.maxSpeed = 35;
+		this.fullForward();
+
+		this.type = "BouncingLaser";
+	}
+
+	isHittingTank(tank: Tank_SE) {
+
+		// In case this tank is owner, check just laser's current end position
+		if (tank.owner == this.owner) {
+			return tank.body.rotContains(this.x, this.y);
+		}
+		
+		// If it is someone else, check all laser lines
+		for (let i = 0; i <= this.currentBounce; i++) {
+
+			let pt1 = this.wayPoints[this.currentBounce];
+			let pt2 = this.wayPoints[this.currentBounce + 1];
+
+			if (tank.body.lineInt(pt1.x, pt1.y, pt2.x, pt2.y)) {
+				return true;
+			}
+			
+		}
+
+		return false;
+		
+	}
+}
+
+class PolygonalBouncer_SE extends Bouncer_SE {
+	
+	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
+		super(weapon, startX, startY, startAng, game);
+
+		this.type = "PolygonalBouncer";
+	}
+}
+
+class Eliminator_SE extends Bouncer_SE {
+
+	private splinterCount: number = 20;
+
+	private maxSplinterSpeed = 40;
+	private minSplinterSpeed = 2;
+
+	private splinters: GameObject_SE[] = [];
+	private blasted: boolean = false;
+
+	private splintersData: any[] = [];
+
+	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
+		super(weapon, startX, startY, startAng, game, false);
+
+		this.maxLength = 10;
+
+		this.createWayPoints();
+
+		// Generate splinters data
+		for (let i = 0; i < this.splinterCount; i++) {
+			this.splintersData.push(
+				{ 	
+					speed: Math.random() * (this.maxSplinterSpeed - this.minSplinterSpeed) + this.minSplinterSpeed,
+					ang: Math.random() * Math.PI * 2
+				}
+			);		
+		}
+	}
+
+	getStartPacket() {
+		var packet = super.getStartPacket();
+		packet.endX = this.endPoint.x;
+		packet.endY = this.endPoint.y;
+		packet.speed = this.maxSpeed;
+	//	packet.spl = this.splintersData;
+		return packet;
+	}
+
+	blast() {
+
+	}
+
+	update(deltaSec: number) {
+		super.update(deltaSec);
+
+		if (this.blasted) {
+			for (let i = 0; i < this.splinters.length; i++) {
+				this.splinters[i].update(deltaSec);
+				
+			}
+		}
+
+
+	}
+}
 
 
 
-var Shots = {
+
+var Shots: { [key: string]:  any } = {
  	APCR_SE: APCR_SE,
 	LaserDirect_SE: LaserDirect_SE,
 	FlatLaser_SE: FlatLaser_SE,
-	Bouncer_SE: Bouncer_SE
+	Bouncer_SE: Bouncer_SE,
+	BouncingLaser_SE: BouncingLaser_SE,
+	PolygonalBouncer_SE: PolygonalBouncer_SE
  }
 
- export { Shots, LaserDirect_SE, APCR_SE, Shot_SE, FlatLaser_SE, Bouncer_SE };
+ export { Shots, LaserDirect_SE, APCR_SE, Shot_SE, FlatLaser_SE, Bouncer_SE, BouncingLaser_SE };
 

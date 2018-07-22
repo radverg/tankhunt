@@ -40,7 +40,8 @@ class TH {
         var phaserConfig = {
             width: 1920,
             height: 1080,
-           // forceSetTimeOut: true
+            /* forceSetTimeOut: true, */
+            renderer: Phaser.CANVAS
         }
 
         TH.game = new Phaser.Game(phaserConfig);

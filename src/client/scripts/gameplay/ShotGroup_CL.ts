@@ -10,7 +10,6 @@ class ShotGroup_CL extends Phaser.Group {
         var type = data.type;
 		var sh = new Shots[type.toString()](data);
         sh.start();
-        this.add(sh);
         this.shots[data.id] = sh;
     }
 

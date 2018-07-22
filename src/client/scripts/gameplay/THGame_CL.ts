@@ -6,11 +6,13 @@ class THGame_CL {
 	public running: boolean = false;
 	public level: any = null;
 
+	protected background: Phaser.TileSprite = null;
 	protected levelGroup: Phaser.Group = null;
 	protected itemGroup: ItemGroup_CL = null;
 	shotGroup: ShotGroup_CL = null;
 	protected playerGroup: PlayerGroup_CL = null;
 
+	// Phaser signals - game interface can listen to them and react
 	onPlayerRemove: Phaser.Signal = new Phaser.Signal();
 	onItemSpawn: Phaser.Signal = new Phaser.Signal();
 	onItemCollect: Phaser.Signal = new Phaser.Signal();
@@ -27,13 +29,13 @@ class THGame_CL {
 	}
 
 	debug()  {
-		if (this.playerGroup.me)
+		/* if (this.playerGroup.me)
 			TH.game.debug.spriteInfo(this.playerGroup.me.tank, 10, 10, "black");
 
 		TH.game.debug.cameraInfo(TH.game.camera, 10, 500, "black");
 
 		if (TH.timeManager.ping)
-			TH.game.debug.text(TH.timeManager.ping.toString(), 10, 1000);
+			TH.game.debug.text(TH.timeManager.ping.toString(), 10, 1000); */
     }
 
 
@@ -141,6 +143,11 @@ class THGame_CL {
 		var woffset = 200;
 		TH.game.world.setBounds(-woffset, -woffset, (this.level.levelRect._w * TH.sizeCoeff) + 2*woffset, 
 			(this.level.levelRect._h * TH.sizeCoeff) + 2*woffset);
+
+		// Now add background
+		let bcg = TH.game.make.tileSprite(0, 0, TH.game.world.width - woffset *2,  TH.game.world.height - woffset*2, "ground1",0) ;
+		this.levelGroup.add(bcg);
+
 
 		// Create wall sprites
 		for (var x = 0; x < this.level.walls.length; x++) {

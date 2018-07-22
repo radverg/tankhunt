@@ -18,7 +18,7 @@ class Shot_CL extends Sprite {
 
 	constructor(dataPack: PacketShotStart, asset?: string) {
 		super(TH.game, dataPack.startX * TH.sizeCoeff, dataPack.startY * TH.sizeCoeff, asset || "whiteRect");
-
+		
 		// Extract datapack from server
 		this.startX = dataPack.startX * TH.sizeCoeff;
 		this.startY = dataPack.startY * TH.sizeCoeff;
@@ -51,7 +51,7 @@ class Shot_CL extends Sprite {
 class LaserDirect_CL extends Shot_CL {
 
 	constructor(dataPack: PacketShotStart) {
-		super(dataPack);
+		super(dataPack, "lasers");
 
 		this.anchor.set(0.5, 0);
 		this.width = 0.07 * TH.sizeCoeff;
@@ -61,7 +61,7 @@ class LaserDirect_CL extends Shot_CL {
 		this.dist = TH.game.math.distance(this.endX, this.endY, this.startX, this.startY);
 		this.time = (this.dist / this.speed) * 1000;
 
-		this.tint = 0x7D1ADF;
+		this.colorIndex = Color.Blue;
 
 		// Start laser
 		// Move laser forwards according to delay
@@ -111,7 +111,7 @@ class FlatLaser_CL extends Shot_CL {
 	private size: number; 
 
 	constructor(dataPack: PacketShotStart) {
-		super(dataPack);
+		super(dataPack,  "lasers");
 
 		this.size = 3 * TH.sizeCoeff;
 
@@ -122,7 +122,7 @@ class FlatLaser_CL extends Shot_CL {
 		this.dist = TH.game.math.distance(this.endX, this.endY, this.startX, this.startY);
 		this.time = (this.dist / this.speed) * 1000;
 
-		this.tint = 0x7D1ADF;
+		/* this.tint = 0x7D1ADF; */
 
 		// Start this shot
 		this.shotGroup.add(this);
@@ -137,25 +137,36 @@ class FlatLaser_CL extends Shot_CL {
 
 class Bouncer_CL extends Shot_CL {
 
-	private currentBounce: number = 0;
+	protected currentBounce: number = 0;
 	private tweens: Phaser.Tween[] = [];
-	private bouncePoints: BouncePoint[] = [];
+	protected wayPoints: WayPoint[] = [];
 
-	constructor(dataPack: PacketBouncerShotStart) {
-		super(dataPack, "ammo");
+	constructor(dataPack: PacketBouncerShotStart, asset: string) {
+		super(dataPack, asset || "ammo");
 
-		this.bouncePoints = dataPack.pts;
+		this.wayPoints = dataPack.pts;
+
+		// Parse points from server units to client
+		for (let i = 0; i < this.wayPoints.length; i++) {
+			this.wayPoints[i].x *= TH.sizeCoeff;
+			this.wayPoints[i].y *= TH.sizeCoeff;
+		}
 
 		this.anchor.set(0.5, 0);
 		this.width = 0.07 * TH.sizeCoeff;
 		this.height = 0.3 * TH.sizeCoeff;
 
-		//let currentBounce = 0;
-		for (let i = 1; i < dataPack.pts.length; i++) {
-			let ptX = dataPack.pts[i].x * TH.sizeCoeff;
-			let ptY = dataPack.pts[i].y * TH.sizeCoeff;
+		
+
+	}
+
+	start() {
+
+		for (let i = 1; i < this.wayPoints.length; i++) {
+			let ptX = this.wayPoints[i].x; 
+			let ptY = this.wayPoints[i].y;
 			// Count distance and time
-			let dist = TH.game.math.distance(ptX, ptY, dataPack.pts[i - 1].x * TH.sizeCoeff, dataPack.pts[i - 1].y * TH.sizeCoeff);
+			let dist = TH.game.math.distance(ptX, ptY, this.wayPoints[i - 1].x, this.wayPoints[i - 1].y);
 			let time = (dist / this.speed) * 1000;
 		 
 			let twn = TH.game.add.tween(this);
@@ -165,11 +176,11 @@ class Bouncer_CL extends Shot_CL {
 				this.currentBounce++;
 				if (this.tweens[this.currentBounce]) {
 
-					this.rotation = this.bouncePoints[this.currentBounce].ang;
+					this.rotation = this.wayPoints[this.currentBounce].ang;
 					this.tweens[this.currentBounce].start();	
 				} else {
 					// No other tween - shot ends here
-					this.destroy();
+					this.stop();
 				}
 
 			}, this);
@@ -179,7 +190,99 @@ class Bouncer_CL extends Shot_CL {
 
 		this.shotGroup.add(this);
 		this.tweens[0].start();
+	}
 
+	stop() {
+		this.destroy();
+	}
+}
+
+class PolygonalBouncer_CL extends Bouncer_CL {
+
+	private rotTween: Phaser.Tween;
+
+	constructor(dataPack: PacketBouncerShotStart) {
+		super(dataPack, "blackRect");
+
+		this.anchor.setTo(0.5);
+		this.width = 0.2 * TH.sizeCoeff;
+		this.height = 0.2 * TH.sizeCoeff;
+
+		// This shot should be rotating
+		this.rotTween = this.game.add.tween(this);
+		this.rotTween.to({ rotation: 100 }, 6000);
+	}
+
+	start() {
+		super.start();
+		this.rotTween.start();
+		this.shotGroup.add(this);
+	}
+
+	stop() {
+		this.rotTween.stop();
+		this.destroy();
+	}
+}
+
+class BouncingLaser_CL extends Bouncer_CL {
+
+	private laserLinesGrp: Phaser.Group; 
+
+	constructor(dataPack: PacketBouncerShotStart) {
+		super(dataPack, "whiteRect");
+
+		this.laserLinesGrp = new Phaser.Group(this.game);
+		this.shotGroup.add(this.laserLinesGrp);
+
+
+	}
+
+	start() {
+		this.nextLaserLine();
+	}
+
+	nextLaserLine() {
+		let currB = this.currentBounce;
+		if (currB >= this.wayPoints.length - 1) {
+			return;
+		}
+
+		let pt1 = this.wayPoints[this.currentBounce];
+		let pt2 = this.wayPoints[this.currentBounce + 1];
+
+		let lineSpr = new Sprite(this.game, pt1.x, pt1.y, "lasers");
+		this.laserLinesGrp.add(lineSpr);
+		/* lineSpr.tint = 0x7D1ADF; */ // This laser is violet
+		lineSpr.anchor.setTo(0.5, 0);
+		lineSpr.rotation = pt1.ang + Math.PI;
+		lineSpr.width = 0.15 * TH.sizeCoeff;
+
+		lineSpr.colorIndex = Color.Green;
+
+		
+		let dist = TH.game.math.distance(pt1.x, pt1.y, pt2.x, pt2.y);
+		let time = (dist / this.speed) * 1000;
+
+		// Now do the tween
+		let twn = this.game.add.tween(lineSpr);
+		twn.to({ height: dist }, time);
+
+		if (currB == this.wayPoints.length - 2) { // This is the last one
+			// After it is finished, stop the shot
+			twn.onComplete.add(function() { this.stop(); }, this);
+		} else {
+			// This is not the last one, continue with next
+			twn.onComplete.add(function() { this.nextLaserLine(); }, this);
+		}
+
+		twn.start();
+		this.currentBounce++;
+	}
+
+	stop() {
+		this.laserLinesGrp.destroy(true, false);
+		this.destroy();
 	}
 }
 
@@ -187,5 +290,7 @@ var Shots: { [key: string]: typeof Shot_CL } = {
 	LaserDirect: LaserDirect_CL,
 	APCR: APCR_CL,
 	FlatLaser: FlatLaser_CL,
-	Bouncer: Bouncer_CL
+	Bouncer: Bouncer_CL,
+	BouncingLaser: BouncingLaser_CL ,
+	PolygonalBouncer: PolygonalBouncer_CL
 }

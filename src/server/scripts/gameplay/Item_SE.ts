@@ -10,6 +10,12 @@ class Item_SE extends GameObject_SE {
     typeIndex: number;
     owner: Player_SE | null = null;
     wornOut: boolean = false;
+
+    /**
+     * Determines if player's key for activating this item is pressed
+     * This has to be set in onPress and onRelease methods if they are overwritten
+     */
+    pressed: boolean = false;
     
     constructor(typeIndex: number) {
         super(0,0, Data.Items.size, Data.Items.size);
@@ -38,11 +44,15 @@ class Item_SE extends GameObject_SE {
     }
 
     onPress(game: THGame_SE): void {
-        
+        this.pressed = true;
     }
 
     onRelease(game: THGame_SE): void {
-    
+        this.pressed = false;
+    }
+
+    onHold(game: THGame_SE): void {
+
     }
 }
 

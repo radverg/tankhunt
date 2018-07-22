@@ -92,14 +92,14 @@ interface PacketShotStart extends PacketGameObject {
     pts?: {x:number, y: number, ang: number}[]
 }
 
-interface BouncePoint {
+interface WayPoint {
 	x: number,
 	y: number,
 	ang: number
 }
 
 interface PacketBouncerShotStart extends PacketShotStart {
-    pts: BouncePoint[]
+    pts: WayPoint[]
 }
 
 interface PacketRespawn extends PacketTank {

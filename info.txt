@@ -8,8 +8,6 @@ potenciální řešení kolizního problému: separovat podle rychlejšího smě
 
 Grafický TODO:
 - Itemy - klidně nechat stejné, ale změnit pozadí (přidat odlesk, lepší přechod, barvu), seřadit do jednoho obrázku vedle sebe
-- Laser - asi fialová barva (je nejsilnější), bylo by ideální, kdyby zářil - mohl by vypadat takto (akorát mnohem tenčí): http://phaser.io/examples/v2/filters/lightbeams,
-            obrázek by měl mít čtvercové rozměry, "trubka" vertikálně
 - Tank - budou 4 barvy, přičemž každá barva bude mít ve výsledném obrázku jeden řádek, na každém řádku budou snímky animace pro danou barvu - točení pásu.
         Ještě pro animaci zničení tanku je potřeba tam mít čtyři kusy tanku - důležité je zanechat velikost každého snímku (doplnit průhledností)
     pořadí barev na řádcích - modrá, zelená, červená, šedá (tu bude mít tank s imunitou - hned po respawnu, aby hráči nemohli kempit na spawnu a hned tam zabíjet)

@@ -1,6 +1,6 @@
 import { GameObject_SE } from "./utils/GameObject_SE";
 import { Player_SE } from "./Player_SE";
-import { Weapon_SE, APCRGun_SE, LaserGun_SE, FlatLaserGun_SE, BouncerGun_SE } from "./Weapon_SE";
+import { Weapon_SE, APCRGun_SE, LaserGun_SE, FlatLaserGun_SE, BouncerGun_SE, Guns } from "./Weapon_SE";
 import { Level_SE } from "./Level_SE";
 import { Item_SE } from "./Item_SE";
 
@@ -22,9 +22,9 @@ class Tank_SE extends GameObject_SE {
 		this.maxAngularVel = Math.PI;
 
 		// Weapons: ------------------------
-		this.apcrGun = new APCRGun_SE(owner);
-		this.specialGun = new FlatLaserGun_SE(owner);
-		this.bouncerGun = new BouncerGun_SE(owner);
+		this.apcrGun = new Guns.APCRGun(owner);
+		this.specialGun = new Guns.BouncingLaserGun(owner);
+		this.bouncerGun = new Guns.BouncerGun(owner);
 	}
 
 	getShotPosition() {

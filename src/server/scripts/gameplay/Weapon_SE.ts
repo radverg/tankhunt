@@ -1,5 +1,5 @@
 import { Player_SE } from "./Player_SE";
-import { APCR_SE, LaserDirect_SE, Shot_SE, FlatLaser_SE, Bouncer_SE } from "./Shot_SE";
+import { APCR_SE, LaserDirect_SE, Shot_SE, FlatLaser_SE, Bouncer_SE, BouncingLaser_SE, Shots } from "./Shot_SE";
 import { THGame_SE } from "./gamemodes/THGame_SE";
 import { Item_SE } from "./Item_SE";
 
@@ -32,7 +32,7 @@ abstract class Weapon_SE extends Item_SE {
 	}
 	
 	canShoot() {
-		return (this._ammoCount > 0) && ((Date.now() - this._lastShotTime) > this._reloadTime);
+		return (this._ammoCount > 0) && ((Date.now() - this._lastShotTime) > this._reloadTime) && this.owner && this.owner.alive;
 	}
 }
 
@@ -45,7 +45,7 @@ class LaserGun_SE extends Weapon_SE {
 		super(owner, 4);
 		
 		this._ammoCount = 1;
-		this._shotType = "LaserDirect";
+		this._shotType = "LaserDirect_SE";
 	}
 	
 	onPress(game: THGame_SE) {
@@ -72,7 +72,7 @@ class APCRGun_SE extends Weapon_SE {
 		super(owner);
 		
 		this._ammoCount = 10000;
-		this._shotType = "APCRGun";
+		this._shotType = "APCR_SE";
 		this._reloadTime = 1000;
 	}
 	
@@ -92,15 +92,57 @@ class APCRGun_SE extends Weapon_SE {
 	}
 }
 
-// Pulsar ----------------------------------------------------------------------------------
-class PulsarGun extends Weapon_SE {
+/**
+ * Pulsar is a gun that shoots APCR shots until it's stack is empty or player is killed.
+ * Angle dispersion is applied.
+ */
+class PulsarGun_SE extends Weapon_SE {
+
+	protected maxDispersion: number = 0.15;
+	protected game: THGame_SE = null;
+	protected wasPressed: boolean = false;
 	
 	constructor(owner: Player_SE) {
-		super(owner); 
+		super(owner, 2); 
 		
 		this._ammoCount = 10;
-		this._shotType = "APCR";
+		this._shotType = "APCR_SE";
 		this._reloadTime = 150;
+	}
+
+	onPress(game: THGame_SE) {
+		this.game = game;
+
+		// Prevent multiple shooting
+		if (this.wasPressed) return;
+
+		this.wasPressed = true;
+
+		// Start stack
+		this.shootNext();
+		
+	}
+
+	shootNext() {
+
+		if (!this.wornOut && this.owner && this.owner.alive) {
+			
+			this.shoot();
+			
+			// Create shot 
+			let shps = this.owner.tank.getShotPosition();
+			let dispDir = (Math.random() > 0.5) ? 1 : -1;
+
+			// Apply angle dispersion
+			let ang = this.owner.tank.turret.angle + Math.random() * this.maxDispersion * dispDir;
+
+			let shot = new Shots[this._shotType](this, shps.x, shps.y, ang, this.game);
+
+			this.game.shoot(shot);
+
+			setTimeout(() => { this.shootNext(); }, this._reloadTime);
+		} 
+
 	}
 }
 
@@ -108,11 +150,11 @@ class PulsarGun extends Weapon_SE {
 //- ---------------------------
 
 class BouncerGun_SE extends Weapon_SE {
-	constructor(owner: Player_SE) {
-		super(owner); 
+	constructor(owner: Player_SE, typeIndex?: number) {
+		super(owner, typeIndex || 0); 
 
 		this._ammoCount = 10000;
-		this._shotType = "BouncerGun";
+		this._shotType = "BouncerGun_SE";
 		this._reloadTime = 2000;
 	}
 
@@ -132,15 +174,37 @@ class BouncerGun_SE extends Weapon_SE {
 	}
 }
 
+class BouncingLaserGun_SE extends Weapon_SE {
+	constructor(owner: Player_SE) {
+		super(owner, 5); 
+
+		this._ammoCount = 10000;
+		this._shotType = "BouncingLaser_SE";
+		this._reloadTime = 1000;
+	}
+
+	onPress(game: THGame_SE) {
+		// Shoot here
+		if (this.canShoot()) {
+			var shps = this.owner.tank.getShotPosition();
+			
+			if (!game.level.levelRect.contains(shps.x, shps.y)) {
+				return;
+			}
+			
+			this.shoot();
+			var shot = new BouncingLaser_SE(this, shps.x, shps.y, this.owner.tank.turret.angle, game);
+			game.shoot(shot);
+		}
+	}
+}
+
 // Flat laser --------------------------------------------
 class FlatLaserGun_SE extends Weapon_SE {
 	
-	/**
-	*
-	*/
 	constructor(owner: Player_SE = null) {
-		super(owner);
-		this._shotType = "FlatLaser";
+		super(owner, 7);
+		this._shotType = "FlatLaser_SE";
 		
 		this._ammoCount = 10;
 		this._reloadTime = 500;
@@ -162,11 +226,28 @@ class FlatLaserGun_SE extends Weapon_SE {
 	}
 }
 
+// -----------------------------------------------------------
+
+// Multi bouncer gun -----------------
+class MultiBouncerGun_SE extends PulsarGun_SE {
+
+	constructor(owner: Player_SE) {
+		super(owner);
+		this.typeIndex = 1;
+
+		this._shotType = "PolygonalBouncer_SE";
+
+	}
+}
+
 var Guns = {
 	LaserGun: LaserGun_SE,
 	APCRGun: APCRGun_SE,
 	FlatLaserGun: FlatLaserGun_SE,
-	BouncerGun: BouncerGun_SE
+	BouncerGun: BouncerGun_SE,
+	BouncingLaserGun: BouncingLaserGun_SE,
+	PulsarGun: PulsarGun_SE,
+	MultiBouncerGun: MultiBouncerGun_SE
 }
 
 
