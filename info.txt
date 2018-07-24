@@ -7,10 +7,11 @@ https://freesound.org/people/EcoDTR/sounds/36847/
 potenciální řešení kolizního problému: separovat podle rychlejšího směru!
 
 Grafický TODO:
-- Itemy - klidně nechat stejné, ale změnit pozadí (přidat odlesk, lepší přechod, barvu), seřadit do jednoho obrázku vedle sebe
 - Tank - budou 4 barvy, přičemž každá barva bude mít ve výsledném obrázku jeden řádek, na každém řádku budou snímky animace pro danou barvu - točení pásu.
         Ještě pro animaci zničení tanku je potřeba tam mít čtyři kusy tanku - důležité je zanechat velikost každého snímku (doplnit průhledností)
     pořadí barev na řádcích - modrá, zelená, červená, šedá (tu bude mít tank s imunitou - hned po respawnu, aby hráči nemohli kempit na spawnu a hned tam zabíjet)
+- Itemy - klidně nechat stejné, ale změnit pozadí (přidat odlesk, lepší přechod, barvu), seřadit do jednoho obrázku vedle sebe
 - Kouř - hodně důležitá efektní věc, bude použit u výfuků, po výstřelu u hlavně a při zničení tanku, otázka je, jak to udělat. 
         Můžou to být prostě nějaké šedé obláčky různých velikostí a tvarů. Které budu postupně generovat a zprůhledňovat. Vše v jednom souboru, stejná velikost snímku.
-- Univerzální stín - černý obdélník s rozmazanými hrany do ztracena
+- Univerzální stín - černý obdélník s rozmazanými hranami do ztracena
+- Mina - bylo by dobré, kdyby to byla koule s výstupky. Možná bych minu změnil na ten troll s boxovací rukavicí na pružině jak jsme kdysi řešili (najedeš poblíž a dostaneš ránu)

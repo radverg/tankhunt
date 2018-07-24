@@ -63,5 +63,5 @@ class Sprite extends Phaser.Sprite {
 		this.x = this.remX;
 		this.y = this.remY;
 		this.rotation = this.remAngle;
-	}
+    }
 }

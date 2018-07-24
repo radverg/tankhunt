@@ -62,9 +62,11 @@ abstract class THGame_SE {
 
     abstract playerDisconnected(player: Player_SE): void;
 
-    shoot(shot: Shot_SE) {
+    shoot(shot: Shot_SE, emitShot: boolean = true) {
         this.shots.push(shot);
-        this.emitShot(shot.getStartPacket());
+        
+        if (emitShot)
+            this.emitShot(shot.getStartPacket());
     }
 
     emitLevel() {

@@ -167,3 +167,30 @@ interface PacketKill {
      */
     shotID: string
 }
+
+interface PacketShotHit {
+    /**
+     * ID of a player that was hit
+     */
+    plID: string,
+    /**
+     * ID of a shot that hits
+     */
+    shotID: string,
+    /**
+     * Damage dealt by this hit
+     */
+    dmg: number,
+    /**
+     * Was the player killed by this hit?
+     */
+    kill: boolean,
+    /**
+     * If blast is set to true, blast method on shot should be called
+     */
+    blast: boolean,
+    /**
+     * Should the shot be removed after this hit?
+     */
+    rm: boolean
+}
