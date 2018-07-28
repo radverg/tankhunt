@@ -67,6 +67,7 @@ class THGame_CL {
 
 	processNewShot(data: PacketShotStart) {
 		if (!this.running) return;
+		data.ownerObj = this.playerGroup.getPlayer(data.ownerID);
 		this.shotGroup.newShot(data);
 	};
 
@@ -122,6 +123,17 @@ class THGame_CL {
 			this.playerGroup.getTank(data.killedID).kill();
 		}
 
+	}
+
+	processHit(data: PacketShotHit) {
+		let shot = this.shotGroup.getShot(data.shotID);
+
+		if (!shot) return;
+
+		if (data.blast) {
+			shot.blast(data);
+		}
+		
 	}
 
 	processLevel(data: any) {

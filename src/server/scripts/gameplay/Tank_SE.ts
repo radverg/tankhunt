@@ -23,7 +23,7 @@ class Tank_SE extends GameObject_SE {
 
 		// Weapons: ------------------------
 		this.apcrGun = new Guns.APCRGun(owner);
-		this.specialGun = new Guns.BouncingLaserGun(owner);
+		this.specialGun = new Guns.EliminatorGun(owner);
 		this.bouncerGun = new Guns.BouncerGun(owner);
 	}
 

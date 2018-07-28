@@ -1,5 +1,5 @@
 import { Player_SE } from "./Player_SE";
-import { APCR_SE, LaserDirect_SE, Shot_SE, FlatLaser_SE, Bouncer_SE, BouncingLaser_SE, Shots } from "./Shot_SE";
+import { APCR_SE, LaserDirect_SE, Shot_SE, FlatLaser_SE, Bouncer_SE, BouncingLaser_SE, Shots, Eliminator_SE } from "./Shot_SE";
 import { THGame_SE } from "./gamemodes/THGame_SE";
 import { Item_SE } from "./Item_SE";
 
@@ -32,7 +32,7 @@ abstract class Weapon_SE extends Item_SE {
 	}
 	
 	canShoot() {
-		return (this._ammoCount > 0) && ((Date.now() - this._lastShotTime) > this._reloadTime) && this.owner && this.owner.alive;
+		return (this._ammoCount > 0) && ((Date.now() - this._lastShotTime) > this._reloadTime) && !this.wornOut && this.owner && this.owner.alive;
 	}
 }
 
@@ -240,6 +240,46 @@ class MultiBouncerGun_SE extends PulsarGun_SE {
 	}
 }
 
+
+// Eliminator gun ----------------------------
+class EliminatorGun_SE extends Weapon_SE {
+
+	private canBlast: boolean = false;
+	private shot: Eliminator_SE = null;
+
+	constructor(owner: Player_SE) {
+		super(owner);
+
+		this.typeIndex = 3;
+		this._ammoCount = 1;
+		this._shotType = "Eliminator_SE";
+	}
+
+	onPress(game: THGame_SE) {
+
+		// Handle blast of eliminator
+		if (this.canBlast) {
+			this.canBlast = false;
+			this.shot.blast();
+			this.wornOut = true;
+		}
+
+		// Shoot here
+		if (this.canShoot()) {
+			var shps = this.owner.tank.getShotPosition();
+			
+			if (!game.level.levelRect.contains(shps.x, shps.y)) {
+				return;
+			}
+			
+			var shot = new Eliminator_SE(this, shps.x, shps.y, this.owner.tank.turret.angle, game);
+			this.shot = shot;
+			this.canBlast = true;
+			game.shoot(shot);
+		}
+	}
+}
+
 var Guns = {
 	LaserGun: LaserGun_SE,
 	APCRGun: APCRGun_SE,
@@ -247,7 +287,8 @@ var Guns = {
 	BouncerGun: BouncerGun_SE,
 	BouncingLaserGun: BouncingLaserGun_SE,
 	PulsarGun: PulsarGun_SE,
-	MultiBouncerGun: MultiBouncerGun_SE
+	MultiBouncerGun: MultiBouncerGun_SE,
+	EliminatorGun: EliminatorGun_SE
 }
 
 

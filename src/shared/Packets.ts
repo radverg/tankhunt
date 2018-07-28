@@ -90,12 +90,21 @@ interface PacketShotStart extends PacketGameObject {
      * Bounce points of the shot
      */
     pts?: {x:number, y: number, ang: number}[]
+    /**
+     * This property is filled on the client when passing packet to new shot
+     */
+    ownerObj?: Player_CL 
 }
 
 interface WayPoint {
 	x: number,
 	y: number,
 	ang: number
+}
+
+interface PacketEliminatorStart extends PacketBouncerShotStart {
+    spl: { ang: number, speed: number }[];
+    splTime: number;
 }
 
 interface PacketBouncerShotStart extends PacketShotStart {
@@ -192,5 +201,13 @@ interface PacketShotHit {
     /**
      * Should the shot be removed after this hit?
      */
-    rm: boolean
+    rm: boolean,
+    /**
+     * X coordinate of the hit position
+     */
+    x: number,
+    /**
+     * Y coordinate of the hit position
+     */
+    y: number
 }

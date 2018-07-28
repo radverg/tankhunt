@@ -15,14 +15,19 @@ class LoadManager_CL  {
 			{ assetName: "blackRect", path: imagesPath + "blackRect.png" },
 			{ assetName: "whiteRect", path: imagesPath + "whiteRect.png" },
 			{ assetName: "ammo", path: imagesPath + "ammo.png" },
-			{ assetName: "ground1", path: imagesPath + "ground_1.png" }
+			{ assetName: "ground1", path: imagesPath + "ground_1.png" },
+			{ assetName: "shadow", path: imagesPath + "shadow_box.png" }
 		];
 		
 		this.spritesheets = [
-			{ assetName: "tankBodys", path: imagesPath + "tank_bodys.png", frameSizeX: 96, frameSizeY: 138, frameCount: 4 },
+			{ assetName: "tankBodys", path: imagesPath + "tank_bodys_pokus.png", frameSizeX: 94, frameSizeY: 135, frameCount: 16 },
 			{ assetName: "defaultTurrets", path: imagesPath + "default_turrets.png", frameSizeX: 60, frameSizeY: 194, frameCount: 4 },	
 			{ assetName: "items", path: imagesPath + "items.png", frameSizeX: 46, frameSizeY: 46, frameCount: 8 },	
-			{ assetName: "lasers", path: imagesPath + "lasers.png", frameSizeX: 20, frameSizeY: 20, frameCount: 3 }
+			{ assetName: "lasers", path: imagesPath + "lasers.png", frameSizeX: 20, frameSizeY: 20, frameCount: 3 },
+			{ assetName: "exhaust", path: imagesPath + "exhaust.png", frameSizeX: 200, frameSizeY: 200, frameCount: 35 },
+			{ assetName: "exhaust2", path: imagesPath + "exhaust2.png", frameSizeX: 200, frameSizeY: 200, frameCount: 35 },
+			{ assetName: "smoke", path: imagesPath + "smoke.png", frameSizeX: 200, frameSizeY: 200, frameCount: 16 }
+
 		];
 		// -----------------------------------------------------------------------------------	
 	}

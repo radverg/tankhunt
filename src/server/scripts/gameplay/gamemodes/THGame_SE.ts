@@ -85,6 +85,10 @@ abstract class THGame_SE {
         this.emitData("kill", { killerID: killerID, killedID: killedID, shotID: shotID });
     }
 
+    emitHit(data: PacketShotHit) {
+        this.emitData("hit", data);
+    }
+
     emitItemSpawn(item: Item_SE) {
         this.emitData("itemSpawn", {typeIndex: item.typeIndex, x: item.x, y: item.y, id: item.id});
     }

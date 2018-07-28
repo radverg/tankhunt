@@ -12,14 +12,23 @@ class Sprite extends Phaser.Sprite {
     public framesInRow: number = 1;
 
     public defaultColorIndex: number = 1;
+
+    private intMoving: boolean = false;
+
+    public onIntMoveStop: Phaser.Signal = new Phaser.Signal();
+    public onIntMoveStart: Phaser.Signal = new Phaser.Signal();
+    public onIntMove: Phaser.Signal = new Phaser.Signal();
+    public onColorChange: Phaser.Signal = new Phaser.Signal();
     
     constructor(game: Phaser.Game, x: number, y: number, asset: string) {
         super(game, x, y, asset);
+
     }
 
     set colorIndex(val: number) { 
 		this.frameStart = val * (this.framesInRow || 1);
-		this.frame = this.frameStart;
+        this.frame = this.frameStart;
+        this.onColorChange.dispatch();
 	}
 
     interpolate() {
@@ -31,7 +40,17 @@ class Sprite extends Phaser.Sprite {
         if (dist < 2) { // Jump directly to the remote position
             this.x = this.remX;
             this.y = this.remY;
+            if (this.intMoving) {
+                this.onIntMoveStop.dispatch();
+                this.intMoving = false;
+            }
             return;
+        } else {
+            if (!this.intMoving) {
+                this.onIntMoveStart.dispatch();
+                this.intMoving = true;
+                
+            }
         }
 
         this.x += diffX * this.interpolationConst;
@@ -63,5 +82,9 @@ class Sprite extends Phaser.Sprite {
 		this.x = this.remX;
 		this.y = this.remY;
 		this.rotation = this.remAngle;
+    }
+
+    isGoingBack() {
+      //  let pPoint
     }
 }

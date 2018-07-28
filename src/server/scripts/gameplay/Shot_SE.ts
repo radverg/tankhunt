@@ -207,7 +207,8 @@ class Bouncer_SE extends Shot_SE {
 		this.maxSpeed = 10;
 		this.fullForward();
 
-		this.createWayPoints();
+		if (findPath)
+			this.createWayPoints();
 
 		
 	}
@@ -338,24 +339,39 @@ class PolygonalBouncer_SE extends Bouncer_SE {
 	}
 }
 
+class Splinter_SE extends Shot_SE {
+	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
+		super(weapon, startX, startY, startAng, game);
+	}
+
+	isHittingTank(tank: Tank_SE) {
+		// Same as apcr, use that method
+		return APCR_SE.prototype.isHittingTank.call(this, tank);	
+	}
+}
+
 class Eliminator_SE extends Bouncer_SE {
 
 	private splinterCount: number = 20;
+	private splinterTime: number = 2000;
 
 	private maxSplinterSpeed = 40;
 	private minSplinterSpeed = 2;
 
-	private splinters: GameObject_SE[] = [];
 	private blasted: boolean = false;
 
-	private splintersData: any[] = [];
+	private splintersData: { speed: number, ang: number }[] = [];
 
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game, false);
 
+		this.type = "Eliminator";
+
 		this.maxLength = 10;
+		this.maxSpeed = 5;
 
 		this.createWayPoints();
+		this.fullForward();
 
 		// Generate splinters data
 		for (let i = 0; i < this.splinterCount; i++) {
@@ -369,29 +385,45 @@ class Eliminator_SE extends Bouncer_SE {
 	}
 
 	getStartPacket() {
-		var packet = super.getStartPacket();
+		var packet = super.getStartPacket() as PacketEliminatorStart;
 		packet.endX = this.endPoint.x;
 		packet.endY = this.endPoint.y;
 		packet.speed = this.maxSpeed;
-	//	packet.spl = this.splintersData;
+		packet.spl = this.splintersData;
+		packet.splTime = this.splinterTime;
 		return packet;
 	}
 
 	blast() {
+		for (let i = 0; i < this.splintersData.length; i++) {
+
+			let newSpl = new Splinter_SE(this.weapon, this.x, this.y, this.splintersData[i].ang, this.game);
+			newSpl.maxSpeed = this.splintersData[i].speed;
+			newSpl.fullForward();
+			this.game.shoot(newSpl, false);
+			let splDist = newSpl.speed * (this.splinterTime / 1000);
+			this.endPoint = { x: this.startX + (this.direction.x * splDist), y: this.startY + (this.direction.y * splDist) };
+		}
+
+		this.remove = true;
+		this.blasted = true;
+
+		let hitPacket: PacketShotHit = {
+			blast: true, dmg: 0, kill: false, plID: "", rm: true, shotID: this.id, x: this.x, y: this.y
+		} 
+
+		this.game.emitHit(hitPacket);
 
 	}
 
 	update(deltaSec: number) {
 		super.update(deltaSec);
 
-		if (this.blasted) {
-			for (let i = 0; i < this.splinters.length; i++) {
-				this.splinters[i].update(deltaSec);
-				
-			}
+		if (this.remove) {
+			this.blast();
+			this.weapon.wornOut = true;
 		}
-
-
+		
 	}
 }
 
@@ -404,8 +436,9 @@ var Shots: { [key: string]:  any } = {
 	FlatLaser_SE: FlatLaser_SE,
 	Bouncer_SE: Bouncer_SE,
 	BouncingLaser_SE: BouncingLaser_SE,
-	PolygonalBouncer_SE: PolygonalBouncer_SE
+	PolygonalBouncer_SE: PolygonalBouncer_SE,
+	Eliminator_SE: Eliminator_SE
  }
 
- export { Shots, LaserDirect_SE, APCR_SE, Shot_SE, FlatLaser_SE, Bouncer_SE, BouncingLaser_SE };
+ export { Shots, LaserDirect_SE, APCR_SE, Shot_SE, FlatLaser_SE, Bouncer_SE, BouncingLaser_SE, Eliminator_SE };
 

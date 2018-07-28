@@ -82,4 +82,9 @@ abstract class Tank_CL extends Sprite {
 		//this.updateTurret();
 		this.turret.interpolateAngle();
 	}
+
+	update() {
+		this.interpolationUpdate();
+
+	}
 }

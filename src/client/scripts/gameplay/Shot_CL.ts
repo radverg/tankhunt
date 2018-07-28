@@ -14,6 +14,8 @@ class Shot_CL extends Sprite {
 	protected endY?: number;
 	protected startTime: number;
 
+	protected ownerPl: Player_CL;
+
 	protected shotGroup: ShotGroup_CL = TH.thGame.shotGroup;
 
 	constructor(dataPack: PacketShotStart, asset?: string) {
@@ -35,8 +37,11 @@ class Shot_CL extends Sprite {
 
 		this.speed = dataPack.speed * TH.sizeCoeff;
 		
+		this.ownerPl = dataPack.ownerObj || null;
 		
 		this.delay = TH.timeManager.getDelay(dataPack.startTime) || 16;
+
+		this.events.onDestroy.add(() => { if (this.shotGroup && this.shotGroup.removeShot) this.shotGroup.removeShot(this); }, this);
 	}
 
 	start() {
@@ -46,6 +51,10 @@ class Shot_CL extends Sprite {
 	stop() {
 
 	}
+
+	blast(dataPack: PacketShotHit) {
+		
+	}
 }
 
 class LaserDirect_CL extends Shot_CL {
@@ -54,7 +63,7 @@ class LaserDirect_CL extends Shot_CL {
 		super(dataPack, "lasers");
 
 		this.anchor.set(0.5, 0);
-		this.width = 0.07 * TH.sizeCoeff;
+		this.width = 0.13 * TH.sizeCoeff;
 		this.rotation += Math.PI;
 		this.speed = dataPack.speed * TH.sizeCoeff;
 
@@ -92,6 +101,13 @@ class APCR_CL extends Shot_CL {
 	}
 
 	start() {
+
+		let exh = this.game.make.sprite(0, 0, "exhaust");
+		exh.tint = 0xf4eb42;
+		exh.animations.add("exhaust", null, 20, true);
+		exh.animations.play("exhaust");
+		this.addChild(exh);
+
 		this.moveTween = TH.game.add.tween(this);
 		this.moveTween.to({ x: this.endX, y: this.endY }, this.time);
 		this.moveTween.onComplete.add(function() { this.destroy(); }, this);
@@ -225,6 +241,56 @@ class PolygonalBouncer_CL extends Bouncer_CL {
 	}
 }
 
+class Eliminator_CL extends Bouncer_CL {
+
+	private splintersData: any[] = [];
+	private splinterTime: number;
+
+	constructor(dataPack: PacketEliminatorStart) {
+		super(dataPack, "ammo");
+
+		this.splintersData = dataPack.spl;
+		this.splinterTime = dataPack.splTime;
+
+
+	}
+
+	start() {
+		super.start();
+	}
+
+	stop() {
+		//this.blast();
+	}
+
+	blast(dataPack: PacketShotHit) {
+		console.log("Eliminator blasted!");
+
+		for (let i = 0; i < this.splintersData.length; i++) {
+			let spd = this.splintersData[i].speed * TH.sizeCoeff;
+			let ang = this.splintersData[i].ang;
+			let time = this.splinterTime;
+
+			let splinterSprite: Phaser.Sprite = this.shotGroup.create(dataPack.x * TH.sizeCoeff, dataPack.y * TH.sizeCoeff, "ammo");
+			splinterSprite.rotation = ang;
+			
+			splinterSprite.anchor.set(0.5, 0);
+			splinterSprite.width = 0.07 * TH.sizeCoeff;
+			splinterSprite.height = 0.3 * TH.sizeCoeff;
+
+			let dist = spd * (time / 1000);
+			
+			let twn = this.game.add.tween(splinterSprite);
+			let endPoint = { x: splinterSprite.x + Math.sin(ang) * dist, y: splinterSprite.y - Math.cos(ang) * dist };
+			twn.to({ x: endPoint.x, y: endPoint.y }, time);
+			twn.onComplete.add(function() { this.destroy(); }, splinterSprite);
+			twn.start();
+			
+		}
+
+		this.destroy();
+	}
+}
 class BouncingLaser_CL extends Bouncer_CL {
 
 	private laserLinesGrp: Phaser.Group; 
@@ -292,5 +358,6 @@ var Shots: { [key: string]: typeof Shot_CL } = {
 	FlatLaser: FlatLaser_CL,
 	Bouncer: Bouncer_CL,
 	BouncingLaser: BouncingLaser_CL ,
-	PolygonalBouncer: PolygonalBouncer_CL
+	PolygonalBouncer: PolygonalBouncer_CL,
+	Eliminator: Eliminator_CL
 }

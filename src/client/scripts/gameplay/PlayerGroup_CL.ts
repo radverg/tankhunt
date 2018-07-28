@@ -70,7 +70,7 @@ class PlayerGroup_CL extends Phaser.Group {
      * @param tank 
      */
     private updateTank(tank: Tank_CL) {
-        tank.interpolationUpdate();
+        tank.update();
     }
 
     public setMe(player: Player_CL) {
