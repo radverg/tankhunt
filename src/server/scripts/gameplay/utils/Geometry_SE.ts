@@ -104,6 +104,7 @@ class Rect {
         this._h = h || this._h;
         this._r = Math.sqrt(Math.pow(this.w / 2, 2) + Math.pow(this.h / 2, 2));
         this._hDiagonal = this._r;
+        this.updateVertices();
     }
 
     setPos(x: number, y: number) {

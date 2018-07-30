@@ -4,11 +4,13 @@ class LoadManager_CL  {
 
 	private images: ImageAsset[];
 	private spritesheets: SpritesheetAsset[];
+	private audio: AudioAsset[];
 	private th: TH;
 	
 	constructor(th: TH) {
 		this.th = th;
 		var imagesPath = "assets/images/";
+		var soundsPath = "assets/sounds/";
 
 		// Assets ----------------------------------------------------------------------------
 		this.images = [
@@ -16,7 +18,9 @@ class LoadManager_CL  {
 			{ assetName: "whiteRect", path: imagesPath + "whiteRect.png" },
 			{ assetName: "ammo", path: imagesPath + "ammo.png" },
 			{ assetName: "ground1", path: imagesPath + "ground_1.png" },
-			{ assetName: "shadow", path: imagesPath + "shadow_box.png" }
+			{ assetName: "shadow", path: imagesPath + "shadow_box.png" },
+			{ assetName: "mine", path: imagesPath + "mine.png" }
+
 		];
 		
 		this.spritesheets = [
@@ -26,9 +30,15 @@ class LoadManager_CL  {
 			{ assetName: "lasers", path: imagesPath + "lasers.png", frameSizeX: 20, frameSizeY: 20, frameCount: 3 },
 			{ assetName: "exhaust", path: imagesPath + "exhaust.png", frameSizeX: 200, frameSizeY: 200, frameCount: 35 },
 			{ assetName: "exhaust2", path: imagesPath + "exhaust2.png", frameSizeX: 200, frameSizeY: 200, frameCount: 35 },
-			{ assetName: "smoke", path: imagesPath + "smoke.png", frameSizeX: 200, frameSizeY: 200, frameCount: 16 }
+			{ assetName: "smoke", path: imagesPath + "smoke.png", frameSizeX: 200, frameSizeY: 200, frameCount: 16 },
+			{ assetName: "explosion", path: imagesPath + "explosion.png", frameSizeX: 400, frameSizeY: 400, frameCount: 55 },
+			{ assetName: "tankParts", path: imagesPath + "tank_parts.png", frameSizeX: 94, frameSizeY: 137, frameCount: 18 }
 
 		];
+
+		this.audio = [
+			{ assetName: "explosion1_sound", path: [soundsPath + "explosion1.ogg", soundsPath + "explosion1.wav"] }
+		]
 		// -----------------------------------------------------------------------------------	
 	}
 	
@@ -44,6 +54,13 @@ class LoadManager_CL  {
 		for (var i in this.spritesheets) {
 			var sheet = this.spritesheets[i];
 			TH.game.load.spritesheet(sheet.assetName, sheet.path, sheet.frameSizeX, sheet.frameSizeY, sheet.frameCount);
+		}
+
+		// Load audio --------------------------------
+		for (let i = 0; i < this.audio.length; i++) {
+			var audio = this.audio[i];
+			TH.game.load.audio(audio.assetName, audio.path);
+			
 		}
 		
 	}
@@ -62,4 +79,9 @@ interface SpritesheetAsset extends ImageAsset {
 	frameSizeX: number,
 	frameSizeY: number,
 	frameCount: number
+}
+
+interface AudioAsset {
+	assetName: string,
+	path: string[]
 }

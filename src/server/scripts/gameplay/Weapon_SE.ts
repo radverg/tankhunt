@@ -1,5 +1,5 @@
 import { Player_SE } from "./Player_SE";
-import { APCR_SE, LaserDirect_SE, Shot_SE, FlatLaser_SE, Bouncer_SE, BouncingLaser_SE, Shots, Eliminator_SE } from "./Shot_SE";
+import { APCR_SE, LaserDirect_SE, Shot_SE, FlatLaser_SE, Bouncer_SE, BouncingLaser_SE, Shots, Eliminator_SE, Mine_SE } from "./Shot_SE";
 import { THGame_SE } from "./gamemodes/THGame_SE";
 import { Item_SE } from "./Item_SE";
 
@@ -280,6 +280,38 @@ class EliminatorGun_SE extends Weapon_SE {
 	}
 }
 
+class MineGun_SE extends Weapon_SE {
+	constructor(owner: Player_SE) {
+		super(owner, 0);
+
+		this._ammoCount = 1;
+		this._reloadTime = 100;
+	}
+
+	onPress(game: THGame_SE) {
+		// Shoot here
+		if (this.canShoot()) {
+			var shps = this.owner.tank.getRearShotPosition();
+			
+			if (!game.level.levelRect.contains(shps.x, shps.y)) {
+				return;
+			}
+			
+			this.shoot();
+			var shot = new Mine_SE(this, shps.x, shps.y, this.owner.tank.angle, game);
+			game.shoot(shot);
+		}
+	}
+}
+
+class DoubleMineGun_SE extends MineGun_SE {
+	constructor(owner: Player_SE) {
+		super(owner);
+
+		this._ammoCount = 2;
+	}
+}
+
 var Guns = {
 	LaserGun: LaserGun_SE,
 	APCRGun: APCRGun_SE,
@@ -288,8 +320,10 @@ var Guns = {
 	BouncingLaserGun: BouncingLaserGun_SE,
 	PulsarGun: PulsarGun_SE,
 	MultiBouncerGun: MultiBouncerGun_SE,
-	EliminatorGun: EliminatorGun_SE
+	EliminatorGun: EliminatorGun_SE,
+	MineGun: MineGun_SE,
+	DoubleMineGun: DoubleMineGun_SE
 }
 
 
-export { Guns, APCRGun_SE, LaserGun_SE, Weapon_SE, FlatLaserGun_SE, BouncerGun_SE };
+export { Guns, APCRGun_SE, LaserGun_SE, Weapon_SE, FlatLaserGun_SE, BouncerGun_SE, MineGun_SE, DoubleMineGun_SE };

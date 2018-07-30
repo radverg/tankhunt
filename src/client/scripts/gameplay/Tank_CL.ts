@@ -54,6 +54,8 @@ abstract class Tank_CL extends Sprite {
 	kill(): any {
 		super.kill();
 		this.turret.kill();
+
+		this.explosionEffect();
 	}
 
 	revive(): any {
@@ -85,6 +87,64 @@ abstract class Tank_CL extends Sprite {
 
 	update() {
 		this.interpolationUpdate();
+
+	}
+
+	explosionEffect() {
+
+		// Firstly, hide this sprite - effect will be created from new sprites
+		this.hide();
+
+		// Set up explosion animation 
+		let explosionSpr = this.game.add.sprite(this.x, this.y, "explosion");
+		explosionSpr.anchor.setTo(0.5);
+		let expAnim = explosionSpr.animations.add("expAnim", null, 50);
+		expAnim.onComplete.add(function() { this.destroy(); }, expAnim);
+		expAnim.play();
+
+		// Now animate parts of tank, there are six parts of tank
+		let duration = 1000;
+		for (let i = 0; i < 6; i++) {
+			// Create part
+			let partSpr = this.game.add.sprite(this.x, this.y, "tankParts", i + ((this.frameStart / this.framesInRow) * 6) );
+			partSpr.anchor.setTo(0.5);
+
+			// Rotate part
+			let angDir = (Math.random() > 0.5) ? -1 : 1;
+			let toAng = Math.random() * Math.PI * 8 * angDir;
+			
+			// Move part
+			let moveAng = Math.random() * Math.PI * 2;
+			let moveDist = TH.sizeCoeff * 2 + Math.random() * TH.sizeCoeff * 3;
+			let toPos = { x: this.x + Math.sin(moveAng) * moveDist, y: this.y - Math.cos(moveAng) * moveDist };
+			
+			// Final tween
+			let twn = this.game.add.tween(partSpr).to({ x: toPos.x, y: toPos.y, rotation: toAng, alpha: 0 }, duration);
+			twn.onComplete.add(function() { this.destroy(); }, partSpr);
+			twn.start();
+		}
+
+		// Now lets animate turret, if any
+		if (this.turret) {
+			let turretSpr = this.game.add.sprite(this.x, this.y, this.turret.key, this.turret.frame);
+			turretSpr.width = this.turret.width;
+			turretSpr.height = this.turret.height;
+			turretSpr.anchor.setTo(this.turret.anchor.x, this.turret.anchor.y * Math.random());
+
+			let angDir = (Math.random() > 0.5) ? -1 : 1;
+			let toAng = Math.random() * Math.PI * 8 * angDir;
+
+			let moveAng = Math.random() * Math.PI * 2;
+			let moveDist = TH.sizeCoeff * 2 + Math.random() * TH.sizeCoeff * 3;
+			let toPos = { x: this.x + Math.sin(moveAng) * moveDist, y: this.y - Math.cos(moveAng) * moveDist };
+
+			let twn = this.game.add.tween(turretSpr).to({ x: toPos.x, y: toPos.y, rotation: toAng, alpha: 0 }, duration);
+			twn.onComplete.add(function() { this.destroy(); }, turretSpr);
+			twn.start();
+		}
+
+		// Now play sound effect
+		this.game.sound.play("explosion1_sound");
 
 	}
 }

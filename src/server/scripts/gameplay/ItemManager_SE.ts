@@ -18,6 +18,16 @@ class ItemManager_SE {
     lastTimeSpawn: number = Date.now();
     spawning: boolean = false;
 
+    spawnPossibilities: any[] = [
+        Guns.BouncingLaserGun,
+        Guns.DoubleMineGun,
+        Guns.EliminatorGun,
+        Guns.MineGun,
+        Guns.MultiBouncerGun,
+        Guns.PulsarGun,
+        Guns.LaserGun,
+        Guns.FlatLaserGun
+    ];
 
     constructor(thGame: THGame_SE) {
         this.thGame = thGame;
@@ -35,8 +45,9 @@ class ItemManager_SE {
 
     spawnItem() {
         var newPos = this.thGame.level.getRandomSpawnItems(Data.Items.size, Data.Items.size);
+        
 
-        var newItem = new Guns.LaserGun();
+        var newItem = new this.spawnPossibilities[Math.floor(Math.random() * this.spawnPossibilities.length)]();
         newItem.setPos(newPos.x, newPos.y);
         
         this.lastTimeSpawn = Date.now();

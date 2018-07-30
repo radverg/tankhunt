@@ -20,6 +20,7 @@ abstract class Shot_SE extends GameObject_SE {
 	protected removeAfterHit: boolean;
 	protected game: THGame_SE;
 
+
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(startX, startY, 0.2, 0.2);
 
@@ -427,6 +428,27 @@ class Eliminator_SE extends Bouncer_SE {
 	}
 }
 
+class Mine_SE extends Shot_SE {
+
+	protected active: boolean = false;
+
+	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
+		super(weapon, startX, startY, startAng, game);
+		
+		this.body.setSize(1, 1);
+		this.type = "Mine";
+		this.removeAfterHit = true;
+
+		setTimeout(() => { this.active = true; }, 1000); // Activate after one second
+
+	}
+
+	isHittingTank(tank: Tank_SE) {
+		if (!this.active) return false;
+		return this.body.circularIntersect(tank.body);
+	}
+}
+
 
 
 
@@ -437,8 +459,9 @@ var Shots: { [key: string]:  any } = {
 	Bouncer_SE: Bouncer_SE,
 	BouncingLaser_SE: BouncingLaser_SE,
 	PolygonalBouncer_SE: PolygonalBouncer_SE,
-	Eliminator_SE: Eliminator_SE
+	Eliminator_SE: Eliminator_SE,
+	Mine_SE: Mine_SE
  }
 
- export { Shots, LaserDirect_SE, APCR_SE, Shot_SE, FlatLaser_SE, Bouncer_SE, BouncingLaser_SE, Eliminator_SE };
+ export { Shots, LaserDirect_SE, APCR_SE, Shot_SE, FlatLaser_SE, Bouncer_SE, BouncingLaser_SE, Eliminator_SE, Mine_SE };
 

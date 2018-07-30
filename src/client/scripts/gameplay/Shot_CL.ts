@@ -352,6 +352,22 @@ class BouncingLaser_CL extends Bouncer_CL {
 	}
 }
 
+class Mine_CL extends Shot_CL {
+
+	constructor(dataPack: PacketShotStart) {
+		super(dataPack, "mine");
+
+		this.anchor.setTo(0.5);
+		this.width = TH.sizeCoeff;
+		this.height = TH.sizeCoeff;
+	}
+
+	start() {
+		this.game.add.tween(this).to({ alpha: 0 }, 1000, Phaser.Easing.Default, true);
+		this.shotGroup.add(this);
+	}
+}
+
 var Shots: { [key: string]: typeof Shot_CL } = {
 	LaserDirect: LaserDirect_CL,
 	APCR: APCR_CL,
@@ -359,5 +375,6 @@ var Shots: { [key: string]: typeof Shot_CL } = {
 	Bouncer: Bouncer_CL,
 	BouncingLaser: BouncingLaser_CL ,
 	PolygonalBouncer: PolygonalBouncer_CL,
-	Eliminator: Eliminator_CL
+	Eliminator: Eliminator_CL,
+	Mine: Mine_CL
 }

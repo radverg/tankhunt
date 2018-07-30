@@ -10,6 +10,7 @@ class Sprite extends Phaser.Sprite {
 
     public frameStart: number = 1;
     public framesInRow: number = 1;
+    
 
     public defaultColorIndex: number = 1;
 

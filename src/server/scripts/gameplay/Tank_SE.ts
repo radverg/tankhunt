@@ -23,7 +23,7 @@ class Tank_SE extends GameObject_SE {
 
 		// Weapons: ------------------------
 		this.apcrGun = new Guns.APCRGun(owner);
-		this.specialGun = new Guns.EliminatorGun(owner);
+		this.specialGun = new Guns.DoubleMineGun(owner);
 		this.bouncerGun = new Guns.BouncerGun(owner);
 	}
 
@@ -35,6 +35,14 @@ class Tank_SE extends GameObject_SE {
 		return {
 			x: this.x + this.direction.x * (this.body.hWidth + 0.4),
 			y: this.y + this.direction.y * (this.body.hWidth + 0.4)
+		}
+	}
+
+	getRearShotPosition(addDistance: number = 0) {
+		let dist = this.body.hHeight + addDistance;
+		return {
+			x: this.x - this.direction.x * (dist),
+			y: this.y - this.direction.y * (dist)
 		}
 	}
 

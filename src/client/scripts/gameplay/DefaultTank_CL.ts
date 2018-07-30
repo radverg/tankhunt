@@ -82,30 +82,14 @@ class DefaultTank_CL extends Tank_CL {
 		this.leftExTween = this.game.add.tween(exLeftSpr);
 		this.rightExTween = this.game.add.tween(exRightSpr);
 
-	//	exRightSpr.width = 200;
-	//	exRightSpr.height = 200;
-
-
-	
-
-
-		//exLeftSpr.anchor.setTo(0.5);
-		//exRightSpr.anchor.setTo(0.5);
-		
 
 		let lAnim = exLeftSpr.animations.add("blow", null, 20, true);
 		let rAnim = exRightSpr.animations.add("blow", null, 40, true);
 
-	//	rAnim.frame = 20;
 
 		exLeftSpr.animations.play("blow");
 		exRightSpr.animations.play("blow");
 
-		
-
-	//	exLeftSpr.y = 0;
-		//exRightSpr.y = 0;
-	
 		this.addChild(exLeftSpr);
 		this.addChild(exRightSpr);
 
