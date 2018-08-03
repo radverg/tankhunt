@@ -101,13 +101,6 @@ class APCR_CL extends Shot_CL {
 	}
 
 	start() {
-
-		let exh = this.game.make.sprite(0, 0, "exhaust");
-		exh.tint = 0xf4eb42;
-		exh.animations.add("exhaust", null, 20, true);
-		exh.animations.play("exhaust");
-		this.addChild(exh);
-
 		this.moveTween = TH.game.add.tween(this);
 		this.moveTween.to({ x: this.endX, y: this.endY }, this.time);
 		this.moveTween.onComplete.add(function() { this.destroy(); }, this);

@@ -12,6 +12,8 @@ class Arena_SE extends THGame_SE {
 
     private respawnDelay: number = 1000;
     private immunityTime: number = 3000;
+    private startUpHealth: number = 300;
+    private maxHealth: number = 2500;
 
     constructor(capacity: number) {
         super();
@@ -71,11 +73,16 @@ class Arena_SE extends THGame_SE {
         player.tank.turret.randomizeAngle();
         player.tank.setPos(spawnPos.x, spawnPos.y);
 
+        // Reset health on respawning
+        player.tank.maxHealth = this.startUpHealth;
+        player.tank.health = this.startUpHealth;
+
         var packet: PacketRespawn = player.tank.getStatePacket() as PacketRespawn;
         
         packet.serverTime = Date.now();
         packet.respawnDelay = this.respawnDelay;
         packet.immunityTime = this.immunityTime;
+        packet.health = player.tank.health;
 
         setTimeout(function() { player.alive = true; }, this.respawnDelay); // Timeout for player revival
 
@@ -133,8 +140,29 @@ class Arena_SE extends THGame_SE {
                 }
                 
                 // Shot hitting players
+
                 if (this.shots[sh].isHittingTank(this.players[pl].tank)) {
-                    this.killPlayer(this.players[pl], this.shots[sh].owner, this.shots[sh]);
+                    let hitPack = this.shots[sh].hit(this.players[pl].tank);
+                    let wasKilled = hitPack.healthAft <= 0;
+
+                    if (wasKilled) {
+                        let attackerTank = this.shots[sh].owner.tank;
+                        attackerTank.maxHealth *= 1.1;
+                        if (attackerTank.maxHealth > this.maxHealth) {
+                            attackerTank.maxHealth = this.maxHealth;
+                        }
+                        attackerTank.health = attackerTank.maxHealth;
+                        attackerTank.owner.stats.killsInRow++;
+                        attackerTank.owner.stats.kills++;
+                        hitPack.attHealth = attackerTank.health;
+                    }
+                    this.emitHit(hitPack);
+
+                    if (hitPack.healthAft <= 0) {
+                        // Respawn player cus he's dead
+                        // In arena, new health of attacker needs to be counted
+                        this.respawn(this.players[pl]);
+                    }
                 }  
             }
 

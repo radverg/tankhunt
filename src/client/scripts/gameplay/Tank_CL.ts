@@ -7,6 +7,8 @@ abstract class Tank_CL extends Sprite {
 
 	protected turret: Sprite;
 
+	
+
 
 	constructor(asset: string) {
 		super(TH.game, 0, 0, asset);

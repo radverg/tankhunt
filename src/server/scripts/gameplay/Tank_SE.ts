@@ -12,6 +12,11 @@ class Tank_SE extends GameObject_SE {
 	specialGun: Item_SE;
 	bouncerGun: Weapon_SE;
 
+	maxHealth: number = 450;
+	health: number = 450;
+
+	armor: number[] = [0.4, 0.2, 0.2, 0.1];
+
 	constructor(owner: Player_SE) {
 		super(2, 2, 1, 1.4375);
 		

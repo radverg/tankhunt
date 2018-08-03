@@ -12,7 +12,6 @@
     "@types/socket.io": "^1.4.36",
     "@types/socket.io-client": "^1.4.32",
     "express": "*",
-    "line-intersect": "*",
     "socket.io": "*"
   }
 }

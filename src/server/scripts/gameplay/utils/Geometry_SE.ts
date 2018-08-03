@@ -1,6 +1,6 @@
-import { dist, getAngleToAxis } from "./MyMath_SE";
+import { dist, getAngleToAxis, checkIntersection, getLineIntPoint } from "./MyMath_SE";
 
-var li = require("line-intersect");
+//var li = require("line-intersect");
 
 class Rect {
 
@@ -93,6 +93,8 @@ class Rect {
             new Vec2(0, 0),
             new Vec2(0, 0)
         ];
+
+        this.vertices[4] = this.vertices[0];
 
         this.updateVertices();
 
@@ -189,53 +191,88 @@ class Rect {
 
     simpleLineInt(x1: number, y1: number, x2: number, y2: number): boolean {
         return (
-            li.checkIntersection(x1, y1, x2, y2, this.left, this.top, this.right, this.top).point || // Top line
-            li.checkIntersection(x1, y1, x2, y2, this.right, this.bottom, this.right, this.top).point || // Right line
-            li.checkIntersection(x1, y1, x2, y2, this.left, this.bottom, this.right, this.bottom).point || // Bottom line
-            li.checkIntersection(x1, y1, x2, y2, this.left, this.top, this.left, this.bottom).point // Left line
+            checkIntersection(x1, y1, x2, y2, this.left, this.top, this.right, this.top) || // Top line
+            checkIntersection(x1, y1, x2, y2, this.right, this.bottom, this.right, this.top) || // Right line
+            checkIntersection(x1, y1, x2, y2, this.left, this.bottom, this.right, this.bottom) || // Bottom line
+            checkIntersection(x1, y1, x2, y2, this.left, this.top, this.left, this.bottom) // Left line
         );
     }
 
-    lineInt(x1: number, y1: number, x2: number, y2: number): boolean {
+    lineInt(x1: number, y1: number, x2: number, y2: number): any {
         return (
-            li.checkIntersection(x1, y1, x2, y2, this.vertices[0].x, this.vertices[0].y, this.vertices[1].x, this.vertices[1].y).point || // Top line
-            li.checkIntersection(x1, y1, x2, y2, this.vertices[1].x, this.vertices[1].y, this.vertices[2].x, this.vertices[2].y).point || // Right line
-            li.checkIntersection(x1, y1, x2, y2, this.vertices[2].x, this.vertices[2].y, this.vertices[3].x, this.vertices[3].y).point || // Bottom line
-            li.checkIntersection(x1, y1, x2, y2, this.vertices[0].x, this.vertices[0].y, this.vertices[3].x, this.vertices[3].y).point // Left line
+            checkIntersection(x1, y1, x2, y2, this.vertices[0].x, this.vertices[0].y, this.vertices[1].x, this.vertices[1].y) || // Top line
+            checkIntersection(x1, y1, x2, y2, this.vertices[1].x, this.vertices[1].y, this.vertices[2].x, this.vertices[2].y) || // Right line
+            checkIntersection(x1, y1, x2, y2, this.vertices[2].x, this.vertices[2].y, this.vertices[3].x, this.vertices[3].y) || // Bottom line
+            checkIntersection(x1, y1, x2, y2, this.vertices[0].x, this.vertices[0].y, this.vertices[3].x, this.vertices[3].y) // Left line
         );
+    }
+
+    /**
+     * Given line points, this method determines which side of rectangle this line intersects.
+     * If it intersects two lines, only that one with closest point will be returned,
+     * Update vertices needs to be called before this
+     */
+    whichSideLineInt(startX: number, startY: number, endX: number, endY: number): {x: number, y: number, side: number} {
+        let side = -1;
+        let closestX = null;
+        let closestY = null; 
+
+
+        for (let i = 0; i < 4; i++) {
+            let pt: any = getLineIntPoint(startX, startY, endX, endY, this.vertices[i].x, this.vertices[i].y, this.vertices[i + 1].x, this.vertices[i + 1].y);
+
+            if (pt) { // Intersection
+               if (closestX === null && closestY === null) {
+                   // Not set yet
+                   closestX = pt.x;
+                   closestY = pt.y;
+                   side = i;
+               } else {
+                   // Compare
+                    if (dist(closestX, closestY, startX, startY) > dist(pt.x, pt.y, startX, startY)) {
+                        // This one is closer
+                        closestX = pt.x;
+                        closestY = pt.y;
+                        side = i;
+                    }
+               }
+            }
+        }
+
+        return { x: closestX, y: closestY, side: side };
     }
 
     lineIntPoints(x1: number, y1: number, x2: number, y2: number): Vec2[] {
-        var points: Vec2[] = [];
+        var points: any[] = [];
         
-        var point: Vec2 = li.checkIntersection(x1, y1, x2, y2, this.vertices[0].x, this.vertices[0].y, this.vertices[1].x, this.vertices[1].y).point;
+        var point: any = getLineIntPoint(x1, y1, x2, y2, this.vertices[0].x, this.vertices[0].y, this.vertices[1].x, this.vertices[1].y);
         if (point) points.push(point);
 
-        point = li.checkIntersection(x1, y1, x2, y2, this.vertices[1].x, this.vertices[1].y, this.vertices[2].x, this.vertices[2].y).point;
+        point = getLineIntPoint(x1, y1, x2, y2, this.vertices[1].x, this.vertices[1].y, this.vertices[2].x, this.vertices[2].y);
         if (point) points.push(point);
 
-        point = li.checkIntersection(x1, y1, x2, y2, this.vertices[2].x, this.vertices[2].y, this.vertices[3].x, this.vertices[3].y).point;
+        point = getLineIntPoint(x1, y1, x2, y2, this.vertices[2].x, this.vertices[2].y, this.vertices[3].x, this.vertices[3].y);
         if (point) points.push(point);
 
-        point = li.checkIntersection(x1, y1, x2, y2, this.vertices[0].x, this.vertices[0].y, this.vertices[3].x, this.vertices[3].y).point;
+        point = getLineIntPoint(x1, y1, x2, y2, this.vertices[0].x, this.vertices[0].y, this.vertices[3].x, this.vertices[3].y);
         if (point) points.push(point);
 
         return points;
     }
 
     simpleLineIntPoints(x1: number, y1: number, x2: number, y2: number): Vec2[] {
-        var points = [];
+        var points: any[] = [];
         
-        var point: Vec2 = li.checkIntersection(x1, y1, x2, y2, this.left, this.top, this.right, this.top).point;
+        var point: any = getLineIntPoint(x1, y1, x2, y2, this.left, this.top, this.right, this.top);
         if (point) points.push(point);
 
-        point = li.checkIntersection(x1, y1, x2, y2, this.right, this.bottom, this.right, this.top).point;
+        point = getLineIntPoint(x1, y1, x2, y2, this.right, this.bottom, this.right, this.top);
         if (point) points.push(point);
 
-        point = li.checkIntersection(x1, y1, x2, y2, this.left, this.bottom, this.right, this.bottom).point;
+        point = getLineIntPoint(x1, y1, x2, y2, this.left, this.bottom, this.right, this.bottom);
         if (point) points.push(point);
 
-        point = li.checkIntersection(x1, y1, x2, y2, this.left, this.top, this.left, this.bottom).point;
+        point = getLineIntPoint(x1, y1, x2, y2, this.left, this.top, this.left, this.bottom);
         if (point) points.push(point);
 
         return points;

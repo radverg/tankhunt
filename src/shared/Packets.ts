@@ -123,7 +123,11 @@ interface PacketRespawn extends PacketTank {
     /**
      * How long immunity is after tank is actually respawned
      */
-    immunityTime: number
+    immunityTime: number,
+    /**
+     * Health of player's tank
+     */
+    health: number
 }
 
 interface PacketItem extends PacketGameObject {
@@ -187,27 +191,43 @@ interface PacketShotHit {
      */
     shotID: string,
     /**
-     * Damage dealt by this hit
+     * Player health before the hit
      */
-    dmg: number,
+    healthBef?: number,
+    /**
+     * Player health after the hit
+     */
+    healthAft?: number,
     /**
      * Was the player killed by this hit?
      */
-    kill: boolean,
+   // kill: boolean,
     /**
      * If blast is set to true, blast method on shot should be called
      */
-    blast: boolean,
+    blast?: boolean,
     /**
      * Should the shot be removed after this hit?
      */
-    rm: boolean,
+    rm?: boolean,
     /**
      * X coordinate of the hit position
      */
-    x: number,
+    x?: number,
     /**
      * Y coordinate of the hit position
      */
-    y: number
+    y?: number
+    /**
+     * X coordinate of tank's position at hit moment
+     */
+    xTank?: number,
+    /**
+     * Y coordinate of tank's position at hit moment
+     */
+    yTank?: number,
+    /**
+     * Health of the attacker, in case a kill heals
+     */
+    attHealth?: number
 }

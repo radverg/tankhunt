@@ -17,6 +17,7 @@ class ItemManager_SE {
     thGame: THGame_SE;
     lastTimeSpawn: number = Date.now();
     spawning: boolean = false;
+    private maxItems: number;
 
     spawnPossibilities: any[] = [
         Guns.BouncingLaserGun,
@@ -29,12 +30,13 @@ class ItemManager_SE {
         Guns.FlatLaserGun
     ];
 
-    constructor(thGame: THGame_SE) {
+    constructor(thGame: THGame_SE, maxItems: number = 15) {
         this.thGame = thGame;
+        this.maxItems = maxItems;
     }
 
     update() {
-        if (this.spawning && this.thGame.players.length > 0 && Date.now() - this.lastTimeSpawn > 1000 * (1 + this.items.length)) {
+        if (this.spawning && this.thGame.players.length > 0 && this.items.length < this.maxItems && Date.now() - this.lastTimeSpawn > 1000 * (1 + this.items.length)) {
             this.spawnItem();
         }
     }

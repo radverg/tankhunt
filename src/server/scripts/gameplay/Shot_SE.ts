@@ -16,6 +16,13 @@ abstract class Shot_SE extends GameObject_SE {
 	protected type: string;
 	protected startTime: number;
 	protected weapon: Weapon_SE;
+
+	protected tanksHit: Tank_SE[] = [];
+	protected damage: number = 200;
+	protected penetrationBonus: number = 0;
+
+	protected active: boolean = true;
+
 	public owner: Player_SE;
 	protected removeAfterHit: boolean;
 	protected game: THGame_SE;
@@ -59,7 +66,69 @@ abstract class Shot_SE extends GameObject_SE {
 		return dist(this.x, this.y, this.startX, this.startY) >= dist(this.startX, this.startY, this.endPoint.x, this.endPoint.y);
 	}
 
-	abstract isHittingTank(tank: Tank_SE): boolean;
+	/**
+	 * Checks whether shot is colliding with tank in this frame, each shot can 
+	 * specify own logic. If no collision happens, returns false.
+	 * If collision happens, returns object containing hit coordinates and 
+	 * tank side number
+	 * @param tank 
+	 */
+	abstract getTankCollision(tank: Tank_SE): any;
+
+	/**
+	 * This method determines whether tank is being hit by a shot,
+	 * internally calls getTankCollision
+	 * Diference is that this method checks whether tank can be hit at all
+	 * @param tank 
+	 */
+	isHittingTank(tank: Tank_SE): any {
+		if (this.remove || !this.active || !tank.alive) return false;
+		if (this.tanksHit.length > 0) {
+			// Check whether this tank was already hit by this shot
+			if (this.tanksHit.indexOf(tank) !== -1) return false;
+		}
+
+		return this.getTankCollision(tank); 
+	}
+
+	/**
+	 * Hit action. Counts block probability and decides whether shot will deal damage.
+	 * Subtracts health, kills the player if needed. Does not emit hit, but returns
+	 * hit packet that is ready to be emitted. 
+	 * @param tank 
+	 */
+	hit(tank: Tank_SE): PacketShotHit {
+
+		if (this.removeAfterHit) this.remove = true;
+		else this.tanksHit.push(tank);
+
+		let initialHealth = tank.health;
+		tank.health -= this.damage;
+
+		if (tank.health <= 0) {
+			tank.owner.die();
+		}
+
+		let collInfo: any = this.getTankCollision(tank);
+
+		let hitPack: PacketShotHit = {
+			rm: this.removeAfterHit,
+			plID: tank.owner.id,
+			healthBef: initialHealth,
+			healthAft: tank.health,
+			shotID: this.id,
+			xTank: tank.x,
+			yTank: tank.y
+		}
+
+		if (collInfo && collInfo.x) {
+			hitPack.x = collInfo.x;
+			hitPack.y = collInfo.y;
+		}
+
+		return hitPack;
+
+	}
 
 }
 
@@ -85,7 +154,7 @@ class APCR_SE extends Shot_SE {
 		return packet;
 	}
 
-	isHittingTank(tank: Tank_SE) {
+	getTankCollision(tank: Tank_SE) {
 		if (tank.body.rectCircleVSCircle((this.x + this.prevBody.cX) / 2, (this.y + this.prevBody.cY) / 2, dist(this.x, this.y, this.prevBody.cX,
 			this.prevBody.cY) / 2)) {
 
@@ -127,7 +196,7 @@ class LaserDirect_SE extends Shot_SE {
 		return packet;
 	}
 
-	isHittingTank(tank: Tank_SE) {
+	getTankCollision(tank: Tank_SE) {
 		if (tank.owner == this.owner) return false; // This laser cannot kill its owner
 		return tank.body.lineInt(this.startX, this.startY, this.x, this.y);
 	}
@@ -179,7 +248,7 @@ class FlatLaser_SE extends Shot_SE {
 		return packet;
 	}
 
-	isHittingTank(tank: Tank_SE) {
+	getTankCollision(tank: Tank_SE) {
 		if (tank.owner == this.owner) return false; // This laser cannot kill its owner
 		return tank.body.lineInt(this.point1.x, this.point1.y, this.point2.x, this.point2.y);
 	}
@@ -261,7 +330,7 @@ class Bouncer_SE extends Shot_SE {
 		return packet;
 	}
 
-	isHittingTank(tank: Tank_SE) {
+	getTankCollision(tank: Tank_SE) {
 		if (tank.body.rectCircleVSCircle((this.x + this.prevBody.cX) / 2, (this.y + this.prevBody.cY) / 2, dist(this.x, this.y, this.prevBody.cX,
 			this.prevBody.cY) / 2)) {
 
@@ -307,7 +376,7 @@ class BouncingLaser_SE extends Bouncer_SE {
 		this.type = "BouncingLaser";
 	}
 
-	isHittingTank(tank: Tank_SE) {
+	getTankCollision(tank: Tank_SE) {
 
 		// In case this tank is owner, check just laser's current end position
 		if (tank.owner == this.owner) {
@@ -345,9 +414,9 @@ class Splinter_SE extends Shot_SE {
 		super(weapon, startX, startY, startAng, game);
 	}
 
-	isHittingTank(tank: Tank_SE) {
+	getTankCollision(tank: Tank_SE) {
 		// Same as apcr, use that method
-		return APCR_SE.prototype.isHittingTank.call(this, tank);	
+		return APCR_SE.prototype.getTankCollision.call(this, tank);	
 	}
 }
 
@@ -410,7 +479,7 @@ class Eliminator_SE extends Bouncer_SE {
 		this.blasted = true;
 
 		let hitPacket: PacketShotHit = {
-			blast: true, dmg: 0, kill: false, plID: "", rm: true, shotID: this.id, x: this.x, y: this.y
+			blast: true, plID: "", rm: true, shotID: this.id, x: this.x, y: this.y
 		} 
 
 		this.game.emitHit(hitPacket);
@@ -430,10 +499,10 @@ class Eliminator_SE extends Bouncer_SE {
 
 class Mine_SE extends Shot_SE {
 
-	protected active: boolean = false;
-
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game);
+
+		this.active = false;
 		
 		this.body.setSize(1, 1);
 		this.type = "Mine";
@@ -443,7 +512,7 @@ class Mine_SE extends Shot_SE {
 
 	}
 
-	isHittingTank(tank: Tank_SE) {
+	getTankCollision(tank: Tank_SE) {
 		if (!this.active) return false;
 		return this.body.circularIntersect(tank.body);
 	}

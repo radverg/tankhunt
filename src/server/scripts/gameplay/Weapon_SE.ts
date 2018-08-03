@@ -308,6 +308,7 @@ class DoubleMineGun_SE extends MineGun_SE {
 	constructor(owner: Player_SE) {
 		super(owner);
 
+		this.typeIndex = 6;
 		this._ammoCount = 2;
 	}
 }

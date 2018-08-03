@@ -10,7 +10,7 @@ class Player_SE {
     game: THGame_SE | null = null;
     alive: boolean;
     emitable: boolean;
-    stats: { kills: number; deaths: number; wins: number; };
+    stats: { kills: number; deaths: number; wins: number; killsInRow: number };
     
     constructor(socket: SocketIO.Socket, name: string) {
         this.socket = socket;
@@ -26,13 +26,16 @@ class Player_SE {
         this.stats = {
            kills: 0,
            deaths: 0,
-           wins: 0
+           wins: 0,
+           killsInRow: 0
        }
        
     }
 
     die() {
         this.stats.deaths++;
+        this.stats.killsInRow = 0;
+        this.tank.health = 0;
         this.alive = false;
        // this.emitable = false;
     }

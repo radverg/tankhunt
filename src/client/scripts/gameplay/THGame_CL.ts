@@ -15,7 +15,14 @@ class THGame_CL {
 	// Phaser signals - game interface can listen to them and react
 	onPlayerRemove: Phaser.Signal = new Phaser.Signal();
 	onItemSpawn: Phaser.Signal = new Phaser.Signal();
+	/**
+	 * First argument is item that was collecte and second argument is collector (player object)
+	 */
 	onItemCollect: Phaser.Signal = new Phaser.Signal();
+	/**
+	 * Hit packet from the server is passed as argument
+	 */
+	onHit: Phaser.Signal = new Phaser.Signal();
 
 	constructor(socketManager: SocketManager_CL) {
 		this.socketManager = socketManager;
@@ -89,7 +96,7 @@ class THGame_CL {
 			// This happens if item was collected by THIS player
 		}
 		item.getCollected();
-		this.onItemCollect.dispatch(item);		
+		this.onItemCollect.dispatch(item, collector);		
 		// Collector id is in data.playerID
 		// if (this.items[data.id]) {
 		// 	this.items[data.id].getCollected();
@@ -117,22 +124,29 @@ class THGame_CL {
 		this.newPlayerFromPacket(data);
 	}
 
-	processKill(data: PacketKill) {
-
-		if (this.playerGroup.getPlayer(data.killedID)) {
-			this.playerGroup.getTank(data.killedID).kill();
-		}
-
-	}
-
 	processHit(data: PacketShotHit) {
 		let shot = this.shotGroup.getShot(data.shotID);
+		let playerHit = this.playerGroup.getPlayer(data.plID);
 
 		if (!shot) return;
 
 		if (data.blast) {
 			shot.blast(data);
 		}
+
+		if (data.rm) {
+			shot.stop();
+		}
+
+		if (!playerHit) return;
+		
+		let tank = playerHit.tank;
+		tank.health = data.healthAft;
+		if (tank.health == 0) {
+			tank.kill();
+		}
+
+		this.onHit.dispatch(data);
 		
 	}
 
