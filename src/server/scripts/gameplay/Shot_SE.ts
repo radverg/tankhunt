@@ -82,7 +82,7 @@ abstract class Shot_SE extends GameObject_SE {
 	 * @param tank 
 	 */
 	isHittingTank(tank: Tank_SE): any {
-		if (this.remove || !this.active || !tank.alive) return false;
+		if (this.remove || !this.active || !tank.alive || tank.owner.invulnerable) return false;
 		if (this.tanksHit.length > 0) {
 			// Check whether this tank was already hit by this shot
 			if (this.tanksHit.indexOf(tank) !== -1) return false;
@@ -114,6 +114,7 @@ abstract class Shot_SE extends GameObject_SE {
 		let hitPack: PacketShotHit = {
 			rm: this.removeAfterHit,
 			plID: tank.owner.id,
+			plAttID: this.owner.id,
 			healthBef: initialHealth,
 			healthAft: tank.health,
 			shotID: this.id,
@@ -479,7 +480,7 @@ class Eliminator_SE extends Bouncer_SE {
 		this.blasted = true;
 
 		let hitPacket: PacketShotHit = {
-			blast: true, plID: "", rm: true, shotID: this.id, x: this.x, y: this.y
+			blast: true, plID: "", plAttID: this.owner.id, rm: true, shotID: this.id, x: this.x, y: this.y
 		} 
 
 		this.game.emitHit(hitPacket);

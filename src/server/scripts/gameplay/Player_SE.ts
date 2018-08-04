@@ -8,8 +8,13 @@ class Player_SE {
     public name: string;
     public tank: Tank_SE;
     game: THGame_SE | null = null;
+
     alive: boolean;
     emitable: boolean;
+    invisible: boolean = false;
+    invulnerable: boolean = false;
+
+    team: any = null;
     stats: { kills: number; deaths: number; wins: number; killsInRow: number };
     
     constructor(socket: SocketIO.Socket, name: string) {
@@ -38,6 +43,16 @@ class Player_SE {
         this.tank.health = 0;
         this.alive = false;
        // this.emitable = false;
+    }
+
+    isEnemyOf(player: Player_SE) {
+        if (player == this) return false;
+
+        if (!this.team || !player.team) {
+            return true;
+        }
+
+        return this.team == player.team;
     }
 
     getInfoPacket(): PacketPlayerInfo {

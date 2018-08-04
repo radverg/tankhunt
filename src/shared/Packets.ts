@@ -127,7 +127,7 @@ interface PacketRespawn extends PacketTank {
     /**
      * Health of player's tank
      */
-    health: number
+    health: number,
 }
 
 interface PacketItem extends PacketGameObject {
@@ -163,7 +163,7 @@ interface PacketGameRequest {
 }
 
 interface PacketMovable {
-    players: PacketTank[]
+    players: { [key: string]: PacketTank }
 }
 
 interface PacketKill {
@@ -187,6 +187,10 @@ interface PacketShotHit {
      */
     plID: string,
     /**
+     * ID of a player who owns the shot
+     */
+    plAttID: string,
+    /**
      * ID of a shot that hits
      */
     shotID: string,
@@ -198,10 +202,6 @@ interface PacketShotHit {
      * Player health after the hit
      */
     healthAft?: number,
-    /**
-     * Was the player killed by this hit?
-     */
-   // kill: boolean,
     /**
      * If blast is set to true, blast method on shot should be called
      */
@@ -230,4 +230,23 @@ interface PacketShotHit {
      * Health of the attacker, in case a kill heals
      */
     attHealth?: number
+}
+
+interface PacketAppear {
+    /**
+     * ID of player that appears
+     */
+    plID: string,
+    /**
+     * X coordinate of appear position
+     */
+    atX: number,
+    /**
+     * Y coordinate of appear position
+     */
+    atY: number
+}
+
+interface PacketDisappear {
+    plID: string
 }

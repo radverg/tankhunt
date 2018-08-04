@@ -10,7 +10,7 @@ var Levels : Lvls = require("../../../../shared/Levels");
  */
 class Arena_SE extends THGame_SE {
 
-    private respawnDelay: number = 1000;
+    private respawnDelay: number = 1800;
     private immunityTime: number = 3000;
     private startUpHealth: number = 300;
     private maxHealth: number = 2500;
@@ -65,26 +65,31 @@ class Arena_SE extends THGame_SE {
      * Sets new random position and rotation to the player's tank,
      * Generates the packets and emits info about respawn
      * Creates timeout for reviving tank according to respawnDelay property
+     * Handles the immunity as well
      * @param {player} player Player to perform respawn on
      */
     respawn(player: Player_SE) {
         var spawnPos = this.level.getRandomSpawn1(player.tank.body.hDiagonal, player.tank.body.hDiagonal);
         player.tank.randomizeAngle();
         player.tank.turret.randomizeAngle();
-        player.tank.setPos(spawnPos.x, spawnPos.y);
 
         // Reset health on respawning
         player.tank.maxHealth = this.startUpHealth;
         player.tank.health = this.startUpHealth;
 
         var packet: PacketRespawn = player.tank.getStatePacket() as PacketRespawn;
+        packet.x = spawnPos.x;
+        packet.y = spawnPos.y;
         
         packet.serverTime = Date.now();
         packet.respawnDelay = this.respawnDelay;
         packet.immunityTime = this.immunityTime;
         packet.health = player.tank.health;
 
-        setTimeout(function() { player.alive = true; }, this.respawnDelay); // Timeout for player revival
+        player.invulnerable = true;
+
+        setTimeout(function() { player.alive = true; player.tank.setPos(spawnPos.x, spawnPos.y); }, this.respawnDelay); // Timeout for player revival
+        setTimeout(function() { player.invulnerable = false; }, this.respawnDelay + this.immunityTime); // Timeout for immunity
 
         this.emitRespawn(packet);
     }

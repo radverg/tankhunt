@@ -65,6 +65,26 @@ class PlayerGroup_CL extends Phaser.Group {
         delete this.players[plID];
     }
 
+    stateUpdate(data: PacketMovable) {
+
+        var keys = Object.keys(this.players);
+
+        for (let i = 0; i < keys.length; i++) {
+            let plr = this.players[keys[i]];
+            
+            if (data.players[plr.id]) {
+                // This player is included in the packet
+                plr.tank.show();
+                plr.tank.applyStatePacket(data.players[plr.id]);
+            } else {
+                // This player is not included in the packet - means that this
+                // particular client does not see it
+                plr.tank.hide();
+            }
+        }
+
+    }
+
     /**
      * Callback for method updateTanks
      * @param tank 
@@ -75,6 +95,7 @@ class PlayerGroup_CL extends Phaser.Group {
 
     public setMe(player: Player_CL) {
         this.myID = player.id;
+        player.me = true;
         player.tank.setDefaultColor(Color.Blue);
         player.tank.setColor(Color.Blue);
     }

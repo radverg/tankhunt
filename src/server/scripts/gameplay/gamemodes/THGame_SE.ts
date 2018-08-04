@@ -3,6 +3,7 @@ import { Item_SE } from "../Item_SE";
 import { Shot_SE } from "../Shot_SE";
 import { ItemManager_SE } from "../ItemManager_SE";
 import { Level_SE } from "../Level_SE";
+import { GameObject_SE } from "../utils/GameObject_SE";
 
 abstract class THGame_SE {
 
@@ -21,6 +22,10 @@ abstract class THGame_SE {
     protected capacity: number = 100;
 
     protected gameType: string;
+
+    private hViewWidth: number = 15;
+    private hViewHeight: number = 9;
+    private viewOffset: number = 4.28;
     
     constructor() { }
 
@@ -31,24 +36,7 @@ abstract class THGame_SE {
     }
 
     update(deltaSec: number) {
-        // if (!this.running) return;
-        // this.updateCounter++;
-
-        // // Move, rotate, collide players
-        // for (var pl = 0; pl < this.players.length; pl++) {
-        //     this.players[pl].tank.move(deltaSec);
-        //     this.players[pl].tank.rotate(deltaSec);
-        // }
-
-        // // Move, collide shots
-        // for (var sh = 0; sh < this.shots.length; sh++) {
-
-        // }
-
-        // // Send players state every third frame ( 20 per second)
-        // if ((this.updateCounter % 3) == 0) {
-        //     this.emitPlayersState();
-        // }
+    
     }
 
     killPlayer(killed: Player_SE, killer: Player_SE, shot: Shot_SE) {
@@ -97,12 +85,12 @@ abstract class THGame_SE {
         this.emitData("itemCollect", { id: item.id, playerID: collector.id });
     }
 
-    emitDisappear(id: string) {
-        this.emitData("disappear", { id: id });
+    emitDisappear(player: Player_SE) {
+        this.emitData("disappear", { plID: player.id });
     }
 
-    emitAppear(id: string) {
-        this.emitData("appear", { id: id });
+    emitAppear(player: Player_SE) {
+        this.emitData("appear", { plID: player.id, atX: player.tank.x, atY: player.tank.y } );
     }
 
     emitData(emName: string, data: any) {
@@ -121,20 +109,52 @@ abstract class THGame_SE {
 
     // Creates and sends packet that contains positions, rotations and velocities of the tanks
     emitMovable() {
-        var packet: PacketMovable = {} as PacketMovable;
-        packet.players = []; 
-
+        
         // Add players to the packet
         for (var pl = 0; pl < this.players.length; pl++) {
-            if (this.players[pl].alive && this.players[pl].emitable) { // Include a player in the packet only if it's both alive and visible (emitable)
-                packet.players.push(this.players[pl].tank.getStatePacket());
-                // packet.players.push({"id": this.players[pl].socket.id, "posX": this.players[pl].tank.x, 
-                //     "posY": this.players[pl].tank.y, "rot": this.players[pl].tank.angle, 
-                //     "turrRot": this.players[pl].tank.turret.angle});
+            var plr1 = this.players[pl];
+
+            var packet: PacketMovable = {} as PacketMovable;
+            packet.players = {}; 
+
+            var counter = 0;
+    
+            for (let pl2 = 0; pl2 < this.players.length; pl2++) {
+                
+                let plr2: Player_SE = this.players[pl2];
+                
+                // All the following conditions have to be true in order to add this tank to the packet
+                if (!this.isInView(plr2.tank, plr1.tank.x, plr1.tank.y) || !plr2.alive || !plr2.emitable || (plr2.invisible && plr2.isEnemyOf(plr1))) 
+                    continue;
+
+                packet.players[plr2.id] = plr2.tank.getStatePacket();
+                counter++;
             }
+            
+            if (counter > 0)
+                this.emitDataPl("movableState", packet, plr1);
         }
 
-        this.emitData("movableState", packet);
+    }
+
+    isInView(gameobj: GameObject_SE, fromX: number, fromY: number) {
+        let rectX = fromX - this.hViewWidth;
+        let rectY = fromY - this.hViewHeight;
+
+        if (rectX < -this.viewOffset) {
+            rectX = -this.viewOffset; 
+        } else if (fromX + this.hViewWidth > this.level.levelRect.w + this.viewOffset) {
+            rectX = this.level.levelRect.w + this.viewOffset - this.hViewWidth * 2;
+        }
+
+        if (rectY < -this.viewOffset) {
+            rectY = -this.viewOffset; 
+        } else if (fromY + this.hViewHeight > this.level.levelRect.h + this.viewOffset) {
+            rectY = this.level.levelRect.h + this.viewOffset - this.hViewHeight * 2;
+        }
+
+        return gameobj.body.right > rectX && gameobj.body.left < rectX + this.hViewWidth * 2
+            && gameobj.body.top < rectY + this.hViewHeight * 2 && gameobj.body.bottom > rectY;
     }
 
     // Input handling ----------------------------------------------------------------------

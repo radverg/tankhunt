@@ -38,7 +38,7 @@ class Sprite extends Phaser.Sprite {
 
         let dist = Math.sqrt(diffX * diffX + diffY * diffY);
 
-        if (dist < 2) { // Jump directly to the remote position
+        if (dist < 2 || dist > TH.sizeCoeff * 2) { // Jump directly to the remote position
             this.x = this.remX;
             this.y = this.remY;
             if (this.intMoving) {
@@ -62,7 +62,7 @@ class Sprite extends Phaser.Sprite {
     interpolateAngle() {
         let diff = this.remAngle - this.rotation;
 
-        if (Math.abs(diff) < Math.PI / 90) {
+        if (Math.abs(diff) < Math.PI / 90 || Math.abs(diff) > Math.PI / 3) {
             this.rotation = this.remAngle;
             return;
         }

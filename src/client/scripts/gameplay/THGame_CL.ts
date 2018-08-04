@@ -23,6 +23,7 @@ class THGame_CL {
 	 * Hit packet from the server is passed as argument
 	 */
 	onHit: Phaser.Signal = new Phaser.Signal();
+	onRespawn: Phaser.Signal = new Phaser.Signal();
 
 	constructor(socketManager: SocketManager_CL) {
 		this.socketManager = socketManager;
@@ -62,14 +63,8 @@ class THGame_CL {
 
 	processStateInfo(data: PacketMovable) {
 		if (!this.running) return;
-
-		for (var i = 0; i < data.players.length; i++) {
-
-			let player = this.playerGroup.getPlayer(data.players[i].plID);
-			if (!player) continue;
-		
-			player.tank.applyStatePacket(data.players[i]);			
-		}
+		this.playerGroup.stateUpdate(data);
+	
 	}
 
 	processNewShot(data: PacketShotStart) {
@@ -127,14 +122,13 @@ class THGame_CL {
 	processHit(data: PacketShotHit) {
 		let shot = this.shotGroup.getShot(data.shotID);
 		let playerHit = this.playerGroup.getPlayer(data.plID);
-
-		if (!shot) return;
+		let playerAtt = this.playerGroup.getPlayer(data.plAttID);
 
 		if (data.blast) {
 			shot.blast(data);
 		}
 
-		if (data.rm) {
+		if (data.rm && shot) {
 			shot.stop();
 		}
 
@@ -143,6 +137,12 @@ class THGame_CL {
 		let tank = playerHit.tank;
 		tank.health = data.healthAft;
 		if (tank.health == 0) {
+			// If tank is not visible in the moment of destruction, move it to the position
+			// sent in packet hit
+			if (!tank.visible && data.xTank) {
+				tank.positionServerUpdate(data.xTank, data.yTank);
+				tank.jumpToRemote();
+			}
 			tank.kill();
 		}
 
@@ -197,6 +197,31 @@ class THGame_CL {
 	};
 
 	processRespawn(data: PacketRespawn) { };
+
+	processAppear(data: PacketAppear) {
+		let plr = this.playerGroup.getPlayer(data.plID);
+		if (!plr) return;
+
+		if (plr.isEnemyOf(this.playerGroup.me)) {
+			plr.tank.show(true);
+			plr.tank.positionServerUpdate(data.atX * TH.sizeCoeff, data.atY * TH.sizeCoeff)
+			plr.tank.jumpToRemote();
+		} else {
+			plr.tank.alpha = 1;
+		}
+	}
+
+	processDisappear(data: PacketDisappear) {
+		let plr = this.playerGroup.getPlayer(data.plID);
+		if (!plr) return;
+
+		if (plr.isEnemyOf(this.playerGroup.me)) {
+			plr.tank.hide(true);
+		} else {
+			plr.tank.alpha = 0.5;
+		}
+	}
+
 
 	setCamera() {
 		

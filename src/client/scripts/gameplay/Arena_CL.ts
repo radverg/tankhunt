@@ -1,6 +1,7 @@
 /// <reference path="../refs.ts" />
 
 class Arena_CL extends THGame_CL {
+
     constructor(socketManager: SocketManager_CL, packet: PacketGameStart) {
         super(socketManager);
 	  
@@ -17,11 +18,15 @@ class Arena_CL extends THGame_CL {
 	 */
 	processRespawn(data: PacketRespawn) {
 		let player: Player_CL = this.playerGroup.getPlayer(data.plID);
+		if (!player) return;
+
 		
-		if (player) {
-			player.tank.applyStatePacket(data);
-		}
+		player.tank.applyStatePacket(data);
+		player.tank.jumpToRemote();
+		player.tank.setColor(Color.Gray);
+		
 		TH.game.time.events.add(data.respawnDelay, player.tank.revive, player.tank);
+		TH.game.time.events.add(data.respawnDelay + data.immunityTime, function() { this.setColor(this.defaultColorIndex); }, player.tank);		
     }
     
     newPlayerFromPacket(packet: PacketPlayerInfo) {

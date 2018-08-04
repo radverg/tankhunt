@@ -7,7 +7,10 @@ class Player_CL {
 	public name: string = "unnamed";
 	public tank: Tank_CL | null = null;
 
+	public me: boolean = false;
+
 	public stats?: any;
+	public team: any = null;
 
 	constructor(id: string, tank?: Tank_CL, name?: string) {
 		this.id = id;
@@ -29,6 +32,15 @@ class Player_CL {
 		this.tank.destroy();
 		this.tank = null;
 	};
+
+	isEnemyOf(player: Player_CL) {
+
+		if (this == player) return false;
+
+		if (!this.team || !player.team) return true;
+		
+		return this.team === player.team;
+	}
 
 	// /**
 	//  * Sets properties of this player and his tank according to the player info packet received from the server

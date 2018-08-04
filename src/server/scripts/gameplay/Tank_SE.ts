@@ -1,6 +1,6 @@
 import { GameObject_SE } from "./utils/GameObject_SE";
 import { Player_SE } from "./Player_SE";
-import { Weapon_SE, APCRGun_SE, LaserGun_SE, FlatLaserGun_SE, BouncerGun_SE, Guns } from "./Weapon_SE";
+import { Weapon_SE, APCRGun_SE, LaserGun_SE, FlatLaserGun_SE, BouncerGun_SE, Guns, Invisibility_SE } from "./Weapon_SE";
 import { Level_SE } from "./Level_SE";
 import { Item_SE } from "./Item_SE";
 
@@ -28,7 +28,7 @@ class Tank_SE extends GameObject_SE {
 
 		// Weapons: ------------------------
 		this.apcrGun = new Guns.APCRGun(owner);
-		this.specialGun = new Guns.DoubleMineGun(owner);
+		this.specialGun = new Invisibility_SE(owner);
 		this.bouncerGun = new Guns.BouncerGun(owner);
 	}
 

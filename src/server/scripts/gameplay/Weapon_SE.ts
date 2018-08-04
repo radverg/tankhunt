@@ -178,7 +178,7 @@ class BouncingLaserGun_SE extends Weapon_SE {
 	constructor(owner: Player_SE) {
 		super(owner, 5); 
 
-		this._ammoCount = 10000;
+		this._ammoCount = 1;
 		this._shotType = "BouncingLaser_SE";
 		this._reloadTime = 1000;
 	}
@@ -206,7 +206,7 @@ class FlatLaserGun_SE extends Weapon_SE {
 		super(owner, 7);
 		this._shotType = "FlatLaser_SE";
 		
-		this._ammoCount = 10;
+		this._ammoCount = 1;
 		this._reloadTime = 500;
 	}
 	
@@ -313,6 +313,31 @@ class DoubleMineGun_SE extends MineGun_SE {
 	}
 }
 
+class Invisibility_SE extends Item_SE {
+
+	private duration: number = 6000;
+
+	constructor(owner: Player_SE) {
+		super(8);
+		this.owner = owner;
+	}
+
+	onPress(game: THGame_SE) {
+		if (this.wornOut) return;
+		this.wornOut = true;
+
+		this.owner.invisible = true;
+		game.emitDisappear(this.owner);
+
+		setTimeout(() => { 
+			if (this.owner) {
+				this.owner.invisible = false;
+				game.emitAppear(this.owner);
+			}
+		}, this.duration);
+	}
+}
+
 var Guns = {
 	LaserGun: LaserGun_SE,
 	APCRGun: APCRGun_SE,
@@ -327,4 +352,4 @@ var Guns = {
 }
 
 
-export { Guns, APCRGun_SE, LaserGun_SE, Weapon_SE, FlatLaserGun_SE, BouncerGun_SE, MineGun_SE, DoubleMineGun_SE };
+export { Guns, APCRGun_SE, LaserGun_SE, Weapon_SE, FlatLaserGun_SE, BouncerGun_SE, MineGun_SE, DoubleMineGun_SE, Invisibility_SE };

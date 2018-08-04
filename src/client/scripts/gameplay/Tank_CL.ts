@@ -8,7 +8,8 @@ abstract class Tank_CL extends Sprite {
 	protected turret: Sprite;
 
 	
-
+	private showTween: Phaser.Tween;
+	private hideTween: Phaser.Tween;
 
 	constructor(asset: string) {
 		super(TH.game, 0, 0, asset);
@@ -70,12 +71,12 @@ abstract class Tank_CL extends Sprite {
 		this.turret.destroy();
 	}
 
-	hide() {
+	hide(animate: boolean = true) {
 		this.visible = false;
 		this.turret.visible = false;
 	}
 
-	show() {
+	show(animate: boolean = true) {
 		this.visible = true;
 		this.turret.visible = true;
 	}
