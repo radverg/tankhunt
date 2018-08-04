@@ -10,6 +10,10 @@ class TH {
      * Instance of currently running game
      */
     static thGame: THGame_CL;
+    /**
+     * Instance of Effect Manager
+     */
+    static effects: EffectManager;
 
     static timeManager: TimeManager_CL;
 
@@ -47,7 +51,9 @@ class TH {
         TH.game = new Phaser.Game(phaserConfig);
         TH.game.state.add("load", this.loadManager);
         TH.game.state.add("play", this.playManager);
-        TH.game.state.start("load");
         TH.sizeCoeff = 70;
+        TH.effects = new EffectManager(TH.game);
+        TH.game.state.start("load");
+
     }
 }

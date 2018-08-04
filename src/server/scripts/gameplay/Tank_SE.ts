@@ -12,8 +12,8 @@ class Tank_SE extends GameObject_SE {
 	specialGun: Item_SE;
 	bouncerGun: Weapon_SE;
 
-	maxHealth: number = 450;
-	health: number = 450;
+	maxHealth: number = 1500;
+	health: number = 1500;
 
 	armor: number[] = [0.4, 0.2, 0.2, 0.1];
 

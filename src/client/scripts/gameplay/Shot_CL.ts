@@ -103,10 +103,14 @@ class APCR_CL extends Shot_CL {
 	start() {
 		this.moveTween = TH.game.add.tween(this);
 		this.moveTween.to({ x: this.endX, y: this.endY }, this.time);
-		this.moveTween.onComplete.add(function() { this.destroy(); }, this);
+		this.moveTween.onComplete.add(function() { 
+			TH.effects.shotDebrisEffect(this.x, this.y);
+			this.destroy(); 
+		}, this);
 		this.moveTween.start();
 
 		this.shotGroup.add(this);
+		TH.effects.smokeEffect(this.x, this.y, 0.4);
 	}
 
 	stop() {

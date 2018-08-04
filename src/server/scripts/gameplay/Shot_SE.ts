@@ -20,6 +20,7 @@ abstract class Shot_SE extends GameObject_SE {
 	protected tanksHit: Tank_SE[] = [];
 	protected damage: number = 200;
 	protected penetrationBonus: number = 0;
+	protected ignoreArmor: boolean = false;
 
 	protected active: boolean = true;
 
@@ -102,6 +103,17 @@ abstract class Shot_SE extends GameObject_SE {
 		if (this.removeAfterHit) this.remove = true;
 		else this.tanksHit.push(tank);
 
+		let collInfo: any = this.getTankCollision(tank);
+		let damage = this.damage;
+
+		if (collInfo && collInfo.side != -1 && tank.armor) {
+			// Here, take armor into consideration
+			let penPerc = 1 - tank.armor[collInfo.side] + this.penetrationBonus;
+			if (Math.random() > penPerc) {
+				damage = 0; // Shot blocked
+			}
+		}
+
 		let initialHealth = tank.health;
 		tank.health -= this.damage;
 
@@ -109,7 +121,8 @@ abstract class Shot_SE extends GameObject_SE {
 			tank.owner.die();
 		}
 
-		let collInfo: any = this.getTankCollision(tank);
+
+		
 
 		let hitPack: PacketShotHit = {
 			rm: this.removeAfterHit,
@@ -159,7 +172,7 @@ class APCR_SE extends Shot_SE {
 		if (tank.body.rectCircleVSCircle((this.x + this.prevBody.cX) / 2, (this.y + this.prevBody.cY) / 2, dist(this.x, this.y, this.prevBody.cX,
 			this.prevBody.cY) / 2)) {
 
-			return tank.body.lineInt(this.x, this.y, this.prevBody.cX, this.prevBody.cY);
+			return tank.body.whichSideLineInt(this.x, this.y, this.prevBody.cX, this.prevBody.cY);
 		}
 
 		return false;
@@ -177,6 +190,7 @@ class LaserDirect_SE extends Shot_SE {
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game);
 
+		this.ignoreArmor = true;
 		this.type = "LaserDirect";
 		this.removeAfterHit = false;
 		this.maxSpeed = 40;
@@ -219,6 +233,7 @@ class FlatLaser_SE extends Shot_SE {
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game);
 
+		this.ignoreArmor = true;
 		this.type = "FlatLaser";
 		this.removeAfterHit = false;
 		this.maxSpeed = 20;
@@ -335,7 +350,7 @@ class Bouncer_SE extends Shot_SE {
 		if (tank.body.rectCircleVSCircle((this.x + this.prevBody.cX) / 2, (this.y + this.prevBody.cY) / 2, dist(this.x, this.y, this.prevBody.cX,
 			this.prevBody.cY) / 2)) {
 
-			return tank.body.lineInt(this.x, this.y, this.prevBody.cX, this.prevBody.cY);
+			return tank.body.whichSideLineInt(this.x, this.y, this.prevBody.cX, this.prevBody.cY);
 		}
 
 		return false;
@@ -371,13 +386,14 @@ class BouncingLaser_SE extends Bouncer_SE {
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game);
 
+		this.ignoreArmor = true;
 		this.maxSpeed = 35;
 		this.fullForward();
 
 		this.type = "BouncingLaser";
 	}
 
-	getTankCollision(tank: Tank_SE) {
+	getTankCollision(tank: Tank_SE): any {
 
 		// In case this tank is owner, check just laser's current end position
 		if (tank.owner == this.owner) {
@@ -504,6 +520,7 @@ class Mine_SE extends Shot_SE {
 		super(weapon, startX, startY, startAng, game);
 
 		this.active = false;
+		this.ignoreArmor = true;
 		
 		this.body.setSize(1, 1);
 		this.type = "Mine";
