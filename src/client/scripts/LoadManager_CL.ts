@@ -33,8 +33,12 @@ class LoadManager_CL  {
 			{ assetName: "smoke", path: imagesPath + "smoke.png", frameSizeX: 200, frameSizeY: 200, frameCount: 16 },
 			{ assetName: "explosion", path: imagesPath + "explosion.png", frameSizeX: 400, frameSizeY: 400, frameCount: 55 },
 			{ assetName: "tankParts", path: imagesPath + "tank_parts.png", frameSizeX: 94, frameSizeY: 137, frameCount: 18 },
-			{ assetName: "shotExplode", path: imagesPath + "shot_explode.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
+			{ assetName: "shotExplode1", path: imagesPath + "shot_explode1.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
 			{ assetName: "shotExplode2", path: imagesPath + "shot_explode2.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
+			{ assetName: "shotExplode3", path: imagesPath + "shot_explode3.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
+			{ assetName: "shotExplode4", path: imagesPath + "shot_explode4.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
+			{ assetName: "shotExplode5", path: imagesPath + "shot_explode5.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
+
 
 		];
 

@@ -111,10 +111,11 @@ abstract class Tank_CL extends Sprite {
 
 		let x = this.x + Math.sin(ang) * dist; 
 		let y = this.y - Math.cos(ang) * dist;
+		let rnd = Math.floor(Math.random() * 5) + 1;
 
-		let explodeSpr = this.game.add.sprite(x, y, "shotExplode2");
+		let explodeSpr = this.game.add.sprite(x, y, `shotExplode${rnd}`);
 		explodeSpr.anchor.setTo(0.5);
-		explodeSpr.scale.setTo(0.7);
+		explodeSpr.scale.setTo(0.5);
 		explodeSpr.rotation = ang;
 
 		let expAnim = explodeSpr.animations.add("shotExplode", null, 40);
