@@ -15,3 +15,13 @@ Grafický TODO:
         Můžou to být prostě nějaké šedé obláčky různých velikostí a tvarů. Které budu postupně generovat a zprůhledňovat. Vše v jednom souboru, stejná velikost snímku.
 - Univerzální stín - černý obdélník s rozmazanými hranami do ztracena
 - Mina - bylo by dobré, kdyby to byla koule s výstupky. Možná bych minu změnil na ten troll s boxovací rukavicí na pružině jak jsme kdysi řešili (najedeš poblíž a dostaneš ránu)
+
+
+Dev log:
+- Přidán efekt výstřelu z děla
+- Přidány první zvuky
+- Implementován pancíř - může se stát že zblokuje střelu a hráč nedostane damage
+        nejsilnější je ve předu, vyplatí se tedy střílet hlavně do boku a do zad, nepočítá se s úhly, pouze se stranami.
+        Lasery a mina pancíř ignorují.
+
+- První části rozhraní - hráč konečně vidí nějaké info u tanků - jméno (zatím nejde zadat), healthbar a notifikace o schytaném dmg

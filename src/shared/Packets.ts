@@ -50,7 +50,10 @@ interface PacketPlayerInfo {
     /**
      * Information about player's tank
      */
-    tank?: PacketTank
+    tank?: PacketTank,
+
+    health: number,
+    maxHealth: number
 }
 
 interface PacketShotStart extends PacketGameObject {
@@ -94,6 +97,16 @@ interface PacketShotStart extends PacketGameObject {
      * This property is filled on the client when passing packet to new shot
      */
     ownerObj?: Player_CL 
+}
+
+interface PacketHeal {
+    plID: string, 
+
+    healthBef: number,
+    healthAft: number,
+
+    maxHealthBef: number,
+    maxHealthAft: number
 }
 
 interface WayPoint {
@@ -225,11 +238,7 @@ interface PacketShotHit {
     /**
      * Y coordinate of tank's position at hit moment
      */
-    yTank?: number,
-    /**
-     * Health of the attacker, in case a kill heals
-     */
-    attHealth?: number
+    yTank?: number
 }
 
 interface PacketAppear {

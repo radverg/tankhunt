@@ -8,6 +8,48 @@ class EffectManager {
         this.effectGroup = game.world;
     }
 
+    playSound(name: string, volume: number = 1, atX?: number, atY?: number)  {
+        let vol = volume;
+
+        if (atX) {
+            vol *= this.getVolumeCoeff(atX, atY);
+        }
+
+        if (vol == 0) {
+            return;
+        }
+        
+        this.game.sound.play(name, vol);
+
+
+    }
+
+    playLaser1(atX: number, atY: number) {
+        this.playSound("laser1_sound", 0.8, atX, atY);
+    }
+
+    playLaser2(atX: number, atY: number) {
+        this.playSound("laser2_sound", 0.8, atX, atY);
+    }
+
+    playLaser3(atX: number, atY: number) {
+        this.playSound("laser3_sound", 0.8, atX, atY);
+    }
+
+    private getVolumeCoeff(x: number, y: number) {
+        let cam = this.game.camera;
+        let dist = TH.game.math.distance(cam.view.centerX, cam.view.centerY, x, y);
+        if (cam.view.height / 2 > dist) 
+            return 1;
+
+        let coeff = (cam.view.height / 2) / (dist * 1.3);
+        if (coeff < 0.03)
+            coeff = 0;
+
+        return coeff;
+    }
+
+
     /**
      * Creates a smoke effect at given coordinates
      * @param x 
@@ -19,7 +61,7 @@ class EffectManager {
         let smokeSpr: Phaser.Sprite = this.game.add.sprite(x, y, "smoke");
         smokeSpr.anchor.setTo(0.5);
         smokeSpr.scale.setTo(scale);
-
+       
         let smokeAnim = smokeSpr.animations.add("smokeAnim", null, 42);
         smokeAnim.onComplete.add(function() { this.destroy(); }, smokeSpr);
         smokeAnim.play();

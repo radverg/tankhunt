@@ -91,6 +91,7 @@ class PlayerGroup_CL extends Phaser.Group {
      */
     private updateTank(tank: Tank_CL) {
         tank.update();
+
     }
 
     public setMe(player: Player_CL) {

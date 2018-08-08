@@ -10,7 +10,7 @@ class THGame_CL {
 	protected levelGroup: Phaser.Group = null;
 	protected itemGroup: ItemGroup_CL = null;
 	shotGroup: ShotGroup_CL = null;
-	protected playerGroup: PlayerGroup_CL = null;
+	playerGroup: PlayerGroup_CL = null;
 
 	// Phaser signals - game interface can listen to them and react
 	onPlayerRemove: Phaser.Signal = new Phaser.Signal();
@@ -20,10 +20,18 @@ class THGame_CL {
 	 */
 	onItemCollect: Phaser.Signal = new Phaser.Signal();
 	/**
-	 * Hit packet from the server is passed as argument
+	 * Hit packet from the server is passed as argument, second argument is player that was hit
 	 */
 	onHit: Phaser.Signal = new Phaser.Signal();
 	onRespawn: Phaser.Signal = new Phaser.Signal();
+	/**
+	 * Player_CL object is passed as an argument
+	 */
+	onNewPlayer: Phaser.Signal = new Phaser.Signal();
+	/**
+	 * Player_CL object is first argument, PacketHeal second
+	 */
+	onHeal: Phaser.Signal = new Phaser.Signal();
 
 	constructor(socketManager: SocketManager_CL) {
 		this.socketManager = socketManager;
@@ -37,13 +45,13 @@ class THGame_CL {
 	}
 
 	debug()  {
-		/* if (this.playerGroup.me)
-			TH.game.debug.spriteInfo(this.playerGroup.me.tank, 10, 10, "black");
+		//  if (this.playerGroup.me)
+		// 	TH.game.debug.spriteInfo(this.playerGroup.me.tank, 10, 10, "black");
 
-		TH.game.debug.cameraInfo(TH.game.camera, 10, 500, "black");
+		// TH.game.debug.cameraInfo(TH.game.camera, 10, 500, "black");
 
 		if (TH.timeManager.ping)
-			TH.game.debug.text(TH.timeManager.ping.toString(), 10, 1000); */
+			TH.game.debug.text(TH.timeManager.ping.toString(), 10, 1000); 
     }
 
 
@@ -136,6 +144,7 @@ class THGame_CL {
 		
 		let tank = playerHit.tank;
 		tank.health = data.healthAft;
+
 		TH.effects.shotDebrisEffect(data.x * TH.sizeCoeff || tank.x , (data.y * TH.sizeCoeff) || tank.y);
 		if (tank.health == 0) {
 			// If tank is not visible in the moment of destruction, move it to the position
@@ -147,8 +156,19 @@ class THGame_CL {
 			tank.kill();
 		}
 
-		this.onHit.dispatch(data);
+		this.onHit.dispatch(data, playerHit);
 		
+	}
+
+	processHeal(data: PacketHeal) {
+		let plr = this.playerGroup.getPlayer(data.plID);
+
+		if (plr) {
+			plr.tank.maxHealth = data.maxHealthAft
+			plr.tank.health = data.healthAft;
+
+			this.onHeal.dispatch(plr, data);
+		}
 	}
 
 	processLevel(data: any) {
@@ -194,7 +214,7 @@ class THGame_CL {
 			}
 		}
 
-		console.log("Level is here!");
+		console.log(`Level is here! Payload: ${JSON.stringify(data).length} characters | bytes`);
 	};
 
 	processRespawn(data: PacketRespawn) { };

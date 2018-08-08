@@ -12,7 +12,7 @@ class Arena_SE extends THGame_SE {
 
     private respawnDelay: number = 1800;
     private immunityTime: number = 3000;
-    private startUpHealth: number = 1500;
+    private startUpHealth: number = 500;
     private maxHealth: number = 2500;
 
     constructor(capacity: number) {
@@ -148,20 +148,37 @@ class Arena_SE extends THGame_SE {
 
                 if (this.shots[sh].isHittingTank(this.players[pl].tank)) {
                     let hitPack = this.shots[sh].hit(this.players[pl].tank);
+                    let healPack: PacketHeal = null;
+                    
                     let wasKilled = hitPack.healthAft <= 0;
 
                     if (wasKilled) {
+                        healPack = { } as any;
                         let attackerTank = this.shots[sh].owner.tank;
+
+                        healPack.plID = attackerTank.owner.id;
+                        healPack.healthBef = attackerTank.health;
+                        healPack.maxHealthBef = attackerTank.maxHealth;
+
                         attackerTank.maxHealth *= 1.1;
                         if (attackerTank.maxHealth > this.maxHealth) {
                             attackerTank.maxHealth = this.maxHealth;
                         }
                         attackerTank.health = attackerTank.maxHealth;
+
+                        healPack.healthAft = attackerTank.health;
+                        healPack.maxHealthAft = attackerTank.maxHealth
+
                         attackerTank.owner.stats.killsInRow++;
                         attackerTank.owner.stats.kills++;
-                        hitPack.attHealth = attackerTank.health;
+                    
                     }
+
                     this.emitHit(hitPack);
+                    
+                    if (healPack) {
+                        this.emitHeal(healPack);
+                    }
 
                     if (hitPack.healthAft <= 0) {
                         // Respawn player cus he's dead

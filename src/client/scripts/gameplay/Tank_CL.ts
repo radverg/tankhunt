@@ -13,7 +13,10 @@ abstract class Tank_CL extends Sprite {
 
 	constructor(asset: string) {
 		super(TH.game, 0, 0, asset);
-	
+
+		this.maxHealth = 1;
+		this.health = 1;
+		
 	}
 
 	rotationTurretServerUpdate(rot: number) {
@@ -90,6 +93,33 @@ abstract class Tank_CL extends Sprite {
 
 	update() {
 		this.interpolationUpdate();
+
+		// Update player view, if any
+		if (this.player.plView) {
+
+			this.player.plView.x = this.x;
+			this.player.plView.y = this.y;
+
+			this.player.plView.visible = this.visible;
+		}
+
+	}
+
+	shotExplodeEffect() {
+		let ang = this.turret.rotation + this.rotation;
+		let dist = this.turret.height / 1.3;
+
+		let x = this.x + Math.sin(ang) * dist; 
+		let y = this.y - Math.cos(ang) * dist;
+
+		let explodeSpr = this.game.add.sprite(x, y, "shotExplode2");
+		explodeSpr.anchor.setTo(0.5);
+		explodeSpr.scale.setTo(0.7);
+		explodeSpr.rotation = ang;
+
+		let expAnim = explodeSpr.animations.add("shotExplode", null, 40);
+		expAnim.onComplete.add(function() { this.destroy(); }, expAnim);
+		expAnim.play();
 
 	}
 

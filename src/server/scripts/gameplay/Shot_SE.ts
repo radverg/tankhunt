@@ -89,7 +89,12 @@ abstract class Shot_SE extends GameObject_SE {
 			if (this.tanksHit.indexOf(tank) !== -1) return false;
 		}
 
-		return this.getTankCollision(tank); 
+		let collInfo = this.getTankCollision(tank);
+		
+		if (collInfo === true || collInfo === false) return collInfo;
+
+		// An object was returned, check if side is set
+		return collInfo.side !== -1;
 	}
 
 	/**
@@ -106,7 +111,7 @@ abstract class Shot_SE extends GameObject_SE {
 		let collInfo: any = this.getTankCollision(tank);
 		let damage = this.damage;
 
-		if (collInfo && collInfo.side != -1 && tank.armor) {
+		if (collInfo && collInfo.side != -1 && tank.armor && !this.ignoreArmor) {
 			// Here, take armor into consideration
 			let penPerc = 1 - tank.armor[collInfo.side] + this.penetrationBonus;
 			if (Math.random() > penPerc) {
@@ -115,7 +120,7 @@ abstract class Shot_SE extends GameObject_SE {
 		}
 
 		let initialHealth = tank.health;
-		tank.health -= this.damage;
+		tank.health -= damage;
 
 		if (tank.health <= 0) {
 			tank.owner.die();

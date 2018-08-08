@@ -15,7 +15,7 @@ class Tank_SE extends GameObject_SE {
 	maxHealth: number = 1500;
 	health: number = 1500;
 
-	armor: number[] = [0.4, 0.2, 0.2, 0.1];
+	armor: number[] = [0.8, 0.2, 0.2, 0.1];
 
 	constructor(owner: Player_SE) {
 		super(2, 2, 1, 1.4375);
@@ -23,8 +23,8 @@ class Tank_SE extends GameObject_SE {
 		this.owner = owner;
 		this.turret = new Turret();
 
-		this.maxSpeed = 4; // !!!
-		this.maxAngularVel = Math.PI;
+		this.maxSpeed = 3.3; // !!!
+		this.maxAngularVel = Math.PI / 2;
 
 		// Weapons: ------------------------
 		this.apcrGun = new Guns.APCRGun(owner);

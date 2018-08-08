@@ -81,6 +81,8 @@ class LaserDirect_CL extends Shot_CL {
 		twn.to({ height: this.dist }, this.time);
 		twn.onComplete.add(function() { this.destroy(); }, this);
 		twn.start();
+
+		TH.effects.playLaser3(this.x, this.y);
 	}
 }
 
@@ -110,7 +112,9 @@ class APCR_CL extends Shot_CL {
 		this.moveTween.start();
 
 		this.shotGroup.add(this);
-		TH.effects.smokeEffect(this.x, this.y, 0.4);
+		//TH.effects.smokeEffect(this.x, this.y, 0.4);
+		TH.effects.playSound("bum1_sound", 0.4, this.x, this.y);
+		this.ownerPl.tank.shotExplodeEffect();
 	}
 
 	stop() {
@@ -143,6 +147,8 @@ class FlatLaser_CL extends Shot_CL {
 		twn.to({ x: this.endX, y: this.endY }, this.time);
 		twn.onComplete.add(function() { this.destroy(); }, this);
 		twn.start();
+
+		TH.effects.playLaser2(this.x, this.y);
 
 	
 	}
@@ -302,6 +308,7 @@ class BouncingLaser_CL extends Bouncer_CL {
 	}
 
 	start() {
+		TH.effects.playLaser1(this.x, this.y);
 		this.nextLaserLine();
 	}
 

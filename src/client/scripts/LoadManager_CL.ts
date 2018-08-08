@@ -32,14 +32,35 @@ class LoadManager_CL  {
 			{ assetName: "exhaust2", path: imagesPath + "exhaust2.png", frameSizeX: 200, frameSizeY: 200, frameCount: 35 },
 			{ assetName: "smoke", path: imagesPath + "smoke.png", frameSizeX: 200, frameSizeY: 200, frameCount: 16 },
 			{ assetName: "explosion", path: imagesPath + "explosion.png", frameSizeX: 400, frameSizeY: 400, frameCount: 55 },
-			{ assetName: "tankParts", path: imagesPath + "tank_parts.png", frameSizeX: 94, frameSizeY: 137, frameCount: 18 }
+			{ assetName: "tankParts", path: imagesPath + "tank_parts.png", frameSizeX: 94, frameSizeY: 137, frameCount: 18 },
+			{ assetName: "shotExplode", path: imagesPath + "shot_explode.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
+			{ assetName: "shotExplode2", path: imagesPath + "shot_explode2.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
 
 		];
 
 		this.audio = [
-			{ assetName: "explosion1_sound", path: [soundsPath + "explosion1.ogg", soundsPath + "explosion1.wav"] }
+			{ assetName: "explosion1_sound", path: [soundsPath + "explosion1.ogg", soundsPath + "explosion1.wav"] },
+			{ assetName: "laser1_sound", path: [soundsPath + "laser1.ogg", soundsPath + "laser1.wav"] },
+			{ assetName: "laser2_sound", path: [soundsPath + "laser2.ogg", soundsPath + "laser2.wav"] },
+			{ assetName: "laser3_sound", path: [soundsPath + "laser3.ogg", soundsPath + "laser3.wav"] },
+			{ assetName: "bum1_sound", path: [soundsPath + "bum1.ogg", soundsPath + "bum1.wav"] },
+
+
 		]
 		// -----------------------------------------------------------------------------------	
+
+		let win = window as any;
+		win.WebFontConfig = {
+			google: {
+				families: [
+					'Revalia',
+					'Fredoka One',
+					'Orbitron'
+				]
+			},
+
+			active: function() { console.log("Google fonts loaded!"); }
+		}
 	}
 	
 	preload() {
@@ -62,6 +83,9 @@ class LoadManager_CL  {
 			TH.game.load.audio(audio.assetName, audio.path);
 			
 		}
+
+		// Load google web fonts
+		TH.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 		
 	}
 	
@@ -85,3 +109,4 @@ interface AudioAsset {
 	assetName: string,
 	path: string[]
 }
+ 

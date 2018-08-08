@@ -2,8 +2,14 @@
 
 class Arena_CL extends THGame_CL {
 
+	private arenaView: ArenaView_CL;
+	private notifView: NotificationView_CL;
+
     constructor(socketManager: SocketManager_CL, packet: PacketGameStart) {
-        super(socketManager);
+		super(socketManager);
+		
+		this.arenaView = new ArenaView_CL(TH.game, this);
+		this.notifView = new NotificationView_CL(TH.game, this);
 	  
 		this.processLevel(packet.level);
 		this.processGameInfo(packet);
@@ -19,7 +25,9 @@ class Arena_CL extends THGame_CL {
 	processRespawn(data: PacketRespawn) {
 		let player: Player_CL = this.playerGroup.getPlayer(data.plID);
 		if (!player) return;
-
+		
+		player.tank.maxHealth = data.health;
+		player.tank.health = data.health;
 		
 		player.tank.applyStatePacket(data);
 		player.tank.jumpToRemote();
@@ -27,6 +35,8 @@ class Arena_CL extends THGame_CL {
 		
 		TH.game.time.events.add(data.respawnDelay, player.tank.revive, player.tank);
 		TH.game.time.events.add(data.respawnDelay + data.immunityTime, function() { this.setColor(this.defaultColorIndex); }, player.tank);		
+
+		this.onRespawn.dispatch(player);
     }
     
     newPlayerFromPacket(packet: PacketPlayerInfo) {
@@ -41,6 +51,9 @@ class Arena_CL extends THGame_CL {
             tank.jumpToRemote();
 		}
 
+		tank.health = packet.health;
+		tank.maxHealth = packet.maxHealth;
+
 		this.playerGroup.add(player);
 
 		// Check if its me
@@ -54,7 +67,9 @@ class Arena_CL extends THGame_CL {
         // Hide it in case its not alive
         if (!packet.alive) {
             tank.hide();
-        }
+		}
+		
+		this.onNewPlayer.dispatch(player);
 	}
 
 

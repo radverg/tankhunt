@@ -11,6 +11,7 @@ class Player_CL {
 
 	public stats?: any;
 	public team: any = null;
+	public plView: PlayerView_CL | null = null;
 
 	constructor(id: string, tank?: Tank_CL, name?: string) {
 		this.id = id;

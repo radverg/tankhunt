@@ -42,6 +42,7 @@ class Player_SE {
         this.stats.killsInRow = 0;
         this.tank.health = 0;
         this.alive = false;
+        this.tank.specialGun = null;
        // this.emitable = false;
     }
 
@@ -60,7 +61,9 @@ class Player_SE {
             id: this.id,
             name: this.name,
             stats: this.stats,
-            alive: this.alive
+            alive: this.alive,
+            health: this.tank.health,
+            maxHealth: this.tank.maxHealth
         }
         
         if (this.tank) {

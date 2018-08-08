@@ -99,6 +99,10 @@ abstract class THGame_SE {
         }
     }
 
+    emitHeal(data: PacketHeal) {
+        this.emitData("heal", data);
+    }
+
     emitDataPl(emName: string, data: any, player: Player_SE) {
         player.socket.emit(emName, data);
     }
