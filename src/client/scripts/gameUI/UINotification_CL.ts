@@ -1,5 +1,5 @@
 
-class NotificationView_CL {
+class UINotification_CL {
 
     private topGroup: Phaser.Group;
     private logGroup: Phaser.Group;
@@ -36,14 +36,15 @@ class NotificationView_CL {
         let attacker = this.thGame.playerGroup.getPlayer(packet.plAttID);
         
         if (packet.healthAft === 0) {
+            let notifYPos = this.topGroup.children.length * 50;
             if (this.thGame.playerGroup.me === player) {
                 if (player === attacker) 
-                    this.topGroup.add(TextMaker_CL.goLeftTextBig("You killed yourself!", 0, 0, "#e51414"));
+                    this.topGroup.add(TextMaker_CL.goLeftTextBig("You killed yourself!", 0, notifYPos, "#e51414"));
                 else 
-                    this.topGroup.add(TextMaker_CL.goLeftTextBig(`You got killed by ${attacker.name}!`, 0, 0, "#e51414"));
+                    this.topGroup.add(TextMaker_CL.goLeftTextBig(`You got killed by ${attacker.name}!`, 0, notifYPos, "#e51414"));
 
             } else if (attacker === this.thGame.playerGroup.me) {
-                this.topGroup.add(TextMaker_CL.goLeftTextBig(`Enemy ${player.name} killed!`, 0, 0));
+                this.topGroup.add(TextMaker_CL.goLeftTextBig(`Enemy ${player.name} killed!`, 0, notifYPos));
             }
 
             // Log kill

@@ -9,9 +9,9 @@ class Player_CL {
 
 	public me: boolean = false;
 
-	public stats?: any;
+	public stats: PlayerStats;
 	public team: any = null;
-	public plView: PlayerView_CL | null = null;
+	public plView: UIPlayer_CL | null = null;
 
 	constructor(id: string, tank?: Tank_CL, name?: string) {
 		this.id = id;

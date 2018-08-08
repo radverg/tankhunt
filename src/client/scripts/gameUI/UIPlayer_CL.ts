@@ -1,6 +1,6 @@
 
 
-class PlayerView_CL extends Phaser.Group {
+class UIPlayer_CL extends Phaser.Group {
 
     private thGame: THGame_CL;
     private player: Player_CL;

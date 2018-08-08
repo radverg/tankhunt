@@ -1,5 +1,5 @@
 
-class ArenaView_CL {
+class UIPlayerManager_CL {
 
     private game: Phaser.Game;
     private thGame: THGame_CL;
@@ -21,7 +21,7 @@ class ArenaView_CL {
     }
 
     createPlayerView(player: Player_CL) {
-        let plrView = new PlayerView_CL(this.game, this.thGame, player);
+        let plrView = new UIPlayer_CL(this.game, this.thGame, player);
     }
 
     removePlayer(player: Player_CL) {

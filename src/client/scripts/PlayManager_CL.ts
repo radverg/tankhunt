@@ -23,7 +23,7 @@ class PlayManager_CL  {
         TH.game.stage.disableVisibilityChange = true;
         
         // Everything is ready => send game request
-        this.th.socketManager.emitGameRequest({ playerName: "unnamed", gameType: "Arena" });
+        this.th.socketManager.emitGameRequest({ playerName: `player${(Math.random()*10000).toFixed(0)}`, gameType: "Arena" });
         console.log("Requesting arena game...");
         this.pingerTimer = TH.game.time.create(false);
         this.pingerTimer.loop(3000, TH.timeManager.synchronizeRequest, TH.timeManager);

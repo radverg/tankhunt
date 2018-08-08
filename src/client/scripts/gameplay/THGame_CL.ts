@@ -146,6 +146,7 @@ class THGame_CL {
 		tank.health = data.healthAft;
 
 		TH.effects.shotDebrisEffect(data.x * TH.sizeCoeff || tank.x , (data.y * TH.sizeCoeff) || tank.y);
+
 		if (tank.health == 0) {
 			// If tank is not visible in the moment of destruction, move it to the position
 			// sent in packet hit
@@ -153,10 +154,15 @@ class THGame_CL {
 				tank.positionServerUpdate(data.xTank, data.yTank);
 				tank.jumpToRemote();
 			}
+
+			if (playerAtt !== playerHit) { 
+				playerAtt.stats.kills++;
+				playerAtt.stats.inRow++;
+			}
 			tank.kill();
 		}
 
-		this.onHit.dispatch(data, playerHit);
+		//this.onHit.dispatch(data, playerHit);
 		
 	}
 

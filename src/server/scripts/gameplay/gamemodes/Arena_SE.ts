@@ -160,7 +160,7 @@ class Arena_SE extends THGame_SE {
                         healPack.healthBef = attackerTank.health;
                         healPack.maxHealthBef = attackerTank.maxHealth;
 
-                        attackerTank.maxHealth *= 1.1;
+                        attackerTank.maxHealth *= 1.3;
                         if (attackerTank.maxHealth > this.maxHealth) {
                             attackerTank.maxHealth = this.maxHealth;
                         }
@@ -169,13 +169,13 @@ class Arena_SE extends THGame_SE {
                         healPack.healthAft = attackerTank.health;
                         healPack.maxHealthAft = attackerTank.maxHealth
 
-                        attackerTank.owner.stats.killsInRow++;
+                        attackerTank.owner.stats.inRow++;
                         attackerTank.owner.stats.kills++;
                     
                     }
 
                     this.emitHit(hitPack);
-                    
+
                     if (healPack) {
                         this.emitHeal(healPack);
                     }

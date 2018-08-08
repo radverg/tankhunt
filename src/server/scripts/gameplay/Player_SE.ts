@@ -15,7 +15,7 @@ class Player_SE {
     invulnerable: boolean = false;
 
     team: any = null;
-    stats: { kills: number; deaths: number; wins: number; killsInRow: number };
+    stats: PlayerStats;
     
     constructor(socket: SocketIO.Socket, name: string) {
         this.socket = socket;
@@ -32,14 +32,15 @@ class Player_SE {
            kills: 0,
            deaths: 0,
            wins: 0,
-           killsInRow: 0
+           inRow: 0,
+           maxRow: 0
        }
        
     }
 
     die() {
         this.stats.deaths++;
-        this.stats.killsInRow = 0;
+        this.stats.inRow = 0;
         this.tank.health = 0;
         this.alive = false;
         this.tank.specialGun = null;

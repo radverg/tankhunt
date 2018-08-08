@@ -259,3 +259,11 @@ interface PacketAppear {
 interface PacketDisappear {
     plID: string
 }
+
+interface PlayerStats {
+    kills: number,
+    deaths: number,
+    wins: number,
+    inRow: number,
+    maxRow: number,
+}

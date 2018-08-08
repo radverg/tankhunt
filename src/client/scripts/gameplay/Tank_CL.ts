@@ -61,6 +61,12 @@ abstract class Tank_CL extends Sprite {
 		super.kill();
 		this.turret.kill();
 
+		if (this.player.stats.maxRow < this.player.stats.inRow) {
+			this.player.stats.maxRow = this.player.stats.inRow;
+		}
+
+		this.player.stats.deaths++;
+		this.player.stats.inRow = 0;
 		this.explosionEffect();
 	}
 

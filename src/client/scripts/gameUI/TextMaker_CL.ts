@@ -84,4 +84,18 @@ class TextMaker_CL {
         return textSpr;
     }
 
+    static rankNumber(rank: number, x: number, y: number) {
+        let textSpr = TH.game.make.text(x, y, `${rank}.`);
+        
+        textSpr.font = "Sans Serif";
+       // textSpr.anchor.setTo(0.5);
+        textSpr.fill = "white";
+        textSpr.fontSize = 40;
+        textSpr.stroke = "black";
+        textSpr.strokeThickness = 2;
+
+        return textSpr;
+
+    }
+
 }
