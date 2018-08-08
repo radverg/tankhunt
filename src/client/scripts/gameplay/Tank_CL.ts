@@ -125,15 +125,12 @@ abstract class Tank_CL extends Sprite {
 		explodeSpr.rotation = ang;
 
 		let expAnim = explodeSpr.animations.add("shotExplode", null, 40);
-		expAnim.onComplete.add(function() { this.destroy(); }, expAnim);
+		expAnim.onComplete.add(function() { this.destroy(); }, explodeSpr);
 		expAnim.play();
 
 	}
 
 	explosionEffect() {
-
-		// Firstly, hide this sprite - effect will be created from new sprites
-		this.hide();
 
 		// Set up explosion animation 
 		let explosionSpr = this.game.add.sprite(this.x, this.y, "explosion");

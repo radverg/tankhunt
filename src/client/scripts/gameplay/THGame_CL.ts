@@ -162,7 +162,7 @@ class THGame_CL {
 			tank.kill();
 		}
 
-		//this.onHit.dispatch(data, playerHit);
+		this.onHit.dispatch(data, playerHit);
 		
 	}
 

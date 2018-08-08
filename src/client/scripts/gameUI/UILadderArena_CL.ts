@@ -92,11 +92,11 @@ class UILadderArena_CL {
 
        }
 
-        if (!meInTop) {
-            let lastGrp = this.rankGroups[this.rankGroups.length - 1];
-            let myRank = keys.indexOf(this.thGame.playerGroup.me.id) + 1;
+        // if (!meInTop) {
+        //     let lastGrp = this.rankGroups[this.rankGroups.length - 1];
+        //     let myRank = keys.indexOf(this.thGame.playerGroup.me.id) + 1;
 
-        }
+        // }
     }
 
 

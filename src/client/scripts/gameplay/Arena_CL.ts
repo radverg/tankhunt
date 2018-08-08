@@ -11,7 +11,7 @@ class Arena_CL extends THGame_CL {
 		
 		this.arenaView = new UIPlayerManager_CL(TH.game, this);
 		this.notifView = new UINotification_CL(TH.game, this);
-	//	this.uiLadder = new UILadderArena_CL(TH.game, this);
+		this.uiLadder = new UILadderArena_CL(TH.game, this);
 	  
 		this.processLevel(packet.level);
 		this.processGameInfo(packet);

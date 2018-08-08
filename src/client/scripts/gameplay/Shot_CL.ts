@@ -98,8 +98,6 @@ class APCR_CL extends Shot_CL {
 		this.dist = TH.game.math.distance(this.endX, this.endY, this.startX, this.startY);
 		this.time = (this.dist / this.speed) * 1000;
 
-		this.start();
-
 	}
 
 	start() {
