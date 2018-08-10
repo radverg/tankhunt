@@ -5,7 +5,7 @@ class UIPlayer_CL extends Phaser.Group {
     private thGame: THGame_CL;
     private player: Player_CL;
     
-    private healthBar: Phaser.Sprite;
+    private healthBar: HealthBar_CL;
     private healthBarBackground: Phaser.Sprite;
 
     private nick: Phaser.Text;
@@ -27,25 +27,12 @@ class UIPlayer_CL extends Phaser.Group {
         this.add(this.nick);
 
         // Create health bar
-        let barThickness = 6;
-
-        this.healthBarBackground = this.create(0, offsetY + barThickness * 2, "blackRect");
-        this.healthBarBackground.anchor.setTo(0.5);
-        this.healthBarBackground.width = 150;
-        this.healthBarBackground.height = barThickness;
-
-        this.healthBar = this.create(-this.healthBarBackground.width / 2, this.healthBarBackground.y, "whiteRect");
-        this.healthBar.anchor.setTo(0, 0.5);
-        this.healthBar.width = this.healthBarBackground.width;
-        this.healthBar.height = this.healthBarBackground.height;
-        this.healthBar.tint = 0x1eaf05;
-
+        this.healthBar = new HealthBar_CL(this, offsetY + 30);
         this.updateHealthBar();
     }
 
     updateHealthBar() {
-        let healthRatio = this.player.tank.health / this.player.tank.maxHealth;
-        this.healthBar.width = this.healthBarBackground.width * healthRatio;
+        this.healthBar.updateHealthBar(this.player.tank.maxHealth, this.player.tank.health);
     }
 
 

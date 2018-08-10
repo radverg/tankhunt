@@ -30,7 +30,7 @@ class DefaultTank_CL extends Tank_CL {
 		// Init animation of track
 		let frs = this.frameStart;
 	
-		this.onIntMoveStart.add(() => { this.animations.play("tracks"); console.log("startingTracks"); }, this);
+		this.onIntMoveStart.add(() => { this.animations.play("tracks"); }, this);
 		this.onIntMoveStop.add(() => { this.animations.stop("tracks"); }, this);
 
 		
@@ -53,10 +53,19 @@ class DefaultTank_CL extends Tank_CL {
 			wasRunning = anim.isPlaying;
 			anim.destroy();
 		}
+		
 
 	
 		let frs = this.frameStart;
 		this.animations.add("tracks", [frs, frs+1, frs+2,frs+3], 25, true);
+
+		// let fps = 16;
+
+		// this.animations.add("tracks1", [0, 1, 2, 3], fps, true);
+		// this.animations.add("tracks2", [4, 5, 6, 7], fps, true);
+		// this.animations.add("tracks3", [8, 9, 10, 11], fps, true);
+		// this.animations.add("tracks4", [12, 13, 14, 15], fps, true);
+
 
 		if (wasRunning) {
 			this.animations.play("tracks");
@@ -111,15 +120,5 @@ class DefaultTank_CL extends Tank_CL {
 		this.rightExTween = this.game.add.tween(this.rightExSpr).to({ alpha: 0.2 }, 500, Phaser.Easing.Default, true);
 		this.leftExTween = this.game.add.tween(this.leftExSpr).to({ alpha: 0.2 }, 500, Phaser.Easing.Default, true);
 
-	}
-
-	barrelBlastEffect() {
-
-		let spr = this.game.make.sprite(0, -this.turret.height, "smoke");
-		spr.anchor.setTo(0.5);
-		spr.scale.setTo(0.6);
-		spr.animations.add("smokeAnim", null, 40);
-		spr.animations.play("smokeAnim");
-		this.addChild(spr);
 	}
 }

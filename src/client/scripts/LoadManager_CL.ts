@@ -19,7 +19,8 @@ class LoadManager_CL  {
 			{ assetName: "ammo", path: imagesPath + "ammo.png" },
 			{ assetName: "ground1", path: imagesPath + "ground_1.png" },
 			{ assetName: "shadow", path: imagesPath + "shadow_box.png" },
-			{ assetName: "mine", path: imagesPath + "mine.png" }
+			{ assetName: "mine", path: imagesPath + "mine.png" },
+			{ assetName: "wall1", path: imagesPath + "wall1.png" },
 
 		];
 		
@@ -39,6 +40,7 @@ class LoadManager_CL  {
 			{ assetName: "shotExplode4", path: imagesPath + "shot_explode4.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
 			{ assetName: "shotExplode5", path: imagesPath + "shot_explode5.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
 			{ assetName: "medals", path: imagesPath + "medals.png", frameSizeX: 64, frameSizeY: 64, frameCount: 3 },
+			{ assetName: "panels", path: imagesPath + "panels.png", frameSizeX: 190, frameSizeY: 49, frameCount: 3 }
 
 
 		];

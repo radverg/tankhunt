@@ -28,10 +28,13 @@ class THGame_CL {
 	 * Player_CL object is passed as an argument
 	 */
 	onNewPlayer: Phaser.Signal = new Phaser.Signal();
+	onNewPlayerConnected: Phaser.Signal = new Phaser.Signal();
 	/**
 	 * Player_CL object is first argument, PacketHeal second
 	 */
 	onHeal: Phaser.Signal = new Phaser.Signal();
+
+	onGameInfo: Phaser.Signal = new Phaser.Signal();
 
 	constructor(socketManager: SocketManager_CL) {
 		this.socketManager = socketManager;
@@ -66,7 +69,7 @@ class THGame_CL {
 		console.log("Game is running!");
 	}
 
-	newPlayerFromPacket(packet: PacketPlayerInfo) {
+	newPlayerFromPacket(packet: PacketPlayerInfo, dispatchEvent: boolean = true) {
 	}
 
 	processStateInfo(data: PacketMovable) {
@@ -111,7 +114,7 @@ class THGame_CL {
 		for (var pl in data.players) {
 			
 			if (!this.playerGroup.getPlayer(data.players[pl].id)) {
-				this.newPlayerFromPacket(data.players[pl]);
+				this.newPlayerFromPacket(data.players[pl], false);
 			}
 		}
 
@@ -120,6 +123,8 @@ class THGame_CL {
 			if (!this.itemGroup.getItem(data.items[it].id))
 				this.processNewItem(data.items[it]);
 		}
+
+		this.onGameInfo.dispatch();
 	}
 
 	processNewPlayer(data: PacketPlayerInfo) {
@@ -183,6 +188,7 @@ class THGame_CL {
 		for (var i = 0; i < this.level.borders.length; i++) {
 			var border = this.level.borders[i];
 			var borderSprite = new Phaser.Sprite(TH.game, TH.sizeCoeff * border.cX, TH.sizeCoeff * border.cY, "blackRect");
+			
 			borderSprite.width =  TH.sizeCoeff * border._w;
 			borderSprite.height = TH.sizeCoeff * border._h;
 			console.log("Border: " + (border.cX * TH.sizeCoeff) + ", " + (border.cY * TH.sizeCoeff) + ", " + 
@@ -209,10 +215,18 @@ class THGame_CL {
 
 					var wallData = this.level.walls[x][y][i];
 					if (wallData) {
-						var wallSprite = new Phaser.Sprite(TH.game, wallData.cX * TH.sizeCoeff, wallData.cY * TH.sizeCoeff, "blackRect");
+						var wallSprite = new Phaser.Sprite(TH.game, wallData.cX * TH.sizeCoeff, wallData.cY * TH.sizeCoeff, "wall1");
 						wallSprite.anchor.setTo(0.5, 0.5);
+
 						wallSprite.width = wallData._w * TH.sizeCoeff;
-						wallSprite.height = wallData._h * TH.sizeCoeff;
+						wallSprite.height = 18;
+					//	wallSprite.scale.setTo();
+
+						if (wallData._w < wallData._h) { // Horizontal
+							wallSprite.rotation = Math.PI / 2;
+							 wallSprite.width = wallData._h * TH.sizeCoeff;
+						} 
+						
 						this.levelGroup.add(wallSprite);
 
 					}	

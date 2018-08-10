@@ -41,7 +41,7 @@ class Arena_CL extends THGame_CL {
 		this.onRespawn.dispatch(player);
     }
     
-    newPlayerFromPacket(packet: PacketPlayerInfo) {
+    newPlayerFromPacket(packet: PacketPlayerInfo, dispatchConnected: boolean = true) {
 		// Handle tank type in future
 		var tank = new DefaultTank_CL();
 
@@ -71,6 +71,9 @@ class Arena_CL extends THGame_CL {
             tank.hide();
 		}
 		
+		if (dispatchConnected)
+			this.onNewPlayerConnected.dispatch(player);
+
 		this.onNewPlayer.dispatch(player);
 	}
 

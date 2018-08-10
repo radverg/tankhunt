@@ -33,15 +33,22 @@ class TextMaker_CL {
         return textSprite;
     }
 
-    static goLeftTextBig(text: string, x: number, y: number, color: string = "#216ae0"): Phaser.Text {
+    static goTextBig(text: string, x: number, y: number, goRight: boolean = false, color: string = "#216ae0"): Phaser.Text {
+        let offsetInitial = 500;
         let offset = 300;
         let middleOffset = 50;
         let duration = 3500;
 
-        let textSpr = TH.game.make.text(x + 100, y, text);
+        if (goRight) {
+            offsetInitial *= -1;
+            offset *= -1;
+            middleOffset *= -1;
+        }
+
+        let textSpr = TH.game.make.text(x + offsetInitial, y, text);
 
         textSpr.font = "Orbitron";
-        textSpr.fontSize = 27;
+        textSpr.fontSize = 33;
         textSpr.stroke = "black";
         textSpr.strokeThickness = 3;
         textSpr.anchor.setTo(0.5);
@@ -49,7 +56,7 @@ class TextMaker_CL {
         textSpr.setShadow(0, 0, "black", 10);
         textSpr.alpha = 0;
         
-        // Move left and show
+        // Move  and show
         let firstTwn = TH.game.add.tween(textSpr).to({x: x, alpha: 1 }, 300);
         let secondTwn = TH.game.add.tween(textSpr).to({ x: x - middleOffset }, 2500);
         let thirdTween = TH.game.add.tween(textSpr).to({ x: x - middleOffset - offset, alpha: 0 }, 300);
