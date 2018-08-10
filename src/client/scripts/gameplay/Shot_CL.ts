@@ -70,7 +70,7 @@ class LaserDirect_CL extends Shot_CL {
 		this.dist = TH.game.math.distance(this.endX, this.endY, this.startX, this.startY);
 		this.time = (this.dist / this.speed) * 1000;
 
-		this.colorIndex = Color.Blue;
+		this.frame = this.ownerPl.tank.defaultColorIndex;
 
 		// Start laser
 		// Move laser forwards according to delay
@@ -110,7 +110,8 @@ class APCR_CL extends Shot_CL {
 		this.moveTween.start();
 
 		this.shotGroup.add(this);
-		//TH.effects.smokeEffect(this.x, this.y, 0.4);
+		
+		// Effects
 		TH.effects.playSound("bum1_sound", 0.4, this.x, this.y);
 		this.ownerPl.tank.shotExplodeEffect();
 	}
@@ -132,10 +133,11 @@ class FlatLaser_CL extends Shot_CL {
 
 		this.anchor.setTo(0.5);
 		this.width = this.size;
-		this.height = 0.1 * TH.sizeCoeff;
+		this.height = 0.2 * TH.sizeCoeff;
 
 		this.dist = TH.game.math.distance(this.endX, this.endY, this.startX, this.startY);
 		this.time = (this.dist / this.speed) * 1000;
+		this.frame = this.ownerPl.tank.defaultColorIndex;
 
 		/* this.tint = 0x7D1ADF; */
 
@@ -172,9 +174,6 @@ class Bouncer_CL extends Shot_CL {
 		this.anchor.set(0.5, 0);
 		this.width = 0.07 * TH.sizeCoeff;
 		this.height = 0.3 * TH.sizeCoeff;
-
-		
-
 	}
 
 	start() {
@@ -207,6 +206,9 @@ class Bouncer_CL extends Shot_CL {
 
 		this.shotGroup.add(this);
 		this.tweens[0].start();
+
+		TH.effects.playSound("bum1_sound", 0.4, this.x, this.y);
+		this.ownerPl.tank.shotExplodeEffect();
 	}
 
 	stop() {
@@ -233,6 +235,8 @@ class PolygonalBouncer_CL extends Bouncer_CL {
 	start() {
 		super.start();
 		this.rotTween.start();
+		TH.effects.playSound("bum1_sound", 0.4, this.x, this.y);
+		this.ownerPl.tank.shotExplodeEffect();
 		this.shotGroup.add(this);
 	}
 
@@ -246,12 +250,21 @@ class Eliminator_CL extends Bouncer_CL {
 
 	private splintersData: any[] = [];
 	private splinterTime: number;
+	private rotTween: Phaser.Tween;
 
 	constructor(dataPack: PacketEliminatorStart) {
-		super(dataPack, "ammo");
+		super(dataPack, "ball");
+
+		this.width = 25;
+		this.height = 25;
+		this.anchor.setTo(0.5);
 
 		this.splintersData = dataPack.spl;
 		this.splinterTime = dataPack.splTime;
+
+		this.rotTween = this.game.add.tween(this);
+		this.rotTween.to({ rotation: 150 }, 10000);
+		this.rotTween.start();
 
 
 	}
@@ -261,7 +274,8 @@ class Eliminator_CL extends Bouncer_CL {
 	}
 
 	stop() {
-		//this.blast();
+		this.rotTween.stop();
+		this.destroy();
 	}
 
 	blast(dataPack: PacketShotHit) {
@@ -289,7 +303,7 @@ class Eliminator_CL extends Bouncer_CL {
 			
 		}
 
-		this.destroy();
+		this.stop();
 	}
 }
 class BouncingLaser_CL extends Bouncer_CL {
@@ -321,14 +335,12 @@ class BouncingLaser_CL extends Bouncer_CL {
 
 		let lineSpr = new Sprite(this.game, pt1.x, pt1.y, "lasers");
 		this.laserLinesGrp.add(lineSpr);
-		/* lineSpr.tint = 0x7D1ADF; */ // This laser is violet
+
+		lineSpr.frame = this.ownerPl.tank.defaultColorIndex;
 		lineSpr.anchor.setTo(0.5, 0);
 		lineSpr.rotation = pt1.ang + Math.PI;
-		lineSpr.width = 0.15 * TH.sizeCoeff;
+		lineSpr.width = 0.2 * TH.sizeCoeff;
 
-		lineSpr.colorIndex = Color.Green;
-
-		
 		let dist = TH.game.math.distance(pt1.x, pt1.y, pt2.x, pt2.y);
 		let time = (dist / this.speed) * 1000;
 

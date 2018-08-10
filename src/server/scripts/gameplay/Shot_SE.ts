@@ -126,9 +126,6 @@ abstract class Shot_SE extends GameObject_SE {
 			tank.owner.die();
 		}
 
-
-		
-
 		let hitPack: PacketShotHit = {
 			rm: this.removeAfterHit,
 			plID: tank.owner.id,
@@ -195,7 +192,9 @@ class LaserDirect_SE extends Shot_SE {
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game);
 
+		this.damage = 1000;
 		this.ignoreArmor = true;
+
 		this.type = "LaserDirect";
 		this.removeAfterHit = false;
 		this.maxSpeed = 40;
@@ -238,7 +237,9 @@ class FlatLaser_SE extends Shot_SE {
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game);
 
+		this.damage = 750;
 		this.ignoreArmor = true;
+
 		this.type = "FlatLaser";
 		this.removeAfterHit = false;
 		this.maxSpeed = 20;
@@ -391,6 +392,7 @@ class BouncingLaser_SE extends Bouncer_SE {
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game);
 
+		this.damage = 900;
 		this.ignoreArmor = true;
 		this.maxSpeed = 35;
 		this.fullForward();
@@ -445,7 +447,7 @@ class Splinter_SE extends Shot_SE {
 class Eliminator_SE extends Bouncer_SE {
 
 	private splinterCount: number = 20;
-	private splinterTime: number = 2000;
+	private splinterTime: number = 4000;
 
 	private maxSplinterSpeed = 40;
 	private minSplinterSpeed = 2;
@@ -459,7 +461,7 @@ class Eliminator_SE extends Bouncer_SE {
 
 		this.type = "Eliminator";
 
-		this.maxLength = 10;
+		this.maxLength = 25;
 		this.maxSpeed = 5;
 
 		this.createWayPoints();
@@ -524,6 +526,7 @@ class Mine_SE extends Shot_SE {
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game);
 
+		this.damage = 300;
 		this.active = false;
 		this.ignoreArmor = true;
 		

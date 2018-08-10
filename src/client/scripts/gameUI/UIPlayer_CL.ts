@@ -21,13 +21,13 @@ class UIPlayer_CL extends Phaser.Group {
         let offsetY = -this.player.tank.height;
         this.nick = this.game.make.text(0, offsetY, this.player.name);
         this.nick.font = "Orbitron";
-        this.nick.fontSize = TH.sizeCoeff * 0.3;
+        this.nick.fontSize = 25;
         this.nick.alpha = 0.6;
         this.nick.anchor.setTo(0.5);
         this.add(this.nick);
 
         // Create health bar
-        this.healthBar = new HealthBar_CL(this, offsetY + 30);
+        this.healthBar = new HealthBar_CL(this, offsetY + 25);
         this.updateHealthBar();
     }
 

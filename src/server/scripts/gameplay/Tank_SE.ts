@@ -15,7 +15,7 @@ class Tank_SE extends GameObject_SE {
 	maxHealth: number = 1500;
 	health: number = 1500;
 
-	armor: number[] = [0.8, 0.2, 0.2, 0.1];
+	armor: number[] = [0.8, 0.2, 0.05, 0.2];
 
 	constructor(owner: Player_SE) {
 		super(2, 2, 1, 1.4375);
@@ -28,7 +28,7 @@ class Tank_SE extends GameObject_SE {
 
 		// Weapons: ------------------------
 		this.apcrGun = new Guns.APCRGun(owner);
-		this.specialGun = new Invisibility_SE(owner);
+		this.specialGun = null;
 		this.bouncerGun = new Guns.BouncerGun(owner);
 	}
 

@@ -73,7 +73,7 @@ class APCRGun_SE extends Weapon_SE {
 		
 		this._ammoCount = 10000;
 		this._shotType = "APCR_SE";
-		this._reloadTime = 1000;
+		this._reloadTime = 2000;
 	}
 	
 	onPress(game: THGame_SE) {
@@ -315,7 +315,7 @@ class DoubleMineGun_SE extends MineGun_SE {
 
 class Invisibility_SE extends Item_SE {
 
-	private duration: number = 6000;
+	private duration: number = 9000;
 
 	constructor(owner: Player_SE) {
 		super(8);
