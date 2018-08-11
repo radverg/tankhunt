@@ -75,6 +75,7 @@ class Arena_CL extends THGame_CL {
 			this.onNewPlayerConnected.dispatch(player);
 
 		this.onNewPlayer.dispatch(player);
+				
 	}
 
 

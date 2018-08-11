@@ -9,8 +9,8 @@ class LoadManager_CL  {
 	
 	constructor(th: TH) {
 		this.th = th;
-		var imagesPath = "assets/images/";
-		var soundsPath = "assets/sounds/";
+		var imagesPath = "images/";
+		var soundsPath = "sounds/";
 
 		// Assets ----------------------------------------------------------------------------
 		this.images = [
@@ -21,6 +21,7 @@ class LoadManager_CL  {
 			{ assetName: "shadow", path: imagesPath + "shadow_box.png" },
 			{ assetName: "mine", path: imagesPath + "mine.png" },
 			{ assetName: "wall1", path: imagesPath + "wall1.png" },
+			{ assetName: "wallShadow", path: imagesPath + "wall_shadow.png"},
 			{ assetName: "ball", path: imagesPath + "ball.png" }
 
 		];
@@ -32,14 +33,14 @@ class LoadManager_CL  {
 			{ assetName: "lasers", path: imagesPath + "lasers.png", frameSizeX: 20, frameSizeY: 20, frameCount: 3 },
 			{ assetName: "exhaust", path: imagesPath + "exhaust.png", frameSizeX: 200, frameSizeY: 200, frameCount: 35 },
 			{ assetName: "exhaust2", path: imagesPath + "exhaust2.png", frameSizeX: 200, frameSizeY: 200, frameCount: 35 },
-			{ assetName: "smoke", path: imagesPath + "smoke.png", frameSizeX: 200, frameSizeY: 200, frameCount: 16 },
-			{ assetName: "explosion", path: imagesPath + "explosion.png", frameSizeX: 400, frameSizeY: 400, frameCount: 55 },
+			{ assetName: "smoke", path: imagesPath + "smoke.png", frameSizeX: 200, frameSizeY: 200, frameCount: 16, precreate: true },
+			{ assetName: "explosion", path: imagesPath + "explosion.png", frameSizeX: 400, frameSizeY: 400, frameCount: 55, precreate: true },
 			{ assetName: "tankParts", path: imagesPath + "tank_parts.png", frameSizeX: 94, frameSizeY: 137, frameCount: 18 },
-			{ assetName: "shotExplode1", path: imagesPath + "shot_explode1.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
-			{ assetName: "shotExplode2", path: imagesPath + "shot_explode2.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
-			{ assetName: "shotExplode3", path: imagesPath + "shot_explode3.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
-			{ assetName: "shotExplode4", path: imagesPath + "shot_explode4.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
-			{ assetName: "shotExplode5", path: imagesPath + "shot_explode5.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35 },
+			{ assetName: "shotExplode1", path: imagesPath + "shot_explode1.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35, precreate: true },
+			{ assetName: "shotExplode2", path: imagesPath + "shot_explode2.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35, precreate: true },
+			{ assetName: "shotExplode3", path: imagesPath + "shot_explode3.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35, precreate: true },
+			{ assetName: "shotExplode4", path: imagesPath + "shot_explode4.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35, precreate: true },
+			{ assetName: "shotExplode5", path: imagesPath + "shot_explode5.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35, precreate: true },
 			{ assetName: "medals", path: imagesPath + "medals.png", frameSizeX: 64, frameSizeY: 64, frameCount: 3 },
 			{ assetName: "panels", path: imagesPath + "panels.png", frameSizeX: 190, frameSizeY: 49, frameCount: 3 }
 
@@ -94,11 +95,29 @@ class LoadManager_CL  {
 
 		// Load google web fonts
 		TH.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+
+		// Loading screen -
+		let preloadSprite = TH.game.add.sprite(TH.game.world.centerX, 800, "loadBar");
+		preloadSprite.anchor.setTo(0.5);
+		TH.game.load.setPreloadSprite(preloadSprite);
+
+		TH.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		
 	}
 	
 	create() {
-		TH.game.state.start("play");
+		// Precreate 
+		for (var i in this.spritesheets) {
+			var sheet = this.spritesheets[i];
+			if (!sheet.precreate) continue;
+
+			let spr = TH.game.add.sprite(0, 0, sheet.assetName);
+			console.log("creating");
+		}
+
+		TH.game.time.events.add(500, function() { console.log("event"); TH.game.state.start("menu"); });
+
+		//TH.game.state.start("menu");
 	}
 }
 
@@ -110,7 +129,8 @@ interface ImageAsset {
 interface SpritesheetAsset extends ImageAsset {
 	frameSizeX: number,
 	frameSizeY: number,
-	frameCount: number
+	frameCount: number,
+	precreate?: boolean
 }
 
 interface AudioAsset {
