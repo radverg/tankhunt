@@ -75,7 +75,7 @@ class THGame_CL {
 	processStateInfo(data: PacketMovable) {
 		if (!this.running) return;
 		this.playerGroup.stateUpdate(data);
-	
+		
 	}
 
 	processNewShot(data: PacketShotStart) {

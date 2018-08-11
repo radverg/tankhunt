@@ -414,6 +414,9 @@ class BouncingLaser_SE extends Bouncer_SE {
 			let pt2 = this.wayPoints[this.currentBounce + 1];
 
 			if (tank.body.lineInt(pt1.x, pt1.y, pt2.x, pt2.y)) {
+				if (i === this.currentBounce - 1) {
+					return tank.body.lineInt(pt1.x, pt2.y, this.x, this.y);
+				}
 				return true;
 			}
 			

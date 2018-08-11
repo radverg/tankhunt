@@ -113,14 +113,14 @@ abstract class THGame_SE {
 
     // Creates and sends packet that contains positions, rotations and velocities of the tanks
     emitMovable() {
-        
+    
         // Add players to the packet
         for (var pl = 0; pl < this.players.length; pl++) {
             var plr1 = this.players[pl];
 
             var packet: PacketMovable = {} as PacketMovable;
             packet.players = {}; 
-
+            
             var counter = 0;
     
             for (let pl2 = 0; pl2 < this.players.length; pl2++) {
@@ -134,7 +134,7 @@ abstract class THGame_SE {
                 packet.players[plr2.id] = plr2.tank.getStatePacket();
                 counter++;
             }
-            
+        
             if (counter > 0)
                 this.emitDataPl("movableState", packet, plr1);
         }
