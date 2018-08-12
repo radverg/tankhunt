@@ -95,23 +95,6 @@ class Arena_SE extends THGame_SE {
     }
 
     /**
-     * Sets players property alive to false
-     * Sets the players' stats
-     * Emits info about this kill
-     * Respawns killed player
-     * @param {Player_SE} killed Player that was killed
-     * @param {Player_SE} killer Player that was killing
-     * @param {Shot_SE} shot Shot that was killing
-     */
-    killPlayer(killed: Player_SE, killer: Player_SE, shot: Shot_SE) {
-        killed.die();
-        if (killer !== killed) killer.stats.kills++;
-       
-        this.emitKill(killed.id, killer.id, shot.id);
-        this.respawn(killed);
-    }
-
-    /**
      * Core method of the game, repeatedly called by the game manager. Manages movement, collisions and data emitting
      * @param {number} deltaSec 
      */

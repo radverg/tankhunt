@@ -1,4 +1,3 @@
-/// <reference path="../refs.ts" />
 
 class Item_CL extends Sprite {
 
@@ -10,7 +9,7 @@ class Item_CL extends Sprite {
 
         let itemSpr = this.game.make.sprite(0, 0, "items");
         itemSpr.anchor.setTo(0.5);
-        itemSpr.scale.setTo(3.5);
+        itemSpr.scale.setTo(3.2);
         this.addChild(itemSpr);
         itemSpr.frame = typeIndex;
 

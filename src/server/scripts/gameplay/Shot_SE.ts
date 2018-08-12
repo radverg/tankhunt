@@ -513,6 +513,10 @@ class Eliminator_SE extends Bouncer_SE {
 
 	}
 
+	isHittingTank() {
+		return false;
+	}
+
 	update(deltaSec: number) {
 		super.update(deltaSec);
 

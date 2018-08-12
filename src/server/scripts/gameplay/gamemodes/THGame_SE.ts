@@ -39,15 +39,6 @@ abstract class THGame_SE {
     
     }
 
-    killPlayer(killed: Player_SE, killer: Player_SE, shot: Shot_SE) {
-      //  killed.die();
-        if (killer !== killed) killer.stats.kills++;
-        killed.tank.setPos(1, 1);
-       
-
-        this.emitKill(killed.socket.id, killer.socket.id, shot.id);
-    }
-
     abstract playerDisconnected(player: Player_SE): void;
 
     shoot(shot: Shot_SE, emitShot: boolean = true) {

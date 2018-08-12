@@ -7,6 +7,8 @@ abstract class Tank_CL extends Sprite {
 
 	protected turret: Sprite;
 
+	protected tankSpr: Phaser.Sprite;
+
 	
 	private showTween: Phaser.Tween;
 	private hideTween: Phaser.Tween;
@@ -16,6 +18,13 @@ abstract class Tank_CL extends Sprite {
 
 		this.maxHealth = 1;
 		this.health = 1;
+
+		// this.tankSpr = TH.game.make.sprite(0, 0, asset);
+		// this.tankSpr.anchor.setTo(0.5);
+		// this.tankSpr.width = this.width * 0.75 / this.scale.x;
+		// this.tankSpr.height = this.height * 0.75 / this.scale.y;
+
+		// this.addChild(this.tankSpr);
 		
 	}
 
@@ -23,11 +32,6 @@ abstract class Tank_CL extends Sprite {
 		this.turret.rotationServerUpdate(rot - this.remAngle);
 	}
 
-	// addToScene(group: Phaser.Group) {
-	// 	group.add(this);
-	// 	TH.game.add.existing(this.turret);
-	// 	if (!visible) this.kill();
-	// }
 
 	applyStatePacket(packet: PacketTank) {
 		this.rotationServerUpdate(packet.rot);
@@ -133,7 +137,8 @@ abstract class Tank_CL extends Sprite {
 	explosionEffect() {
 
 		// Set up explosion animation 
-		let explosionSpr = this.game.add.sprite(this.x, this.y, "explosion");
+		let rnd = Math.floor(Math.random() * 5) + 1;
+		let explosionSpr = this.game.add.sprite(this.x, this.y, `explosion${rnd}`);
 		explosionSpr.anchor.setTo(0.5);
 		let expAnim = explosionSpr.animations.add("expAnim", null, 50);
 		expAnim.onComplete.add(function() { this.destroy(); }, expAnim);
