@@ -262,9 +262,9 @@ class Level_SE {
 
         // Top horizontal wall
         if (sqrY == 0 || this.walls[sqrX][sqrY][0]) { // Is there a wall to collide with?
-            var x1 = sqrX * this.squareSize;
+            var x1 = this.determineLeft(sqrX, sqrY, tank);
             var y1 = sqrY * this.squareSize;
-            var x2 = (sqrX + 1) * this.squareSize;
+            var x2 = this.determineRight(sqrX, sqrY, tank);
             var y2 = y1;
 
             var pts = tank.body.lineIntPoints(x1, y1, x2, y2);
@@ -275,12 +275,15 @@ class Level_SE {
 
         // Bottom horizontal wall
         if (sqrY == this.tilesCountY - 1 || this.walls[sqrX][sqrY + 1][0]) {
-            var x1 = sqrX * this.squareSize;
+            var x1 = this.determineLeft(sqrX, sqrY + 1, tank);
             var y1 = (sqrY + 1) * this.squareSize;
-            var x2 = (sqrX + 1) * this.squareSize;
+            var x2 = this.determineRight(sqrX, sqrY + 1, tank);;
             var y2 = y1;
 
             pts = tank.body.lineIntPoints(x1, y1, x2, y2);
+            if (pts.length === 1) {
+                console.log(`${x1}, ${y2}, ${x2}, ${y2}`);
+            }
             if (pts.length > 0) { // It collides
                 this.horizontalLineSeparation(tank, pts, sqrX, sqrY);
             }
@@ -289,9 +292,9 @@ class Level_SE {
         // Left vertical wall
         if (sqrX == 0 || this.walls[sqrX][sqrY][1]) {
             var x1 = sqrX * this.squareSize;
-            var y1 = sqrY * this.squareSize;
+            var y1 = this.determineTop(sqrX, sqrY, tank);
             var x2 = x1;
-            var y2 = (sqrY + 1) * this.squareSize;
+            var y2 = this.determineBottom(sqrY, sqrY, tank);
 
             pts = tank.body.lineIntPoints(x1, y1, x2, y2);
             if (pts.length > 0) { // It collides
@@ -302,9 +305,9 @@ class Level_SE {
         // Right vertical wall
         if (sqrX == this.tilesCountX - 1 || this.walls[sqrX + 1][sqrY][1]) {
             var x1 = (sqrX + 1) * this.squareSize;
-            var y1 = sqrY * this.squareSize;
+            var y1 = this.determineTop(sqrX + 1, sqrY, tank);
             var x2 = x1;
-            var y2 = (sqrY + 1) * this.squareSize;
+            var y2 = this.determineBottom(sqrX + 1, sqrY, tank);
 
             pts = tank.body.lineIntPoints(x1, y1, x2, y2);
             if (pts.length > 0) { // It collides
@@ -372,6 +375,36 @@ class Level_SE {
 
     }
 
+    determineLeft(sqrX: number, sqrY: number, tank: Tank_SE) {
+        if (sqrY <= 0 || sqrY >= this.tilesCountY - 1 || this.walls[sqrX - 1][sqrY][0]) {
+            return (sqrX - 1) * this.squareSize;
+        } else {
+            return (sqrX) * this.squareSize;
+        }
+    }
+
+    determineRight(sqrX: number, sqrY: number, tank: Tank_SE) {
+        if (sqrY <= 0 || sqrY >= this.tilesCountY - 1 || this.walls[sqrX + 1][sqrY][0]) {
+            return (sqrX + 2) * this.squareSize;
+        } else {
+            return (sqrX + 1) * this.squareSize;
+        }
+    }
+    determineTop(sqrX: number, sqrY: number, tank: Tank_SE) {
+        if (sqrX <= 0 || sqrX >= this.tilesCountX - 1 || this.walls[sqrX][sqrY - 1][1]) {
+            return (sqrY - 1) * this.squareSize;
+        } else {
+            return (sqrY) * this.squareSize;
+        }
+    }
+    determineBottom(sqrX: number, sqrY: number, tank: Tank_SE) {
+        if (sqrX <= 0 || sqrX >= this.tilesCountX - 1 || this.walls[sqrX][sqrY + 1][0]) {
+            return (sqrY + 2) * this.squareSize;
+        } else {
+            return (sqrY + 1) * this.squareSize;
+        }
+    }
+    
     /**
      * Figures out on which "wall axis" is this point, allowing to change direction correctly
      * True = horizontal

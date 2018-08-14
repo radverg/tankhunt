@@ -27,6 +27,7 @@ class Level_CL {
 
         let wallWidth = this.squareSize + this.wallThickness * 2;
         let wallHeight = 18;
+        let trim = 2;
 
         // Set world bounds
 		var woffset = 200;
@@ -46,19 +47,19 @@ class Level_CL {
         // Horizontals
         for (let i = 0; i < borderCount; i++) {
             // Top
-            let spr1 = TH.game.make.sprite((realSize * i) + realSize / 2, 0, "wall1");
+            let spr1 = TH.game.make.sprite((realSize * i) + realSize / 2, 0, "wallSide1");
             spr1.anchor.setTo(0.5);
             spr1.width = realSize;
             spr1.scale.y = spr1.scale.x;
             thickness = spr1.height;
-            spr1.y = -thickness / 2;
+            spr1.y = -thickness / 2 + trim;
 
             // Bottom
-            let spr2 = TH.game.make.sprite((realSize * i) + realSize / 2, 0, "wall1");
+            let spr2 = TH.game.make.sprite((realSize * i) + realSize / 2, 0, "wallSide1");
             spr2.anchor.setTo(0.5);
             spr2.width = realSize;
             spr2.scale.y = spr2.scale.x;
-            spr2.y = lvlHeight + thickness / 2;
+            spr2.y = lvlHeight + thickness / 2 - trim;
 
             wallGroup.add(spr1);
             wallGroup.add(spr2);
@@ -72,16 +73,16 @@ class Level_CL {
 
         for (let i = 0; i < borderCount; i++) {
             // Left
-            let spr1 = TH.game.make.sprite(0, (realSize * i) + realSize / 2 - thickness, "wall1");
+            let spr1 = TH.game.make.sprite(0, (realSize * i) + realSize / 2 - thickness, "wallSide1");
             spr1.anchor.setTo(0.5);
             spr1.width = realSize;
             spr1.rotation = Math.PI / 2;
             spr1.scale.y = spr1.scale.x;
             verThickness = spr1.height;
-            spr1.x = -verThickness / 2;
+            spr1.x = -verThickness / 2 + trim;
 
             // Right
-            let spr2 = TH.game.make.sprite(lvlWidth + verThickness / 2, (realSize * i) + realSize / 2 - thickness, "wall1");
+            let spr2 = TH.game.make.sprite(lvlWidth + verThickness / 2 - trim, (realSize * i) + realSize / 2 - thickness, "wallSide1");
             spr2.anchor.setTo(0.5);
             spr2.width = realSize;
             spr2.rotation = Math.PI / 2;
