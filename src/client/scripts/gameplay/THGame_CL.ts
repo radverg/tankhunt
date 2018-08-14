@@ -151,7 +151,10 @@ class THGame_CL {
 		let tank = playerHit.tank;
 		tank.health = data.healthAft;
 
-		TH.effects.shotDebrisEffect(data.x * TH.sizeCoeff || tank.x , (data.y * TH.sizeCoeff) || tank.y);
+		if (data.healthAft < data.healthBef)
+			TH.effects.shotDamageEffect(data.x * TH.sizeCoeff || tank.x , (data.y * TH.sizeCoeff) || tank.y);
+		else 
+			TH.effects.shotDebrisEffect(data.x * TH.sizeCoeff || tank.x , (data.y * TH.sizeCoeff) || tank.y);
 
 		if (tank.health == 0) {
 			// If tank is not visible in the moment of destruction, move it to the position

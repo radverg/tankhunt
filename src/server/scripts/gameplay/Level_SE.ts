@@ -197,7 +197,8 @@ class Level_SE {
             var squareY = Math.floor(y1 / this.squareSize);
 
             // Check the square of the first point
-            var res1 = this.doubleWallPointCheck(squareX, squareY, dirX, dirY, x1, y1, x2, y2);
+          //  var res1 = this.doubleWallPointCheck(squareX, squareY, dirX, dirY, x1, y1, x2, y2);
+            var res1 = this.quadWallPointCheck(squareX, squareY, x1, y1, x2, y2);
             if (res1.length > 0) points.push(...res1);
            
             // Is second point already out of bounds?
@@ -209,7 +210,8 @@ class Level_SE {
             } else { // No? Check the next square then
                 squareX = Math.floor(x2 / this.squareSize);
                 squareY = Math.floor(y2 / this.squareSize);
-                var res2 = this.doubleWallPointCheck(squareX, squareY, -dirX, -dirY, x1, y1, x2, y2);
+               // var res2 = this.doubleWallPointCheck(squareX, squareY, -dirX, -dirY, x1, y1, x2, y2);
+            var res2 = this.quadWallPointCheck(squareX, squareY, x1, y1, x2, y2);
                 if (res2.length > 0) points.push(...res2);
             }
 
@@ -255,6 +257,40 @@ class Level_SE {
         return points;
     }
 
+    quadWallPointCheck(sqrX: number, sqrY: number, x1: number, y1: number, x2: number, y2: number) {
+        let points = [];
+        // Top
+        if (this.walls[sqrX][sqrY][0]) {
+            let pts = this.walls[sqrX][sqrY][0].simpleLineIntPoints(x1, y1, x2, y2);
+            if (pts.length > 0) 
+                points.push(...pts);
+        }
+
+        // Bottom
+        if (sqrY + 1 < this.tilesCountY && this.walls[sqrX][sqrY + 1][0]) {
+            let pts = this.walls[sqrX][sqrY + 1][0].simpleLineIntPoints(x1, y1, x2, y2);
+            if (pts.length > 0) 
+                points.push(...pts);
+        }
+
+        // Left 
+        if (this.walls[sqrX][sqrY][1]) {
+            let pts = this.walls[sqrX][sqrY][1].simpleLineIntPoints(x1, y1, x2, y2);
+            if (pts.length > 0) 
+                points.push(...pts);
+        }
+
+        // Right 
+        if (sqrX + 1 < this.tilesCountX && this.walls[sqrX + 1][sqrY][1]) {
+            let pts = this.walls[sqrX + 1][sqrY][1].simpleLineIntPoints(x1, y1, x2, y2);
+            if (pts.length > 0) 
+                points.push(...pts);
+        }
+
+        return points;
+
+    }
+
     squareLineWallColl(sqrX: number, sqrY: number, tank: Tank_SE) {
         // Is square out of bounds?
         if (!this.isSquareInBounds(sqrX, sqrY))
@@ -281,9 +317,7 @@ class Level_SE {
             var y2 = y1;
 
             pts = tank.body.lineIntPoints(x1, y1, x2, y2);
-            if (pts.length === 1) {
-                console.log(`${x1}, ${y2}, ${x2}, ${y2}`);
-            }
+        
             if (pts.length > 0) { // It collides
                 this.horizontalLineSeparation(tank, pts, sqrX, sqrY);
             }

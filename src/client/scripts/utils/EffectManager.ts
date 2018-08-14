@@ -95,4 +95,18 @@ class EffectManager {
             twn.start();
         }
     }
+
+    shotDamageEffect(x: number, y: number) {
+        if (!x || !y) {
+            return;
+        }
+
+        let spr = this.game.add.sprite(x, y, "shotDamage");
+        spr.anchor.setTo(0.5);
+        spr.scale.setTo(0.7);
+
+        let anim = spr.animations.add("burst", null, 60);
+        anim.onComplete.add(function() { this.destroy(); }, spr);
+        anim.play();
+    }
 }
