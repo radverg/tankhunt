@@ -21,7 +21,7 @@ class LoadManager_CL  {
 			{ assetName: "shadow", path: imagesPath + "shadow_box.png" },
 			{ assetName: "mine", path: imagesPath + "mine.png" },
 			{ assetName: "wall1", path: imagesPath + "wall1.png" },
-			{ assetName: "wallShadow", path: imagesPath + "wall_shadow.png"},
+			{ assetName: "shadowWall", path: imagesPath + "shadow_wall.png"},
 			{ assetName: "ball", path: imagesPath + "ball.png" }
 
 		];

@@ -4,13 +4,14 @@ class THGame_CL {
     
 	public socketManager: SocketManager_CL;
 	public running: boolean = false;
-	public level: any = null;
+	public level: Level_CL = new Level_CL();
 
 	protected background: Phaser.TileSprite = null;
 	protected levelGroup: Phaser.Group = null;
 	protected itemGroup: ItemGroup_CL = null;
 	shotGroup: ShotGroup_CL = null;
 	playerGroup: PlayerGroup_CL = null;
+
 
 	// Phaser signals - game interface can listen to them and react
 	onPlayerRemove: Phaser.Signal = new Phaser.Signal();
@@ -182,56 +183,16 @@ class THGame_CL {
 		}
 	}
 
-	processLevel(data: any) {
-		this.level = data;
-		// Create borders 
-		for (var i = 0; i < this.level.borders.length; i++) {
-			var border = this.level.borders[i];
-			var borderSprite = new Phaser.Sprite(TH.game, TH.sizeCoeff * border.cX, TH.sizeCoeff * border.cY, "blackRect");
-			
-			borderSprite.width =  TH.sizeCoeff * border._w;
-			borderSprite.height = TH.sizeCoeff * border._h;
-			console.log("Border: " + (border.cX * TH.sizeCoeff) + ", " + (border.cY * TH.sizeCoeff) + ", " + 
-				(border._w * TH.sizeCoeff) + ", " + (border._h * TH.sizeCoeff));
-			borderSprite.anchor.setTo(0.5, 0.5);
-
-			this.levelGroup.add(borderSprite);		
+	processLevel(data: PacketLevel) {
+		
+		if (!this.level) {
+			this.level = new Level_CL();
 		}
 
-		// Set world bounds
-		var woffset = 200;
-		TH.game.world.setBounds(-woffset, -woffset, (this.level.levelRect._w * TH.sizeCoeff) + 2*woffset, 
-			(this.level.levelRect._h * TH.sizeCoeff) + 2*woffset);
-
-		// Now add background
-		let bcg = TH.game.make.tileSprite(0, 0, TH.game.world.width - woffset *2,  TH.game.world.height - woffset*2, "ground1",0) ;
-		this.levelGroup.add(bcg);
-
-
-		// Create wall sprites
-		for (var x = 0; x < this.level.walls.length; x++) {
-			for (var y = 0; y < this.level.walls[x].length; y++) {
-				for (var i = 0; i < 2; i++) {
-
-					var wallData = this.level.walls[x][y][i];
-					if (wallData) {
-						var wallSprite = new Phaser.Sprite(TH.game, wallData.cX * TH.sizeCoeff, wallData.cY * TH.sizeCoeff, "wall1");
-						wallSprite.anchor.setTo(0.5, 0.5);
-
-						wallSprite.width = wallData._w * TH.sizeCoeff;
-						wallSprite.height = 18;
-					//	wallSprite.scale.setTo();
-
-						if (wallData._w < wallData._h) { // Horizontal
-							wallSprite.rotation = Math.PI / 2;
-							 wallSprite.width = wallData._h * TH.sizeCoeff;
-						} 
-						
-						this.levelGroup.add(wallSprite);
-
-					}	
-				}
-			}
+		if (data.json) {
+			this.level.fromJSON(data.json, this.levelGroup);
+		} else {
+			// This happens when level is specified by a name
 		}
 
 		console.log(`Level is here! Payload: ${JSON.stringify(data).length} characters | bytes`);

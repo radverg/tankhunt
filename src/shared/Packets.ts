@@ -167,8 +167,16 @@ interface PacketItemCollect {
 
 interface PacketGameStart extends PacketGameInfo {
     gameType: string,
-    level: any
+    level: PacketLevel
 }
+
+/**
+ * Levels can be passed by json (randomly generated), or by a name (pregenerated and shared)
+ */
+interface PacketLevel {
+    json?: string,
+    name?: string
+} 
 
 interface PacketGameRequest {
     gameType: string,

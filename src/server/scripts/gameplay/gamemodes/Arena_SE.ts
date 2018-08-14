@@ -207,7 +207,9 @@ class Arena_SE extends THGame_SE {
             players: [],
             items: this.itemManager.getItemsPacket(),
             gameType: this.gameType,
-            level: this.level
+            level: {
+                json: this.level.jsonString
+            }
         }
 
         for (let i = 0; i < this.players.length; i++) {

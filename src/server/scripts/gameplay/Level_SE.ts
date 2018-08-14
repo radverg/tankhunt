@@ -14,6 +14,8 @@ class Level_SE {
     spawns1: Vec2[];
     spawns2: Vec2[];
     spawnsItems: Vec2[];
+
+    jsonString: string;
     [key: string] : any;
 
     constructor(tilesCountX?: number, tilesCountY?: number, squareSize?: number, wallThickness?: number) {
@@ -44,6 +46,7 @@ class Level_SE {
         } catch(error) {
             console.log("Cannot parse JSON string! " + error.message);
         }
+        this.jsonString = jsonString;
 
         // Import properties
         this.tilesCountX = lvl.tilesCountX;
