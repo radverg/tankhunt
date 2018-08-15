@@ -10,6 +10,8 @@ class DefaultTank_CL extends Tank_CL {
 	private leftExTween: Phaser.Tween = null;
 	//-----------------------------------------
 
+	private currAnimName: string = "tracks1";
+
 	constructor() {
 		super(Data.DefaultTank.asset);
 
@@ -30,15 +32,16 @@ class DefaultTank_CL extends Tank_CL {
 		// Init animation of track
 		let frs = this.frameStart;
 	
-		this.onIntMoveStart.add(() => { this.animations.play("tracks"); }, this);
-		this.onIntMoveStop.add(() => { this.animations.stop("tracks"); }, this);
+		this.onIntMoveStart.add(() => { this.animations.play(this.currAnimName); }, this);
+		this.onIntMoveStop.add(() => { this.animations.stop(this.currAnimName); }, this);
 
 		
 
 		
-		this.onColorChange.add(() => { this.initTrackAnim(); }, this);
+		this.onColorChange.add((val: number) => { this.adjustTrackAnim(val); }, this);
 
 		this.initExhaustAnim();
+		this.initTrackAnim();
 
 		this.onIntMoveStart.add(this.startExhaustEffect, this);
 		this.onIntMoveStop.add(this.stopExhaustEffect, this);
@@ -46,30 +49,24 @@ class DefaultTank_CL extends Tank_CL {
 	}
 
 	initTrackAnim() {
-		let wasRunning = false;
-		let anim = this.animations.getAnimation("tracks"); 
-		
-		if (anim) {
-			wasRunning = anim.isPlaying;
-			anim.destroy();
-		}
-		
 
-	
-		let frs = this.frameStart;
-		this.animations.add("tracks", [frs, frs+1, frs+2,frs+3], 25, true);
+		let fps = 16;
 
-		// let fps = 16;
+		this.animations.add("tracks1", [0, 1, 2, 3], fps, true);
+		this.animations.add("tracks2", [4, 5, 6, 7], fps, true);
+		this.animations.add("tracks3", [8, 9, 10, 11], fps, true);
+		this.animations.add("tracks4", [12, 13, 14, 15], fps, true);
+	}
 
-		// this.animations.add("tracks1", [0, 1, 2, 3], fps, true);
-		// this.animations.add("tracks2", [4, 5, 6, 7], fps, true);
-		// this.animations.add("tracks3", [8, 9, 10, 11], fps, true);
-		// this.animations.add("tracks4", [12, 13, 14, 15], fps, true);
+	adjustTrackAnim(colorIndex: number) {
+		let currAnim = this.animations.getAnimation(this.currAnimName);
+		let startNext = currAnim.isPlaying;
+		currAnim.stop();
 
-
-		if (wasRunning) {
-			this.animations.play("tracks");
-		}
+		this.frame = this.frameStart;
+		this.currAnimName = `tracks${colorIndex + 1}`;
+		if (startNext)
+			this.animations.play(this.currAnimName);
 
 	}
 

@@ -29,7 +29,7 @@ class Sprite extends Phaser.Sprite {
     set colorIndex(val: number) { 
 		this.frameStart = val * (this.framesInRow || 1);
         this.frame = this.frameStart;
-        this.onColorChange.dispatch();
+        this.onColorChange.dispatch(val);
 	}
 
     interpolate() {

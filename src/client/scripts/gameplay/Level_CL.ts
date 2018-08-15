@@ -9,6 +9,9 @@ class Level_CL {
     fromJSON(jsonString: string, wallGroup: Phaser.Group) {
         let jsonLvl = null;
 
+        wallGroup.removeAll(true);
+       
+
          // Parse string representation of the level to the object
         try {
             jsonLvl = JSON.parse(jsonString);
@@ -37,6 +40,8 @@ class Level_CL {
         // Now add background
 		let bcg = TH.game.make.tileSprite(0, 0, TH.game.world.width - woffset *2,  TH.game.world.height - woffset*2, "ground1",0) ;
         wallGroup.add(bcg);
+
+        let WallShadGrp = new Phaser.Group(wallGroup.game, wallGroup);
         
         // Borders --------------------------------------------------------
         let targetSize = 600;
@@ -53,7 +58,7 @@ class Level_CL {
             spr1.scale.y = spr1.scale.x;
             thickness = spr1.height;
             spr1.y = -thickness / 2 + trim;
-
+        
             // Bottom
             let spr2 = TH.game.make.sprite((realSize * i) + realSize / 2, 0, "wallSide1");
             spr2.anchor.setTo(0.5);
