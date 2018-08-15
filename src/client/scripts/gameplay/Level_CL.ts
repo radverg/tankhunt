@@ -115,16 +115,12 @@ class Level_CL {
 
             if (type === 0) { // Horizontal
                 wallSpr.x += this.squareSize / 2;
-                // let shadow = TH.game.make.sprite(wallSpr.x, wallSpr.y, "shadowWall");
-                // shadow.anchor.setTo(0.35, 0);
-                // shadow.width = wallSpr.width;
-                // shadow.height = 50;
-                // //shadow.alpha = 0.5;
-                // wallGroup.add(shadow);
+              
                
             } else { // Vertical
                 wallSpr.y += this.squareSize / 2;
                 wallSpr.rotation = Math.PI / 2;
+               
             }
             
             wallGroup.add(wallSpr);

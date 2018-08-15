@@ -432,7 +432,7 @@ class Level_SE {
         }
     }
     determineBottom(sqrX: number, sqrY: number, tank: Tank_SE) {
-        if (sqrX <= 0 || sqrX >= this.tilesCountX - 1 || this.walls[sqrX][sqrY + 1][0]) {
+        if (sqrX <= 0 || sqrX >= this.tilesCountX - 1 || this.walls[sqrX][sqrY + 1][1]) {
             return (sqrY + 2) * this.squareSize;
         } else {
             return (sqrY + 1) * this.squareSize;

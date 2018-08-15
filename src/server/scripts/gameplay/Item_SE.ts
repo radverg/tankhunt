@@ -27,7 +27,7 @@ class Item_SE extends GameObject_SE {
     overlapsTank(tank: Tank_SE) {
         if (tank.body.circularIntersect(this.body)) {
             // TODO: Upgrade intersect logic
-            return true;
+            return tank.body.pointOverlapping(this.body);
         }
 
         return false;

@@ -278,6 +278,27 @@ class Rect {
         return points;
     }
 
+    /**
+     * Determines if at least one of the points of two rects is contained in other
+     * @param rect Second rect
+     */
+    pointOverlapping(rect: Rect) {
+
+        for (let i = 0; i < 4; i++) {
+            if (this.rotContains(rect.vertices[i].x, rect.vertices[i].y)) {
+                return true;
+            }
+        }
+
+        for (let i = 0; i < 4; i++) {
+            if (rect.rotContains(this.vertices[i].x, this.vertices[i].y)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
 
 class Vec2 {
