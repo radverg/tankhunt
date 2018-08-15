@@ -547,7 +547,11 @@ class Mine_SE extends Shot_SE {
 
 	getTankCollision(tank: Tank_SE) {
 		if (!this.active) return false;
-		return this.body.circularIntersect(tank.body);
+		if (this.body.circularIntersect(tank.body)) {
+			return this.body.pointOverlapping(tank.body);
+		}
+
+		return false;
 	}
 }
 

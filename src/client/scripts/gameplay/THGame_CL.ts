@@ -196,6 +196,7 @@ class THGame_CL {
 			this.level.fromJSON(data.json, this.levelGroup);
 		} else {
 			// This happens when level is specified by a name
+			this.level.fromJSON(Levels[data.name], this.levelGroup);
 		}
 
 		console.log(`Level is here! Payload: ${JSON.stringify(data).length} characters | bytes`);

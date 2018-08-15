@@ -1,9 +1,11 @@
 import { Rect, Vec2 } from "./utils/Geometry_SE";
 import { dist } from "./utils/MyMath_SE";
 import { Tank_SE } from "./Tank_SE";
+var Levels : Lvls = require("../../../shared/Levels");
 
 class Level_SE {
 
+    name: string;
     walls: any[];
     borders: Rect[];
     tilesCountX: number;
@@ -36,17 +38,18 @@ class Level_SE {
         this.generateRandomLevel();
     }
 
-    parseJSONLevel(jsonString: string) {
+    parseJSONLevel(lvlName: string) {
 
         var lvl = null;
 
         // Parse string representation of the level to the object
         try {
-            lvl = JSON.parse(jsonString);
+            lvl = JSON.parse(Levels[lvlName]);
         } catch(error) {
             console.log("Cannot parse JSON string! " + error.message);
         }
-        this.jsonString = jsonString;
+        this.jsonString = Levels[lvlName];
+        this.name = lvlName;
 
         // Import properties
         this.tilesCountX = lvl.tilesCountX;
