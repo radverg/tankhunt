@@ -6,6 +6,7 @@ abstract class Tank_CL extends Sprite {
 	public frameStart: number = 1;
 
 	protected turret: Sprite;
+	protected shadow: Phaser.Sprite;
 
 	protected tankSpr: Phaser.Sprite;
 
@@ -19,12 +20,8 @@ abstract class Tank_CL extends Sprite {
 		this.maxHealth = 1;
 		this.health = 1;
 
-		// this.tankSpr = TH.game.make.sprite(0, 0, asset);
-		// this.tankSpr.anchor.setTo(0.5);
-		// this.tankSpr.width = this.width * 0.75 / this.scale.x;
-		// this.tankSpr.height = this.height * 0.75 / this.scale.y;
-
-		// this.addChild(this.tankSpr);
+		this.shadow = this.game.make.sprite(0, 0, "shadow");
+		this.shadow.anchor.setTo(0.5);
 		
 	}
 
@@ -64,6 +61,7 @@ abstract class Tank_CL extends Sprite {
 	kill(): any {
 		super.kill();
 		this.turret.kill();
+		this.shadow.kill();
 
 		if (this.player.stats.maxRow < this.player.stats.inRow) {
 			this.player.stats.maxRow = this.player.stats.inRow;
@@ -76,11 +74,13 @@ abstract class Tank_CL extends Sprite {
 
 	revive(): any {
 		super.revive();
+		this.shadow.revive();
 		this.turret.revive();
 	}
 
 	destroy(): any {
 		super.destroy(true);
+		this.shadow.destroy();
 		this.turret.destroy();
 	}
 
@@ -113,6 +113,20 @@ abstract class Tank_CL extends Sprite {
 			this.player.plView.visible = this.visible;
 		}
 
+		// Update shadow if any so it follows the tank and rotates
+		if (this.shadow) {
+			this.shadow.x = this.x;
+			this.shadow.y = this.y;
+
+			this.shadow.visible = this.visible;
+			this.shadow.rotation = this.rotation;
+		}
+
+	}
+
+	addToGroup(grp: Phaser.Group) {
+		grp.add(this.shadow);
+		grp.add(this);
 	}
 
 	shotExplodeEffect() {

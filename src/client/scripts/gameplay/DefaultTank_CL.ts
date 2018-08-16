@@ -19,6 +19,9 @@ class DefaultTank_CL extends Tank_CL {
 		this.width = Data.DefaultTank.sizeX * TH.sizeCoeff;
 		this.height = Data.DefaultTank.sizeY * TH.sizeCoeff;
 
+		this.shadow.width = this.width + 20;
+		this.shadow.height = this.height + 20;
+
 		this.framesInRow = 4;
 		this.frameStart = 0;
 

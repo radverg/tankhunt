@@ -20,10 +20,9 @@ class PlayerGroup_CL extends Phaser.Group {
      * tank will be added to this group
      * @param player Player to add
      */
-    add(player: Player_CL) {
+    addPlayer(player: Player_CL) {
         if (player.tank) {
-            super.add(player.tank);
-            //super.add(player.tank.turr)
+            player.tank.addToGroup(this);
         }
         else 
             throw "Cannot add a player without tank!";

@@ -56,7 +56,7 @@ class Arena_CL extends THGame_CL {
 		tank.health = packet.health;
 		tank.maxHealth = packet.maxHealth;
 
-		this.playerGroup.add(player);
+		this.playerGroup.addPlayer(player);
 
 		// Check if its me
 		if (packet.id == this.socketManager.getID()) { // If so, make tank blue and bind camera with this
