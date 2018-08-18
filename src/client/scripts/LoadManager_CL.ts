@@ -40,6 +40,8 @@ class LoadManager_CL  {
 			{ assetName: "tankParts", path: imagesPath + "tank_parts.png", frameSizeX: 94, frameSizeY: 137, frameCount: 18 },
 			{ assetName: "shotDamage", path: imagesPath + "shot_damage.png", frameSizeX: 150, frameSizeY: 150, frameCount: 21, precreate: true },
 
+			{ assetName: "shot", path: imagesPath + "bullets.png", frameSizeX: 23, frameSizeY: 81, frameCount: 4, precreate: true },
+
 			{ assetName: "shotExplode1", path: imagesPath + "shot_explode1.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35, precreate: true },
 			{ assetName: "shotExplode2", path: imagesPath + "shot_explode2.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35, precreate: true },
 			{ assetName: "shotExplode3", path: imagesPath + "shot_explode3.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35, precreate: true },

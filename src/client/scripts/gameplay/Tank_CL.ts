@@ -59,9 +59,9 @@ abstract class Tank_CL extends Sprite {
 	}
 
 	kill(): any {
-		super.kill();
-		this.turret.kill();
-		this.shadow.kill();
+		this.visible = false;
+		this.turret.visible = false;
+		this.shadow.visible = false;
 
 		if (this.player.stats.maxRow < this.player.stats.inRow) {
 			this.player.stats.maxRow = this.player.stats.inRow;
@@ -69,6 +69,10 @@ abstract class Tank_CL extends Sprite {
 
 		this.player.stats.deaths++;
 		this.player.stats.inRow = 0;
+
+		if (this.inCamera) {
+			this.game.camera.shake(0.01);
+		}
 		this.explosionEffect();
 	}
 

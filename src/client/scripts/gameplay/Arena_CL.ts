@@ -12,6 +12,16 @@ class Arena_CL extends THGame_CL {
 		this.arenaView = new UIPlayerManager_CL(TH.game, this);
 		this.notifView = new UINotification_CL(TH.game, this);
 		this.uiLadder = new UILadderArena_CL(TH.game, this);
+
+		// Leave button
+		let btnExit = TH.game.add.button(TH.game.width - 70, 20, "panels", function(){ this.socketManager.emitLeave();}, this, 1, 0);
+		let btnText = TH.game.make.text(0, 0, "Quit");
+		btnExit.scale.setTo(0.5);
+		btnExit.anchor.setTo(0.5);
+		btnText.anchor.setTo(0.5);
+		btnExit.addChild(btnText);
+		btnExit.fixedToCamera = true;
+		btnExit.alpha = 0.7;
 	  
 		this.processLevel(packet.level);
 		this.processGameInfo(packet);

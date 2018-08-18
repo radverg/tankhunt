@@ -89,11 +89,13 @@ class LaserDirect_CL extends Shot_CL {
 class APCR_CL extends Shot_CL {
 
 	constructor(dataPack: PacketShotStart) {
-		super(dataPack, "ammo");
+		super(dataPack, "shot");
 
-		this.anchor.set(0.5, 0);
-		this.width = 0.07 * TH.sizeCoeff;
-		this.height = 0.3 * TH.sizeCoeff;
+		this.anchor.set(0.5, 0.5);
+
+		this.scale.setTo(0.5);
+		//this.width = 0.07 * TH.sizeCoeff;
+		//this.height = 0.3 * TH.sizeCoeff;
 
 		this.dist = TH.game.math.distance(this.endX, this.endY, this.startX, this.startY);
 		this.time = (this.dist / this.speed) * 1000;
@@ -108,6 +110,9 @@ class APCR_CL extends Shot_CL {
 			this.destroy(); 
 		}, this);
 		this.moveTween.start();
+
+		let anim = this.animations.add("shotFlight", null, 20, true);
+		anim.play();
 
 		this.shotGroup.add(this);
 		
@@ -161,7 +166,7 @@ class Bouncer_CL extends Shot_CL {
 	protected wayPoints: WayPoint[] = [];
 
 	constructor(dataPack: PacketBouncerShotStart, asset: string) {
-		super(dataPack, asset || "ammo");
+		super(dataPack, asset || "shot");
 
 		this.wayPoints = dataPack.pts;
 
@@ -172,8 +177,8 @@ class Bouncer_CL extends Shot_CL {
 		}
 
 		this.anchor.set(0.5, 0);
-		this.width = 0.07 * TH.sizeCoeff;
-		this.height = 0.3 * TH.sizeCoeff;
+		this.scale.setTo(0.5);
+		
 	}
 
 	start() {

@@ -1,4 +1,3 @@
-/// <reference path="refs.ts" />
 
 class SocketManager_CL {
 
@@ -73,5 +72,9 @@ class SocketManager_CL {
 
     emitPingRequest() {
         this.socket.emit("pingg", {} );
+    }
+
+    emitLeave() {
+        this.socket.emit("leave");
     }
 }
