@@ -23,8 +23,8 @@ class PlayManager_CL  {
         TH.game.stage.disableVisibilityChange = true;
         
         // Everything is ready => send game request
-        this.th.socketManager.emitGameRequest({ playerName: `player${(Math.random()*10000).toFixed(0)}`, gameType: "Arena" });
-        console.log("Requesting arena game...");
+        this.th.socketManager.emitGameRequest({ playerName: `player${(Math.random()*10000).toFixed(0)}`, gameType: "Duel" });
+        console.log("Requesting game...");
         this.pingerTimer = TH.game.time.create(false);
         this.pingerTimer.loop(3000, TH.timeManager.synchronizeRequest, TH.timeManager);
         this.pingerTimer.start(1000);
@@ -34,7 +34,10 @@ class PlayManager_CL  {
     processGameStart(packet: PacketGameStart) {
         if (packet.gameType == "Arena") {
             this.thGame = new Arena_CL(this.th.socketManager, packet);
-        } else {
+        } else if (packet.gameType == "Duel") {
+            this.thGame = new Duel_CL(this.th.socketManager, packet);
+        }
+        else {
             console.log("Unknown game type!");
         }
     }

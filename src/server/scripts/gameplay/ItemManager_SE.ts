@@ -17,7 +17,7 @@ class ItemManager_SE {
     thGame: THGame_SE;
     lastTimeSpawn: number = Date.now();
     spawning: boolean = false;
-    private maxItems: number;
+    maxItems: number;
 
     spawnPossibilities: any[] = [
         Guns.BouncingLaserGun,
@@ -87,6 +87,16 @@ class ItemManager_SE {
         }
 
         return packet;
+    }
+
+    clear() {
+        this.items = [];
+    }
+
+    destroy() {
+        this.spawning = false;
+        this.thGame = null;
+        this.clear();
     }
 }
 

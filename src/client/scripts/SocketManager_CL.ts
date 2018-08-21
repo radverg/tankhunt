@@ -45,6 +45,7 @@ class SocketManager_CL {
         this.socket.on("appear", function(data: PacketAppear) { if (that.th.playManager.thGame) that.th.playManager.thGame.processAppear(data); });
         this.socket.on("disappear", function(data: PacketDisappear){ if (that.th.playManager.thGame) that.th.playManager.thGame.processDisappear(data); });
         this.socket.on("heal", function(data: PacketHeal){ if (that.th.playManager.thGame) that.th.playManager.thGame.processHeal(data); });
+        this.socket.on("gFinish", function(data: PacketGameFinish) { if (that.th.playManager.thGame) that.th.playManager.thGame.processGameFinish(data) ; });
 
 
 

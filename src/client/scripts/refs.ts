@@ -24,7 +24,7 @@
 
 /// <reference path="gameUI/HealthBar_CL.ts" />
 /// <reference path="gameUI/TextMaker_CL.ts" />
-/// <reference path="gameUI/UILadderArena_CL.ts" />
+/// <reference path="gameUI/UILadder_CL.ts" />
 /// <reference path="gameUI/UINotification_CL.ts" />
 /// <reference path="gameUI/UIPlayer_CL.ts" />
 /// <reference path="gameUI/UIPlayerManager_CL.ts" />

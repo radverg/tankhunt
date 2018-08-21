@@ -25,4 +25,9 @@ class ShotGroup_CL extends Phaser.Group {
             delete this.shots[Object.keys(this.shots)[index]];
         }
     }
+
+    clear() {
+        this.shots = { };
+        this.removeAll(true);
+    }
 }

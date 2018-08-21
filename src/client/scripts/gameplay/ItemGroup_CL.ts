@@ -19,4 +19,9 @@ class ItemGroup_CL extends Phaser.Group {
         this.add(item);
         this.items[itemID] = item;
     }
+
+    clear() {
+        this.items = { };
+        this.removeAll(true);
+    }
 }

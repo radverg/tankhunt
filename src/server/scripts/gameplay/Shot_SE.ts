@@ -146,6 +146,29 @@ abstract class Shot_SE extends GameObject_SE {
 
 	}
 
+	/**
+	 * This method ignores armor and health, it just kills the player
+	 * @param tank 
+	 */
+	hitSimple(tank: Tank_SE): PacketShotHit {
+		if (this.removeAfterHit) this.remove = true;
+		else this.tanksHit.push(tank);
+
+		tank.owner.die();
+		let packet: PacketShotHit = {
+			rm: this.removeAfterHit,
+			healthAft: 0,
+			healthBef: 1,
+			shotID: this.id,
+			plAttID: this.owner.id,
+			xTank: tank.x,
+			yTank: tank.y,
+			plID: tank.owner.id
+		}
+
+		return packet;
+	}
+
 }
 
 // APCR ------------------------------------------------------------------------------------

@@ -70,9 +70,6 @@ class THGame_CL {
 		console.log("Game is running!");
 	}
 
-	newPlayerFromPacket(packet: PacketPlayerInfo, dispatchEvent: boolean = true) {
-	}
-
 	processStateInfo(data: PacketMovable) {
 		if (!this.running) return;
 		this.playerGroup.stateUpdate(data);
@@ -228,11 +225,59 @@ class THGame_CL {
 		}
 	}
 
+	processGameFinish(data: PacketGameFinish) {
+	}
+
 
 	setCamera() {
 		
 		TH.game.camera.follow(this.playerGroup.me.tank);
 		TH.game.camera.lerp.setTo(0.1, 0.1);
+	}
+
+	newPlayerFromPacket(packet: PacketPlayerInfo, dispatchConnected: boolean = true) {
+		// Handle tank type in future
+		var tank = new DefaultTank_CL();
+
+		var player = new Player_CL(packet.id, tank, packet.name);
+		player.stats = packet.stats;
+
+		if (packet.tank) {
+            tank.applyStatePacket(packet.tank);
+            tank.jumpToRemote();
+		}
+
+		tank.health = packet.health;
+		tank.maxHealth = packet.maxHealth;
+
+		this.playerGroup.addPlayer(player);
+
+		// Check if its me
+		if (packet.id == this.socketManager.getID()) { // If so, make tank blue and bind camera with this
+			this.playerGroup.setMe(player);
+			this.setCamera();
+		} else { // if its an enemy, make it red
+			this.playerGroup.setEnemy(player);
+        }
+        
+        // Hide it in case its not alive
+        if (!packet.alive) {
+            tank.hide();
+		}
+		
+		if (dispatchConnected)
+			this.onNewPlayerConnected.dispatch(player);
+
+		this.onNewPlayer.dispatch(player);
+				
+	}
+
+	/**
+	 * Destroys items and shots
+	 */
+	tidy() {
+		this.shotGroup.clear();
+		this.itemGroup.clear();
 	}
 
 	/**

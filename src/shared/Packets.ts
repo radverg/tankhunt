@@ -115,6 +115,14 @@ interface WayPoint {
 	ang: number
 }
 
+interface PacketGameFinish {
+    subgame?: boolean,
+    winnerID?: string,
+
+    nextLevel?: PacketLevel,
+    nextDelay?: number
+}
+
 interface PacketEliminatorStart extends PacketBouncerShotStart {
     spl: { ang: number, speed: number }[];
     splTime: number;
@@ -167,7 +175,8 @@ interface PacketItemCollect {
 
 interface PacketGameStart extends PacketGameInfo {
     gameType: string,
-    level: PacketLevel
+    level: PacketLevel,
+    countDown?: number
 }
 
 /**

@@ -4,14 +4,14 @@ class Arena_CL extends THGame_CL {
 
 	private arenaView: UIPlayerManager_CL;
 	private notifView: UINotification_CL;
-	private uiLadder: UILadderArena_CL;
+	private uiLadder: UILadder_CL;
 
     constructor(socketManager: SocketManager_CL, packet: PacketGameStart) {
 		super(socketManager);
 		
 		this.arenaView = new UIPlayerManager_CL(TH.game, this);
 		this.notifView = new UINotification_CL(TH.game, this);
-		this.uiLadder = new UILadderArena_CL(TH.game, this);
+		this.uiLadder = new UILadder_CL(TH.game, this);
 
 		// Leave button
 		let btnExit = TH.game.add.button(TH.game.width - 70, 20, "panels", function(){ this.socketManager.emitLeave();}, this, 1, 0);
@@ -51,42 +51,7 @@ class Arena_CL extends THGame_CL {
 		this.onRespawn.dispatch(player);
     }
     
-    newPlayerFromPacket(packet: PacketPlayerInfo, dispatchConnected: boolean = true) {
-		// Handle tank type in future
-		var tank = new DefaultTank_CL();
-
-		var player = new Player_CL(packet.id, tank, packet.name);
-		player.stats = packet.stats;
-
-		if (packet.tank) {
-            tank.applyStatePacket(packet.tank);
-            tank.jumpToRemote();
-		}
-
-		tank.health = packet.health;
-		tank.maxHealth = packet.maxHealth;
-
-		this.playerGroup.addPlayer(player);
-
-		// Check if its me
-		if (packet.id == this.socketManager.getID()) { // If so, make tank blue and bind camera with this
-			this.playerGroup.setMe(player);
-			this.setCamera();
-		} else { // if its an enemy, make it red
-			this.playerGroup.setEnemy(player);
-        }
-        
-        // Hide it in case its not alive
-        if (!packet.alive) {
-            tank.hide();
-		}
-		
-		if (dispatchConnected)
-			this.onNewPlayerConnected.dispatch(player);
-
-		this.onNewPlayer.dispatch(player);
-				
-	}
+    
 
 
 }

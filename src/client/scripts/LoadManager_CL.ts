@@ -111,11 +111,18 @@ class LoadManager_CL  {
 		TH.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
 		// Loading screen -
-		let preloadSprite = TH.game.add.sprite(TH.game.world.centerX, 800, "loadBar");
-		preloadSprite.anchor.setTo(0.5);
+		let preloadBg = TH.game.add.sprite(0, 800, "loadBar");
+		let loadBarWidth = preloadBg.width; //TH.game.width / 0.8;
+		preloadBg.x = TH.game.world.centerX - loadBarWidth / 2;
+		preloadBg.anchor.y = 0.5;
+		preloadBg.tint = 0x444444;
+		let preloadSprite = TH.game.add.sprite(TH.game.world.centerX - loadBarWidth / 2, 800, "loadBar");
+	//	preloadSprite.width = loadBarWidth;
+		preloadSprite.anchor.setTo(0, 0.5);
 		TH.game.load.setPreloadSprite(preloadSprite);
 
 		TH.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		TH.game.scale.pageAlignHorizontally = true;
 		
 	}
 	

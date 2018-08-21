@@ -1,17 +1,19 @@
 
 
-class UILadderArena_CL {
+class UILadder_CL {
 
-    private thGame: Arena_CL;
+    private thGame: THGame_CL;
     private game: Phaser.Game;
 
     private rankGroups: Phaser.Group[] = [];
     private groupHeight: number = 64;
+    private slots: number;
 
-    constructor(game: Phaser.Game, thGame: Arena_CL) {
+    constructor(game: Phaser.Game, thGame: THGame_CL, slots: number = 6) {
 
         this.thGame = thGame;
         this.game = game;
+        this.slots = slots;
         
 
         this.initialize();
@@ -20,7 +22,7 @@ class UILadderArena_CL {
     initialize() {
         // Create six groups - 5 for the first five players and sixth for this player
         let offsetY = 20;
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < this.slots; i++) {
             let grp = new Phaser.Group(this.game);
             this.rankGroups.push(grp);
             grp.fixedToCamera = true;

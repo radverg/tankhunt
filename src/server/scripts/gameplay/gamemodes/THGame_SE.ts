@@ -9,8 +9,7 @@ abstract class THGame_SE {
 
     public players: Player_SE[] = [];
     protected shots: Shot_SE[] = [];
-    protected items: Item_SE[] = [];
-
+   
     protected itemManager: ItemManager_SE | null;
 
     public level: Level_SE | null = null;
@@ -26,8 +25,14 @@ abstract class THGame_SE {
     private hViewWidth: number = 15;
     private hViewHeight: number = 9;
     private viewOffset: number = 4.28;
+
+    protected blockInput: boolean = false;
+
+    remove: boolean = false;
     
-    constructor() { }
+    constructor() { 
+        this.itemManager = new ItemManager_SE(this);
+    }
 
     addPlayer (player: Player_SE) {
         if (this.running) return;
@@ -152,8 +157,34 @@ abstract class THGame_SE {
             && gameobj.body.top < rectY + this.hViewHeight * 2 && gameobj.body.bottom > rectY;
     }
 
+    /**
+     * Nulls the references, sets the remove property to true
+     */
+    destroy() {
+        this.remove = true;
+        this.level = null;
+
+        this.players.forEach((plr: Player_SE) => {
+            plr.game = null;
+        });
+
+        this.players = null;
+        this.itemManager.destroy();
+        this.shots = null;
+        this.running = false;
+        this.blockInput = true;
+    }
+
     // Input handling ----------------------------------------------------------------------
     handleInput(inputType: string, player: Player_SE) {
+        if (this.blockInput)
+            return; 
+
+        // Prevent hacking user from trying to run different method
+        if (inputType.substr(0, 3) !== "inp") {
+            return;
+        }
+
         if ((this as any)[inputType])
             (this as any)[inputType](player);  
     }

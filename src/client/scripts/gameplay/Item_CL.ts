@@ -1,6 +1,8 @@
 
 class Item_CL extends Sprite {
 
+    private rotTween: Phaser.Tween;
+
     constructor(x: number, y: number, typeIndex: number) {
         super(TH.game, x * TH.sizeCoeff, y * TH.sizeCoeff, "shadow"); // For now tits black rect, but it will be spritesheet
 
@@ -14,6 +16,10 @@ class Item_CL extends Sprite {
         itemSpr.frame = typeIndex;
 
         this.anchor.setTo(0.5);
+
+        // Item rotation effect:
+        this.rotation = 0;
+        this.rotTween = this.game.add.tween(this).from( { rotation: Math.PI * 2 }, 2000, Phaser.Easing.Default, true, 0, -1);
         
         
 
@@ -22,6 +28,8 @@ class Item_CL extends Sprite {
 
     getCollected(noeffect: boolean = false) {
 
+        this.rotTween.stop();
+
         if (noeffect) {
             this.destroy(true);
             return;
@@ -29,7 +37,7 @@ class Item_CL extends Sprite {
 
         // Effect
         let twn = TH.game.add.tween(this);
-        twn.to({ "width": 0, "height": 0 }, 500, Phaser.Easing.Back.In, true);        
+        twn.to({ "width": 0, "height": 0 }, 300, Phaser.Easing.Back.In, true);        
 
     }
 }

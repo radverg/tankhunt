@@ -45,7 +45,7 @@ class GameObject_SE {
 		return "a" + GameObject_SE._currentID;
     }
     
-    move (deltaSec: number) {
+    move(deltaSec: number) {
         this.prevBody.setPos(this.body.cX, this.body.cY);
         
         this.body.cX += this.direction.x * deltaSec * this.speed;
@@ -114,15 +114,6 @@ class GameObject_SE {
         this.move(deltaSec);
         this.rotate(deltaSec);
     }
-    
-    // checkOverlapArray(gobjects) {
-    //     var returnObj = null;
-    //     for (var i = 0; i < gobjects.length; i++) {
-    //         if (this.body.intersects(gobjects[i].body)) {
-    //             returnObj = gobjects[i];
-    //         }
-    //     }
-    // }
     
     getStatePacket(): PacketGameObject {
         return  {
