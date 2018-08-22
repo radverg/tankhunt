@@ -1,9 +1,12 @@
 class Duel_CL extends THGame_CL {
 
+    private uiDuel: UIDuel_CL;
+
     constructor(sm: SocketManager_CL, packet: PacketGameStart) {
         super(sm);
 
         console.log("Creating duel game...");
+        this.uiDuel = new UIDuel_CL(TH.game, this);
 
         // Create players
         for (let i = 0; i < packet.players.length; i++) {
@@ -14,9 +17,7 @@ class Duel_CL extends THGame_CL {
 
         this.processLevel(packet.level);
 
-        this.running = true;
-
-        
+        this.running = true;     
 
     }
 
@@ -25,11 +26,13 @@ class Duel_CL extends THGame_CL {
         if (data.subgame) {
             this.tidy();
             this.processLevel(data.nextLevel);
-            new UICountdown_CL(TH.game).startNew(data.nextDelay, TH.game.world.centerX, 200, 100);
+            
    
         } else {
             console.log("Duel ends!");
         }
+
+        this.onGameFinish.dispatch(data);
 
     }
 

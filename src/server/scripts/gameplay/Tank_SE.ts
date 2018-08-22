@@ -95,6 +95,12 @@ class Tank_SE extends GameObject_SE {
 
 		return pack;
 	}
+
+	stopCompletely() {
+		this.stopRotation();
+		super.stop();
+		this.turret.stopRotation();
+	}
 }
 
 class Turret extends GameObject_SE {

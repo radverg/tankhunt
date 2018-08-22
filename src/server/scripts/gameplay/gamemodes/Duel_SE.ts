@@ -7,12 +7,12 @@ class Duel_SE extends THGame_SE {
 
     private playerCount: number = 2;
 
-    private startDelay: number = 3000;
+    private startDelay: number = 4000;
     private endDelay: number = 3500;
 
     private isWinPending: boolean = false;
 
-    private maxWins: number = 50;
+    private maxWins: number = 3;
     private currentWins: number = 0;   
 
     private currentRound: number = 0;
@@ -73,6 +73,9 @@ class Duel_SE extends THGame_SE {
     subgameEnd(winner: Player_SE) {
 
         this.currentRound++;
+        this.blockInput = true;
+        this.subGameRunning = false;
+
         let nextLevel = this.levels[Math.floor(Math.random() * this.levels.length)];
 
         let packet: PacketGameFinish = {
@@ -135,6 +138,7 @@ class Duel_SE extends THGame_SE {
     reviveAll() {
         for (let pl = 0; pl < this.players.length; pl++) {
             this.players[pl].alive = true;
+            this.players[pl].tank.stopCompletely();
         }
     }
 
@@ -172,6 +176,7 @@ class Duel_SE extends THGame_SE {
         for (let i = 0; i < this.players.length; i++) {
             let plr = this.players[i];
             let pos = this.level.getRandomSpawn1(plr.tank.body.w, plr.tank.body.h);
+            plr.tank.randomizeAngle();
             plr.tank.turret.angle = 0;
             plr.tank.setPos(pos.x, pos.y);
         }

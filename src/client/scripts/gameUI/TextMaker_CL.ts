@@ -105,4 +105,38 @@ class TextMaker_CL {
 
     }
 
+    static winText(x: number, y: number) {
+
+        let textSpr = TH.game.make.text(x, y, "VICTORY");
+
+        textSpr.font = "Orbitron";
+        textSpr.fontSize = 3;
+        textSpr.setShadow(0, 0, "#0000ff", 10);
+        textSpr.stroke = "black";
+        textSpr.strokeThickness = 3;
+        textSpr.alpha = 0.3;
+        textSpr.anchor.setTo(0.5);
+
+        let twn = TH.game.add.tween(textSpr).to({ rotation: Math.PI * 10, fontSize: 90, alpha: 1 }, 600, Phaser.Easing.Default, true);
+
+        return textSpr;
+    }
+
+    static defText(x: number, y: number) {
+
+        let textSpr = TH.game.make.text(x, y, "DEFEAT");
+
+        textSpr.font = "Orbitron";
+        textSpr.fontSize = 3;
+        textSpr.setShadow(0, 0, "#ff0000", 10);
+        textSpr.stroke = "black";
+        textSpr.strokeThickness = 3;
+        textSpr.alpha = 0.3;
+        textSpr.anchor.setTo(0.5);
+
+        let twn = TH.game.add.tween(textSpr).to({ rotation: Math.PI * 10, fontSize: 90, alpha: 1 }, 600, Phaser.Easing.Default, true);
+
+        return textSpr;
+    }
+
 }

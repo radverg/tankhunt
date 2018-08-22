@@ -19,11 +19,8 @@ class Item_CL extends Sprite {
 
         // Item rotation effect:
         this.rotation = 0;
-        this.rotTween = this.game.add.tween(this).from( { rotation: Math.PI * 2 }, 2000, Phaser.Easing.Default, true, 0, -1);
-        
-        
+        this.rotTween = this.game.add.tween(this).to( { rotation: Math.PI * 2 }, 4500, Phaser.Easing.Default, true, 0, -1);
 
-      //  TH.game.add.existing(this);
     }
 
     getCollected(noeffect: boolean = false) {

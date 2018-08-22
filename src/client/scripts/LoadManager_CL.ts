@@ -123,6 +123,8 @@ class LoadManager_CL  {
 
 		TH.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		TH.game.scale.pageAlignHorizontally = true;
+
+		
 		
 	}
 	

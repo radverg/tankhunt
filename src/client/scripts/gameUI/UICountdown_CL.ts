@@ -8,11 +8,11 @@ class UICountdown_CL {
         this.game = game;
     }
 
-    startNew(milisec: number, x?: number, y?: number, size: number = 20, milisecStep: number = 500) {
+    startNew(milisec: number, x?: number, y?: number, size: number = 20, milisecStep: number = 500): Phaser.Text {
         let current = Math.ceil(milisec / milisecStep);
         let game = this.game;
     
-        let cdText = this.game.add.text(x, y, current.toString(), { font: "Orbitron", fontSize: size });
+        let cdText = this.game.make.text(x, y, current.toString(), { font: "Orbitron", fontSize: size });
         cdText.anchor.setTo(0.5);
 
         let timer = this.game.time.create(false);
@@ -27,11 +27,14 @@ class UICountdown_CL {
             }
             cdText.text = current.toString();
 
-            let twn = game.add.tween(this).from({ width: this.width * 2, height: this.height * 2 }, milisecStep / 2, Phaser.Easing.Exponential.In, true);
+            let twn = game.add.tween(this).from({ fontSize: size * 4 }, milisecStep / 1.5, Phaser.Easing.Default);
+           // let fadeTwn = game.add.tween(this).to({ alpha: 0 }, milisecStep - milisecStep / 1.5);
+            //wn.chain(fadeTwn);
+            twn.start();
 
         }, cdText);
         timer.start();
 
-
+        return cdText;
     }
 }

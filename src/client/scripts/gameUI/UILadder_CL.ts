@@ -64,11 +64,11 @@ class UILadder_CL {
 
             style.fontSize = 16;
          //   style.fontStyle = "bold";
-            let statsText = this.game.make.text(offsetX, 30, "Kills: 5, Deaths: 7, K/D: 2", style);
+            let statsText = this.game.make.text(offsetX, 30, "0", style);
             grp.add(statsText);
         }
 
-        (this.rankGroups[5].getChildAt(0) as Phaser.Sprite).frame = 0;
+        (this.rankGroups[this.slots - 1].getChildAt(0) as Phaser.Sprite).frame = 0;
 
         // Initialize callbacks 
         this.thGame.onNewPlayerConnected.add(this.update, this);
@@ -92,15 +92,15 @@ class UILadder_CL {
 
         
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < this.slots - 1; i++) {
 
             let grp = this.rankGroups[i];
             let player = (keys[i]) ? players[keys[i]] : null;
 
             
 
-            let nameText = (player) ? `${player.name} - ${player.stats.inRow} in a row` : "";
-            let statsText = (player) ? `Kills: ${player.stats.kills}, Deaths: ${player.stats.deaths}, K/D: ${(player.stats.kills / player.stats.deaths).toFixed(2)}` : "";
+            let nameText = this.getStatsText1(player);
+            let statsText = this.getStatsText2(player);
 
             (grp.getChildAt(0) as Phaser.Sprite).frame = (player) ? ((player.me) ? 0 : 1) : 1;
             (grp.getChildAt(2) as Phaser.Text).text = nameText;
@@ -112,7 +112,7 @@ class UILadder_CL {
        let myRank = keys.indexOf(me.id) + 1;
 
        let myGrp = this.rankGroups[this.rankGroups.length - 1];
-       if (myRank > 5) {
+       if (myRank > this.slots - 1) {
            myGrp.visible = true;
            (<Phaser.Text>myGrp.getChildAt(1)).text = myRank.toString();
            (<Phaser.Text>myGrp.getChildAt(2)).text = `${me.name} - ${me.stats.inRow} in a row`;
@@ -123,5 +123,30 @@ class UILadder_CL {
        }
     }
 
+    protected getStatsText1(player: Player_CL) {
+        return (player) ? `${player.name} - ${player.stats.inRow} in a row` : "";
+    }
 
+    protected getStatsText2(player: Player_CL) {
+        return (player) ? `Kills: ${player.stats.kills}, Deaths: ${player.stats.deaths}, K/D: ${(player.stats.kills / player.stats.deaths).toFixed(2)}` : "";
+    }
+
+
+}
+
+class UILadderDuel_CL extends UILadder_CL {
+
+    constructor(game: Phaser.Game, thGame: THGame_CL) {
+        super(game, thGame, 3);
+
+        
+    }
+
+    protected getStatsText1(player: Player_CL) {
+        return (player) ? `${player.name} - ${player.stats.wins} wins` : "";
+    }
+
+    protected getStatsText2(player: Player_CL) {
+        return (player) ? `Kills: ${player.stats.kills}, Deaths: ${player.stats.deaths}, K/D: ${(player.stats.kills / player.stats.deaths).toFixed(2)}` : "";
+    }
 }
