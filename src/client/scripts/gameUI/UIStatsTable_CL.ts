@@ -18,10 +18,8 @@ class UIStatsTable_CL {
 
     private allowedItems: string[];
     private sortKey: string;
+    private sortAsc: boolean = false;
 
-    /**
-     * Colobject's keys are property names and their values will be shown in table head
-     */
     constructor(thGame: THGame_CL, allowedItems: string[], sortKey: string) {
         this.thGame = thGame;
         this.sortKey = sortKey;
@@ -29,12 +27,10 @@ class UIStatsTable_CL {
 
         // Create table container
         this.$tableCont = $("<div></div>")
-            .css({ position: "absolute "});
+            .css({ position: "absolute", display: "none" });
         this.$table = $("<table></table>");
         this.$tableCont.append(this.$table);
-
-        
-
+    
         // Table head
         let $thead = $("<thead></thead>");
         this.$table.append($thead);
@@ -50,19 +46,24 @@ class UIStatsTable_CL {
 
         this.$tbody = $("<tbody></tbody>");
         this.$table.append(this.$tbody);
+
+        $("body").append(this.$tableCont);
         
     }
 
     refresh() {
         this.$tbody.empty();
         let players = this.thGame.playerGroup.players;
-
-        for (const i in players) {
-           
+        let sortedIDs = this.thGame.playerGroup.getSortedIDsByStats(this.sortKey, this.sortAsc);
+        
+        for (let i = 0; i < sortedIDs.length; i++) {
+            let id = sortedIDs[i];
+            let plrRowHtml = this.createPlayerRow(players[id]);
+            this.$tbody.append(plrRowHtml);
         }
     }
 
-    createPlayerRow(player: Player_CL): string {
+    private createPlayerRow(player: Player_CL): string {
         let trClass = (player.me) ? "statsRowMe" : (player.isEnemyOf(this.thGame.playerGroup.me) ? "statsRowEnemy" : "statsRowAlly");
         let row = `<tr class="${trClass}">`;
         // Iterate through alloweItems (=columns)
@@ -75,5 +76,23 @@ class UIStatsTable_CL {
 
         row += "</tr>"
         return row;
+    }
+
+    show() {
+        this.refresh();
+        let $tblCont = this.$tableCont;
+        $tblCont.css( { left: `${$(window).width() / 2 - $tblCont.width() / 2}px`,
+                        top: `${$(window).height() / 2 - $tblCont.height() / 2}px` });
+
+        $tblCont.stop();
+        $tblCont.fadeIn();
+    }
+
+    hide() {
+        let $tblCont = this.$tableCont;
+
+        $tblCont.stop();
+        $tblCont.fadeOut();
+        
     }
 }

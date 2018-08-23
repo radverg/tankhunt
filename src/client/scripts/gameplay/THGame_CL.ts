@@ -39,6 +39,8 @@ class THGame_CL {
 
 	onGameInfo: Phaser.Signal = new Phaser.Signal();
 
+	onGameStart: Phaser.Signal = new Phaser.Signal();
+
 	constructor(socketManager: SocketManager_CL) {
 		this.socketManager = socketManager;
 		TH.thGame = this;
@@ -54,7 +56,7 @@ class THGame_CL {
 		//  if (this.playerGroup.me)
 		// 	TH.game.debug.spriteInfo(this.playerGroup.me.tank, 10, 10, "black");
 
-		 TH.game.debug.cameraInfo(TH.game.camera, 10, 500, "black");
+		 //TH.game.debug.cameraInfo(TH.game.camera, 10, 500, "black");
 
 		if (TH.timeManager.ping)
 			TH.game.debug.text(TH.timeManager.ping.toString(), 10, 1000); 

@@ -109,4 +109,20 @@ class PlayerGroup_CL extends Phaser.Group {
         player.tank.setDefaultColor(Color.Friend);
         player.tank.setColor(Color.Friend);
     }
+
+    public getSortedIDsByStats(sortKey: string, asc: boolean) {
+        let players = this.players;
+        let sortDir = asc ? -1 : 1;
+
+        let keys = Object.keys(players);
+        keys.sort(function(a, b) {
+            if (players[b].stats[sortKey] === players[a].stats[sortKey]) {
+
+                return (players[b].stats.inRow - players[a].stats.inRow) * sortDir;
+            }
+
+        });
+
+        return keys;
+    }
 }

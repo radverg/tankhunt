@@ -17,11 +17,7 @@ class Duel_SE extends THGame_SE {
 
     private currentRound: number = 0;
 
-    private levelNames: string[] = [
-        "duel1",
-        "duel2",
-        "duel3"
-    ]
+    private duelMapCount: number = 4;
 
     private levels: Level_SE[] = [];
 
@@ -33,9 +29,9 @@ class Duel_SE extends THGame_SE {
         this.gameType = "Duel";
 
         // Generate levels
-        for (let i = 0; i < this.levelNames.length; i++) {
+        for (let i = 0; i < this.duelMapCount; i++) {
             let newLvl = new Level_SE();
-            newLvl.parseJSONLevel(this.levelNames[i]);
+            newLvl.parseJSONLevel(`duel${i+1}`);
             this.levels.push(newLvl);
             
         }
@@ -95,9 +91,9 @@ class Duel_SE extends THGame_SE {
         if (winner) { // No tie
             packet.winnerID = winner.id;
             winner.stats.wins++;
-            this.currentWins++;
+        
 
-            if (this.currentWins >= this.maxWins) { // Game finished
+            if (winner.stats.wins >= this.maxWins) { // Game finished
                 this.wholeGameEnd(winner);
                 return;
             } 
@@ -138,6 +134,7 @@ class Duel_SE extends THGame_SE {
     reviveAll() {
         for (let pl = 0; pl < this.players.length; pl++) {
             this.players[pl].alive = true;
+            this.players[pl].invisible = false;
             this.players[pl].tank.stopCompletely();
         }
     }
@@ -150,7 +147,8 @@ class Duel_SE extends THGame_SE {
             level: {
                 name: this.level.name
             }, 
-            countDown: this.startDelay
+            countDown: this.startDelay,
+            winCount: this.maxWins
         }
 
         for (let i = 0; i < this.players.length; i++) {
@@ -254,7 +252,6 @@ class Duel_SE extends THGame_SE {
     destroy() {
         super.destroy();
         this.levels = null;
-        this.levelNames = null;
     }
 
 }

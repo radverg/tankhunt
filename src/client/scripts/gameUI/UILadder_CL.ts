@@ -9,6 +9,9 @@ class UILadder_CL {
     private groupHeight: number = 64;
     private slots: number;
 
+    sortKey: string = "inRow";
+    sortAsc: boolean = false;
+
     constructor(game: Phaser.Game, thGame: THGame_CL, slots: number = 6) {
 
         this.thGame = thGame;
@@ -81,16 +84,7 @@ class UILadder_CL {
         let players = this.thGame.playerGroup.players;
         let me = this.thGame.playerGroup.me;
 
-        let keys= Object.keys(players);
-        keys.sort(function(a,b) {
-            if (players[b].stats.inRow === players[a].stats.inRow) {
-                return players[a].stats.kills / players[a].stats.deaths - players[b].stats.kills / players[b].stats.deaths; 
-            } else {
-                return players[b].stats.inRow - players[a].stats.inRow;
-            }
-        });
-
-        
+        let keys = this.thGame.playerGroup.getSortedIDsByStats(this.sortKey, this.sortAsc);
 
         for (let i = 0; i < this.slots - 1; i++) {
 
@@ -139,6 +133,7 @@ class UILadderDuel_CL extends UILadder_CL {
     constructor(game: Phaser.Game, thGame: THGame_CL) {
         super(game, thGame, 3);
 
+        this.sortKey = "wins";
         
     }
 

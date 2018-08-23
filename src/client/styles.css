@@ -33,3 +33,15 @@ body {
     display: none;
     font-size: 3rem;
 }
+
+.statsRowMe {
+    background-image: linear-gradient("blue", "lightblue");
+}
+
+.statsRowEnemy {
+    background-image: linear-gradient("red", "lightred");
+}
+
+.statsRowAlly {
+    background-image: linear-gradient("green", "lightgreen");
+}

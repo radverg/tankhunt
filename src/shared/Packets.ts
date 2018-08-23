@@ -176,7 +176,8 @@ interface PacketItemCollect {
 interface PacketGameStart extends PacketGameInfo {
     gameType: string,
     level: PacketLevel,
-    countDown?: number
+    countDown?: number,
+    winCount?: number
 }
 
 /**
