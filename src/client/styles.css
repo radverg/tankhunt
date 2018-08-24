@@ -35,13 +35,39 @@ body {
 }
 
 .statsRowMe {
-    background-image: linear-gradient("blue", "lightblue");
+    background-image: linear-gradient(blue, darkblue);
 }
 
 .statsRowEnemy {
-    background-image: linear-gradient("red", "lightred");
+    background-image: linear-gradient(#ba0101, #600000);
 }
 
 .statsRowAlly {
-    background-image: linear-gradient("green", "lightgreen");
+    background-image: linear-gradient(green, darkgreen);
+}
+
+#statsTable {
+    color: white;
+    min-width: 40rem;
+    font-family: "Calibri";
+    font-size: 2rem;
+    border: 3px solid black;
+}
+
+#statsTable td {
+    padding: 1rem 2rem 1rem 2rem;
+    text-align: center
+}
+
+#statsTable thead {
+    padding: 2rem;
+    background-color: #000000;
+    font-weight: bold;
+}
+
+.bestCell {
+
+   font-weight: bold;
+   text-decoration: underline;
+  
 }

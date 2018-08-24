@@ -87,6 +87,7 @@ class LoadManager_CL  {
 	}
 	
 	preload() {
+		TH.game.stage.backgroundColor = 0xd4dbe1;
 		// Load images --------------------------------
 		for (var z = 0; z < this.images.length; z++) {
 			var img = this.images[z];

@@ -5,6 +5,9 @@ class Arena_CL extends THGame_CL {
 	private arenaView: UIPlayerManager_CL;
 	private notifView: UINotification_CL;
 	private uiLadder: UILadder_CL;
+	private uiStats: UIStatsTable_CL;
+
+	private tabKey: Phaser.Key;
 
     constructor(socketManager: SocketManager_CL, packet: PacketGameStart) {
 		super(socketManager);
@@ -12,6 +15,7 @@ class Arena_CL extends THGame_CL {
 		this.arenaView = new UIPlayerManager_CL(TH.game, this);
 		this.notifView = new UINotification_CL(TH.game, this);
 		this.uiLadder = new UILadder_CL(TH.game, this);
+		this.uiStats = new UIStatsTable_CL(this, ["kills", "deaths", "inRow", "maxRow", "dmgD", "dmgR"], "inRow");
 
 		// Leave button
 		let btnExit = TH.game.add.button(TH.game.width - 70, 20, "panels", function(){ this.socketManager.emitLeave();}, this, 1, 0);
@@ -26,6 +30,12 @@ class Arena_CL extends THGame_CL {
 		this.processLevel(packet.level);
 		this.processGameInfo(packet);
 		this.running = true;
+
+		// Associate tab key for stats table
+		this.tabKey = TH.game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
+		this.tabKey.onDown.add(function() { this.uiStats.show(); console.log("Showing stats..."); }, this);
+		this.tabKey.onUp.add(function() { this.uiStats.hide() }, this);
+
 		
     } 
     /**

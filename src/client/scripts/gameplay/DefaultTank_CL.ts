@@ -76,6 +76,8 @@ class DefaultTank_CL extends Tank_CL {
 	initExhaustAnim() {
 		let exLeftSpr = this.game.make.sprite(TH.sizeCoeff * 0.3 + TH.sizeCoeff * 1.5, TH.sizeCoeff * 3.6, "exhaust");
 		let exRightSpr = this.game.make.sprite(-TH.sizeCoeff * 0.3 + TH.sizeCoeff * 1.5, TH.sizeCoeff * 3.6, "exhaust2");
+		exLeftSpr.blendMode = PIXI.blendModes.MULTIPLY;
+		exRightSpr.blendMode = PIXI.blendModes.MULTIPLY;
 
 		this.leftExSpr = exLeftSpr;
 		this.rightExSpr = exRightSpr;

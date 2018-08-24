@@ -33,7 +33,9 @@ class Player_SE {
            deaths: 0,
            wins: 0,
            inRow: 0,
-           maxRow: 0
+           maxRow: 0,
+           dmgD: 0,
+           dmgR: 0
        }
        
     }

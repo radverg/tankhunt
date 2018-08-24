@@ -284,5 +284,7 @@ interface PlayerStats {
     wins: number,
     inRow: number,
     maxRow: number,
+    dmgR: number,
+    dmgD: number
     [key: string]: any
 }

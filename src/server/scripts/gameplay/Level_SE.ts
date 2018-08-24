@@ -413,7 +413,7 @@ class Level_SE {
     }
 
     determineLeft(sqrX: number, sqrY: number, tank: Tank_SE) {
-        if (sqrY <= 0 || sqrY >= this.tilesCountY - 1 || sqrX == 0 || this.walls[sqrX - 1][sqrY][0]) {
+        if (sqrY <= 0 || sqrY > this.tilesCountY - 1 || sqrX == 0 || this.walls[sqrX - 1][sqrY][0]) {
             return (sqrX - 1) * this.squareSize;
         } else {
             return (sqrX) * this.squareSize;
@@ -421,21 +421,21 @@ class Level_SE {
     }
 
     determineRight(sqrX: number, sqrY: number, tank: Tank_SE) {
-        if (sqrY <= 0 || sqrY >= this.tilesCountY - 1 || sqrX == this.tilesCountX - 1 || this.walls[sqrX + 1][sqrY][0]) {
+        if (sqrY <= 0 || sqrY > this.tilesCountY - 1 || sqrX == this.tilesCountX - 1 || this.walls[sqrX + 1][sqrY][0]) {
             return (sqrX + 2) * this.squareSize;
         } else {
             return (sqrX + 1) * this.squareSize;
         }
     }
     determineTop(sqrX: number, sqrY: number, tank: Tank_SE) {
-        if (sqrX <= 0 || sqrX >= this.tilesCountX - 1 || sqrY == 0 || this.walls[sqrX][sqrY - 1][1]) {
+        if (sqrX <= 0 || sqrX > this.tilesCountX - 1 || sqrY == 0 || this.walls[sqrX][sqrY - 1][1]) {
             return (sqrY - 1) * this.squareSize;
         } else {
             return (sqrY) * this.squareSize;
         }
     }
     determineBottom(sqrX: number, sqrY: number, tank: Tank_SE) {
-        if (sqrX <= 0 || sqrX >= this.tilesCountX - 1 || sqrY == this.tilesCountY - 1 || this.walls[sqrX][sqrY + 1][1]) {
+        if (sqrX <= 0 || sqrX > this.tilesCountX - 1 || sqrY == this.tilesCountY - 1 || this.walls[sqrX][sqrY + 1][1]) {
             return (sqrY + 2) * this.squareSize;
         } else {
             return (sqrY + 1) * this.squareSize;

@@ -116,11 +116,7 @@ class PlayerGroup_CL extends Phaser.Group {
 
         let keys = Object.keys(players);
         keys.sort(function(a, b) {
-            if (players[b].stats[sortKey] === players[a].stats[sortKey]) {
-
-                return (players[b].stats.inRow - players[a].stats.inRow) * sortDir;
-            }
-
+            return (players[b].stats[sortKey] - players[a].stats[sortKey]) * sortDir;
         });
 
         return keys;
