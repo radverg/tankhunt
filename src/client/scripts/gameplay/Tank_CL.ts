@@ -1,4 +1,3 @@
-/// <reference path="../refs.ts" />
 
 abstract class Tank_CL extends Sprite {
 	public player: Player_CL | null = null;
@@ -62,14 +61,7 @@ abstract class Tank_CL extends Sprite {
 		this.visible = false;
 		this.turret.visible = false;
 		this.shadow.visible = false;
-
-		if (this.player.stats.maxRow < this.player.stats.inRow) {
-			this.player.stats.maxRow = this.player.stats.inRow;
-		}
-
-		this.player.stats.deaths++;
-		this.player.stats.inRow = 0;
-
+		
 		if (this.inCamera) {
 			this.game.camera.shake(0.01);
 		}

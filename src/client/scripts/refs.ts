@@ -17,6 +17,7 @@
 /// <reference path="gameplay/ShotGroup_CL.ts" />
 /// <reference path="gameplay/THGame_CL.ts" />
 /// <reference path="gameplay/Tank_CL.ts" />
+/// <reference path="gameplay/Stats_CL.ts" />
 
 /// <reference path="utils/Sprite_CL.ts" />
 /// <reference path="utils/Color_CL.ts" />
@@ -28,6 +29,10 @@
 /// <reference path="gameUI/UINotification_CL.ts" />
 /// <reference path="gameUI/UIPlayer_CL.ts" />
 /// <reference path="gameUI/UIPlayerManager_CL.ts" />
+/// <reference path="gameUI/UICountdown_CL.ts" />
+/// <reference path="gameUI/UIDuel_CL.ts" />
+/// <reference path="gameUI/UIStatsTable_CL.ts" />
+
 
 /// <reference path="../../shared/Data.ts" />
 /// <reference path="../../shared/Packets.ts" />

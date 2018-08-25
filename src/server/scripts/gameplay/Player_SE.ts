@@ -1,5 +1,6 @@
 import { Tank_SE } from "./Tank_SE";
 import { THGame_SE } from "./gamemodes/THGame_SE";
+import { Stats_SE } from "./Stats_SE";
 
 class Player_SE {
 
@@ -15,7 +16,7 @@ class Player_SE {
     invulnerable: boolean = false;
 
     team: any = null;
-    stats: PlayerStats;
+    stats: Stats_SE;
     
     constructor(socket: SocketIO.Socket, name: string) {
         this.socket = socket;
@@ -28,20 +29,11 @@ class Player_SE {
         this.alive = true;
         this.emitable = true;
         
-        this.stats = {
-           kills: 0,
-           deaths: 0,
-           wins: 0,
-           inRow: 0,
-           maxRow: 0,
-           dmgD: 0,
-           dmgR: 0
-       }
+        this.stats = new Stats_SE();
        
     }
 
     die() {
-        this.stats.deaths++;
         this.stats.inRow = 0;
         this.tank.health = 0;
         this.alive = false;
@@ -63,7 +55,7 @@ class Player_SE {
         var packet: PacketPlayerInfo = {
             id: this.id,
             name: this.name,
-            stats: this.stats,
+            stats: this.stats.exportPacket(),
             alive: this.alive,
             health: this.tank.health,
             maxHealth: this.tank.maxHealth

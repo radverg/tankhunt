@@ -1,4 +1,3 @@
-/// <reference path="../refs.ts" />
 
 class THGame_CL {
     
@@ -164,13 +163,10 @@ class THGame_CL {
 				tank.positionServerUpdate(data.xTank, data.yTank);
 				tank.jumpToRemote();
 			}
-
-			if (playerAtt !== playerHit) { 
-				playerAtt.stats.kills++;
-				playerAtt.stats.inRow++;
-			}
 			tank.kill();
 		}
+
+		playerAtt.stats.countHit(playerAtt, playerHit, data.healthBef, data.healthAft);
 
 		this.onHit.dispatch(data, playerHit);
 		
@@ -244,7 +240,7 @@ class THGame_CL {
 		var tank = new DefaultTank_CL();
 
 		var player = new Player_CL(packet.id, tank, packet.name);
-		player.stats = packet.stats;
+		player.stats.importPacket(packet.stats);
 
 		if (packet.tank) {
             tank.applyStatePacket(packet.tank);

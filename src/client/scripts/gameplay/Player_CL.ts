@@ -9,7 +9,7 @@ class Player_CL {
 
 	public me: boolean = false;
 
-	public stats: PlayerStats;
+	public stats: Stats_CL = new Stats_CL();
 	public team: any = null;
 	public plView: UIPlayer_CL | null = null;
 

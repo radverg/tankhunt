@@ -42,7 +42,7 @@ interface PacketPlayerInfo {
     /**
      * Object that contains information about current player's statistics
      */
-    stats?: any,
+    stats?: PlayerStats,
     /**
      * Determine if player is currently alive on the server
      */
@@ -282,8 +282,13 @@ interface PlayerStats {
     kills: number,
     deaths: number,
     wins: number,
+    suic: number,
+    teamK: number,
+    blockC: number,
+
     inRow: number,
     maxRow: number,
+
     dmgR: number,
     dmgD: number
     [key: string]: any

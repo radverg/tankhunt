@@ -218,10 +218,9 @@ class Duel_SE extends THGame_SE {
 
                     let packet = this.shots[sh].hitSimple(this.players[pl].tank);
                     let attackerTank = this.shots[sh].owner.tank;
-                    if (attackerTank !== this.players[pl].tank) {
-                        attackerTank.owner.stats.kills++;
-                        attackerTank.owner.stats.inRow++;
-                    }
+                    let targetTank = this.players[pl].tank;
+
+                    attackerTank.owner.stats.countHit(attackerTank.owner, targetTank.owner, packet.healthBef, packet.healthAft);
 
                     // Check if only one is alive
                     let livingPlrs = this.players.filter(function(value: Player_SE) {

@@ -13,8 +13,10 @@ class UIStatsTable_CL {
         deaths: { thead: "Deaths:", asc: true },
         inRow: { thead: "Kills in a row:" },
         maxRow: { thead: "Max in a row:" },
-        dmgD: { thead: "Damage dealt: " },
-        dmgR: { thead: "Damage received:", asc: true }
+        dmgD: { thead: "Damage dealt:" },
+        dmgR: { thead: "Damage received:", asc: true },
+        suic: { thead: "Suicides:", asc: true },
+        blockC: { thead: "Blocked shots:" }
     }
 
     private allowedItems: string[];
@@ -90,7 +92,7 @@ class UIStatsTable_CL {
         for (let i = 0; i < this.allowedItems.length; i++) {
             let colKey = this.allowedItems[i];
 
-            row += `<td>${player.stats[colKey]}</td>`;
+            row += `<td>${Math.round(player.stats[colKey])}</td>`;
 
         }
 

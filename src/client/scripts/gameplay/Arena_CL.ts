@@ -1,4 +1,3 @@
-/// <reference path="../refs.ts" />
 
 class Arena_CL extends THGame_CL {
 
@@ -15,7 +14,7 @@ class Arena_CL extends THGame_CL {
 		this.arenaView = new UIPlayerManager_CL(TH.game, this);
 		this.notifView = new UINotification_CL(TH.game, this);
 		this.uiLadder = new UILadder_CL(TH.game, this);
-		this.uiStats = new UIStatsTable_CL(this, ["kills", "deaths", "inRow", "maxRow", "dmgD", "dmgR"], "inRow");
+		this.uiStats = new UIStatsTable_CL(this, ["inRow", "maxRow", "kills", "deaths", "suic", "blockC", "dmgD", "dmgR",], "inRow");
 
 		// Leave button
 		let btnExit = TH.game.add.button(TH.game.width - 70, 20, "panels", function(){ this.socketManager.emitLeave();}, this, 1, 0);

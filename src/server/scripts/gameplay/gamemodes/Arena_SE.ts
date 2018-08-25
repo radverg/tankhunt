@@ -131,12 +131,13 @@ class Arena_SE extends THGame_SE {
                 if (this.shots[sh].isHittingTank(this.players[pl].tank)) {
                     let hitPack = this.shots[sh].hit(this.players[pl].tank);
                     let healPack: PacketHeal = null;
+                    let attackerTank = this.shots[sh].owner.tank;  
+                    let targetTank = this.players[pl].tank;
                     
                     let wasKilled = hitPack.healthAft <= 0;
 
                     if (wasKilled) {
                         healPack = { } as any;
-                        let attackerTank = this.shots[sh].owner.tank;
 
                         healPack.plID = attackerTank.owner.id;
                         healPack.healthBef = attackerTank.health;
@@ -150,11 +151,10 @@ class Arena_SE extends THGame_SE {
 
                         healPack.healthAft = attackerTank.health;
                         healPack.maxHealthAft = attackerTank.maxHealth
-
-                        attackerTank.owner.stats.inRow++;
-                        attackerTank.owner.stats.kills++;
                     
                     }
+
+                    this.shots[sh].owner.stats.countHit(attackerTank.owner, targetTank.owner, hitPack.healthBef, hitPack.healthAft);
 
                     this.emitHit(hitPack);
 
