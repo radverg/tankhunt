@@ -7,3 +7,4 @@ https://freesound.org/people/EcoDTR/sounds/36847/
 potenciální řešení kolizního problému: separovat podle rychlejšího směru!
 
 Dev log:
+- Přidány ingame statistiky
