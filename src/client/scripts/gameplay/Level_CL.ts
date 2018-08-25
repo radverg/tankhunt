@@ -39,7 +39,8 @@ class Level_CL {
             
         // Now add background
         let groundAsset = `ground${Math.floor(Math.random() * 7) + 1}`
-		let bcg = TH.game.make.tileSprite(0, 0, TH.game.world.width - woffset *2,  TH.game.world.height - woffset*2, groundAsset, 0) ;
+        let outBack = 1000; 
+		let bcg = TH.game.make.tileSprite(-outBack, -outBack / 2, TH.game.world.width - woffset *2 + outBack * 2,  TH.game.world.height - woffset*2 + outBack, groundAsset, 0) ;
         wallGroup.add(bcg);
 
         let WallShadGrp = new Phaser.Group(wallGroup.game, wallGroup);

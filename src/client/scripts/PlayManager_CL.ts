@@ -6,6 +6,8 @@ class PlayManager_CL  {
     public thGame: THGame_CL;
     private pingerTimer: Phaser.Timer;
 
+    private first: boolean = true;
+
 	constructor(tankhunt: TH) {
 		this.th = tankhunt;
 
@@ -18,17 +20,24 @@ class PlayManager_CL  {
 		TH.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         TH.game.scale.pageAlignHorizontally = true;
         TH.game.world.setBounds(-400, -400, 3000, 2000);
-        this.initInput();
         TH.game.stage.backgroundColor = "#D4DBE1";
         TH.game.stage.disableVisibilityChange = true;
+
+        // Code behind this line happens only once
+        if (!this.first) return;
+        this.initInput();
+
+        this.pingerTimer = TH.game.time.create(false);
+        this.pingerTimer.loop(3000, TH.timeManager.synchronizeRequest, TH.timeManager);
+        this.pingerTimer.start(1000);
+
+        this.first = false;
         
         // Everything is ready => send game request
         this.th.socketManager.emitGameRequest({ playerName: `player${(Math.random()*10000).toFixed(0)}`, gameType: "Arena" });
         console.log("Requesting game...");
-        this.pingerTimer = TH.game.time.create(false);
-        this.pingerTimer.loop(3000, TH.timeManager.synchronizeRequest, TH.timeManager);
-        this.pingerTimer.start(1000);
        
+     
     }
     
     processGameStart(packet: PacketGameStart) {

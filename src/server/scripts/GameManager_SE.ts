@@ -41,6 +41,8 @@ class GameManager_SE {
 	}
 
 	processGameRequest(player: Player_SE, packet: PacketGameRequest) {
+		if (player.game) return;
+		
 		if (packet.gameType == "Arena") {
 			// For debugging, put player in test game
 			this.testGame.addPlayer(player);

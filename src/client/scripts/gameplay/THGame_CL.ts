@@ -4,10 +4,12 @@ class THGame_CL {
 	public socketManager: SocketManager_CL;
 	public running: boolean = false;
 	public level: Level_CL = new Level_CL();
+	public game: Phaser.Game = TH.game;
 
 	protected background: Phaser.TileSprite = null;
 	protected levelGroup: Phaser.Group = null;
 	protected itemGroup: ItemGroup_CL = null;
+
 	shotGroup: ShotGroup_CL = null;
 	playerGroup: PlayerGroup_CL = null;
 
@@ -39,6 +41,8 @@ class THGame_CL {
 	onGameInfo: Phaser.Signal = new Phaser.Signal();
 
 	onGameStart: Phaser.Signal = new Phaser.Signal();
+
+	onLeave: Phaser.Signal = new Phaser.Signal();
 
 	constructor(socketManager: SocketManager_CL) {
 		this.socketManager = socketManager;
@@ -278,6 +282,14 @@ class THGame_CL {
 	tidy() {
 		this.shotGroup.clear();
 		this.itemGroup.clear();
+	}
+
+	/** 
+	 * Switches game state to menu state and dispatches onLeave signal
+	*/
+	leaveToMenu() {
+		this.onLeave.dispatch();
+		TH.game.state.start("menu");
 	}
 
 	/**

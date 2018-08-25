@@ -291,12 +291,11 @@ class Eliminator_CL extends Bouncer_CL {
 			let ang = this.splintersData[i].ang;
 			let time = this.splinterTime;
 
-			let splinterSprite: Phaser.Sprite = this.shotGroup.create(dataPack.x * TH.sizeCoeff, dataPack.y * TH.sizeCoeff, "ammo");
+			let splinterSprite: Phaser.Sprite = this.shotGroup.create(dataPack.x * TH.sizeCoeff, dataPack.y * TH.sizeCoeff, "shotDarker");
 			splinterSprite.rotation = ang;
 			
 			splinterSprite.anchor.set(0.5, 0);
-			splinterSprite.width = 0.07 * TH.sizeCoeff;
-			splinterSprite.height = 0.3 * TH.sizeCoeff;
+			splinterSprite.scale.setTo(0.5);
 
 			let dist = spd * (time / 1000);
 			

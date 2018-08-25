@@ -31,7 +31,7 @@ class UILadder_CL {
             grp.fixedToCamera = true;
             grp.cameraOffset.setTo(10, offsetY + i * this.groupHeight);
             let panel = grp.create(0,0, "panels");
-            panel.width = 320;
+            panel.width = 240;
             panel.height = this.groupHeight;
             panel.alpha = 0.6;
             panel.frame = 1;
@@ -118,11 +118,11 @@ class UILadder_CL {
     }
 
     protected getStatsText1(player: Player_CL) {
-        return (player) ? `${player.name} - ${player.stats.inRow} in a row` : "";
+        return (player) ? player.name : "";
     }
 
     protected getStatsText2(player: Player_CL) {
-        return (player) ? `Kills: ${player.stats.kills}, Deaths: ${player.stats.deaths}, K/D: ${(player.stats.kills / player.stats.deaths).toFixed(2)}` : "";
+        return (player) ? `${player.stats.inRow} kills in a row` : "";
     }
 
 
@@ -138,10 +138,10 @@ class UILadderDuel_CL extends UILadder_CL {
     }
 
     protected getStatsText1(player: Player_CL) {
-        return (player) ? `${player.name} - ${player.stats.wins} wins` : "";
+        return (player) ? player.name : "";
     }
 
     protected getStatsText2(player: Player_CL) {
-        return (player) ? `Kills: ${player.stats.kills}, Deaths: ${player.stats.deaths}, K/D: ${(player.stats.kills / player.stats.deaths).toFixed(2)}` : "";
+        return (player) ? `${player.stats.wins} wins` : "";
     }
 }

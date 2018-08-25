@@ -7,6 +7,9 @@ class UIStatsTable_CL {
 
     private collCount: number;
 
+    private phaserKeyCode: number = Phaser.Keyboard.CONTROL;
+    private phaserKeyObj: Phaser.Key;
+
     private items: any = {
         wins: { thead: "Wins:" },
         kills: { thead: "Kills:" },
@@ -54,7 +57,34 @@ class UIStatsTable_CL {
         this.$table.append(this.$tbody);
 
         $("body").append(this.$tableCont);
+
+        // Key handling and events
+        this.phaserKeyObj = this.thGame.game.input.keyboard.addKey(this.phaserKeyCode);
+        this.phaserKeyObj.onDown.add(this.show, this);
+        this.phaserKeyObj.onUp.add(this.hide, this);
+
+        this.thGame.onGameFinish.add(function(packet: PacketGameFinish) {
+            if (!packet.subgame) 
+            {
+                this.refresh();
+                this.closeKeyHandler();
+            }
+            else 
+                this.onChange();
+        }, this);
+        this.thGame.onHit.add(this.onChange, this);
+        this.thGame.onLeave.add(this.closeKeyHandler, this);
         
+    }
+
+    onChange() {
+        if (this.$tableCont.css("display") == "block") {
+            this.refresh();
+        }
+    }
+
+    closeKeyHandler() {
+        this.phaserKeyObj.reset(true);
     }
 
     refresh() {

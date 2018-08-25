@@ -17,7 +17,7 @@ class Arena_CL extends THGame_CL {
 		this.uiStats = new UIStatsTable_CL(this, ["inRow", "maxRow", "kills", "deaths", "suic", "blockC", "dmgD", "dmgR",], "inRow");
 
 		// Leave button
-		let btnExit = TH.game.add.button(TH.game.width - 70, 20, "panels", function(){ this.socketManager.emitLeave();}, this, 1, 0);
+		let btnExit = TH.game.add.button(TH.game.width - 70, 20, "panels", function(){ this.socketManager.emitLeave(); this.leaveToMenu(); }, this, 1, 0);
 		let btnText = TH.game.make.text(0, 0, "Quit");
 		btnExit.scale.setTo(0.5);
 		btnExit.anchor.setTo(0.5);
@@ -29,13 +29,6 @@ class Arena_CL extends THGame_CL {
 		this.processLevel(packet.level);
 		this.processGameInfo(packet);
 		this.running = true;
-
-		// Associate tab key for stats table
-		this.tabKey = TH.game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
-		this.tabKey.onDown.add(function() { this.uiStats.show(); console.log("Showing stats..."); }, this);
-		this.tabKey.onUp.add(function() { this.uiStats.hide() }, this);
-
-		
     } 
     /**
 	 * Respawn packet contains:

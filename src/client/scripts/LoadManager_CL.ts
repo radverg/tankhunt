@@ -57,6 +57,7 @@ class LoadManager_CL  {
 			{ assetName: "shotDamage", path: imagesPath + "shot_damage.png", frameSizeX: 150, frameSizeY: 150, frameCount: 21, precreate: true },
 
 			{ assetName: "shot", path: imagesPath + "bullets.png", frameSizeX: 23, frameSizeY: 81, frameCount: 4, precreate: true },
+			{ assetName: "shotDarker", path: imagesPath + "bullets_darker.png", frameSizeX: 23, frameSizeY: 81, frameCount: 4, precreate: true },
 
 			{ assetName: "shotExplode1", path: imagesPath + "shot_explode1.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35, precreate: true },
 			{ assetName: "shotExplode2", path: imagesPath + "shot_explode2.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35, precreate: true },

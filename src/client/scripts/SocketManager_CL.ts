@@ -14,6 +14,7 @@ class SocketManager_CL {
      */
     connect() {
         this.socket = io.connect();
+        
         this.initSocket();
     }
 
@@ -31,6 +32,8 @@ class SocketManager_CL {
         var that = this;
         
         this.socket.on("connect", this.onConnection);
+        this.socket.on("disconnect", function() { console.log("Disconnected!"); });
+        
         this.socket.on("movableState", function(data: PacketMovable) { if (that.th.playManager.thGame) that.th.playManager.thGame.processStateInfo(data); });
         this.socket.on("gameInfo", function(data: PacketGameInfo) { if (that.th.playManager.thGame) that.th.playManager.thGame.processGameInfo(data); });
         this.socket.on("removePlayer", function(data: string) { if (that.th.playManager.thGame) that.th.playManager.thGame.processPlayerRemove(data); });

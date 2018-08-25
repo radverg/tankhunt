@@ -30,6 +30,7 @@ class SocketManager_SE {
 	initSocket(socket: SocketIO.Socket) {
 		socket.on("disconnect", () => this.onDisconnect(socket));
 		socket.on("input", (data: string) => this.onInput(socket, data));
+		socket.on("leave", () => this.onLeave(socket));
 		socket.on("gameRequest", (data: PacketGameRequest) => this.onGameRequest(socket, data));
 		socket.on("pingg", () => { socket.emit("pongg", Date.now()); });
 	}
@@ -46,6 +47,13 @@ class SocketManager_SE {
 	onInput(socket: SocketIO.Socket, data: string) {
 		if (socket.player && socket.player.game) {
 		    socket.player.game.handleInput(data, socket.player);
+		}
+	}
+
+	onLeave(socket:SocketIO.Socket) {
+		console.log("Player left a game!");
+		if (socket.player && socket.player.game) {
+			socket.player.game.playerDisconnected(socket.player);		
 		}
 	}
 

@@ -22,7 +22,7 @@ class Arena_SE extends THGame_SE {
         this.running = true;
         this.itemManager.startSpawning();
         this.level = new Level_SE();
-        this.level.parseJSONLevel("arena2");  
+        this.level.parseJSONLevel("arena1");  
 
         console.log("Starting Arena game...");  
     }
@@ -56,6 +56,8 @@ class Arena_SE extends THGame_SE {
         if (index !== -1) {
             this.players.splice(index, 1);
         }
+
+        player.game = null;
         
         this.emitRemove(player.socket.id);
     }
