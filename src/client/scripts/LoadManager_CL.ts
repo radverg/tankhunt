@@ -17,12 +17,28 @@ class LoadManager_CL  {
 			{ assetName: "blackRect", path: imagesPath + "blackRect.png" },
 			{ assetName: "whiteRect", path: imagesPath + "whiteRect.png" },
 			{ assetName: "ammo", path: imagesPath + "ammo.png" },
-			{ assetName: "ground1", path: imagesPath + "ground_1.png" },
+
+			// Grounds
+			{ assetName: "ground1", path: imagesPath + "ground1.png" },
+			{ assetName: "ground2", path: imagesPath + "ground2.png" },
+			{ assetName: "ground3", path: imagesPath + "ground3.png" },
+			{ assetName: "ground4", path: imagesPath + "ground4.png" },
+			{ assetName: "ground5", path: imagesPath + "ground5.png" },
+			{ assetName: "ground6", path: imagesPath + "ground6.png" },
+			{ assetName: "ground7", path: imagesPath + "ground7.png" },
+
+			// Side walls 
+			{ assetName: "wallSide1", path: imagesPath + "wall_side1.png" },
+			{ assetName: "wallSide2", path: imagesPath + "wall_side2.png" },
+			{ assetName: "wallSide3", path: imagesPath + "wall_side3.png" },
+
+
+
+
 			{ assetName: "shadow", path: imagesPath + "shadow_box.png" },
 			{ assetName: "mine", path: imagesPath + "mine.png" },
 			{ assetName: "wall1", path: imagesPath + "wall1.png" },
 			{ assetName: "wallSide", path: imagesPath + "wall_side.png" },
-			{ assetName: "wallSide1", path: imagesPath + "wall_side1.png" },
 			{ assetName: "wallShadow", path: imagesPath + "wall_shadow.png"},
 			{ assetName: "ball", path: imagesPath + "ball.png" },
 
@@ -56,7 +72,11 @@ class LoadManager_CL  {
 			{ assetName: "explosion5", path: imagesPath + "explosion5.png", frameSizeX: 400, frameSizeY: 400, frameCount: 55, precreate: true },
 
 			{ assetName: "medals", path: imagesPath + "medals.png", frameSizeX: 64, frameSizeY: 64, frameCount: 3 },
-			{ assetName: "panels", path: imagesPath + "panels.png", frameSizeX: 190, frameSizeY: 49, frameCount: 3 }
+			{ assetName: "panels", path: imagesPath + "panels.png", frameSizeX: 190, frameSizeY: 49, frameCount: 3 },
+
+
+			{ assetName: "wallSideTriple", path: imagesPath + "wall_side_triple.png", frameSizeX: 1187, frameSizeY: 94, frameCount: 3 },
+			{ assetName: "wallTriple", path: imagesPath + "wall_triple.png", frameSizeX: 272, frameSizeY: 24, frameCount: 3 },
 
 
 		];

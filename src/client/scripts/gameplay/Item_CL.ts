@@ -18,8 +18,8 @@ class Item_CL extends Sprite {
         this.anchor.setTo(0.5);
 
         // Item rotation effect:
-        this.rotation = 0;
-        this.rotTween = this.game.add.tween(this).to( { rotation: Math.PI * 2 }, 4500, Phaser.Easing.Default, true, 0, -1);
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotTween = this.game.add.tween(this).to( { rotation: Math.PI * 2 + this.rotation }, 4500, Phaser.Easing.Default, true, 0, -1);
 
     }
 

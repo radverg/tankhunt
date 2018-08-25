@@ -30,7 +30,7 @@ class Level_CL {
 
         let wallWidth = this.squareSize + this.wallThickness * 2;
         let wallHeight = 18;
-        let trim = 2;
+        let trim = 10;
 
         // Set world bounds
 		var woffset = 200;
@@ -38,33 +38,38 @@ class Level_CL {
             (lvlHeight) + 2*woffset);
             
         // Now add background
-		let bcg = TH.game.make.tileSprite(0, 0, TH.game.world.width - woffset *2,  TH.game.world.height - woffset*2, "ground1",0) ;
+        let groundAsset = `ground${Math.floor(Math.random() * 7) + 1}`
+		let bcg = TH.game.make.tileSprite(0, 0, TH.game.world.width - woffset *2,  TH.game.world.height - woffset*2, groundAsset, 0) ;
         wallGroup.add(bcg);
 
         let WallShadGrp = new Phaser.Group(wallGroup.game, wallGroup);
         
         // Borders --------------------------------------------------------
-        let targetSize = 600;
+        let targetSize = 1180;
         let borderCount = Math.round(lvlWidth / targetSize);
         let realSize = lvlWidth / borderCount;
         let thickness = null;
+        let borderAsset =  "wallSideTriple"; // `wallSide${Math.floor(Math.random() * 3) + 1}`;
+        let borderFrame = Math.floor(Math.random() * 3);
 
         // Horizontals
         for (let i = 0; i < borderCount; i++) {
             // Top
-            let spr1 = TH.game.make.sprite((realSize * i) + realSize / 2, 0, "wallSide1");
+            let spr1 = TH.game.make.sprite((realSize * i) + realSize / 2, 0, borderAsset);
             spr1.anchor.setTo(0.5);
             spr1.width = realSize;
             spr1.scale.y = spr1.scale.x;
             thickness = spr1.height;
             spr1.y = -thickness / 2 + trim;
+            spr1.frame = borderFrame;
         
             // Bottom
-            let spr2 = TH.game.make.sprite((realSize * i) + realSize / 2, 0, "wallSide1");
+            let spr2 = TH.game.make.sprite((realSize * i) + realSize / 2, 0, borderAsset);
             spr2.anchor.setTo(0.5);
             spr2.width = realSize;
             spr2.scale.y = spr2.scale.x;
             spr2.y = lvlHeight + thickness / 2 - trim;
+            spr2.frame = borderFrame;
 
             wallGroup.add(spr1);
             wallGroup.add(spr2);
@@ -72,26 +77,31 @@ class Level_CL {
         }
 
         // Verticals
-        borderCount = Math.round((lvlHeight + thickness * 2) / targetSize);
-        realSize = (lvlHeight + (thickness * 2)) / borderCount; 
+        let thck = thickness - trim;
+        borderCount = Math.round((lvlHeight + thck * 2) / targetSize);
+        realSize = (lvlHeight + (thck * 2)) / borderCount; 
         let verThickness = null;
 
         for (let i = 0; i < borderCount; i++) {
             // Left
-            let spr1 = TH.game.make.sprite(0, (realSize * i) + realSize / 2 - thickness, "wallSide1");
+            let spr1 = TH.game.make.sprite(0, (realSize * i) + realSize / 2 - thck, borderAsset);
             spr1.anchor.setTo(0.5);
             spr1.width = realSize;
             spr1.rotation = Math.PI / 2;
             spr1.scale.y = spr1.scale.x;
             verThickness = spr1.height;
             spr1.x = -verThickness / 2 + trim;
+            spr1.frame = borderFrame;
+
 
             // Right
-            let spr2 = TH.game.make.sprite(lvlWidth + verThickness / 2 - trim, (realSize * i) + realSize / 2 - thickness, "wallSide1");
+            let spr2 = TH.game.make.sprite(lvlWidth + verThickness / 2 - trim, (realSize * i) + realSize / 2 - thck, borderAsset);
             spr2.anchor.setTo(0.5);
             spr2.width = realSize;
             spr2.rotation = Math.PI / 2;
             spr2.scale.y = spr2.scale.x;
+            spr2.frame = borderFrame;
+
 
             wallGroup.add(spr1);
             wallGroup.add(spr2);
@@ -100,15 +110,19 @@ class Level_CL {
         // -----------------------------------------------------
 
         // Walls ----------------------------------------------
+        let wallFrame = Math.floor(Math.random() * 3);
+
         for (let i in jsonLvl.walls) {
             let splitted = jsonLvl.walls[i].split("|");
 
             let y = parseInt(splitted[1]) * this.squareSize;
             let x = parseInt(splitted[0]) * this.squareSize;
             let type = parseInt(splitted[2]);
+
             
 
-            let wallSpr = TH.game.make.sprite(x, y, "wall1");
+            let wallSpr = TH.game.make.sprite(x, y, "wallTriple");
+            wallSpr.frame = wallFrame;
             wallSpr.width = wallWidth;
             wallSpr.height = wallHeight;
             wallSpr.anchor.setTo(0.5);
