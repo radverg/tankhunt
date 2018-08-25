@@ -38,6 +38,7 @@ class UIStatsTable_CL {
         let $thead = $("<thead></thead>");
         this.$table.append($thead);
 
+        $thead.append(`<td data-key="name">Rank</td>`);
         $thead.append(`<td data-key="name">Player</td>`);
 
         for (let i = 0; i < allowedItems.length; i++) {
@@ -63,7 +64,7 @@ class UIStatsTable_CL {
         
         for (let i = 0; i < sortedIDs.length; i++) {
             let id = sortedIDs[i];
-            let plrRowHtml = this.createPlayerRow(players[id]);
+            let plrRowHtml = this.createPlayerRow(players[id], i);
             this.$tbody.append(plrRowHtml);
         }
 
@@ -84,9 +85,10 @@ class UIStatsTable_CL {
         }
     }
 
-    private createPlayerRow(player: Player_CL): string {
+    private createPlayerRow(player: Player_CL, index: number): string {
         let trClass = (player.me) ? "statsRowMe" : (player.isEnemyOf(this.thGame.playerGroup.me) ? "statsRowEnemy" : "statsRowAlly");
         let row = `<tr class="${trClass}">`;
+        row += `<td>${index + 1}.</td>`;
         row += `<td>${player.name}</td>`;
         // Iterate through alloweItems (=columns)
         for (let i = 0; i < this.allowedItems.length; i++) {
