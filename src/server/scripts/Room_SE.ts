@@ -13,11 +13,18 @@ class Room_SE {
         this.sockets.splice(index, 1);
     }
 
-    broadcast(emName: string, content: any) {
+    broadcast(emName: string, content: any, exception?: SocketIO.Socket) {
 
         for (let s = 0; s < this.sockets.length; s++) {
+            if (this.sockets[s] == exception) 
+                continue;
+
             this.sockets[s].emit(emName, content);
         }
+    }
+
+    getSocketCount() {
+        return this.sockets.length;
     }
 }
 

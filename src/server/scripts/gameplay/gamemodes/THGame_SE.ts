@@ -179,7 +179,7 @@ abstract class THGame_SE {
         this.players.forEach((plr: Player_SE) => {
             plr.game = null;
         });
-
+        
         this.players = null;
         this.itemManager.destroy();
         this.shots = null;

@@ -293,3 +293,17 @@ interface PlayerStats {
     dmgD: number
     [key: string]: any
 }
+
+
+interface PacketMenuInfo {
+    arenaG: number,
+
+    duelG: number,
+
+    menuP: number,
+    totalP: number
+}
+
+interface PacketChatMessage {
+    mess: string;
+}

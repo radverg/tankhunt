@@ -29,7 +29,7 @@ class GameManager_SE {
 
 			// Handle game removing 
 			if (this.arenas[i].isEmpty() && this.arenas.length > 1) {
-				this.arenas[i].destroy();
+				this.destroyGame(this.arenas[i]);
 				this.arenas.splice(i, 1);
 				continue;
 			}
@@ -52,8 +52,31 @@ class GameManager_SE {
 		}
 	}
 
+	destroyGame(game: THGame_SE) {
+		for (const plr of game.players) {
+			if (plr.socket.connected) {
+				this.th.menuManager.addSocket(plr.socket);
+			}
+		}
+		game.destroy();
+		this.th.menuManager.emitMenuInfo();
+	}
+
+	getArenaCount() {
+		return this.arenas.length;
+	}
+
+	getDuelCount() {
+		return this.games.length; // !!!!!!!!!!!!!!!!!!!
+	}
+
 	processGameRequest(player: Player_SE, packet: PacketGameRequest) {
 		if (player.game) return;
+
+		if (this.plDuelPending == player) {
+			this.plDuelPending = null;
+			return;
+		}
 		
 		if (packet.gameType == "Arena") {
 			// Find arena with highest amount of players, but not full
@@ -71,7 +94,9 @@ class GameManager_SE {
 			}
 
 			arenaToJoin.addPlayer(player);
+
 			this.th.menuManager.removeSocket(player.socket);
+			this.th.menuManager.emitMenuInfo();
 		}
 
 		if (packet.gameType == "Duel") {
@@ -82,6 +107,9 @@ class GameManager_SE {
 				dGame.addPlayer(player);
 				dGame.start();
 				this.games.push(dGame);
+
+				this.th.menuManager.removeSocket(player.socket);
+				this.th.menuManager.emitMenuInfo();
 			} else {
 				this.plDuelPending = player;
 			}

@@ -11,6 +11,22 @@ class MenuManager_SE extends Room_SE {
         this.th = th;
         
     } 
+
+    emitMenuInfo() {
+        let gm = this.th.gameManager;
+        let menuPacket: PacketMenuInfo = {
+            arenaG: this.th.gameManager.getArenaCount(),
+            totalP: this.th.socketManager.socketCount,
+            menuP: this.getSocketCount(),
+            duelG: this.th.gameManager.getDuelCount()
+        }
+        
+        this.broadcast("menuInfo", menuPacket);
+    }
+
+    processMenuChat(data: PacketChatMessage) {   
+        this.broadcast("menuChat", data);
+    }
     
 }
 

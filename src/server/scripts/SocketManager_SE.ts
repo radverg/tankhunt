@@ -7,6 +7,8 @@ class SocketManager_SE {
 	th: TankHunt_SE;
 	io: SocketIO.Server;
 
+	socketCount: number = 0;
+
 	constructor(tankhunt: TankHunt_SE, io: SocketIO.Server) {
 
 		this.th = tankhunt;
@@ -20,7 +22,10 @@ class SocketManager_SE {
     	console.log("New client has connected from " + socket.request.connection.remoteAddress + 
     		" with id " + socket.id +  "!");
 
-    	this.initSocket(socket);
+		this.socketCount++;
+		this.th.menuManager.emitMenuInfo();
+		this.initSocket(socket);
+		this.th.menuManager.addSocket(socket);
 	}
 
 	initSocket(socket: SocketIO.Socket) {
@@ -29,6 +34,7 @@ class SocketManager_SE {
 		socket.on("leave", () => this.onLeave(socket));
 		socket.on("gameRequest", (data: PacketGameRequest) => this.onGameRequest(socket, data));
 		socket.on("pingg", () => { socket.emit("pongg", Date.now()); });
+		socket.on("menuChat", (data: PacketChatMessage) => { this.th.menuManager.processMenuChat(data); });
 	}
 
 	// Socket emit callbacks -------------------------
@@ -38,6 +44,8 @@ class SocketManager_SE {
 		if (socket.player && socket.player.game) {
 			socket.player.game.playerDisconnected(socket.player);		
 		}
+		this.socketCount--;
+		this.th.menuManager.emitMenuInfo();
 	}
 
 	onInput(socket: SocketIO.Socket, data: string) {
@@ -49,7 +57,9 @@ class SocketManager_SE {
 	onLeave(socket:SocketIO.Socket) {
 		console.log("Player left a game!");
 		if (socket.player && socket.player.game) {
-			socket.player.game.playerDisconnected(socket.player);		
+			socket.player.game.playerDisconnected(socket.player);	
+			this.th.menuManager.addSocket(socket);	
+			this.th.menuManager.emitMenuInfo();
 		}
 	}
 
