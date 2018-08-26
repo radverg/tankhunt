@@ -22,7 +22,8 @@ class MenuManager_CL extends Phaser.State {
         
         $(this.game.canvas).fadeOut();
         $("#menuCont").fadeIn();
-        $("#arenaJoin").on("click", () => { this.arenaJoinClick(); });
+        $("#arenaMode").on("click", () => { this.arenaJoinClick(); });
+        $("#duelMode").on("click", () => { this.duelJoinClick(); });
 
 
         // code below is done only once
@@ -50,6 +51,19 @@ class MenuManager_CL extends Phaser.State {
         this.th.socketManager.emitGameRequest({ playerName: name, gameType: "Arena" });
         
 
+    }
+
+    duelJoinClick() {
+        let name = this.validateName($("#inpName").val().toString() || `player${(Math.random()*10000).toFixed(0)}`);
+
+        if (name === false) {
+            $("#inpName").addClass("wrongInput");
+            return;
+        } else {
+            $("#inpName").removeClass("wrongInput");
+        }
+
+        this.th.socketManager.emitGameRequest({ playerName: name, gameType: "Duel" });
     }
 
     validateName(name: string) {

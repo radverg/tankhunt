@@ -103,7 +103,7 @@ class PulsarGun_SE extends Weapon_SE {
 	protected wasPressed: boolean = false;
 	
 	constructor(owner: Player_SE) {
-		super(owner, 2); 
+		super(owner, 1); 
 		
 		this._ammoCount = 10;
 		this._shotType = "APCR_SE";
@@ -233,7 +233,7 @@ class MultiBouncerGun_SE extends PulsarGun_SE {
 
 	constructor(owner: Player_SE) {
 		super(owner);
-		this.typeIndex = 1;
+		this.typeIndex = 2;
 
 		this._shotType = "PolygonalBouncer_SE";
 
