@@ -284,11 +284,36 @@ class THGame_CL {
 		this.itemGroup.clear();
 	}
 
+	destroy() {
+		this.tidy();
+		this.shotGroup.destroy(true);
+		this.playerGroup.players = null;
+		this.playerGroup.destroy(true);
+		this.itemGroup.destroy(true);
+		this.levelGroup.destroy(true);
+
+		this.onGameFinish.dispose();
+		this.onGameInfo.dispose();
+		this.onHeal.dispose();
+		this.onGameStart.dispose();
+		this.onHit.dispose();
+		this.onItemCollect.dispose();
+		this.onItemSpawn.dispose();
+		this.onLeave.dispose();
+		this.onNewPlayer.dispose();
+		this.onNewPlayerConnected.dispose();
+		this.onPlayerRemove.dispose();
+		this.onRespawn.dispose();
+
+	}
+
 	/** 
 	 * Switches game state to menu state and dispatches onLeave signal
 	*/
 	leaveToMenu() {
 		this.onLeave.dispatch();
+		this.running = false;
+		this.destroy();
 		TH.game.state.start("menu");
 	}
 

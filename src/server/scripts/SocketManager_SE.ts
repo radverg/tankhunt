@@ -17,14 +17,10 @@ class SocketManager_SE {
 
 	onConnection(socket: SocketIO.Socket) {
 
-    	console.log("New client has connected from " + socket.handshake.address + 
+    	console.log("New client has connected from " + socket.request.connection.remoteAddress + 
     		" with id " + socket.id +  "!");
 
     	this.initSocket(socket);
-
-    	// For debugging, add it directly to the test game
-    	this.th.gameManager.newPlayer(new Player_SE(socket, "noname"));
-
 	}
 
 	initSocket(socket: SocketIO.Socket) {
@@ -58,7 +54,16 @@ class SocketManager_SE {
 	}
 
 	onGameRequest(socket: SocketIO.Socket, data: PacketGameRequest) {
-		socket.player = new Player_SE(socket, data.playerName);
+
+		let name = data.playerName.trim();
+		if (name.length < 3 || name.length > 12) 
+			name = "hacker";
+
+		if (!socket.player)
+			socket.player = new Player_SE(socket, name);
+		else 
+			socket.player.name = name;
+
 		this.th.gameManager.processGameRequest(socket.player, data);
 	}
 }

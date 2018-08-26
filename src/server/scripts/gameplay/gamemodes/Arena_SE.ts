@@ -18,7 +18,7 @@ class Arena_SE extends THGame_SE {
     constructor(capacity: number) {
         super();
         this.gameType = "Arena";
-        this.capacity = capacity || 20;
+        this.capacity = capacity || 10;
         this.running = true;
         this.itemManager.startSpawning();
         this.level = new Level_SE();

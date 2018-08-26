@@ -23,9 +23,13 @@ class PlayManager_CL extends Phaser.State  {
         this.stage.backgroundColor = "#D4DBE1";
         this.stage.disableVisibilityChange = true;
 
-        // Code behind this line happens only once
-        if (!this.first) return;
+
         this.initInput();
+        this.input.keyboard.enabled = false;
+
+        // Code behind this line happens only once
+
+        if (!this.first) return;
 
         this.pingerTimer = TH.game.time.create(false);
         this.pingerTimer.loop(3000, TH.timeManager.synchronizeRequest, TH.timeManager);
@@ -34,7 +38,6 @@ class PlayManager_CL extends Phaser.State  {
         this.first = false;
         
         // Everything is ready => send game request
-        this.th.socketManager.emitGameRequest({ playerName: `player${(Math.random()*10000).toFixed(0)}`, gameType: "Arena" });
         console.log("Requesting game...");
        
      
@@ -42,6 +45,7 @@ class PlayManager_CL extends Phaser.State  {
     
     processGameStart(packet: PacketGameStart) {
         if (packet.gameType == "Arena") {
+            console.log("Starting arena!");
             this.thGame = new Arena_CL(this.th.socketManager, packet);
         } else if (packet.gameType == "Duel") {
             this.thGame = new Duel_CL(this.th.socketManager, packet);
@@ -53,6 +57,7 @@ class PlayManager_CL extends Phaser.State  {
 
         $(this.game.canvas).show();
         $("#menuCont").hide();
+        this.input.keyboard.enabled = true;
     }
 
 	// This method is called by Phaser, it's the main game loop

@@ -1,6 +1,7 @@
 import { SocketManager_SE } from "./SocketManager_SE";
 import { GameManager_SE } from "./GameManager_SE";
 import { LoopManager_SE } from "./LoopManager_SE";
+import { MenuManager_SE } from "./MenuManager_SE";
 
 class TankHunt_SE {
 	
@@ -10,6 +11,7 @@ class TankHunt_SE {
 	socketManager: SocketManager_SE;
 	gameManager: GameManager_SE;
 	loopManager: LoopManager_SE;
+	menuManager: MenuManager_SE; 
 
 	constructor(server: SocketIO.Server) {
 
@@ -22,6 +24,7 @@ class TankHunt_SE {
 		// Managers
 		this.socketManager = new SocketManager_SE(this, this.io);
 		this.gameManager = new GameManager_SE(this);
+		this.menuManager = new MenuManager_SE(this);
 		this.loopManager = new LoopManager_SE(this); 
 
 		// Start Loop:

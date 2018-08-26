@@ -33,7 +33,7 @@ class TH {
         
         this.socketManager = new SocketManager_CL(this);
         this.bootManager = new BootManager_CL();
-        this.menuManager = new MenuManager_CL();
+        this.menuManager = new MenuManager_CL(this);
         this.loadManager = new LoadManager_CL(this);
         this.playManager = new PlayManager_CL(this);
 

@@ -18,7 +18,7 @@ abstract class THGame_SE {
     public startTime: number = 0;
 
     protected updateCounter: number = 0;
-    protected capacity: number = 100;
+    protected capacity: number = 10;
 
     protected gameType: string;
 
@@ -155,6 +155,18 @@ abstract class THGame_SE {
 
         return gameobj.body.right > rectX && gameobj.body.left < rectX + this.hViewWidth * 2
             && gameobj.body.top < rectY + this.hViewHeight * 2 && gameobj.body.bottom > rectY;
+    }
+
+    isFull() {
+        return this.players.length == this.capacity;
+    }
+
+    isEmpty() {
+        return this.players.length == 0;
+    }
+
+    getPlayerCount() {
+        return this.players.length;
     }
 
     /**
