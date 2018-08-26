@@ -1,6 +1,5 @@
-/// <reference path="refs.ts" />
 
-class PlayManager_CL  {
+class PlayManager_CL extends Phaser.State  {
 
     public th: TH;
     public thGame: THGame_CL;
@@ -9,6 +8,7 @@ class PlayManager_CL  {
     private first: boolean = true;
 
 	constructor(tankhunt: TH) {
+        super();
 		this.th = tankhunt;
 
 	}
@@ -17,11 +17,11 @@ class PlayManager_CL  {
 
 	// This method is called by Phaser when switching to PlayState
 	create() {
-		TH.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        TH.game.scale.pageAlignHorizontally = true;
-        TH.game.world.setBounds(-400, -400, 3000, 2000);
-        TH.game.stage.backgroundColor = "#D4DBE1";
-        TH.game.stage.disableVisibilityChange = true;
+		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.scale.pageAlignHorizontally = true;
+        this.world.setBounds(-400, -400, 3000, 2000);
+        this.stage.backgroundColor = "#D4DBE1";
+        this.stage.disableVisibilityChange = true;
 
         // Code behind this line happens only once
         if (!this.first) return;
@@ -48,7 +48,11 @@ class PlayManager_CL  {
         }
         else {
             console.log("Unknown game type!");
+            return;
         }
+
+        $(this.game.canvas).show();
+        $("#menuCont").hide();
     }
 
 	// This method is called by Phaser, it's the main game loop
@@ -71,39 +75,39 @@ class PlayManager_CL  {
 		}
 
 		// Init keys
-        var up = TH.game.input.keyboard.addKey(Phaser.Keyboard.UP);
+        var up = this.input.keyboard.addKey(Phaser.Keyboard.UP);
         up.onDown.add(callback); up.onUp.add(callback);
         up.name = "inpForw";
 
-        var down = TH.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+        var down = this.input.keyboard.addKey(Phaser.Keyboard.DOWN);
         down.onDown.add(callback); down.onUp.add(callback);
         down.name = "inpBackw";
 
-        var right = TH.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+        var right = this.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
         right.onDown.add(callback); right.onUp.add(callback);
         right.name = "inpRight";
 
-        var left = TH.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+        var left = this.input.keyboard.addKey(Phaser.Keyboard.LEFT);
 		left.onDown.add(callback); left.onUp.add(callback);
         left.name = "inpLeft";
 
-        var turrLeft = TH.game.input.keyboard.addKey(Phaser.Keyboard.A);
+        var turrLeft = this.input.keyboard.addKey(Phaser.Keyboard.A);
         turrLeft.onDown.add(callback); turrLeft.onUp.add(callback);
         turrLeft.name = "inpTurrLeft";
 
-        var turrRight = TH.game.input.keyboard.addKey(Phaser.Keyboard.D);
+        var turrRight = this.input.keyboard.addKey(Phaser.Keyboard.D);
         turrRight.onDown.add(callback); turrRight.onUp.add(callback);
         turrRight.name = "inpTurrRight";
 
-        var shot = TH.game.input.keyboard.addKey(Phaser.Keyboard.S);
+        var shot = this.input.keyboard.addKey(Phaser.Keyboard.S);
         shot.onDown.add(callback); 
         shot.name = "inpShot";
 
-        var shotBouncing = TH.game.input.keyboard.addKey(Phaser.Keyboard.W);
+        var shotBouncing = this.input.keyboard.addKey(Phaser.Keyboard.W);
         shotBouncing.onDown.add(callback);
         shotBouncing.name = "inpShotBouncing";
 
-        var shotSpecial = TH.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
+        var shotSpecial = this.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
         shotSpecial.onDown.add(callback);
         shotSpecial.name = "inpShotSpecial"; shot.onUp.add(callback);
 	}

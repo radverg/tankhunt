@@ -1,6 +1,6 @@
 class MenuManager_CL extends Phaser.State {
 
-    private debugJump: boolean = true;
+    private debugJump: boolean = false;
 
     constructor() {
         super();    
@@ -13,7 +13,11 @@ class MenuManager_CL extends Phaser.State {
             return;
         }
 
+        
         $(this.game.canvas).fadeOut();
+        $("#menuCont").fadeIn();
+
+     //   this.time.events.add(5000, function() { this.state.start("play"); }, this);
 
 
     }
