@@ -115,6 +115,10 @@ h1 {
     border-bottom: 2px solid black;
 }
 
+.noTopBorder {
+    border-top: 0px;
+}
+
 .modeThumb {
     max-width: 10rem;
     min-width: 10rem;

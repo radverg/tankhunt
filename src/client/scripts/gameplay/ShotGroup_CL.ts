@@ -18,7 +18,7 @@ class ShotGroup_CL extends Phaser.Group {
     }
 
     removeShot(shot: Shot_CL) {
-        let shts: Shot_CL[] = (<any>Object).values(this.shots);
+        let shts: Shot_CL[] = Object.keys(this.shots).map((key: string) => { return this.shots[key]; } );  //(<any>Object).values(this.shots);
         let index = shts.indexOf(shot);
 
         if (index != -1) {
