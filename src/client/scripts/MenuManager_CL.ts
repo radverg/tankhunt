@@ -19,23 +19,52 @@ class MenuManager_CL extends Phaser.State {
             return;
         }
 
-        
         $(this.game.canvas).fadeOut();
         $("#menuCont").fadeIn();
-        $("#arenaMode").on("click", () => { this.arenaJoinClick(); });
-        $("#duelMode").on("click", () => { this.duelJoinClick(); });
 
+        if (this.first) {
 
-        // code below is done only once
-        //if (!this.first) return;
-        //this.first = false;
+            this.first = false;
 
+            $("#arenaMode").on("click", () => { this.arenaJoinClick(); });
+            $("#duelMode").on("click", () => { this.duelJoinClick(); });
+            $("#btnChatSubmit").on("click", () => { this.submitChat(); });
+            $("#chatInp").on("keydown", (e) => { if (e.keyCode == 13) this.submitChat(); });
 
+        }
+
+        $("#coverDuel").css("display", "none");
         //   this.time.events.add(5000, function() { this.state.start("play"); }, this);
         this.game.state.start("play");
+    }
 
+    processMenuInfo(packet: PacketMenuInfo) {
+        $("#totalPlayers").text(packet.totalP);
+        $("#menuPlayers").text(packet.menuP);
+        $("#gamePlayers").text(packet.totalP - packet.menuP);
+        $("#arenaGames").text(packet.arenaG);
+        $("#duelGames").text(packet.duelG);
 
+    }
 
+    submitChat() {
+        let mess = $("#chatInp").val().toString();
+        if (mess == "") {
+            return;
+        }
+        $("#chatInp").val("");
+        let packet: PacketChatMessage = {
+            name: $("#inpName").val().toString(),
+            mess: mess
+        }
+        this.th.socketManager.emit("menuChat", packet);
+    }
+
+    processChat(packet: PacketChatMessage) {
+        let $messCont = $("#messCont");
+        let date = new Date();
+        let $newMess = $("<div class='mess'><div>").text(`${date.toLocaleTimeString()} [${packet.name || "unnamed"}] - ${packet.mess}`)
+        $messCont.prepend($newMess);        
     }
 
     arenaJoinClick() {
@@ -63,7 +92,15 @@ class MenuManager_CL extends Phaser.State {
             $("#inpName").removeClass("wrongInput");
         }
 
+        if ($("#coverDuel").css("display") != "none") {
+            this.th.socketManager.emitGameRequest({ playerName: name, gameType: "nogame" });
+            $("#coverDuel").hide();
+            return;
+        }
+
         this.th.socketManager.emitGameRequest({ playerName: name, gameType: "Duel" });
+        $("#coverDuel").css("display", "flex");
+
     }
 
     validateName(name: string) {

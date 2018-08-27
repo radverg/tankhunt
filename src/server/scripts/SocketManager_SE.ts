@@ -23,9 +23,9 @@ class SocketManager_SE {
     		" with id " + socket.id +  "!");
 
 		this.socketCount++;
+		this.th.menuManager.addSocket(socket);
 		this.th.menuManager.emitMenuInfo();
 		this.initSocket(socket);
-		this.th.menuManager.addSocket(socket);
 	}
 
 	initSocket(socket: SocketIO.Socket) {
@@ -45,6 +45,7 @@ class SocketManager_SE {
 			socket.player.game.playerDisconnected(socket.player);		
 		}
 		this.socketCount--;
+		this.th.menuManager.removeSocket(socket);
 		this.th.menuManager.emitMenuInfo();
 	}
 

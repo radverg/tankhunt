@@ -75,7 +75,11 @@ class GameManager_SE {
 
 		if (this.plDuelPending == player) {
 			this.plDuelPending = null;
-			return;
+		}
+
+		if (packet.gameType == "nogame") {
+			// Remove player from queue
+			if (player == this.plDuelPending) this.plDuelPending = null;
 		}
 		
 		if (packet.gameType == "Arena") {
