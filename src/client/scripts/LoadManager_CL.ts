@@ -1,13 +1,18 @@
-/// <reference path="refs.ts" />
 
-class LoadManager_CL  {
+class LoadManager_CL extends Phaser.State  {
 
 	private images: ImageAsset[];
 	private spritesheets: SpritesheetAsset[];
 	private audio: AudioAsset[];
 	private th: TH;
+
+	private useItnetworkDelay: boolean = true;
+	private itnetworkDelay: number = 4000;
+
+	private startTime = Date.now();
 	
 	constructor(th: TH) {
+		super();
 		this.th = th;
 		var imagesPath = "images/";
 		var soundsPath = "sounds/";
@@ -108,7 +113,8 @@ class LoadManager_CL  {
 	}
 	
 	preload() {
-		TH.game.stage.backgroundColor = 0xd4dbe1;
+
+		TH.game.stage.backgroundColor = 0x222326; // 0xd4dbe1;
 		// Load images --------------------------------
 		for (var z = 0; z < this.images.length; z++) {
 			var img = this.images[z];
@@ -132,16 +138,48 @@ class LoadManager_CL  {
 		// Load google web fonts
 		TH.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
+		let centerX = this.camera.view.centerX;
 		// Loading screen -
-		let preloadBg = TH.game.add.sprite(0, 800, "loadBar");
+		let preloadBg = TH.game.add.sprite(0, 950, "loadBar");
 		let loadBarWidth = preloadBg.width; //TH.game.width / 0.8;
 		preloadBg.x = TH.game.world.centerX - loadBarWidth / 2;
 		preloadBg.anchor.y = 0.5;
 		preloadBg.tint = 0x444444;
-		let preloadSprite = TH.game.add.sprite(TH.game.world.centerX - loadBarWidth / 2, 800, "loadBar");
-	//	preloadSprite.width = loadBarWidth;
+		let preloadSprite = TH.game.add.sprite(TH.game.world.centerX - loadBarWidth / 2, preloadBg.y, "loadBar");
 		preloadSprite.anchor.setTo(0, 0.5);
 		TH.game.load.setPreloadSprite(preloadSprite);
+
+		// Loading text
+		let loadingText = this.add.text(centerX, preloadBg.y, "Loading...");
+		loadingText.anchor.setTo(0.5);
+		loadingText.fontSize = 20;
+		loadingText.fill = "white";
+
+		// Logo
+		// let logo = this.add.sprite(this.camera.view.centerX, 0, "logoBig");
+		
+		// Itnetwork splash
+		let itSplash = this.add.sprite(centerX, 20, "itSplash");
+		itSplash.anchor.setTo(0.5, 0);
+
+		// Full screen text
+		let fsText = this.add.text(centerX, 810, "Go to fullscreen mode - press F11 (in most browsers)");
+		fsText.anchor.setTo(0.5);
+		fsText.fill = "#ffc58e";
+		fsText.fontSize = 40;
+
+		// Help text
+		let helpText = this.add.text(centerX, 860, "Hold H key anytime to show help panel (controls)");
+		helpText.anchor.setTo(0.5);
+		helpText.fill = "#ffc58e";
+		helpText.fontSize = 35;
+
+		// Created text
+		let crText = this.add.text(centerX, 990, "2018 - Created by Radek Veverka, Dominik plachý, Vojtěch Veverka");
+		crText.anchor.setTo(0.5);
+		crText.fontSize = 19;
+		crText.fill = "white";
+
 
 		TH.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		TH.game.scale.pageAlignHorizontally = true;
@@ -151,18 +189,29 @@ class LoadManager_CL  {
 	}
 	
 	create() {
-		// Precreate 
+
+		let loadTime = Date.now() - this.startTime;
+
+		if (loadTime <= this.itnetworkDelay && this.useItnetworkDelay) {
+			TH.game.time.events.add(this.itnetworkDelay - loadTime, this.switchToMenu, this);
+		} else {
+			this.switchToMenu();
+		}
+
+	}
+
+	private switchToMenu() {
+		this.state.start("menu");
+	}
+
+	precreate() {
+ 
 		for (var i in this.spritesheets) {
 			var sheet = this.spritesheets[i];
 			if (!sheet.precreate) continue;
 
 			let spr = TH.game.add.sprite(0, 0, sheet.assetName);
-			console.log("creating");
 		}
-
-		TH.game.time.events.add(500, function() { console.log("event"); TH.game.state.start("menu"); });
-
-		//TH.game.state.start("menu");
 	}
 }
 

@@ -26,6 +26,8 @@ class MenuManager_CL extends Phaser.State {
 
             this.first = false;
 
+            this.th.loadManager.precreate();
+
             $("#arenaMode").on("click", () => { this.arenaJoinClick(); });
             $("#duelMode").on("click", () => { this.duelJoinClick(); });
             $("#btnChatSubmit").on("click", () => { this.submitChat(); });
@@ -34,7 +36,7 @@ class MenuManager_CL extends Phaser.State {
         }
 
         $("#coverDuel").css("display", "none");
-        //   this.time.events.add(5000, function() { this.state.start("play"); }, this);
+       // this.time.events.add(500, function() { this.state.start("play"); }, this);
         this.game.state.start("play");
     }
 

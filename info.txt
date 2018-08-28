@@ -8,3 +8,7 @@ potenciální řešení kolizního problému: separovat podle rychlejšího smě
 
 Dev log:
 - Přidány ingame statistiky
+- Přidán herní mód Duel
+- Přidáno menu
+- Přidán chat do menu i do hry
+- Vytvořen loading screen

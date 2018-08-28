@@ -36,6 +36,8 @@ class PlayManager_CL extends Phaser.State  {
 
         if (!this.first) return;
 
+        this.th.loadManager.precreate();
+
         this.pingerTimer = TH.game.time.create(false);
         this.pingerTimer.loop(3000, TH.timeManager.synchronizeRequest, TH.timeManager);
         this.pingerTimer.start(1000);
@@ -49,6 +51,7 @@ class PlayManager_CL extends Phaser.State  {
     }
     
     processGameStart(packet: PacketGameStart) {
+        this.world.removeAll(true);
         if (packet.gameType == "Arena") {
             console.log("Starting arena!");
             this.thGame = new Arena_CL(this.th.socketManager, packet);
