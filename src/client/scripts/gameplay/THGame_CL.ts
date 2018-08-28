@@ -13,6 +13,8 @@ class THGame_CL {
 	shotGroup: ShotGroup_CL = null;
 	playerGroup: PlayerGroup_CL = null;
 
+	remove: boolean = false;
+
 
 	// Phaser signals - game interface can listen to them and react
 	onPlayerRemove: Phaser.Signal = new Phaser.Signal();
@@ -43,6 +45,8 @@ class THGame_CL {
 	onGameStart: Phaser.Signal = new Phaser.Signal();
 
 	onLeave: Phaser.Signal = new Phaser.Signal();
+
+	onChat: Phaser.Signal = new Phaser.Signal();
 
 	constructor(socketManager: SocketManager_CL) {
 		this.socketManager = socketManager;
@@ -176,6 +180,10 @@ class THGame_CL {
 		
 	}
 
+	processChatMessage(data: PacketChatMessage) {
+		this.onChat.dispatch(data);
+	}
+
 	processHeal(data: PacketHeal) {
 		let plr = this.playerGroup.getPlayer(data.plID);
 
@@ -285,6 +293,8 @@ class THGame_CL {
 	}
 
 	destroy() {
+		TH.thGame = null;
+		this.remove = true;
 		this.tidy();
 		this.shotGroup.destroy(true);
 		this.playerGroup.players = null;
@@ -304,6 +314,7 @@ class THGame_CL {
 		this.onNewPlayerConnected.dispose();
 		this.onPlayerRemove.dispose();
 		this.onRespawn.dispose();
+		this.onChat.dispose();
 
 	}
 

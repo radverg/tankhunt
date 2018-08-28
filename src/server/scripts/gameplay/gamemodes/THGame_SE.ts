@@ -187,6 +187,14 @@ abstract class THGame_SE {
         this.blockInput = true;
     }
 
+    processChatMessage(data: PacketChatMessage, senderPl: Player_SE) {
+        let packet: PacketChatMessage = { id: senderPl.id, mess: data.mess };
+        for (const plr of this.players) {
+            if (data.alliesOnly && senderPl.isEnemyOf(plr)) continue;
+            this.emitDataPl("gameChat", packet, plr);
+        }
+    }
+
     // Input handling ----------------------------------------------------------------------
     handleInput(inputType: string, player: Player_SE) {
         if (this.blockInput)

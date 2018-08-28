@@ -306,5 +306,7 @@ interface PacketMenuInfo {
 
 interface PacketChatMessage {
     mess: string;
-    name: string;
+    name?: string;
+    id?: string;
+    alliesOnly?: boolean
 }

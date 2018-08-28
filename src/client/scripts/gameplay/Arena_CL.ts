@@ -5,6 +5,7 @@ class Arena_CL extends THGame_CL {
 	private notifView: UINotification_CL;
 	private uiLadder: UILadder_CL;
 	private uiStats: UIStatsTable_CL;
+	private uiChat: UIGameChat_CL;
 
 	private tabKey: Phaser.Key;
 
@@ -15,6 +16,7 @@ class Arena_CL extends THGame_CL {
 		this.notifView = new UINotification_CL(TH.game, this);
 		this.uiLadder = new UILadder_CL(TH.game, this);
 		this.uiStats = new UIStatsTable_CL(this, ["inRow", "maxRow", "kills", "deaths", "suic", "blockC", "dmgD", "dmgR",], "inRow");
+		this.uiChat = new UIGameChat_CL(TH.game, this);
 
 		// Leave button
 		let btnExit = TH.game.add.button(TH.game.width - 70, 20, "panels", function(){ this.socketManager.emitLeave(); this.leaveToMenu(); }, this, 1, 0);

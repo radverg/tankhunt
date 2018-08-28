@@ -23,6 +23,11 @@ class PlayManager_CL extends Phaser.State  {
         this.stage.backgroundColor = "#D4DBE1";
         this.stage.disableVisibilityChange = true;
 
+        if (this.thGame && this.thGame.remove) {
+            this.thGame = null;
+            TH.thGame = null;
+        }
+
 
         this.initInput();
         this.input.keyboard.enabled = false;

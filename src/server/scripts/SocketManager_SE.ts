@@ -35,6 +35,7 @@ class SocketManager_SE {
 		socket.on("gameRequest", (data: PacketGameRequest) => this.onGameRequest(socket, data));
 		socket.on("pingg", () => { socket.emit("pongg", Date.now()); });
 		socket.on("menuChat", (data: PacketChatMessage) => { this.th.menuManager.processMenuChat(data); });
+		socket.on("gameChat", (data: PacketChatMessage) => { if (socket.player && socket.player.game) socket.player.game.processChatMessage(data, socket.player); });
 	}
 
 	// Socket emit callbacks -------------------------

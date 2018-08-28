@@ -209,3 +209,18 @@ h1 {
     
    
 }
+
+#gameChatCont {
+    display: none;
+    width: 30rem;
+    position: absolute;
+    padding: 0.5rem;
+    background-color: rgb(255, 208, 88);
+}
+
+#gameChatInp {
+    display: block;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

@@ -51,6 +51,7 @@ class SocketManager_CL {
         this.socket.on("gFinish", function(data: PacketGameFinish) { if (that.th.playManager.thGame) that.th.playManager.thGame.processGameFinish(data) ; });
 
         this.socket.on("menuChat", function(data: PacketChatMessage) { that.th.menuManager.processChat(data); });
+        this.socket.on("gameChat", function(data: PacketChatMessage) { if (that.th.playManager.thGame) that.th.playManager.thGame.processChatMessage(data); });
         this.socket.on("menuInfo", function(data: PacketMenuInfo) { that.th.menuManager.processMenuInfo(data); });
 
 
