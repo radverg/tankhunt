@@ -43,6 +43,7 @@ class TH {
 
     init() {
         this.initPhaser(); // Create and initialize Phaser instance
+        this.initHelpPanel();
         this.socketManager.connect(); // Create websocket connection
     }
     
@@ -66,5 +67,30 @@ class TH {
         TH.effects = new EffectManager(TH.game);
         TH.game.state.start("boot");
 
+    }
+
+    initHelpPanel() {
+        $("body").on("keydown", function(e) {
+            
+            if (e.keyCode != 17) return;  // ctrl
+
+            let $hp = $("#helpPanel");
+
+            if ($hp.attr("data-hidden") == "false") {
+                // Hide it
+                $hp.stop();
+                $hp.attr("data-hidden", "true");
+                $hp.animate({ left: -800 }, 400); //() => { $(this).hide(); });
+            } else {
+                // Show it
+                $hp.stop();
+                $hp.show();
+                $hp.attr("data-hidden", "false");
+                $hp.animate({ left: 0 }, 400);
+            }
+
+            
+            
+        });
     }
 }

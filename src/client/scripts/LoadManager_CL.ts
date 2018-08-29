@@ -163,13 +163,13 @@ class LoadManager_CL extends Phaser.State  {
 		itSplash.anchor.setTo(0.5, 0);
 
 		// Full screen text
-		let fsText = this.add.text(centerX, 810, "Go to fullscreen mode - press F11 (in most browsers)");
+		let fsText = this.add.text(centerX, 810, "Set fullscreen mode - press F11 (in most browsers)");
 		fsText.anchor.setTo(0.5);
 		fsText.fill = "#ffc58e";
 		fsText.fontSize = 40;
 
 		// Help text
-		let helpText = this.add.text(centerX, 860, "Hold H key anytime to show help panel (controls)");
+		let helpText = this.add.text(centerX, 860, "Press CTRL key anytime to show info panel (controls)");
 		helpText.anchor.setTo(0.5);
 		helpText.fill = "#ffc58e";
 		helpText.fontSize = 35;
@@ -184,7 +184,7 @@ class LoadManager_CL extends Phaser.State  {
 		TH.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		TH.game.scale.pageAlignHorizontally = true;
 
-		
+	
 		
 	}
 	

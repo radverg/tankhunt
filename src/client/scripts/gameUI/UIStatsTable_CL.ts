@@ -7,7 +7,7 @@ class UIStatsTable_CL {
 
     private collCount: number;
 
-    private phaserKeyCode: number = Phaser.Keyboard.CONTROL;
+    private phaserKeyCode: number = Phaser.Keyboard.TAB;
     private phaserKeyObj: Phaser.Key;
 
     private items: any = {
@@ -60,6 +60,8 @@ class UIStatsTable_CL {
 
         // Key handling and events
         this.phaserKeyObj = this.thGame.game.input.keyboard.addKey(this.phaserKeyCode);
+        this.thGame.game.input.keyboard.addKeyCapture(this.phaserKeyCode);
+        
         this.phaserKeyObj.onDown.add(this.show, this);
         this.phaserKeyObj.onUp.add(this.hide, this);
 
