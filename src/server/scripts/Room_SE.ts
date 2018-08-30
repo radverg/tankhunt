@@ -3,7 +3,8 @@ class Room_SE {
     private sockets: SocketIO.Socket[] = [];
 
     addSocket(socket: SocketIO.Socket) {
-         this.sockets.push(socket);
+        if (this.sockets.indexOf(socket) === -1)
+            this.sockets.push(socket);
     }
 
     removeSocket(socket: SocketIO.Socket) {

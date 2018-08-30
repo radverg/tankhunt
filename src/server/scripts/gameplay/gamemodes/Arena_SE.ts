@@ -22,7 +22,7 @@ class Arena_SE extends THGame_SE {
         this.running = true;
         this.itemManager.startSpawning();
         this.level = new Level_SE();
-        this.level.parseJSONLevel("arena1");  
+        this.level.parseJSONLevel("arena2");  
 
         console.log("Starting Arena game...");  
     }
@@ -205,6 +205,7 @@ class Arena_SE extends THGame_SE {
 
     emitGameStartToPl(player: Player_SE) {
         var packet: PacketGameStart = {
+            serverTime: Date.now(),
             players: [],
             items: this.itemManager.getItemsPacket(),
             gameType: this.gameType,
@@ -228,9 +229,6 @@ class Arena_SE extends THGame_SE {
         this.emitData("newPlayer", player.getInfoPacket());
     }
 
-    emitRespawn(data: PacketRespawn) {
-        this.emitData("respawn", data);
-    }
 }
 
 export { Arena_SE };

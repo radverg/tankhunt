@@ -51,6 +51,8 @@ interface PacketPlayerInfo {
      * Information about player's tank
      */
     tank?: PacketTank,
+       
+    team?: number,
 
     health: number,
     maxHealth: number
@@ -148,7 +150,8 @@ interface PacketRespawn extends PacketTank {
     /**
      * Health of player's tank
      */
-    health: number,
+    health: number
+   
 }
 
 interface PacketItem extends PacketGameObject {
@@ -174,10 +177,15 @@ interface PacketItemCollect {
 }
 
 interface PacketGameStart extends PacketGameInfo {
+    serverTime: number,
     gameType: string,
     level: PacketLevel,
     countDown?: number,
     winCount?: number
+}
+
+interface PacketTeamGameStart extends PacketGameStart {
+    
 }
 
 /**
@@ -256,7 +264,11 @@ interface PacketShotHit {
     /**
      * Y coordinate of tank's position at hit moment
      */
-    yTank?: number
+    yTank?: number,
+    /**
+     * Respawn time
+     */
+    resTime?: number
 }
 
 interface PacketAppear {

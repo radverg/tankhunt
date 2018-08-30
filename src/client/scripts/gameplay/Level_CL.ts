@@ -28,7 +28,7 @@ class Level_CL {
         let lvlWidth = this.tilesCountX * this.squareSize;
         let lvlHeight = this.tilesCountY * this.squareSize;
 
-        let wallWidth = this.squareSize + this.wallThickness * 2;
+        let wallWidth = this.squareSize + this.wallThickness;
         let wallHeight = 18;
         let trim = 10;
 
@@ -42,10 +42,41 @@ class Level_CL {
         let outBack = 1000; 
 		let bcg = TH.game.make.tileSprite(-outBack, -outBack / 2, TH.game.world.width - woffset *2 + outBack * 2,  TH.game.world.height - woffset*2 + outBack, groundAsset, 0) ;
         wallGroup.add(bcg);
+ 
+       
+        // Walls ----------------------------------------------
+        let wallFrame = Math.floor(Math.random() * 3);
 
-        let WallShadGrp = new Phaser.Group(wallGroup.game, wallGroup);
-        
-        // Borders --------------------------------------------------------
+        for (let i in jsonLvl.walls) {
+            let splitted = jsonLvl.walls[i].split("|");
+
+            let y = parseInt(splitted[1]) * this.squareSize;
+            let x = parseInt(splitted[0]) * this.squareSize;
+            let type = parseInt(splitted[2]);
+
+            
+
+            let wallSpr = TH.game.make.sprite(x, y, "wallTriple");
+            wallSpr.frame = wallFrame;
+            wallSpr.width = wallWidth;
+            wallSpr.height = wallHeight;
+            wallSpr.anchor.setTo(0.5);
+
+            if (type === 0) { // Horizontal
+                wallSpr.x += this.squareSize / 2;
+              
+               
+            } else { // Vertical
+                wallSpr.y += this.squareSize / 2;
+                wallSpr.rotation = Math.PI / 2;
+               
+            }
+            
+            wallGroup.add(wallSpr);
+        }
+        // -------------------------------------------------------
+
+         // Borders --------------------------------------------------------
         let targetSize = 1180;
         let borderCount = Math.round(lvlWidth / targetSize);
         let realSize = lvlWidth / borderCount;
@@ -109,38 +140,6 @@ class Level_CL {
             
         }
         // -----------------------------------------------------
-
-        // Walls ----------------------------------------------
-        let wallFrame = Math.floor(Math.random() * 3);
-
-        for (let i in jsonLvl.walls) {
-            let splitted = jsonLvl.walls[i].split("|");
-
-            let y = parseInt(splitted[1]) * this.squareSize;
-            let x = parseInt(splitted[0]) * this.squareSize;
-            let type = parseInt(splitted[2]);
-
-            
-
-            let wallSpr = TH.game.make.sprite(x, y, "wallTriple");
-            wallSpr.frame = wallFrame;
-            wallSpr.width = wallWidth;
-            wallSpr.height = wallHeight;
-            wallSpr.anchor.setTo(0.5);
-
-            if (type === 0) { // Horizontal
-                wallSpr.x += this.squareSize / 2;
-              
-               
-            } else { // Vertical
-                wallSpr.y += this.squareSize / 2;
-                wallSpr.rotation = Math.PI / 2;
-               
-            }
-            
-            wallGroup.add(wallSpr);
-        }
-        // -------------------------------------------------------
 
         console.log("Level parsed!");
 

@@ -3,6 +3,7 @@ import { Arena_SE } from "./gameplay/gamemodes/Arena_SE";
 import { Player_SE } from "./gameplay/Player_SE";
 import { TankHunt_SE } from "./TankHunt_SE";
 import { Duel_SE } from "./gameplay/gamemodes/Duel_SE";
+import { TeamFight_SE } from "./gameplay/gamemodes/TeamFight_SE";
 
 class GameManager_SE {
 
@@ -43,6 +44,7 @@ class GameManager_SE {
 
 			// Handle game removing 
 			if (this.games[i].remove) {
+				this.destroyGame(this.games[i]);
 				this.games.splice(i, 1);
 				continue;
 			}
@@ -117,6 +119,22 @@ class GameManager_SE {
 			} else {
 				this.plDuelPending = player;
 			}
+		}
+		
+		if (packet.gameType == "TeamFight") {
+
+			// Just debugging !!!!!!
+			let tGame = new TeamFight_SE();
+			tGame.addPlayer(player);
+
+			// Debug - add 5 more pseudoplayers
+			for (let i = 0; i < 5; i++) {
+				tGame.addPlayer(new Player_SE(null, `comp${i}`));
+			}
+
+			this.games.push(tGame);
+
+			tGame.start();
 		}
 	}
 }

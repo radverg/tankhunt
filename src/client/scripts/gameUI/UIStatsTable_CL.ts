@@ -32,6 +32,7 @@ class UIStatsTable_CL {
         this.allowedItems = allowedItems;
 
         // Create table container
+        $("#statsTable").remove();
         this.$tableCont = $("<div id='statsCont'></div>")
             .css({ position: "absolute", display: "none" });
         this.$table = $("<table id='statsTable'></table>");

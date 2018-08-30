@@ -252,6 +252,7 @@ class THGame_CL {
 		var tank = new DefaultTank_CL();
 
 		var player = new Player_CL(packet.id, tank, packet.name);
+		player.team = packet.team || null;
 		player.stats.importPacket(packet.stats);
 
 		if (packet.tank) {
@@ -268,7 +269,7 @@ class THGame_CL {
 		if (packet.id == this.socketManager.getID()) { // If so, make tank blue and bind camera with this
 			this.playerGroup.setMe(player);
 			this.setCamera();
-		} else { // if its an enemy, make it red
+		} else { 
 			this.playerGroup.setEnemy(player);
         }
         
@@ -281,6 +282,8 @@ class THGame_CL {
 			this.onNewPlayerConnected.dispatch(player);
 
 		this.onNewPlayer.dispatch(player);
+
+		return player;
 				
 	}
 

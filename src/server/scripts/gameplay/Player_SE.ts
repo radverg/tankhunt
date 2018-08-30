@@ -19,9 +19,14 @@ class Player_SE {
     stats: Stats_SE;
     
     constructor(socket: SocketIO.Socket, name: string) {
-        this.socket = socket;
-        this.id = socket.id;
-        this.socket.player = this;
+        this.socket = socket
+        if (socket !== null) {
+            this.id = socket.id; 
+            this.socket.player = this;
+        }
+        else
+            this.id = `abc${(Math.random() * 100000).toFixed()}`;
+
         this.name = name || "unnamed";
         
         this.tank = new Tank_SE(this);
@@ -48,7 +53,7 @@ class Player_SE {
             return true;
         }
 
-        return this.team == player.team;
+        return this.team !== player.team;
     }
 
     getInfoPacket(): PacketPlayerInfo {
@@ -58,11 +63,15 @@ class Player_SE {
             stats: this.stats.exportPacket(),
             alive: this.alive,
             health: this.tank.health,
-            maxHealth: this.tank.maxHealth
+            maxHealth: this.tank.maxHealth,
         }
         
         if (this.tank) {
             packet.tank = this.tank.getStatePacket();
+        }
+
+        if (this.team) {
+            packet.team = this.team;
         }
 
         return packet;

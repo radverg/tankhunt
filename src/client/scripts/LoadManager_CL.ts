@@ -6,7 +6,7 @@ class LoadManager_CL extends Phaser.State  {
 	private audio: AudioAsset[];
 	private th: TH;
 
-	private useItnetworkDelay: boolean = true;
+	private useItnetworkDelay: boolean = false;
 	private itnetworkDelay: number = 4000;
 
 	private startTime = Date.now();

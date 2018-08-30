@@ -112,8 +112,9 @@ class TextMaker_CL {
         textSpr.font = "Orbitron";
         textSpr.fontSize = 3;
         textSpr.setShadow(0, 0, "#0000ff", 10);
+        textSpr.fill = "#216ae0";
         textSpr.stroke = "black";
-        textSpr.strokeThickness = 3;
+        textSpr.strokeThickness = 4;
         textSpr.alpha = 0.3;
         textSpr.anchor.setTo(0.5);
 

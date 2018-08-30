@@ -40,7 +40,7 @@ class Player_CL {
 
 		if (!this.team || !player.team) return true;
 		
-		return this.team === player.team;
+		return this.team !== player.team;
 	}
 
 	// /**

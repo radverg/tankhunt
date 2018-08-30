@@ -12,7 +12,7 @@ class UICountdown_CL {
         let current = Math.ceil(milisec / milisecStep);
         let game = this.game;
     
-        let cdText = this.game.make.text(x, y, current.toString(), { font: "Orbitron", fontSize: size });
+        let cdText = this.game.make.text(x, y, current.toString(), { font: "Orbitron", fontSize: size * 4 });
         cdText.anchor.setTo(0.5);
 
         let timer = this.game.time.create(false);
@@ -26,8 +26,9 @@ class UICountdown_CL {
                 return;
             }
             cdText.text = current.toString();
+            cdText.scale.set(1);
 
-            let twn = game.add.tween(this).from({ fontSize: size * 4 }, milisecStep / 1.5, Phaser.Easing.Default);
+            let twn = game.add.tween(this.scale).to({ x: 0.25, y: 0.25 }, milisecStep / 1.5, Phaser.Easing.Default);
            // let fadeTwn = game.add.tween(this).to({ alpha: 0 }, milisecStep - milisecStep / 1.5);
             //wn.chain(fadeTwn);
             twn.start();

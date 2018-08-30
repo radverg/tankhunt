@@ -3,6 +3,7 @@ class UIDuel_CL {
     private thGame: Duel_CL;
     private uiLadder: UILadderDuel_CL;
     private uiCountDown: UICountdown_CL;
+    private uiStats: UIStatsTable_CL;
     private centerGrp: Phaser.Group;
 
     constructor(phaserGame: Phaser.Game, thGame: Duel_CL) {
@@ -11,6 +12,7 @@ class UIDuel_CL {
         this.uiCountDown = new UICountdown_CL(TH.game);
 
         this.uiLadder = new UILadderDuel_CL(phaserGame, thGame);
+        this.uiStats = new UIStatsTable_CL(thGame, ["wins", "kills", "deaths", "suic"], "wins");
         
         this.centerGrp = new Phaser.Group(phaserGame);
         this.centerGrp.fixedToCamera = true;
@@ -21,7 +23,7 @@ class UIDuel_CL {
         txt.fontSize = 20;
         txt.fixedToCamera = true;
         txt.cameraOffset.setTo(10, 160);
-        txt.font = "Revalia";
+        txt.font = "Orbitron";
         txt.strokeThickness = 3;
         txt.stroke = "black";
         txt.fill = "green";
@@ -75,6 +77,8 @@ class UIDuel_CL {
             }
 
             this.addMainMenuButton(1500);
+
+            this.uiStats.show();
             
         }
         this.uiLadder.update();
@@ -100,6 +104,7 @@ class UIDuel_CL {
 
     private mainMenuCallback() {
         // Return back to menu
+        this.uiStats.hide();
         console.log("Menu clicked!");
         this.game.state.start("menu");
     }

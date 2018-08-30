@@ -90,8 +90,10 @@ abstract class THGame_SE {
     }
 
     emitData(emName: string, data: any) {
-        for (var i = 0; i < this.players.length; i++) {
-            this.players[i].socket.emit(emName, data);
+
+        for (const player of this.players) {
+            if (!player.socket || player.socket.disconnected) continue;
+            player.socket.emit(emName, data);
         }
     }
 
@@ -99,7 +101,12 @@ abstract class THGame_SE {
         this.emitData("heal", data);
     }
 
+    emitRespawn(data: PacketRespawn) {
+        this.emitData("respawn", data);
+    }
+
     emitDataPl(emName: string, data: any, player: Player_SE) {
+        if (!player.socket || player.socket.disconnected) return;
         player.socket.emit(emName, data);
     }
 

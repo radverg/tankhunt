@@ -331,7 +331,7 @@ class Level_SE {
             var x1 = sqrX * this.squareSize;
             var y1 = this.determineTop(sqrX, sqrY, tank);
             var x2 = x1;
-            var y2 = this.determineBottom(sqrY, sqrY, tank);
+            var y2 = this.determineBottom(sqrX, sqrY, tank);
 
             pts = tank.body.lineIntPoints(x1, y1, x2, y2);
             if (pts.length > 0) { // It collides

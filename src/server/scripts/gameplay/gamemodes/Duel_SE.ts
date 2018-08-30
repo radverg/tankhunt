@@ -45,6 +45,7 @@ class Duel_SE extends THGame_SE {
     playerDisconnected(player: Player_SE) {
 
         this.players.splice(this.players.indexOf(player), 1);
+        player.game = null;
 
         if (this.players.length === 1) {
             this.wholeGameEnd(this.players[0]);
@@ -127,8 +128,7 @@ class Duel_SE extends THGame_SE {
 
         this.emitData("gFinish", packet);
 
-        // Closes the game completely
-        this.destroy();
+        this.remove = true;
     }
 
     reviveAll() {
@@ -141,6 +141,7 @@ class Duel_SE extends THGame_SE {
 
     emitGameStart() {
         var packet: PacketGameStart = {
+            serverTime: Date.now(),
             players: [],
             items: null,
             gameType: this.gameType,

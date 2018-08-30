@@ -31,6 +31,7 @@ class MenuManager_CL extends Phaser.State {
             $("#arenaMode").on("click", () => { this.arenaJoinClick(); });
             $("#duelMode").on("click", () => { this.duelJoinClick(); });
             $("#btnChatSubmit").on("click", () => { this.submitChat(); });
+            $("#teamMode").on("click", () => { this.teamJoinClick(); });
             $("#chatInp").on("keydown", (e) => { if (e.keyCode == 13) this.submitChat(); });
 
         }
@@ -70,14 +71,8 @@ class MenuManager_CL extends Phaser.State {
     }
 
     arenaJoinClick() {
-        let name = this.validateName($("#inpName").val().toString() || `player${(Math.random()*10000).toFixed(0)}`);
-
-        if (name === false) {
-            $("#inpName").addClass("wrongInput");
-            return;
-        } else {
-            $("#inpName").removeClass("wrongInput");
-        }
+        let name = this.getName();
+        if (name === false) return;
 
         this.th.socketManager.emitGameRequest({ playerName: name, gameType: "Arena" });
         
@@ -85,14 +80,10 @@ class MenuManager_CL extends Phaser.State {
     }
 
     duelJoinClick() {
-        let name = this.validateName($("#inpName").val().toString() || `player${(Math.random()*10000).toFixed(0)}`);
+        $("#coverTeam").hide();
 
-        if (name === false) {
-            $("#inpName").addClass("wrongInput");
-            return;
-        } else {
-            $("#inpName").removeClass("wrongInput");
-        }
+        let name = this.getName();
+        if (name === false) return;
 
         if ($("#coverDuel").css("display") != "none") {
             this.th.socketManager.emitGameRequest({ playerName: name, gameType: "nogame" });
@@ -103,6 +94,35 @@ class MenuManager_CL extends Phaser.State {
         this.th.socketManager.emitGameRequest({ playerName: name, gameType: "Duel" });
         $("#coverDuel").css("display", "flex");
 
+    }
+
+    teamJoinClick() {
+        $("#coverDuel").hide();
+
+        let name = this.getName();
+        if (name === false) return;
+
+        if ($("#coverTeam").css("display") != "none") {
+            this.th.socketManager.emitGameRequest({ playerName: name, gameType: "nogame" });
+            $("#coverTeam").hide();
+            return;
+        }
+
+        this.th.socketManager.emitGameRequest({ playerName: name, gameType: "TeamFight" });
+        $("#coverTeam").css("display", "flex");
+    }
+
+    getName() {
+        let name = this.validateName($("#inpName").val().toString() || `player${(Math.random()*10000).toFixed(0)}`);
+
+        if (name === false) {
+            $("#inpName").addClass("wrongInput");
+            return false;
+        } else {
+            $("#inpName").removeClass("wrongInput");
+        }
+
+        return name;
     }
 
     validateName(name: string) {
