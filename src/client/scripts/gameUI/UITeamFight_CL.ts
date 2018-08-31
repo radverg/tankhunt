@@ -20,7 +20,9 @@ class UITeamFight_CL {
         this.centerGrp.fixedToCamera = true;
         this.centerGrp.cameraOffset.setTo(phaserGame.camera.view.halfWidth, 0);
 
-        this.uiStats = new UIStatsTable_CL(thGame, ["kills", "deaths", "suic", "blockC", "dmgD", "dmgR",], "kills");
+        this.uiStats = new UIStatsTable_CL(thGame, ["kills", "deaths", "suic", "blockC", "dmgD", "dmgR", "caps"], "kills");
+        this.thGame.onCapture.add(this.uiStats.refresh, this.uiStats);
+        
         this.uiChat = new UIGameChat_CL(phaserGame, thGame);
         this.uiNotification = new UINotification_CL(phaserGame, thGame);
         this.uiNotification.displayInRow = false;

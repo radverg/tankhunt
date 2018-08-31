@@ -56,7 +56,7 @@ class GameManager_SE {
 
 	destroyGame(game: THGame_SE) {
 		for (const plr of game.players) {
-			if (plr.socket.connected) {
+			if (plr.socket && plr.socket.connected) {
 				this.th.menuManager.addSocket(plr.socket);
 			}
 		}

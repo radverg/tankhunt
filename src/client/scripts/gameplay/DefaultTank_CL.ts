@@ -63,6 +63,7 @@ class DefaultTank_CL extends Tank_CL {
 
 	adjustTrackAnim(colorIndex: number) {
 		let currAnim = this.animations.getAnimation(this.currAnimName);
+		if (!currAnim) return;
 		let startNext = currAnim.isPlaying;
 		currAnim.stop();
 

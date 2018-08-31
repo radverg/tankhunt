@@ -2,14 +2,26 @@ import { THGame_SE } from "./THGame_SE";
 import { Level_SE } from "../Level_SE";
 import { Player_SE } from "../Player_SE";
 import { Tank_SE } from "../Tank_SE";
+import { Capture_SE } from "../Capture_SE";
+import { getRandomInt } from "../utils/MyMath_SE";
 
 class TeamFight_SE extends THGame_SE {
 
     private playersPerTeam: number = 3;
     private startCountDown: number = 8000;
+
+    private capsPerTeam: number = 10;
+    private capTime: number = 4000;
+    private team1Caps: number = 0;
+    private team2Caps: number = 0;
+
+    private over: boolean = false;
+
     private debug: boolean = true;
 
     private respawnTime: number = 5000;
+
+    private caps: { [key: string]: Capture_SE } = { };
 
     constructor() {
         super();
@@ -23,6 +35,20 @@ class TeamFight_SE extends THGame_SE {
         this.level = new Level_SE();
         this.level.parseJSONLevel("team1");
 
+        // Generate caps
+        for (let i = 0; i < this.capsPerTeam * 2; i++) {
+
+            let team = (i < this.capsPerTeam) ? 1 : 2;
+            let sqrX = (team == 1) ? getRandomInt(3, this.level.tilesCountX / 2 - 1) : getRandomInt(this.level.tilesCountX / 2, this.level.tilesCountX - 4);
+            let sqrY = getRandomInt(0, this.level.tilesCountY - 1);
+            let cap = new Capture_SE(sqrX, sqrY, this.level.squareSize, team, this.capTime);
+
+            this.caps[cap.id] = cap;
+
+            
+        }
+
+        console.log("Generating caps...");
         console.log("Starting TeamFight game...");
 
     }
@@ -73,11 +99,17 @@ class TeamFight_SE extends THGame_SE {
             items: null,
             level: { name: this.level.name },
             countDown: this.startCountDown,
-
+            capTime: this.capTime,
+            caps: []
         }
 
         for (let i = 0; i < this.players.length; i++) {
             packet.players.push(this.players[i].getInfoPacket());
+        }
+
+        for (const key in this.caps) {
+           let cap = this.caps[key];
+           packet.caps.push(cap.getPacket());
         }
  
         this.emitData("gameStart", packet);
@@ -85,8 +117,13 @@ class TeamFight_SE extends THGame_SE {
     }
 
     wholeGameEnd(winnerTeam: number) {
-       // this.destroy();
-       this.remove = true;
+        
+        let pack: PacketGameFinish = {
+            winnerTeam: winnerTeam
+        }
+
+        this.emitData("gFinish", pack);
+        this.remove = true;
     }
 
     playerDisconnected(player: Player_SE) {
@@ -119,6 +156,12 @@ class TeamFight_SE extends THGame_SE {
 
             // Check players against items
             this.itemManager.checkForTank(this.players[pl].tank);
+
+            // Captures
+            let capPack = this.handleCapture(this.players[pl]);
+            if (capPack) {
+                this.emitCapture(capPack);
+            }
             
             // Update shots
             for (let sh = 0; sh < this.shots.length; sh++) {
@@ -145,6 +188,10 @@ class TeamFight_SE extends THGame_SE {
                     let healPack: PacketHeal = null;
                     let attackerTank = this.shots[sh].owner.tank;  
                     let targetTank = this.players[pl].tank;
+                    if (hitPack.healthAft < hitPack.healthBef && targetTank.owner.capture) {
+                        // Damage done, reset capture
+                        targetTank.owner.capture.resetCapturing();
+                    }
                     
                     let wasKilled = hitPack.healthAft <= 0;
 
@@ -195,9 +242,59 @@ class TeamFight_SE extends THGame_SE {
             player.alive = true;
 
             var packet: PacketRespawn = player.tank.getStatePacket() as PacketRespawn;
+        
             this.emitRespawn(packet);
 
         }, this.respawnTime);
+    }
+
+    handleCapture(player: Player_SE): PacketCapture | null {
+
+        let cap = this.caps[`a${this.level.getSqrX(player.tank.x)}|${this.level.getSqrX(player.tank.y)}`];
+        
+        if (cap && !cap.remove && cap.team !== player.team) {
+            // Player is standing in enemy cap
+            if (player.capture !== cap) {
+                if (player.capture) {
+                    return player.capture.cancelCapturing();
+                }
+                // Start capturing, if it is not being captured
+                if (!cap.capturing)
+                    return cap.startCapturing(player);
+            } else {
+                // Standing still...
+                if (cap.isCaptured()) {
+                    if (cap.team === 1) this.team1Caps++;
+                    else this.team2Caps++;
+                    this.checkFinish();
+                    return cap.finishCapturing();   
+                }
+            }
+
+        }
+        else {
+            // Player is not standing in a cap or the cap is different
+            if (player.capture !== null) {
+                // He was capping previously
+                return player.capture.cancelCapturing();
+            }
+
+        }
+
+        return null;
+    }
+
+    checkFinish() {
+
+        if (this.team1Caps < this.capsPerTeam && this.team2Caps < this.capsPerTeam && !this.over) return;
+
+        let winnerTeam = (this.team1Caps > this.team2Caps) ? 1 : 2;
+        this.over = true;
+        
+        setTimeout(() => {
+            this.wholeGameEnd(winnerTeam);
+        }, 500);
+      
     }
 
 

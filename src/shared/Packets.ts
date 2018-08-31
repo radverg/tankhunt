@@ -120,6 +120,7 @@ interface WayPoint {
 interface PacketGameFinish {
     subgame?: boolean,
     winnerID?: string,
+    winnerTeam?: number,
 
     nextLevel?: PacketLevel,
     nextDelay?: number
@@ -185,7 +186,8 @@ interface PacketGameStart extends PacketGameInfo {
 }
 
 interface PacketTeamGameStart extends PacketGameStart {
-    
+    caps: PacketCapture[],
+    capTime: number
 }
 
 /**
@@ -321,4 +323,36 @@ interface PacketChatMessage {
     name?: string;
     id?: string;
     alliesOnly?: boolean
+}
+
+interface PacketCapture {
+    /**
+     * Id of this this packet, starts with char "a" and contains square position
+     * Coordinates are separated by "|"
+     */
+    id: string,
+    /**
+     * Team that owns this cap
+     */
+    tm: number,
+    /**
+     * Sets this packet to mean "start capturing"
+     */
+    st?: boolean,
+    /**
+     * Sets this packet to mean "cancel capturing"
+     */
+    cn?: boolean,
+    /**
+     * Sets this packet to mean "finish capturing"
+     */
+    fin?: boolean,
+    /**
+     * ID of the capturer
+     */
+    plID?: string,
+    /**
+     * Sets this packet to mean "reset capturing"
+     */
+    rs?: boolean
 }

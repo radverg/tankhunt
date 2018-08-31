@@ -16,6 +16,8 @@ class Stats_SE implements PlayerStats {
 
     blockC: number = 0;
 
+    caps: number = 0;
+
     
     importPacket(packet: PlayerStats) {
         for (const key in packet) {
@@ -34,7 +36,8 @@ class Stats_SE implements PlayerStats {
             maxRow: this.maxRow,
             teamK: this.teamK,
             wins: this.wins,
-            blockC: this.blockC
+            blockC: this.blockC,
+            caps: this.caps
         }
     }
 

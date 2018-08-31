@@ -5,7 +5,7 @@ abstract class Tank_CL extends Sprite {
 	public frameStart: number = 1;
 
 	protected turret: Sprite;
-	protected shadow: Phaser.Sprite;
+	shadow: Phaser.Sprite;
 
 	protected tankSpr: Phaser.Sprite;
 
@@ -88,6 +88,16 @@ abstract class Tank_CL extends Sprite {
 	show(animate: boolean = true) {
 		this.visible = true;
 		this.turret.visible = true;
+	}
+
+	alphaShow() {
+		this.alpha = 1;
+		this.shadow.alpha = 1;
+	}
+
+	alphaHide() {
+		this.alpha = 0.5;
+		this.shadow.alpha = 0.2;
 	}
 
 	interpolationUpdate() {

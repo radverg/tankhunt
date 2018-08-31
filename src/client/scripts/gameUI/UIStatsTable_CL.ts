@@ -19,7 +19,9 @@ class UIStatsTable_CL {
         dmgD: { thead: "Damage dealt:" },
         dmgR: { thead: "Damage received:", asc: true },
         suic: { thead: "Suicides:", asc: true },
-        blockC: { thead: "Blocked shots:" }
+        blockC: { thead: "Blocked shots:" },
+        caps: { thead: "Captures:" },
+
     }
 
     private allowedItems: string[];

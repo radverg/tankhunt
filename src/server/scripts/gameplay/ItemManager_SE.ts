@@ -1,7 +1,7 @@
 import { Item_SE } from "./Item_SE";
 import { THGame_SE } from "./gamemodes/THGame_SE";
 import { Tank_SE } from "./Tank_SE";
-import { Weapon_SE, Guns } from "./Weapon_SE";
+import { Weapon_SE, Guns, Invisibility_SE } from "./Weapon_SE";
 
 
 var Data : Dat = require("../../../shared/Data"); 
@@ -21,7 +21,7 @@ class ItemManager_SE {
 
     spawnPossibilities: any[] = [
         Guns.BouncingLaserGun,
-        Guns.DoubleMineGun,
+        Invisibility_SE,
         Guns.EliminatorGun,
         Guns.MineGun,
         Guns.MultiBouncerGun,

@@ -315,7 +315,7 @@ class DoubleMineGun_SE extends MineGun_SE {
 
 class Invisibility_SE extends Item_SE {
 
-	private duration: number = 9000;
+	private duration: number = 12000;
 
 	constructor(owner: Player_SE) {
 		super(8);
@@ -330,7 +330,7 @@ class Invisibility_SE extends Item_SE {
 		game.emitDisappear(this.owner);
 
 		setTimeout(() => { 
-			if (this.owner) {
+			if (this.owner && this.owner.game == game) {
 				this.owner.invisible = false;
 				game.emitAppear(this.owner);
 			}

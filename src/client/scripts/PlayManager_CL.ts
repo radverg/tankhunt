@@ -58,7 +58,7 @@ class PlayManager_CL extends Phaser.State  {
         } else if (packet.gameType == "Duel") {
             this.thGame = new Duel_CL(this.th.socketManager, packet);
         } else if (packet.gameType == "TeamFight") {
-            this.thGame = new TeamFight_CL(this.th.socketManager, packet);
+            this.thGame = new TeamFight_CL(this.th.socketManager, packet as PacketTeamGameStart);
         }
         else {
             console.log("Unknown game type!");

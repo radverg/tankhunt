@@ -222,7 +222,8 @@ class THGame_CL {
 			plr.tank.positionServerUpdate(data.atX * TH.sizeCoeff, data.atY * TH.sizeCoeff)
 			plr.tank.jumpToRemote();
 		} else {
-			plr.tank.alpha = 1;
+			plr.tank.alphaShow();
+
 		}
 	}
 
@@ -233,12 +234,15 @@ class THGame_CL {
 		if (plr.isEnemyOf(this.playerGroup.me)) {
 			plr.tank.hide(true);
 		} else {
-			plr.tank.alpha = 0.5;
+			plr.tank.alphaHide();
+			
 		}
 	}
 
 	processGameFinish(data: PacketGameFinish) {
 	}
+	processCapture(data: PacketCapture) {   
+    }
 
 
 	setCamera() {
@@ -340,10 +344,10 @@ class THGame_CL {
 		this.levelGroup = TH.game.add.group();
 		// Then we have items
 		this.itemGroup = new ItemGroup_CL();
-		// Than we have shots 
-		this.shotGroup = new ShotGroup_CL();
 		// Than we have players
 		this.playerGroup = new PlayerGroup_CL();
+		// Than we have shots 
+		this.shotGroup = new ShotGroup_CL();
 		
 	}
 

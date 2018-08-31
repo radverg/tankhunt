@@ -105,6 +105,10 @@ abstract class THGame_SE {
         this.emitData("respawn", data);
     }
 
+    emitCapture(data: PacketCapture) {
+        this.emitData("cap", data);
+    }
+
     emitDataPl(emName: string, data: any, player: Player_SE) {
         if (!player.socket || player.socket.disconnected) return;
         player.socket.emit(emName, data);

@@ -27,6 +27,7 @@ class GameObject_SE {
     get x(): number { return this.body.cX; }
     get y(): number { return this.body.cY; }
     get id(): string { return this._id; }
+    set id(val: string) { this._id = val; }
     get angle(): number { return this._angle; }
     set angle(val: number) { this.setAngle(val); }
     

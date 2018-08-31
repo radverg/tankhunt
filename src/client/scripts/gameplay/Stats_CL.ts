@@ -15,6 +15,8 @@ class Stats_CL implements PlayerStats {
 
     blockC: number = 0;
 
+    caps: number = 0;
+
     [key: string]: any;
 
     
@@ -35,7 +37,8 @@ class Stats_CL implements PlayerStats {
             maxRow: this.maxRow,
             teamK: this.teamK,
             wins: this.wins,
-            blockC: this.blockC
+            blockC: this.blockC,
+            caps: this.caps
         }
     }
 

@@ -1,6 +1,7 @@
 import { Tank_SE } from "./Tank_SE";
 import { THGame_SE } from "./gamemodes/THGame_SE";
 import { Stats_SE } from "./Stats_SE";
+import { Capture_SE } from "./Capture_SE";
 
 class Player_SE {
 
@@ -14,6 +15,8 @@ class Player_SE {
     emitable: boolean;
     invisible: boolean = false;
     invulnerable: boolean = false;
+
+    capture: Capture_SE = null;
 
     team: any = null;
     stats: Stats_SE;

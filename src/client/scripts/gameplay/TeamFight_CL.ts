@@ -2,8 +2,13 @@
 class TeamFight_CL extends THGame_CL {
 
     private uiTeamFight: UITeamFight_CL;
+    private capTime: number;
 
-    constructor(sm: SocketManager_CL, packet: PacketGameStart) {
+    onCapture: Phaser.Signal = new Phaser.Signal();
+
+    private caps: { [key: string]: Capture_CL } = { };
+
+    constructor(sm: SocketManager_CL, packet: PacketTeamGameStart) {
         super(sm);
 
         this.uiTeamFight = new UITeamFight_CL(this.game, this);
@@ -23,7 +28,22 @@ class TeamFight_CL extends THGame_CL {
 
         this.processLevel(packet.level);
 
+        
+
         this.running = true;
+        this.capTime = packet.capTime;
+
+        // Generate caps
+        for (const cap of packet.caps) {
+            let splID = cap.id.split("|");
+            let sqrX = parseInt(splID[0].substr(1));
+            let sqrY = parseInt(splID[1]);
+
+            let capSpr = new Capture_CL(sqrX, sqrY, this.level.getSqrSize(), cap.tm, me.team, this.capTime, this.game);
+            this.levelGroup.add(capSpr);
+            this.caps[capSpr.id] = capSpr;
+        }
+
     }
 
     processRespawn(data: PacketRespawn) {
@@ -37,5 +57,40 @@ class TeamFight_CL extends THGame_CL {
         player.tank.jumpToRemote();
         
         this.onRespawn.dispatch(player);
+    }
+
+    processCapture(data: PacketCapture) {
+
+        let cap = this.caps[data.id];
+        if (!cap) return;
+
+        if (data.rs || data.st) {
+            cap.startCapturing();
+        }
+
+        if (data.cn) {
+            cap.cancelCapturing();
+        }
+
+        if (data.fin) {
+            delete this.caps[cap.id];
+            cap.fadeOut();
+            let plr = this.playerGroup.getPlayer(data.plID);
+            if (plr) {
+                plr.stats.caps++;
+            }
+            console.log("Captured!");
+        }
+
+        this.onCapture.dispatch(data);
+    }
+
+    processGameFinish(data: PacketGameFinish) {
+        console.log("Game over!");
+    }
+
+    destroy() {
+        super.destroy();
+        this.onCapture.dispose();
     }
 }

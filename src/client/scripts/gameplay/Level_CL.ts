@@ -6,6 +6,10 @@ class Level_CL {
     private tilesCountY: number;
     private wallThickness: number;
 
+    getSqrSize() {
+        return this.squareSize;
+    }
+
     fromJSON(jsonString: string, wallGroup: Phaser.Group) {
         let jsonLvl = null;
 
