@@ -39,11 +39,15 @@
 
 
     <script type="text/javascript" src="scripts/TankHunt_CL.js"></script>
+    <script type="text/javascript" src="scripts/gameplay/TeamFight_CL.js"></script>
+    <script type="text/javascript" src="scripts/gameplay/Capture_CL.js"></script>
+
     <script type="text/javascript" src="scripts/SocketManager_CL.js"></script>
     <script type="text/javascript" src="scripts/gameUI/UIPlayerManager_CL.js"></script>
     <script type="text/javascript" src="scripts/gameUI/UILadder_CL.js"></script>
     <script type="text/javascript" src="scripts/gameUI/UIPlayer_CL.js"></script>
     <script type="text/javascript" src="scripts/gameUI/UINotification_CL.js"></script>
+    <script type="text/javascript" src="scripts/gameUI/UITeamFight_CL.js"></script>
     <script type="text/javascript" src="scripts/gameUI/UIDuel_CL.js"></script>
     <script type="text/javascript" src="scripts/gameUI/UIStatsTable_CL.js"></script>
     <script type="text/javascript" src="scripts/gameUI/HealthBar_CL.js"></script>
@@ -94,6 +98,21 @@
 
         </div>
 
+        <div class="gameMode noTopBorder" id="teamMode">
+                <div class="pendingCover" id="coverTeam"></div>
+
+                <!-- <img class="modeThumb" src="assets/images/thumb_duel.png"> -->
+                <div class="modeDesc">
+                    <h3>Team fight - DEBUGGING</h3>
+                    <p><br></p>
+                </div>
+
+                <div class="modeEnd">
+                        Games: <span id="duelGames">0</span>
+                </div>
+
+        </div>
+
         <div id="chatCont">
                 <div id="chatHeader">
                     <input id="chatInp" type="text" placeholder="Chat message">
@@ -110,6 +129,36 @@
             <span>In games: <span id="gamePlayers">0</span></span>&nbsp
             <span>Total: <span id="totalPlayers">0</span></span>            
         </div>
+    </div>
+
+    <div id="helpPanel" data-hidden="true">
+        <h1>INFO PANEL</h1>
+        <h2>Controls:</h2>
+        <ul>
+            <li>Arrows - move and rotate tank body</li>
+            <li>A, D - rotate tank turret</li>
+            <li>S - Fire (gun slot 1)</li>
+            <li>W - Fire (gun slot 2)</li>
+            <li>SHIFT - Use collected powerup</li>
+            <li>TAB - Hold to show statistics in a game</li>
+            <li>CTRL - Hide or show this panel</li>
+            <li>F11 - Toggle fullscreen</li>
+        </ul>
+
+        <h2>Game modes:</h2>
+        <p><strong>ARENA</strong> - 
+            Your goal is to strike as many kills in a row as you can. Every kill heals your tank completely and increases
+            maximum amout of your hitpoints (up to maximum value). When you die, your killing streak ends and your maximum health is reduced to initial value - you start 
+            from the beginning. You can join or leave this game whenever you want to. If the game is full, new Arena is created when you try to join. To go back to menu, click
+            on the button in the top-right corner.   
+        </p>
+
+        <p><strong>Duel</strong> - 
+            In this game you fight one opponent in quick rounds. The one who first reaches specified amount of subvictories wins the whole game.
+            To win a round, kill your enemy and survive a few seconds. Then the map is changed and a new round starts. There is no health and no armor in the Duel, 
+            so every hit results in kill.
+        </p>
+        
     </div>
 </body>
 

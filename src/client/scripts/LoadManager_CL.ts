@@ -21,7 +21,6 @@ class LoadManager_CL extends Phaser.State  {
 		this.images = [
 			{ assetName: "blackRect", path: imagesPath + "blackRect.png" },
 			{ assetName: "whiteRect", path: imagesPath + "whiteRect.png" },
-			{ assetName: "ammo", path: imagesPath + "ammo.png" },
 
 			// Grounds
 			{ assetName: "ground1", path: imagesPath + "ground1.png" },
@@ -32,19 +31,9 @@ class LoadManager_CL extends Phaser.State  {
 			{ assetName: "ground6", path: imagesPath + "ground6.png" },
 			{ assetName: "ground7", path: imagesPath + "ground7.png" },
 
-			// Side walls 
-			{ assetName: "wallSide1", path: imagesPath + "wall_side1.png" },
-			{ assetName: "wallSide2", path: imagesPath + "wall_side2.png" },
-			{ assetName: "wallSide3", path: imagesPath + "wall_side3.png" },
-
-
-
-
 			{ assetName: "shadow", path: imagesPath + "shadow_box.png" },
 			{ assetName: "mine", path: imagesPath + "mine.png" },
-			{ assetName: "wall1", path: imagesPath + "wall1.png" },
-			{ assetName: "wallSide", path: imagesPath + "wall_side.png" },
-			{ assetName: "wallShadow", path: imagesPath + "wall_shadow.png"},
+			
 			{ assetName: "ball", path: imagesPath + "ball.png" },
 
 
@@ -70,7 +59,6 @@ class LoadManager_CL extends Phaser.State  {
 			{ assetName: "shotExplode4", path: imagesPath + "shot_explode4.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35, precreate: true },
 			{ assetName: "shotExplode5", path: imagesPath + "shot_explode5.png", frameSizeX: 400, frameSizeY: 400, frameCount: 35, precreate: true },
 
-
 			{ assetName: "explosion1", path: imagesPath + "explosion1.png", frameSizeX: 400, frameSizeY: 400, frameCount: 55, precreate: true },
 			{ assetName: "explosion2", path: imagesPath + "explosion2.png", frameSizeX: 400, frameSizeY: 400, frameCount: 55, precreate: true },
 			{ assetName: "explosion3", path: imagesPath + "explosion3.png", frameSizeX: 400, frameSizeY: 400, frameCount: 55, precreate: true },
@@ -80,9 +68,13 @@ class LoadManager_CL extends Phaser.State  {
 			{ assetName: "medals", path: imagesPath + "medals.png", frameSizeX: 64, frameSizeY: 64, frameCount: 3 },
 			{ assetName: "panels", path: imagesPath + "panels.png", frameSizeX: 190, frameSizeY: 49, frameCount: 3 },
 
-
 			{ assetName: "wallSideTriple", path: imagesPath + "wall_side_triple.png", frameSizeX: 1187, frameSizeY: 94, frameCount: 3 },
+			{ assetName: "wallSideTripleAdv", path: imagesPath + "side_wall_triple_adv.png", frameSizeX: 1778, frameSizeY: 108, frameCount: 3 },
+
 			{ assetName: "wallTriple", path: imagesPath + "wall_triple.png", frameSizeX: 272, frameSizeY: 24, frameCount: 3 },
+
+			{ assetName: "wallDebris", path: imagesPath + "wall_debris.png", frameSizeX: 40, frameSizeY: 40, frameCount: 10 },
+			{ assetName: "wallDebrisDarker", path: imagesPath + "wall_debris_darker.png", frameSizeX: 40, frameSizeY: 40, frameCount: 10 }
 
 
 		];
@@ -93,8 +85,6 @@ class LoadManager_CL extends Phaser.State  {
 			{ assetName: "laser2_sound", path: [soundsPath + "laser2.ogg", soundsPath + "laser2.wav"] },
 			{ assetName: "laser3_sound", path: [soundsPath + "laser3.ogg", soundsPath + "laser3.wav"] },
 			{ assetName: "bum1_sound", path: [soundsPath + "bum1.ogg", soundsPath + "bum1.wav"] },
-
-
 		]
 		// -----------------------------------------------------------------------------------	
 

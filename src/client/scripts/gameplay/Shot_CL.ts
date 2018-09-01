@@ -106,7 +106,7 @@ class APCR_CL extends Shot_CL {
 		this.moveTween = TH.game.add.tween(this);
 		this.moveTween.to({ x: this.endX, y: this.endY }, this.time);
 		this.moveTween.onComplete.add(function() { 
-			TH.effects.shotDebrisEffect(this.x, this.y);
+			TH.effects.wallDebrisEffect(this.x, this.y);
 			this.destroy(); 
 		}, this);
 		this.moveTween.start();
@@ -255,23 +255,17 @@ class Eliminator_CL extends Bouncer_CL {
 
 	private splintersData: any[] = [];
 	private splinterTime: number;
-	private rotTween: Phaser.Tween;
 
 	constructor(dataPack: PacketEliminatorStart) {
 		super(dataPack, "ball");
 
-		this.width = 25;
-		this.height = 25;
 		this.anchor.setTo(0.5);
+		this.scale.setTo(0.8);
+
+		this.rotation += Math.PI;
 
 		this.splintersData = dataPack.spl;
 		this.splinterTime = dataPack.splTime;
-
-		this.rotTween = this.game.add.tween(this);
-		this.rotTween.to({ rotation: 150 }, 10000);
-		this.rotTween.start();
-
-
 	}
 
 	start() {
@@ -279,7 +273,6 @@ class Eliminator_CL extends Bouncer_CL {
 	}
 
 	stop() {
-		this.rotTween.stop();
 		this.destroy();
 	}
 

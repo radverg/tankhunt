@@ -34,7 +34,6 @@ class Level_CL {
 
         let wallWidth = this.squareSize + this.wallThickness;
         let wallHeight = 18;
-        let trim = 10;
 
         // Set world bounds
         var woffsetX = TH.game.width / 2;
@@ -83,11 +82,12 @@ class Level_CL {
         // -------------------------------------------------------
 
          // Borders --------------------------------------------------------
-        let targetSize = 1180;
+        let targetSize = 1777;
         let borderCount = Math.round(lvlWidth / targetSize);
         let realSize = lvlWidth / borderCount;
         let thickness = null;
-        let borderAsset =  "wallSideTriple"; // `wallSide${Math.floor(Math.random() * 3) + 1}`;
+        let trim = 20;
+        let borderAsset =  "wallSideTripleAdv"; // `wallSide${Math.floor(Math.random() * 3) + 1}`;
         let borderFrame = Math.floor(Math.random() * 3);
 
         // Horizontals

@@ -53,7 +53,7 @@ class UITeamFight_CL {
         let text = this.game.make.text(-180, 5, "Our caps:");
         this.capBarMe.add(text);
 
-        this.capBarEnemy.cameraOffset.setTo(200, 80);
+        this.capBarEnemy.cameraOffset.setTo(200, 50);
         let text2 = this.game.make.text(-180, 5, "Enemy caps:");
         this.capBarEnemy.add(text2);
        
@@ -64,11 +64,11 @@ class UITeamFight_CL {
         let capCount = packet.caps.length / 2;
 
         let bg: Phaser.Sprite = this.capBarMe.create(0, 0, "blackRect");
-        bg.width = capBarWidth;
+        bg.width = capBarWidth + padding;
         bg.height = capBarHeight;
 
         bg = this.capBarEnemy.create(0, 0, "blackRect");
-        bg.width = capBarWidth;
+        bg.width = capBarWidth + padding;
         bg.height = capBarHeight;
 
         // Now squares

@@ -96,6 +96,33 @@ class EffectManager {
         }
     }
 
+    wallDebrisEffect(x: number, y: number) {
+        if (!x || !y) {
+            return;
+        }
+        let debrisCount = 10;
+        let duration = 400;
+
+        for (let i = 0; i < debrisCount; i++) {
+            
+            let ang = Math.random() * Math.PI * 2;
+            let dist = Math.random() * 90;
+
+            let pos = {x:  x + Math.sin(ang) * dist, y: y - Math.cos(ang) * dist };
+            
+            let debrisSpr: Phaser.Sprite = this.game.add.sprite(x, y, "wallDebrisDarker");
+            debrisSpr.anchor.setTo(0.5);
+            debrisSpr.scale.setTo(0.6);
+            debrisSpr.frame = i;
+            debrisSpr.rotation = ang;
+
+            let twn = this.game.add.tween(debrisSpr);
+            twn.to({ x: pos.x, y: pos.y, alpha: 0, rotation: debrisSpr.rotation + (Math.PI * 2 * Math.random()) }, duration);
+            twn.onComplete.add(function() { this.destroy(); }, debrisSpr);
+            twn.start();
+        }
+    }
+
     shotDamageEffect(x: number, y: number) {
         if (!x || !y) {
             return;
