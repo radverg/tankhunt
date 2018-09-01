@@ -17,7 +17,7 @@ class TextMaker_CL {
 
         let textSprite = TH.game.make.text(x, y,  text);
         textSprite.font = "Revalia";
-        textSprite.fontSize = 25;
+        textSprite.fontSize = 27;
         textSprite.fill = color;
         textSprite.stroke = "black";
         textSprite.strokeThickness = 2;
@@ -26,7 +26,7 @@ class TextMaker_CL {
 
         // This text moves up
         let textTwn = TH.game.add.tween(textSprite);
-        textTwn.to({y: textSprite.y - 100, alpha: 0 }, 1000);
+        textTwn.to({y: textSprite.y - 120, alpha: 0 }, 1200);
         textTwn.onComplete.add(function() { this.destroy(); }, textSprite);
         textTwn.start();
 

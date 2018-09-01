@@ -123,7 +123,11 @@ interface PacketGameFinish {
     winnerTeam?: number,
 
     nextLevel?: PacketLevel,
-    nextDelay?: number
+    nextDelay?: number,
+    /**
+     * Can specify the health for next round
+     */
+    nextHealth?: number
 }
 
 interface PacketEliminatorStart extends PacketBouncerShotStart {

@@ -2,24 +2,27 @@ import { THGame_SE } from "./THGame_SE";
 import { Player_SE } from "../Player_SE";
 import { Tank_SE } from "../Tank_SE";
 import { Level_SE } from "../Level_SE";
+import { getRandomInt } from "../utils/MyMath_SE";
 
 class Duel_SE extends THGame_SE {
 
     private playerCount: number = 2;
 
-    private startDelay: number = 4000;
+    private startDelay: number = 2000;
     private endDelay: number = 3500;
 
     private isWinPending: boolean = false;
 
-    private maxWins: number = 3;
-    private currentWins: number = 0;   
-
+    private maxWins: number = 15;
+   
     private currentRound: number = 0;
 
-    private duelMapCount: number = 4;
+    private duelMapCount: number = 10;
 
     private levels: Level_SE[] = [];
+
+    private maxHealth: number = 2500;
+    private minHealth: number = 100;
 
     private subGameRunning: boolean = false;
 
@@ -103,6 +106,10 @@ class Duel_SE extends THGame_SE {
         this.generatePostions();
         this.reviveAll();
 
+        if (this.players[0]) {
+            packet.nextHealth = this.players[0].tank.health;
+        }
+
         setTimeout(() => { this.subGameRunning = true; this.blockInput = false; this.itemManager.spawning = true; }, this.startDelay);
 
         this.emitData("gFinish", packet);
@@ -132,11 +139,16 @@ class Duel_SE extends THGame_SE {
     }
 
     reviveAll() {
-        for (let pl = 0; pl < this.players.length; pl++) {
-            this.players[pl].alive = true;
-            this.players[pl].invisible = false;
-            this.players[pl].tank.stopCompletely();
+        let rndHealt = getRandomInt(this.minHealth, this.maxHealth);
+
+        for (const plr of this.players) {
+            plr.alive = true;
+            plr.invisible = false;
+            plr.tank.stopCompletely();
+            plr.tank.maxHealth = rndHealt;
+            plr.tank.health = rndHealt;
         }
+        
     }
 
     emitGameStart() {
@@ -165,6 +177,7 @@ class Duel_SE extends THGame_SE {
         this.running = true;
         this.level = this.levels[0];
         this.generatePostions();
+        this.reviveAll();
 
         this.emitGameStart();
 
@@ -217,7 +230,7 @@ class Duel_SE extends THGame_SE {
                 // Shot hitting players
                 if (this.shots[sh].isHittingTank(this.players[pl].tank)) {
 
-                    let packet = this.shots[sh].hitSimple(this.players[pl].tank);
+                    let packet = this.shots[sh].hit(this.players[pl].tank, true);
                     let attackerTank = this.shots[sh].owner.tank;
                     let targetTank = this.players[pl].tank;
 

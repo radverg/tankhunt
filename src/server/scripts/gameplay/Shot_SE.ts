@@ -103,7 +103,7 @@ abstract class Shot_SE extends GameObject_SE {
 	 * hit packet that is ready to be emitted. 
 	 * @param tank 
 	 */
-	hit(tank: Tank_SE): PacketShotHit {
+	hit(tank: Tank_SE, ignoreArmor: boolean = false): PacketShotHit {
 
 		if (this.removeAfterHit) this.remove = true;
 		else this.tanksHit.push(tank);
@@ -111,7 +111,7 @@ abstract class Shot_SE extends GameObject_SE {
 		let collInfo: any = this.getTankCollision(tank);
 		let damage = this.damage;
 
-		if (collInfo && collInfo.side != -1 && tank.armor && !this.ignoreArmor) {
+		if (collInfo && collInfo.side != -1 && tank.armor && !this.ignoreArmor && !ignoreArmor) {
 			// Here, take armor into consideration
 			let penPerc = 1 - tank.armor[collInfo.side] + this.penetrationBonus;
 			if (Math.random() > penPerc) {

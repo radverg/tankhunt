@@ -4,6 +4,7 @@ class UIDuel_CL {
     private uiLadder: UILadderDuel_CL;
     private uiCountDown: UICountdown_CL;
     private uiStats: UIStatsTable_CL;
+    private uiPlayerManager: UIPlayerManager_CL;
     private centerGrp: Phaser.Group;
 
     constructor(phaserGame: Phaser.Game, thGame: Duel_CL) {
@@ -12,7 +13,9 @@ class UIDuel_CL {
         this.uiCountDown = new UICountdown_CL(TH.game);
 
         this.uiLadder = new UILadderDuel_CL(phaserGame, thGame);
-        this.uiStats = new UIStatsTable_CL(thGame, ["wins", "kills", "deaths", "suic"], "wins");
+        this.uiStats = new UIStatsTable_CL(thGame, ["wins", "kills", "deaths", "suic", "dmgD", "dmgR"], "wins");
+        this.uiPlayerManager = new UIPlayerManager_CL(phaserGame, thGame);
+        this.thGame.onGameFinish.add(this.uiPlayerManager.updateAllBars, this.uiPlayerManager);
         
         this.centerGrp = new Phaser.Group(phaserGame);
         this.centerGrp.fixedToCamera = true;

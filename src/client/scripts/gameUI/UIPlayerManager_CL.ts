@@ -56,4 +56,18 @@ class UIPlayerManager_CL {
             player.plView.updateHealthBar();
         }
     }
+
+    /**
+     * Update health bars of all players
+     */
+    updateAllBars() {
+        let plrs = this.thGame.playerGroup.players;
+
+        for (const id in plrs) {
+            let plr = plrs[id];
+            if (!plr || !plr.plView) continue;
+            plr.plView.updateHealthBar();
+        }
+    }
+
 }

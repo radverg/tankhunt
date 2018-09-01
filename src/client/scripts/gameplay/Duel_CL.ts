@@ -28,6 +28,9 @@ class Duel_CL extends THGame_CL {
     processGameFinish(data: PacketGameFinish) {
         // Duel subgame finished
         if (data.subgame) {
+            this.playerGroup.setAll("maxHealth", data.nextHealth);
+            this.playerGroup.setAll("health", data.nextHealth);      
+            
             this.tidy();
             this.processLevel(data.nextLevel);
 
@@ -38,6 +41,8 @@ class Duel_CL extends THGame_CL {
         } else {
             console.log("Duel ends!");
         }
+
+        
 
         this.onGameFinish.dispatch(data);
 
