@@ -152,17 +152,17 @@ abstract class THGame_SE {
         let rectX = fromX - this.hViewWidth;
         let rectY = fromY - this.hViewHeight;
 
-        if (rectX < -this.viewOffset) {
-            rectX = -this.viewOffset; 
-        } else if (fromX + this.hViewWidth > this.level.levelRect.w + this.viewOffset) {
-            rectX = this.level.levelRect.w + this.viewOffset - this.hViewWidth * 2;
-        }
+        // if (rectX < -this.viewOffset) {
+        //     rectX = -this.viewOffset; 
+        // } else if (fromX + this.hViewWidth > this.level.levelRect.w + this.viewOffset) {
+        //     rectX = this.level.levelRect.w + this.viewOffset - this.hViewWidth * 2;
+        // }
 
-        if (rectY < -this.viewOffset) {
-            rectY = -this.viewOffset; 
-        } else if (fromY + this.hViewHeight > this.level.levelRect.h + this.viewOffset) {
-            rectY = this.level.levelRect.h + this.viewOffset - this.hViewHeight * 2;
-        }
+        // if (rectY < -this.viewOffset) {
+        //     rectY = -this.viewOffset; 
+        // } else if (fromY + this.hViewHeight > this.level.levelRect.h + this.viewOffset) {
+        //     rectY = this.level.levelRect.h + this.viewOffset - this.hViewHeight * 2;
+        // }
 
         return gameobj.body.right > rectX && gameobj.body.left < rectX + this.hViewWidth * 2
             && gameobj.body.top < rectY + this.hViewHeight * 2 && gameobj.body.bottom > rectY;

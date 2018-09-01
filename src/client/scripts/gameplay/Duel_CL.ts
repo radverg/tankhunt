@@ -36,6 +36,7 @@ class Duel_CL extends THGame_CL {
 
             // Cancel invisibility of players
            this.playerGroup.callAll("alphaShow", null);
+           this.playerGroup.callAll("revive", null);
             
    
         } else {

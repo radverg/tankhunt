@@ -37,14 +37,16 @@ class Level_CL {
         let trim = 10;
 
         // Set world bounds
-		var woffset = 200;
-		TH.game.world.setBounds(-woffset, -woffset, (lvlWidth) + 2*woffset, 
-            (lvlHeight) + 2*woffset);
+        var woffsetX = TH.game.width / 2;
+        var woffsetY = TH.game.height / 2;
+		TH.game.world.setBounds(-woffsetX, -woffsetY, (lvlWidth) + woffsetX * 2, 
+            (lvlHeight) + 2 * woffsetY);
             
         // Now add background
         let groundAsset = `ground${Math.floor(Math.random() * 7) + 1}`
         let outBack = 1000; 
-		let bcg = TH.game.make.tileSprite(-outBack, -outBack / 2, TH.game.world.width - woffset *2 + outBack * 2,  TH.game.world.height - woffset*2 + outBack, groundAsset, 0) ;
+        
+		let bcg = TH.game.make.tileSprite(-woffsetX, -woffsetY, TH.game.world.width + woffsetX * 2,  TH.game.world.height + woffsetY * 2, groundAsset, 0) ;
         wallGroup.add(bcg);
  
        

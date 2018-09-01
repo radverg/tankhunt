@@ -13,6 +13,9 @@ class THGame_CL {
 	shotGroup: ShotGroup_CL = null;
 	playerGroup: PlayerGroup_CL = null;
 
+	private cameraArrowControl: boolean = false;
+	private cameraMoveSpeed: number = 4;
+
 	remove: boolean = false;
 
 
@@ -57,6 +60,25 @@ class THGame_CL {
 
 	update() {
 		this.playerGroup.updateTanks();
+		
+		// Camera control
+		if (!this.game.camera.target) {
+			if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+				this.game.camera.y -= 4;
+			}
+
+			if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
+				this.game.camera.y += 4;
+			}
+
+			if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+				this.game.camera.x -= 4;
+			}
+
+			if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+				this.game.camera.x += 4;
+			}
+		}
 	}
 
 	debug()  {
@@ -245,10 +267,15 @@ class THGame_CL {
     }
 
 
-	setCamera() {
-		
+	setCameraFollow() {
+		this.cameraArrowControl = false;
 		TH.game.camera.follow(this.playerGroup.me.tank);
 		TH.game.camera.lerp.setTo(0.1, 0.1);
+	}
+
+	setCameraFree() {
+		this.cameraArrowControl = true;
+		this.game.camera.unfollow();
 	}
 
 	newPlayerFromPacket(packet: PacketPlayerInfo, dispatchConnected: boolean = true) {
@@ -272,7 +299,7 @@ class THGame_CL {
 		// Check if its me
 		if (packet.id == this.socketManager.getID()) { // If so, make tank blue and bind camera with this
 			this.playerGroup.setMe(player);
-			this.setCamera();
+			this.setCameraFollow();
 		} else { 
 			this.playerGroup.setEnemy(player);
         }

@@ -65,13 +65,23 @@ abstract class Tank_CL extends Sprite {
 		if (this.inCamera) {
 			this.game.camera.shake(0.01);
 		}
+
+		if (this.player.me) {
+			this.game.camera.unfollow();
+		}
+
 		this.explosionEffect();
 	}
 
 	revive(): any {
-		super.revive();
+		this.visible = true;
 		this.shadow.revive();
 		this.turret.revive();
+
+		if (this.player && this.player.me) {
+			this.game.camera.follow(this);
+			this.game.camera.lerp.setTo(0.1);
+		}
 	}
 
 	destroy(): any {

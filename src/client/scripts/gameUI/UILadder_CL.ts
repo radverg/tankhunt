@@ -12,7 +12,7 @@ class UILadder_CL {
     sortKey: string = "inRow";
     sortAsc: boolean = false;
 
-    constructor(game: Phaser.Game, thGame: THGame_CL, slots: number = 6) {
+    constructor(game: Phaser.Game, thGame: THGame_CL, slots: number = 4) {
 
         this.thGame = thGame;
         this.game = game;
@@ -108,9 +108,12 @@ class UILadder_CL {
        let myGrp = this.rankGroups[this.rankGroups.length - 1];
        if (myRank > this.slots - 1) {
            myGrp.visible = true;
+           let nameText = this.getStatsText1(me);
+            let statsText = this.getStatsText2(me);
+
            (<Phaser.Text>myGrp.getChildAt(1)).text = myRank.toString();
-           (<Phaser.Text>myGrp.getChildAt(2)).text = `${me.name} - ${me.stats.inRow} in a row`;
-           (<Phaser.Text>myGrp.getChildAt(3)).text = `Kills: ${me.stats.kills}, Deaths: ${me.stats.deaths}, K/D: ${(me.stats.kills / me.stats.deaths).toFixed(2)}`;
+           (<Phaser.Text>myGrp.getChildAt(2)).text = nameText;
+           (<Phaser.Text>myGrp.getChildAt(3)).text = statsText;
 
        } else {
            myGrp.visible = false;

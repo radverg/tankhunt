@@ -31,6 +31,10 @@ class Arena_CL extends THGame_CL {
 		this.processLevel(packet.level);
 		this.processGameInfo(packet);
 		this.running = true;
+
+		// Camera to center
+		this.game.camera.unfollow();
+		this.game.camera.setPosition(this.game.world.centerX - this.game.camera.view.halfWidth, this.game.world.centerY - this.game.camera.view.halfHeight);
     } 
     /**
 	 * Respawn packet contains:
