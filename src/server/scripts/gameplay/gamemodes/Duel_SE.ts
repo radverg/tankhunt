@@ -117,6 +117,7 @@ class Duel_SE extends THGame_SE {
     }
 
     winPending(winAdept: Player_SE) {
+		if (this.isWinPending) return;
         this.isWinPending = true;
 
         setTimeout(() => {

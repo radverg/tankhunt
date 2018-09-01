@@ -168,7 +168,7 @@ class THGame_CL {
 		let playerHit = this.playerGroup.getPlayer(data.plID);
 		let playerAtt = this.playerGroup.getPlayer(data.plAttID);
 
-		if (data.blast) {
+		if (data.blast && shot) {
 			shot.blast(data);
 		}
 

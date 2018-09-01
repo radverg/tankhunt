@@ -171,7 +171,7 @@ abstract class Tank_CL extends Sprite {
 		let explosionSpr = this.game.add.sprite(this.x, this.y, `explosion${rnd}`);
 		explosionSpr.anchor.setTo(0.5);
 		let expAnim = explosionSpr.animations.add("expAnim", null, 50);
-		expAnim.onComplete.add(function() { this.destroy(); }, expAnim);
+		expAnim.onComplete.add(function() { this.destroy(); }, explosionSpr);
 		expAnim.play();
 
 		// Now animate parts of tank, there are six parts of tank

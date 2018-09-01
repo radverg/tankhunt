@@ -97,9 +97,7 @@ class EffectManager {
     }
 
     wallDebrisEffect(x: number, y: number) {
-        if (!x || !y) {
-            return;
-        }
+       
         let debrisCount = 10;
         let duration = 400;
 
