@@ -65,6 +65,8 @@ class PlayManager_CL extends Phaser.State  {
             return;
         }
 
+        this.camera.flash(0x000000, 1000);
+
         $(this.game.canvas).show();
         $("#menuCont").hide();
         this.input.keyboard.enabled = true;

@@ -96,7 +96,7 @@ class UIDuel_CL {
         btnText.anchor.setTo(0.5); 
         btn.addChild(btnText);
         
-        // Animate button after a delay
+        // Animate button after a delay;;;;;;;;
         this.game.time.events.add(delay, function() {
             game.add.tween(btn.scale).to({ x: 1.2, y: 1 }, 500, Phaser.Easing.Default, true);
         }, this);

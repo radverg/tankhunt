@@ -135,12 +135,12 @@ abstract class Tank_CL extends Sprite {
 		grp.add(this);
 	}
 
-	shotExplodeEffect() {
-		let ang = this.turret.rotation + this.rotation;
+	shotExplodeEffect(shot: Shot_CL) {
+		let ang = (this.visible) ? this.turret.rotation + this.rotation : shot.rotation;
 		let dist = this.turret.height / 1.3;
 
-		let x = this.x + Math.sin(ang) * dist; 
-		let y = this.y - Math.cos(ang) * dist;
+		let x = (this.visible) ? this.x + Math.sin(ang) * dist : shot.x; 
+		let y = (this.visible) ? this.y - Math.cos(ang) * dist : shot.y;
 		let rnd = Math.floor(Math.random() * 5) + 1;
 
 		let explodeSpr = this.game.add.sprite(x, y, `shotExplode${rnd}`);

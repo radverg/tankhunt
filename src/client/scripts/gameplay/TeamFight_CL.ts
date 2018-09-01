@@ -8,6 +8,9 @@ class TeamFight_CL extends THGame_CL {
 
     private caps: { [key: string]: Capture_CL } = { };
 
+    allyCapturedCount: number = 0;
+    enemyCapturedCount: number = 0;
+
     constructor(sm: SocketManager_CL, packet: PacketTeamGameStart) {
         super(sm);
 
@@ -44,6 +47,8 @@ class TeamFight_CL extends THGame_CL {
             this.caps[capSpr.id] = capSpr;
         }
 
+        this.onGameStart.dispatch(packet);
+
     }
 
     processRespawn(data: PacketRespawn) {
@@ -75,10 +80,18 @@ class TeamFight_CL extends THGame_CL {
         if (data.fin) {
             delete this.caps[cap.id];
             cap.fadeOut();
+
             let plr = this.playerGroup.getPlayer(data.plID);
             if (plr) {
                 plr.stats.caps++;
             }
+
+            if (cap.team == this.playerGroup.me.team) {
+                this.allyCapturedCount++;
+            } else {
+                this.enemyCapturedCount++;
+            }
+            
             console.log("Captured!");
         }
 

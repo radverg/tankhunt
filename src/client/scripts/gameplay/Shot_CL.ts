@@ -118,7 +118,7 @@ class APCR_CL extends Shot_CL {
 		
 		// Effects
 		TH.effects.playSound("bum1_sound", 0.4, this.x, this.y);
-		this.ownerPl.tank.shotExplodeEffect();
+		this.ownerPl.tank.shotExplodeEffect(this);
 	}
 
 	stop() {
@@ -213,7 +213,7 @@ class Bouncer_CL extends Shot_CL {
 		this.tweens[0].start();
 
 		TH.effects.playSound("bum1_sound", 0.4, this.x, this.y);
-		this.ownerPl.tank.shotExplodeEffect();
+		this.ownerPl.tank.shotExplodeEffect(this);
 	}
 
 	stop() {
@@ -241,7 +241,7 @@ class PolygonalBouncer_CL extends Bouncer_CL {
 		super.start();
 		this.rotTween.start();
 		TH.effects.playSound("bum1_sound", 0.4, this.x, this.y);
-		this.ownerPl.tank.shotExplodeEffect();
+		this.ownerPl.tank.shotExplodeEffect(this);
 		this.shotGroup.add(this);
 	}
 
