@@ -329,6 +329,7 @@ class THGame_CL {
 	destroy() {
 		TH.thGame = null;
 		this.remove = true;
+		this.running = false;
 		this.tidy();
 		this.shotGroup.destroy(true);
 		this.playerGroup.players = null;
@@ -357,7 +358,6 @@ class THGame_CL {
 	*/
 	leaveToMenu() {
 		this.onLeave.dispatch();
-		this.running = false;
 		this.destroy();
 		TH.game.state.start("menu");
 	}

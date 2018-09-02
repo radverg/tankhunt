@@ -20,6 +20,7 @@ class TeamFight_SE extends THGame_SE {
     private debug: boolean = true;
 
     private respawnTime: number = 5000;
+    private health: number = 2000;
 
     private caps: { [key: string]: Capture_SE } = { };
 
@@ -36,16 +37,16 @@ class TeamFight_SE extends THGame_SE {
         this.level.parseJSONLevel("team1");
 
         // Generate caps
-        for (let i = 0; i < this.capsPerTeam * 2; i++) {
+        let capSqueres1 = this.level.getRandomUniqueSquares(3, 0, this.level.tilesCountX / 2 - 1, this.level.tilesCountY - 1, this.capsPerTeam);
+        let capSqueres2 = this.level.getRandomUniqueSquares(this.level.tilesCountX / 2, 0, this.level.tilesCountX - 4, this.level.tilesCountY - 1, this.capsPerTeam);
 
-            let team = (i < this.capsPerTeam) ? 1 : 2;
-            let sqrX = (team == 1) ? getRandomInt(3, this.level.tilesCountX / 2 - 1) : getRandomInt(this.level.tilesCountX / 2, this.level.tilesCountX - 4);
-            let sqrY = getRandomInt(0, this.level.tilesCountY - 1);
-            let cap = new Capture_SE(sqrX, sqrY, this.level.squareSize, team, this.capTime);
+        for (let i = 0; i < this.capsPerTeam; i++) {
 
-            this.caps[cap.id] = cap;
+            let cap1 = new Capture_SE(capSqueres1[i].sqrX, capSqueres1[i].y, this.level.squareSize, 1, this.capTime);
+            let cap2 = new Capture_SE(capSqueres2[i].sqrX, capSqueres2[i].y, this.level.squareSize, 2, this.capTime);
 
-            
+            this.caps[cap1.id] = cap1;
+            this.caps[cap2.id] = cap2;          
         }
 
         console.log("Generating caps...");
@@ -82,6 +83,8 @@ class TeamFight_SE extends THGame_SE {
 
             plr.tank.setPos(spos.x,  spos.y);
             plr.tank.randomizeAngle();
+            plr.tank.maxHealth = this.health;
+            plr.tank.health = this.health;
           
         }
 
@@ -196,7 +199,7 @@ class TeamFight_SE extends THGame_SE {
                     let wasKilled = hitPack.healthAft <= 0;
 
                     if (wasKilled) {
-                        hitPack.resTime = this.respawnTime;
+                        hitPack.resTime = this.countResTime();
                         healPack = { } as any;
                     }
 
@@ -208,7 +211,7 @@ class TeamFight_SE extends THGame_SE {
                        // this.emitHeal(healPack);
                     }
 
-                    if (hitPack.healthAft <= 0) {
+                    if (wasKilled) {
                         // Respawn player cus he's dead
                         // In arena, new health of attacker needs to be counted
                         this.respawn(this.players[pl]);
@@ -240,12 +243,21 @@ class TeamFight_SE extends THGame_SE {
 
             player.tank.setPos(spos.x,  spos.y);
             player.alive = true;
+            player.tank.health = player.tank.maxHealth;
 
             var packet: PacketRespawn = player.tank.getStatePacket() as PacketRespawn;
+            packet.health = player.tank.health;
         
             this.emitRespawn(packet);
 
         }, this.respawnTime);
+    }
+
+    countResTime() {
+        let delta = Date.now() - this.startTime;
+        let halfMins = Math.round(delta / 30000);
+
+        return Math.min(3 + halfMins, 40) * 1000;
     }
 
     handleCapture(player: Player_SE): PacketCapture | null {

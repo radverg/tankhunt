@@ -63,7 +63,7 @@ class LaserDirect_CL extends Shot_CL {
 		super(dataPack, "lasers");
 
 		this.anchor.set(0.5, 0);
-		this.width = 0.13 * TH.sizeCoeff;
+		this.width = 14;
 		this.rotation += Math.PI;
 		this.speed = dataPack.speed * TH.sizeCoeff;
 
@@ -226,27 +226,28 @@ class PolygonalBouncer_CL extends Bouncer_CL {
 	private rotTween: Phaser.Tween;
 
 	constructor(dataPack: PacketBouncerShotStart) {
-		super(dataPack, "blackRect");
+		super(dataPack, "shotDarker");
 
 		this.anchor.setTo(0.5);
-		this.width = 0.2 * TH.sizeCoeff;
-		this.height = 0.2 * TH.sizeCoeff;
+		// this.width = 0.2 * TH.sizeCoeff;
+		// this.height = 0.2 * TH.sizeCoeff;
+		this.scale.setTo(0.8, 0.4);
 
-		// This shot should be rotating
-		this.rotTween = this.game.add.tween(this);
-		this.rotTween.to({ rotation: 100 }, 6000);
+		// // This shot should be rotating
+		// this.rotTween = this.game.add.tween(this);
+		// this.rotTween.to({ rotation: 100 }, 6000);
 	}
 
 	start() {
 		super.start();
-		this.rotTween.start();
+		// this.rotTween.start();
 		TH.effects.playSound("bum1_sound", 0.4, this.x, this.y);
 		this.ownerPl.tank.shotExplodeEffect(this);
 		this.shotGroup.add(this);
 	}
 
 	stop() {
-		this.rotTween.stop();
+		// this.rotTween.stop();
 		this.destroy();
 	}
 }
@@ -261,8 +262,6 @@ class Eliminator_CL extends Bouncer_CL {
 
 		this.anchor.setTo(0.5);
 		this.scale.setTo(0.8);
-
-		this.rotation += Math.PI;
 
 		this.splintersData = dataPack.spl;
 		this.splinterTime = dataPack.splTime;
@@ -336,7 +335,7 @@ class BouncingLaser_CL extends Bouncer_CL {
 		lineSpr.frame = this.ownerPl.tank.defaultColorIndex;
 		lineSpr.anchor.setTo(0.5, 0);
 		lineSpr.rotation = pt1.ang + Math.PI;
-		lineSpr.width = 0.2 * TH.sizeCoeff;
+		lineSpr.width = 14;
 
 		let dist = TH.game.math.distance(pt1.x, pt1.y, pt2.x, pt2.y);
 		let time = (dist / this.speed) * 1000;

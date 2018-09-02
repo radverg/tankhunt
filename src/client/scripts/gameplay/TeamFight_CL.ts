@@ -100,7 +100,8 @@ class TeamFight_CL extends THGame_CL {
     }
 
     processGameFinish(data: PacketGameFinish) {
-        console.log("Game over!");
+        
+        this.onGameFinish.dispatch(data);
     }
 
     destroy() {

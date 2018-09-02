@@ -158,7 +158,7 @@ abstract class Tank_CL extends Sprite {
 		explodeSpr.scale.setTo(0.4);
 		explodeSpr.rotation = ang;
 
-		let expAnim = explodeSpr.animations.add("shotExplode", null, 40);
+		let expAnim = explodeSpr.animations.add("shotExplode", null, 60);
 		expAnim.onComplete.add(function() { this.destroy(); }, explodeSpr);
 		expAnim.play();
 

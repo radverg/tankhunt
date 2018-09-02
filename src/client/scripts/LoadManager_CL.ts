@@ -71,6 +71,10 @@ class LoadManager_CL extends Phaser.State  {
 			{ assetName: "wallSideTriple", path: imagesPath + "wall_side_triple.png", frameSizeX: 1187, frameSizeY: 94, frameCount: 3 },
 			{ assetName: "wallSideTripleAdv", path: imagesPath + "side_wall_triple_adv.png", frameSizeX: 1778, frameSizeY: 108, frameCount: 3 },
 
+			// Wall test
+			{ assetName: "wallTest", path: imagesPath + "wall_test.png", frameSizeX: 580, frameSizeY: 120, frameCount: 3 },
+
+
 			{ assetName: "wallTriple", path: imagesPath + "wall_triple.png", frameSizeX: 272, frameSizeY: 24, frameCount: 3 },
 
 			{ assetName: "wallDebris", path: imagesPath + "wall_debris.png", frameSizeX: 40, frameSizeY: 40, frameCount: 10 },

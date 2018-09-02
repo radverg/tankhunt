@@ -1,5 +1,5 @@
 import { Rect, Vec2 } from "./utils/Geometry_SE";
-import { dist } from "./utils/MyMath_SE";
+import { dist, getRandomInt } from "./utils/MyMath_SE";
 import { Tank_SE } from "./Tank_SE";
 var Levels : Lvls = require("../../../shared/Levels");
 
@@ -477,6 +477,35 @@ class Level_SE {
     getRandomSpawn2(width: number, height: number) {
         var index = Math.floor(Math.random() * this.spawns2.length);
         return this.getRandomSpawnPos(this.spawns2[index].x, this.spawns2[index].y, width, height);
+    }
+
+    /**
+     * Gets unique square by bruteforcing method, can generate very long or infinite loops
+     * if too high count is specified
+     * @param minX 
+     * @param minY 
+     * @param maxX 
+     * @param maxY 
+     * @param count 
+     */
+    getRandomUniqueSquares(minX: number, minY: number, maxX: number, maxY: number, count: number) {
+        let final: any[] = [];
+
+        for (let i = 0; i < count; i++) {
+            let sqrX: number;
+            let sqrY: number;
+
+            do {
+                sqrX = getRandomInt(minX, maxX);
+                sqrY = getRandomInt(minY, maxY);
+            }
+            while (final.filter((value) => { return (value.sqrX == sqrX && value.sqrY == sqrY) }).length > 0);
+
+            final.push({ sqrX: sqrX, sqrY: sqrY });
+            
+        }
+
+       return final;
     }
 
     getRandomSpawnItems(width: number, height: number) {

@@ -5,6 +5,7 @@ class Level_CL {
     private tilesCountX: number;
     private tilesCountY: number;
     private wallThickness: number;
+    private wallGroup: Phaser.Group;
 
     getSqrSize() {
         return this.squareSize;
@@ -14,6 +15,7 @@ class Level_CL {
         let jsonLvl = null;
 
         wallGroup.removeAll(true);
+        this.wallGroup = wallGroup;
        
 
          // Parse string representation of the level to the object
@@ -62,6 +64,7 @@ class Level_CL {
             
 
             let wallSpr = TH.game.make.sprite(x, y, "wallTriple");
+            wallSpr.autoCull = true; // !!!!!!!!!!!!!
             wallSpr.frame = wallFrame;
             wallSpr.width = wallWidth;
             wallSpr.height = wallHeight;
@@ -81,14 +84,23 @@ class Level_CL {
         }
         // -------------------------------------------------------
 
-         // Borders --------------------------------------------------------
-        let targetSize = 1777;
-        let borderCount = Math.round(lvlWidth / targetSize);
+        this.generateBorders();
+       
+        console.log("Level parsed!");
+
+    }
+
+    generateBorders() {
+        // Borders --------------------------------------------------------
+        let lvlWidth = this.tilesCountX * this.squareSize;
+        let lvlHeight = this.tilesCountY * this.squareSize;
+        let targetSize = 580;
+        let borderCount = Math.ceil(lvlWidth / targetSize);
         let realSize = lvlWidth / borderCount;
         let thickness = null;
-        let trim = 20;
-        let borderAsset =  "wallSideTripleAdv"; // `wallSide${Math.floor(Math.random() * 3) + 1}`;
-        let borderFrame = Math.floor(Math.random() * 3);
+        let trim = 30;
+        let borderAsset =  "wallTest"; // `wallSide${Math.floor(Math.random() * 3) + 1}`;
+        let borderNum = 0; // Math.floor(Math.random() * 3);
 
         // Horizontals
         for (let i = 0; i < borderCount; i++) {
@@ -99,7 +111,8 @@ class Level_CL {
             spr1.scale.y = spr1.scale.x;
             thickness = spr1.height;
             spr1.y = -thickness / 2 + trim;
-            spr1.frame = borderFrame;
+            let frm = borderNum * 3 + (i % 3);
+            spr1.frame = frm;
         
             // Bottom
             let spr2 = TH.game.make.sprite((realSize * i) + realSize / 2, 0, borderAsset);
@@ -107,16 +120,16 @@ class Level_CL {
             spr2.width = realSize;
             spr2.scale.y = spr2.scale.x;
             spr2.y = lvlHeight + thickness / 2 - trim;
-            spr2.frame = borderFrame;
+            spr2.frame = frm;
 
-            wallGroup.add(spr1);
-            wallGroup.add(spr2);
+            this.wallGroup.add(spr1);
+            this.wallGroup.add(spr2);
             
         }
 
         // Verticals
-        let thck = thickness - trim;
-        borderCount = Math.round((lvlHeight + thck * 2) / targetSize);
+        let thck = thickness - trim * 1.65;
+        borderCount = Math.ceil((lvlHeight + thck * 2) / targetSize);
         realSize = (lvlHeight + (thck * 2)) / borderCount; 
         let verThickness = null;
 
@@ -129,7 +142,8 @@ class Level_CL {
             spr1.scale.y = spr1.scale.x;
             verThickness = spr1.height;
             spr1.x = -verThickness / 2 + trim;
-            spr1.frame = borderFrame;
+            let frm = borderNum * 3 + (i % 3);
+            spr1.frame = frm;
 
 
             // Right
@@ -138,16 +152,14 @@ class Level_CL {
             spr2.width = realSize;
             spr2.rotation = Math.PI / 2;
             spr2.scale.y = spr2.scale.x;
-            spr2.frame = borderFrame;
+            spr2.frame = frm;
 
 
-            wallGroup.add(spr1);
-            wallGroup.add(spr2);
+            this.wallGroup.add(spr1);
+            this.wallGroup.add(spr2);
             
         }
         // -----------------------------------------------------
-
-        console.log("Level parsed!");
-
     }
+
 }

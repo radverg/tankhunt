@@ -102,13 +102,18 @@ interface PacketShotStart extends PacketGameObject {
 }
 
 interface PacketHeal {
-    plID: string, 
+    plID?: string, 
 
-    healthBef: number,
-    healthAft: number,
+    healthBef?: number,
+    healthAft?: number,
 
-    maxHealthBef: number,
-    maxHealthAft: number
+    maxHealthBef?: number,
+    maxHealthAft?: number,
+
+    /**
+     * Is this global team heal?
+     */
+    tm?: number
 }
 
 interface WayPoint {

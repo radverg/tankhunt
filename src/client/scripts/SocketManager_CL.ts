@@ -4,6 +4,8 @@ class SocketManager_CL {
     public th: TH;
     
     private socket: SocketIOClient.Socket | null = null;
+
+    private firstConnection: boolean = true;
     
     constructor(tankhunt: TH) {
         this.th = tankhunt;
@@ -31,7 +33,7 @@ class SocketManager_CL {
     initSocket() {
         var that = this;
         
-        this.socket.on("connect", this.onConnection);
+        this.socket.on("connect", (socket: SocketIOClient.Socket) => { this.onConnection(socket); });
         this.socket.on("disconnect", function() { console.log("Disconnected!"); });
         
         this.socket.on("movableState", function(data: PacketMovable) { if (that.th.playManager.thGame) that.th.playManager.thGame.processStateInfo(data); });
@@ -65,7 +67,18 @@ class SocketManager_CL {
      * Called when Websocket connection is established, this refers to the new socket
      */
     onConnection(socket: SocketIOClient.Socket) {
-        console.log("Connected to the server!");// + socket.id);
+        if (this.firstConnection) {
+            console.log("Connected to the server!");// + socket.id);
+            this.firstConnection = false;
+        }
+        else {
+            // This is reconnection!
+            console.log("Reconnected!");
+            if (this.th.playManager.thGame) {
+                this.th.playManager.thGame.destroy();
+                TH.game.state.start("menu");
+            }
+        }
     }
 
     /**
