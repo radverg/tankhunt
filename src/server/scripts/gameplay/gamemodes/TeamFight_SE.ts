@@ -12,6 +12,7 @@ class TeamFight_SE extends THGame_SE {
 
     private capsPerTeam: number = 10;
     private capTime: number = 4000;
+
     private team1Caps: number = 0;
     private team2Caps: number = 0;
 
@@ -42,8 +43,8 @@ class TeamFight_SE extends THGame_SE {
 
         for (let i = 0; i < this.capsPerTeam; i++) {
 
-            let cap1 = new Capture_SE(capSqueres1[i].sqrX, capSqueres1[i].y, this.level.squareSize, 1, this.capTime);
-            let cap2 = new Capture_SE(capSqueres2[i].sqrX, capSqueres2[i].y, this.level.squareSize, 2, this.capTime);
+            let cap1 = new Capture_SE(capSqueres1[i].sqrX, capSqueres1[i].sqrY, this.level.squareSize, 1, this.capTime);
+            let cap2 = new Capture_SE(capSqueres2[i].sqrX, capSqueres2[i].sqrY, this.level.squareSize, 2, this.capTime);
 
             this.caps[cap1.id] = cap1;
             this.caps[cap2.id] = cap2;          
@@ -276,8 +277,8 @@ class TeamFight_SE extends THGame_SE {
             } else {
                 // Standing still...
                 if (cap.isCaptured()) {
-                    if (cap.team === 1) this.team1Caps++;
-                    else this.team2Caps++;
+                    if (cap.team === 1) this.team2Caps++;
+                    else this.team1Caps++;
                     this.checkFinish();
                     return cap.finishCapturing();   
                 }

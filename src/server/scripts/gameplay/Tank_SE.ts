@@ -90,12 +90,16 @@ class Tank_SE extends GameObject_SE {
 	getStatePacket(): PacketTank {
 		var pack: PacketTank = super.getStatePacket() as PacketTank;
 		
-		pack.turrRot = this.turret.angle;
+		pack.turrRot = parseFloat(this.turret.angle.toFixed(4));
 		pack.plID = this.owner.id;
 
 		return pack;
 	}
 
+	// getQuickStatePacket(): PacketTank {
+
+	// }
+ 
 	stopCompletely() {
 		this.stopRotation();
 		super.stop();

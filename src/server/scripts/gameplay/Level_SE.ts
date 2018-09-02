@@ -546,4 +546,24 @@ class Level_SE {
     }
 }
 
-export { Level_SE };
+class LoadedLevels {
+
+    private static loaded: boolean = false;
+
+    [key: string]: Level_SE;
+
+    public static loadAll() {
+        for (const lvlname in Levels) {
+            let ll: any = LoadedLevels;
+            ll[lvlname] = new Level_SE();
+            ll[lvlname].parseJSONLevel(lvlname);
+        }
+
+        this.loaded = true;
+    }
+}
+
+LoadedLevels.loadAll();
+console.info("Loading levels...");
+
+export { Level_SE, LoadedLevels };

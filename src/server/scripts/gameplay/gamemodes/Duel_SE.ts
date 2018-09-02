@@ -1,7 +1,7 @@
 import { THGame_SE } from "./THGame_SE";
 import { Player_SE } from "../Player_SE";
 import { Tank_SE } from "../Tank_SE";
-import { Level_SE } from "../Level_SE";
+import { Level_SE, LoadedLevels } from "../Level_SE";
 import { getRandomInt } from "../utils/MyMath_SE";
 
 class Duel_SE extends THGame_SE {
@@ -33,10 +33,11 @@ class Duel_SE extends THGame_SE {
 
         // Generate levels
         for (let i = 0; i < this.duelMapCount; i++) {
-            let newLvl = new Level_SE();
-            newLvl.parseJSONLevel(`duel${i+1}`);
-            this.levels.push(newLvl);
-            
+            // let newLvl = new Level_SE();
+            // newLvl.parseJSONLevel(`duel${i+1}`);
+            // this.levels.push(newLvl);
+            let ll: any = LoadedLevels;
+            this.levels.push(ll[`duel${i+1}`]);
         }
 
         this.itemManager.maxItems = 8;

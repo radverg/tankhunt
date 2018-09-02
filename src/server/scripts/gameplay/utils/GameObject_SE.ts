@@ -119,9 +119,9 @@ class GameObject_SE {
     getStatePacket(): PacketGameObject {
         return  {
             id: this._id,
-            x: this.x,
-            y: this.y,
-            rot: this.angle
+            x: parseFloat(this.x.toFixed(4)),
+            y: parseFloat(this.y.toFixed(4)),
+            rot: parseFloat(this.angle.toFixed(4))
         }
     }
 }

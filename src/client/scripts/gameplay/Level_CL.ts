@@ -44,7 +44,7 @@ class Level_CL {
             (lvlHeight) + 2 * woffsetY);
             
         // Now add background
-        let groundAsset = `ground${Math.floor(Math.random() * 7) + 1}`
+        let groundAsset = `ground${Math.floor(Math.random() * 7) + 1}`;
         let outBack = 1000; 
         
 		let bcg = TH.game.make.tileSprite(-woffsetX, -woffsetY, TH.game.world.width + woffsetX * 2,  TH.game.world.height + woffsetY * 2, groundAsset, 0) ;

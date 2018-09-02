@@ -1,6 +1,6 @@
 import { Player_SE } from "../Player_SE";
 import { ItemManager_SE } from "../ItemManager_SE";
-import { Level_SE } from "../Level_SE";
+import { Level_SE, LoadedLevels } from "../Level_SE";
 import { Tank_SE } from "../Tank_SE";
 import { Shot_SE } from "../Shot_SE";
 import { THGame_SE } from "./THGame_SE";
@@ -21,8 +21,10 @@ class Arena_SE extends THGame_SE {
         this.capacity = capacity || 10;
         this.running = true;
         this.itemManager.startSpawning();
-        this.level = new Level_SE();
-        this.level.parseJSONLevel("arena2");  
+        //this.level = new Level_SE();
+        //this.level.parseJSONLevel("arena2");
+        let ll: any = LoadedLevels;  
+        this.level = ll["arena2"];
 
         console.log("Starting Arena game...");  
     }
