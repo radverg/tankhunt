@@ -1,11 +1,11 @@
 
 class UINotification_CL {
 
-    private topGroup: Phaser.Group;
-    private logGroup: Phaser.Group;
+    protected topGroup: Phaser.Group;
+    protected logGroup: Phaser.Group;
 
-    private game: Phaser.Game;
-    private thGame: THGame_CL;
+    protected game: Phaser.Game;
+    protected thGame: THGame_CL;
 
     displayInRow: boolean = true;
 
@@ -34,7 +34,7 @@ class UINotification_CL {
         this.thGame.onNewPlayerConnected.add(function(player: Player_CL) { this.logText(`Player ${player.name} has joined the game!`)}, this);
     }
 
-    private playerHit(packet: PacketShotHit, player: Player_CL) {
+    protected playerHit(packet: PacketShotHit, player: Player_CL) {
         let attacker = this.thGame.playerGroup.getPlayer(packet.plAttID);
         
         if (packet.healthAft === 0) {

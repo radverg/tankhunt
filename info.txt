@@ -12,3 +12,5 @@ Dev log:
 - Přidáno menu
 - Přidán chat do menu i do hry
 - Vytvořen loading screen
+- Vytvořen informační panel
+- Přidán herní mód "Team fight"

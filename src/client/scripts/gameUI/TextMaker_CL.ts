@@ -33,6 +33,37 @@ class TextMaker_CL {
         return textSprite;
     }
 
+    static goTextBigUp(text: string, x: number, y: number, color: string = "#216ae0") {
+        let offsetInitial = 30;
+        let offset = 300;
+        let middleOffset = 2;
+        let duration = 3500;
+
+        let textSpr = TH.game.make.text(x, y + offsetInitial, text);
+
+        textSpr.font = "Orbitron";
+        textSpr.fontSize = 27;
+        textSpr.stroke = "black";
+        textSpr.strokeThickness = 3;
+        textSpr.anchor.setTo(0.5);
+        textSpr.fill = color;
+        textSpr.setShadow(0, 0, "black", 10);
+        textSpr.alpha = 0;
+        
+        // Move  and show
+        let firstTwn = TH.game.add.tween(textSpr).to({y: y, alpha: 1 }, 300);
+        let secondTwn = TH.game.add.tween(textSpr).to({ x: x - middleOffset }, 2500);
+        let thirdTween = TH.game.add.tween(textSpr).to({ alpha: 0 }, 300);
+        thirdTween.onComplete.add(function() { this.destroy(); }, textSpr);
+
+        firstTwn.chain(secondTwn, thirdTween);
+
+        firstTwn.start();
+
+
+        return textSpr;
+    }
+
     static goTextBig(text: string, x: number, y: number, goRight: boolean = false, color: string = "#216ae0"): Phaser.Text {
         let offsetInitial = 500;
         let offset = 300;

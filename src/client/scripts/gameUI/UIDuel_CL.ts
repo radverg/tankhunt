@@ -4,6 +4,7 @@ class UIDuel_CL {
     private uiLadder: UILadderDuel_CL;
     private uiCountDown: UICountdown_CL;
     private uiStats: UIStatsTable_CL;
+    private uiChat: UIGameChat_CL;
     private uiPlayerManager: UIPlayerManager_CL;
     private centerGrp: Phaser.Group;
 
@@ -15,6 +16,7 @@ class UIDuel_CL {
         this.uiLadder = new UILadderDuel_CL(phaserGame, thGame);
         this.uiStats = new UIStatsTable_CL(thGame, ["wins", "kills", "deaths", "suic", "dmgD", "dmgR"], "wins");
         this.uiPlayerManager = new UIPlayerManager_CL(phaserGame, thGame);
+        this.uiChat = new UIGameChat_CL(phaserGame, thGame);
         this.thGame.onGameFinish.add(this.uiPlayerManager.updateAllBars, this.uiPlayerManager);
         
         this.centerGrp = new Phaser.Group(phaserGame);
@@ -67,7 +69,7 @@ class UIDuel_CL {
             let overlaySpr: Phaser.Sprite = this.centerGrp.create(0, 0, "blackRect");
             overlaySpr.alpha = 0.5;
             overlaySpr.height = this.game.camera.view.height;
-            overlaySpr.width = this.game.camera.view.width * 0.65;
+            overlaySpr.width = this.game.camera.view.width * 0.8;
             overlaySpr.anchor.setTo(0.5, 0);
 
             if (packet.winnerID == this.thGame.playerGroup.me.id) {

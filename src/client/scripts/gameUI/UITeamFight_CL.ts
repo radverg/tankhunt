@@ -8,14 +8,20 @@ class UITeamFight_CL {
     private centerGrp: Phaser.Group;
 
     private uiStats: UIStatsTable_CL;
-    private uiNotification: UINotification_CL;
+    private uiNotification: UITeamNotification_CL;
     private uiChat: UIGameChat_CL;
     private uiPlayerManager: UIPlayerManager_CL;
+
+    private team1List: Phaser.Group;
+    private team2List: Phaser.Group;
 
     private capBarMe: Phaser.Group;
     private capBarEnemy: Phaser.Group;
     private capSquareGrpMe: Phaser.Group;
     private capSquareGrpEnemy: Phaser.Group;
+
+    private countDownText: Phaser.Text;
+    private countDownTimer: Phaser.Timer;
 
     constructor(phaserGame: Phaser.Game, thGame: TeamFight_CL) {
         this.game = phaserGame;
@@ -29,31 +35,39 @@ class UITeamFight_CL {
         this.thGame.onCapture.add(this.uiStats.refresh, this.uiStats);
 
         this.uiChat = new UIGameChat_CL(phaserGame, thGame);
-        this.uiNotification = new UINotification_CL(phaserGame, thGame);
+        this.uiNotification = new UITeamNotification_CL(phaserGame, thGame);
         this.uiNotification.displayInRow = false;
         this.uiPlayerManager = new UIPlayerManager_CL(phaserGame, thGame);
 
         this.thGame.onGameFinish.add(this.gameFinish, this);
         this.thGame.onCapture.add(this.captureCallback, this);
+        this.thGame.onHit.add(this.hitCallback, this);
         thGame.onGameStart.addOnce(this.init, this);
 
 
         this.capBarMe = new Phaser.Group(phaserGame);
         this.capBarEnemy = new Phaser.Group(phaserGame);
 
+        this.team1List = new Phaser.Group(phaserGame);
+        this.team2List = new Phaser.Group(phaserGame);
+
         this.capBarMe.fixedToCamera = true;
         this.capBarEnemy.fixedToCamera = true;
 
+        // this.countDownText = phaserGame.make.text(0, 200, "1");
+        // this.countDownText.anchor.set(0.5);
+        // this.countDownText.fontSize = 40;
+        // this.centerGrp.add(this.countDownText);
         
 
     }
 
     init(packet: PacketTeamGameStart) {
-        this.capBarMe.cameraOffset.setTo(200, 10);
+        this.capBarMe.cameraOffset.setTo(850, 10);
         let text = this.game.make.text(-180, 5, "Our caps:");
         this.capBarMe.add(text);
 
-        this.capBarEnemy.cameraOffset.setTo(200, 50);
+        this.capBarEnemy.cameraOffset.setTo(850, 50);
         let text2 = this.game.make.text(-180, 5, "Enemy caps:");
         this.capBarEnemy.add(text2);
        
@@ -89,6 +103,8 @@ class UITeamFight_CL {
             capSqr.height = sqrHeight;
             
         }
+
+        this.generatePlayerList();
     }
 
     gameFinish(packet: PacketGameFinish) {
@@ -97,7 +113,7 @@ class UITeamFight_CL {
         let overlaySpr: Phaser.Sprite = this.centerGrp.create(0, 0, "blackRect");
             overlaySpr.alpha = 0.5;
             overlaySpr.height = this.game.camera.view.height;
-            overlaySpr.width = this.game.camera.view.width * 0.65;
+            overlaySpr.width = this.game.camera.view.width * 0.8;
             overlaySpr.anchor.setTo(0.5, 0);
 
             if (win) {
@@ -112,6 +128,48 @@ class UITeamFight_CL {
             this.addMainMenuButton(1500);
 
             this.uiStats.show();
+    }
+
+    private generatePlayerList() {
+
+        let plrs = this.thGame.playerGroup.players;
+        let sizeY = 50;
+        let sizeX = 180;
+
+        this.team1List.fixedToCamera = true;
+        this.team1List.cameraOffset.setTo(0);
+
+        this.team2List.fixedToCamera = true;
+        this.team2List.cameraOffset.setTo(this.game.camera.view.width - sizeX, 0);
+
+        
+
+        for (const key in plrs) {
+            let plr = plrs[key];
+            let cont = (plr.team == 1) ? this.team1List : this.team2List;
+
+            let grp = new Phaser.Group(this.game, cont);
+            grp.name = key;
+            grp.y = sizeY * (cont.children.length - 1);
+            let bg = grp.create(0, 0, "whiteRect");
+            bg.height = sizeY;
+            bg.width = sizeX;
+            bg.tint = (plr.me) ? 0x0000ff : (plr.team == this.thGame.playerGroup.me.team) ? 0x00ff00 : 0xff0000;
+            let text = this.game.make.text(10, 0, plr.name);
+            grp.add(text);
+
+            // Strip
+            let bgStrip = grp.create(0, sizeY, "blackRect");
+            bgStrip.height = 10;
+            bgStrip.width = sizeX;
+            bgStrip.anchor.y = 1;
+            let fgStrip = grp.create(0, sizeY - 3, "whiteRect");
+            fgStrip.height = 7;
+            fgStrip.width = sizeX;
+            fgStrip.anchor.y = 1;
+
+
+        }
     }
 
     private addMainMenuButton(delay: number) {
@@ -129,6 +187,23 @@ class UITeamFight_CL {
         this.game.time.events.add(delay, function() {
             game.add.tween(btn.scale).to({ x: 1.2, y: 1 }, 500, Phaser.Easing.Default, true);
         }, this);
+    }
+
+    private hitCallback(packet: PacketShotHit) {
+        let pl = this.thGame.playerGroup.getPlayer(packet.plID);
+        if (!pl) return;
+
+        if (packet.healthAft <= 0) {
+            // Somebody died, find his ui strip
+            let searchGrp = (pl.team == 1) ? this.team1List : this.team2List;
+            let stripGrp: Phaser.Group = searchGrp.filter((child: Phaser.Group) => { return child.name === pl.id }).first;
+            let barF = stripGrp.getChildAt(3) as Phaser.Sprite;
+            let barB = stripGrp.getChildAt(2) as Phaser.Sprite;
+            barF.width = 0;
+            this.game.add.tween(barF).to( { width: barB.width }, packet.resTime, Phaser.Easing.Default, true);
+        }
+
+       
     }
 
     private mainMenuCallback() {
