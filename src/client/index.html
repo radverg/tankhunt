@@ -51,7 +51,8 @@
     <script type="text/javascript" src="scripts/gameUI/UIDuel_CL.js"></script>
     <script type="text/javascript" src="scripts/gameUI/UIStatsTable_CL.js"></script>
     <script type="text/javascript" src="scripts/gameUI/HealthBar_CL.js"></script>
-    <script type="text/javascript" src="../../shared/Data.js"></script>
+    <script type="text/javascript" src="scripts/gameUI/UITeamNotification_CL.js"></script>
+
     <script type="text/javascript" src="../../shared/Levels.js"></script>
     
     <script src="scripts/Run_CL.js"></script>
@@ -88,8 +89,7 @@
                 <img class="modeThumb" src="assets/images/thumb_duel.png">
                 <div class="modeDesc">
                     <h3>Duel</h3>
-                    <p>Challenge other player and try to win specified amount of rounds before him. No health, no armor. To win a round, stay alive for a few seconds 
-                        after enemy is killed.<br></p>
+                    <p>Challenge other player and try to win specified amount of rounds before him.<br></p>
                 </div>
 
                 <div class="modeEnd">
@@ -101,14 +101,15 @@
         <div class="gameMode noTopBorder" id="teamMode">
                 <div class="pendingCover" id="coverTeam"></div>
 
-                <!-- <img class="modeThumb" src="assets/images/thumb_duel.png"> -->
+                <img class="modeThumb" src="assets/images/thumb_team_fight.png">
                 <div class="modeDesc">
                     <h3>Team fight - DEBUGGING</h3>
-                    <p><br></p>
+                    <p>Capture all of the enemy flags before enemy captures yours.<br></p>
                 </div>
 
                 <div class="modeEnd">
-                        Games: <span id="duelGames">0</span>
+                        <div>Games: <span id="teamGames">0</span></div>
+                        <div>Queue: <span id="teamQueue">0</span></div>
                 </div>
 
         </div>
@@ -143,6 +144,7 @@
             <li>TAB - Hold to show statistics in a game</li>
             <li>CTRL - Hide or show this panel</li>
             <li>F11 - Toggle fullscreen</li>
+            <li>ENTER - chat</li>
         </ul>
 
         <h2>Game modes:</h2>
@@ -154,9 +156,7 @@
         </p>
 
         <p><strong>Duel</strong> - 
-            In this game you fight one opponent in quick rounds. The one who first reaches specified amount of subvictories wins the whole game.
-            To win a round, kill your enemy and survive a few seconds. Then the map is changed and a new round starts. There is no health and no armor in the Duel, 
-            so every hit results in kill.
+            
         </p>
         
     </div>

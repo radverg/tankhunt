@@ -12,11 +12,11 @@ class DefaultTank_CL extends Tank_CL {
 	private currAnimName: string = "tracks1";
 
 	constructor() {
-		super(Data.DefaultTank.asset);
+		super("tankBodys");
 
-		this.anchor.setTo(Data.DefaultTank.anchorX, Data.DefaultTank.anchorY);
-		this.width = Data.DefaultTank.sizeX * TH.sizeCoeff;
-		this.height = Data.DefaultTank.sizeY * TH.sizeCoeff;
+		this.anchor.setTo(0.5);
+		this.width = TH.sizeCoeff;
+		this.height = 1.4375 * TH.sizeCoeff;
 
 		this.shadow.width = this.width + 20;
 		this.shadow.height = this.height + 20;

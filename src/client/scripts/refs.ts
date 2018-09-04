@@ -7,6 +7,7 @@
 /// <reference path="TankHunt_CL.ts" />
 
 /// <reference path="gameplay/Arena_CL.ts" />
+/// <reference path="gameplay/Capture_CL.ts" />
 /// <reference path="gameplay/DefaultTank_CL.ts" />
 /// <reference path="gameplay/Item_CL.ts" />
 /// <reference path="gameplay/ItemGroup_CL.ts" />
@@ -17,6 +18,7 @@
 /// <reference path="gameplay/ShotGroup_CL.ts" />
 /// <reference path="gameplay/THGame_CL.ts" />
 /// <reference path="gameplay/Tank_CL.ts" />
+/// <reference path="gameplay/TeamFight_CL.ts" />
 /// <reference path="gameplay/Stats_CL.ts" />
 
 /// <reference path="utils/Sprite_CL.ts" />
@@ -32,9 +34,9 @@
 /// <reference path="gameUI/UICountdown_CL.ts" />
 /// <reference path="gameUI/UIDuel_CL.ts" />
 /// <reference path="gameUI/UIStatsTable_CL.ts" />
+/// <reference path="gameUI/UITeamFight_CL.ts" />
+/// <reference path="gameUI/UITeamNotification_CL.ts" />
 
-
-/// <reference path="../../shared/Data.ts" />
 /// <reference path="../../shared/Packets.ts" />
 
 /// <reference path="Run_CL.ts" />

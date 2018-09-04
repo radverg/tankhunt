@@ -3,9 +3,6 @@ import { THGame_SE } from "./gamemodes/THGame_SE";
 import { Tank_SE } from "./Tank_SE";
 import { Weapon_SE, Guns, Invisibility_SE } from "./Weapon_SE";
 
-
-var Data : Dat = require("../../../shared/Data"); 
-
 /**
  * Item manager can be used to manage items in the game.
  * To continually spawn items, startSpawning() method has to be called and also
@@ -18,6 +15,8 @@ class ItemManager_SE {
     lastTimeSpawn: number = Date.now();
     spawning: boolean = false;
     maxItems: number;
+
+    private itemSize: number = 0.9;
 
     spawnPossibilities: any[] = [
         Guns.BouncingLaserGun,
@@ -46,10 +45,10 @@ class ItemManager_SE {
     }
 
     spawnItem() {
-        var newPos = this.thGame.level.getRandomSpawnItems(Data.Items.size, Data.Items.size);
         
+        var newItem: Item_SE = new this.spawnPossibilities[Math.floor(Math.random() * this.spawnPossibilities.length)]();
+        var newPos = this.thGame.level.getRandomSpawnItems(newItem.body.w, newItem.body.w);
 
-        var newItem = new this.spawnPossibilities[Math.floor(Math.random() * this.spawnPossibilities.length)]();
         newItem.setPos(newPos.x, newPos.y);
         
         this.lastTimeSpawn = Date.now();
