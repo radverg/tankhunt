@@ -37,6 +37,7 @@ class MenuManager_CL extends Phaser.State {
         }
 
         $("#coverDuel").css("display", "none");
+        $("#coverTeam").css("display", "none");
        // this.time.events.add(500, function() { this.state.start("play"); }, this);
         this.game.state.start("play");
     }
@@ -47,6 +48,8 @@ class MenuManager_CL extends Phaser.State {
         $("#gamePlayers").text(packet.totalP - packet.menuP);
         $("#arenaGames").text(packet.arenaG);
         $("#duelGames").text(packet.duelG);
+        $("#teamGames").text(packet.teamG);
+        $("#teamQueue").text(packet.teamQ);
 
     }
 

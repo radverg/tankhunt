@@ -26,6 +26,8 @@ abstract class THGame_SE {
     private hViewHeight: number = 9;
     private viewOffset: number = 4.28;
 
+    protected now: number = Date.now();
+
     protected blockInput: boolean = false;
 
     remove: boolean = false;
@@ -180,6 +182,10 @@ abstract class THGame_SE {
         return this.players.length;
     }
 
+    kickPlayer(player: Player_SE) {
+        this.playerDisconnected(player);
+    }
+
     /**
      * Nulls the references, sets the remove property to true
      */
@@ -189,6 +195,7 @@ abstract class THGame_SE {
 
         this.players.forEach((plr: Player_SE) => {
             plr.game = null;
+            plr.lastInput = null;
         });
         
         this.players = null;
@@ -196,6 +203,7 @@ abstract class THGame_SE {
         this.shots = null;
         this.running = false;
         this.blockInput = true;
+        
     }
 
     processChatMessage(data: PacketChatMessage, senderPl: Player_SE) {
@@ -216,8 +224,10 @@ abstract class THGame_SE {
             return;
         }
 
-        if ((this as any)[inputType])
+        if ((this as any)[inputType]) {
             (this as any)[inputType](player);  
+            player.lastInput = this.now;
+        }
     }
 
     inpForwOn(player: Player_SE) {

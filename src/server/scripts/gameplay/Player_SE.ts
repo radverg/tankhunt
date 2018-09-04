@@ -20,6 +20,8 @@ class Player_SE {
 
     team: any = null;
     stats: Stats_SE;
+
+    lastInput: number;
     
     constructor(socket: SocketIO.Socket, name: string) {
         this.socket = socket

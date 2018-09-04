@@ -1,4 +1,3 @@
-/// <reference path="refs.ts" />
 
 class TH {
 

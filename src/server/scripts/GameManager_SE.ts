@@ -193,7 +193,7 @@ class GameManager_SE {
 			// 	tGame.start();
 			// }
 
-			// this.th.menuManager.emitMenuInfo();
+			this.th.menuManager.emitMenuInfo();
 			
 
 			tGame.start();

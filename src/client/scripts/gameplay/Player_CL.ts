@@ -1,4 +1,3 @@
-/// <reference path="../refs.ts" />
 
 class Player_CL {
 

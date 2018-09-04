@@ -94,8 +94,13 @@ class THGame_CL {
 
 	processPlayerRemove(playerID: string) {
 		let player = this.playerGroup.getPlayer(playerID);
-		this.onPlayerRemove.dispatch(player);	
-		this.playerGroup.removePlayer(playerID);
+		this.onPlayerRemove.dispatch(player);
+		
+		if (player.me) {
+			this.destroy();
+			this.game.state.start("menu");
+		} else 
+			this.playerGroup.removePlayer(playerID);
 	}
 
 	start() {

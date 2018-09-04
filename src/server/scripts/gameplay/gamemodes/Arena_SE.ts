@@ -38,6 +38,7 @@ class Arena_SE extends THGame_SE {
         player.tank = new Tank_SE(player); // Bind player with new tank for this game
 
         player.alive = false; // Player is going to be included in the game by respawn
+        player.lastInput = Date.now();
 
         this.players.push(player);
 
@@ -55,13 +56,14 @@ class Arena_SE extends THGame_SE {
      */
     playerDisconnected(player: Player_SE) {
         var index = this.players.indexOf(player);
+        this.emitRemove(player.socket.id);
+
         if (index !== -1) {
             this.players.splice(index, 1);
         }
 
         player.game = null;
         
-        this.emitRemove(player.socket.id);
     }
 
     /**
@@ -102,6 +104,7 @@ class Arena_SE extends THGame_SE {
      * @param {number} deltaSec 
      */
     update(deltaSec: number) {
+        this.now = Date.now();
         if (!this.running) return;
         this.updateCounter++;
         
@@ -109,6 +112,13 @@ class Arena_SE extends THGame_SE {
         // Update tanks
         for (var pl = 0; pl < this.players.length; pl++) {
             if (!this.players[pl].alive) continue; // Skip dead players
+
+            if (this.now - this.players[pl].lastInput > 50000) {
+                // Kick player for being afk
+                this.kickPlayer(this.players[pl]);
+                pl--;
+                continue;
+            }
             
             this.players[pl].tank.update(deltaSec);
             this.players[pl].tank.wallCollide(this.level);
