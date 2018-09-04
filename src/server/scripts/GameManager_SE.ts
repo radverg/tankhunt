@@ -8,13 +8,14 @@ import { TeamFight_SE } from "./gameplay/gamemodes/TeamFight_SE";
 class GameManager_SE {
 
 	private th: TankHunt_SE;
-	private games: THGame_SE[] = [];
 
+	// Games
 	private arenas: Arena_SE[] = [];
-	private testGame: Arena_SE;
-
+	private duels: Duel_SE[] = [];
+	private teamFights: TeamFight_SE[] = [];
 
 	private plDuelPending: Player_SE = null;
+	private teamFightQueue: Player_SE[] = [];
 
 	constructor(tankhunt: TankHunt_SE) {
 		this.th = tankhunt;
@@ -39,18 +40,32 @@ class GameManager_SE {
 			this.arenas[i].update(deltaSec);
 		}
 
-		// Update games
-		for (var i = 0; i < this.games.length; i++) {
+		// Update duels
+		for (var i = 0; i < this.duels.length; i++) {
 
 			// Handle game removing 
-			if (this.games[i].remove) {
-				this.destroyGame(this.games[i]);
-				this.games.splice(i, 1);
+			if (this.duels[i].remove) {
+				this.destroyGame(this.duels[i]);
+				this.duels.splice(i, 1);
 				continue;
 			}
 
 			// Update the game
-			this.games[i].update(deltaSec);
+			this.duels[i].update(deltaSec);
+		}
+
+		// Update team fights
+		for (var i = 0; i < this.teamFights.length; i++) {
+
+			// Handle game removing 
+			if (this.teamFights[i].remove) {
+				this.destroyGame(this.teamFights[i]);
+				this.teamFights.splice(i, 1);
+				continue;
+			}
+
+			// Update the game
+			this.teamFights[i].update(deltaSec);
 		}
 	}
 
@@ -69,7 +84,34 @@ class GameManager_SE {
 	}
 
 	getDuelCount() {
-		return this.games.length; // !!!!!!!!!!!!!!!!!!!
+		return this.duels.length;
+	}
+
+	getTeamFightCount() {
+		return this.teamFights.length;
+	}
+
+	getTeamQueueCount() {
+		return this.teamFightQueue.length;
+	}
+
+	onSocketDisconnected(socket: SocketIO.Socket) {
+		if (!socket.player) return;
+
+		if (socket.player.game) {
+			socket.player.game.playerDisconnected(socket.player);	
+			return;	
+		}
+
+		this.removeFromTeamQueue(socket);
+	}
+
+	private removeFromTeamQueue(socket: SocketIO.Socket) {
+
+		let teamQueueIndex = this.teamFightQueue.indexOf(socket.player);
+		if (teamQueueIndex !== -1) {
+			this.teamFightQueue.splice(teamQueueIndex, 1);
+		} 
 	}
 
 	processGameRequest(player: Player_SE, packet: PacketGameRequest) {
@@ -106,16 +148,20 @@ class GameManager_SE {
 		}
 
 		if (packet.gameType == "Duel") {
+
 			if (this.plDuelPending && this.plDuelPending.socket.connected) { // Somebody is waiting, create the game
 				let dGame = new Duel_SE();
 				dGame.addPlayer(this.plDuelPending);
-				this.plDuelPending = null;
 				dGame.addPlayer(player);
 				dGame.start();
-				this.games.push(dGame);
+				this.duels.push(dGame);
 
 				this.th.menuManager.removeSocket(player.socket);
+				this.th.menuManager.removeSocket(this.plDuelPending.socket);
 				this.th.menuManager.emitMenuInfo();
+
+				this.plDuelPending = null;
+
 			} else {
 				this.plDuelPending = player;
 			}
@@ -132,7 +178,23 @@ class GameManager_SE {
 				tGame.addPlayer(new Player_SE(null, `comp${i}`));
 			}
 
-			this.games.push(tGame);
+			this.teamFights.push(tGame);
+
+			// if (this.teamFightQueue.length === 6) {
+			// 	// Start the game
+			// 	let tGame = new TeamFight_SE();
+
+			// 	for (const plr of this.teamFightQueue) {
+			//		this.th.menuManager.removeSocket(player.socket);
+			//
+			// 		tGame.addPlayer(plr);
+			// 	}
+
+			// 	tGame.start();
+			// }
+
+			// this.th.menuManager.emitMenuInfo();
+			
 
 			tGame.start();
 		}

@@ -41,10 +41,8 @@ class SocketManager_SE {
 	// Socket emit callbacks -------------------------
 	onDisconnect(socket: SocketIO.Socket) {
 		console.log("Client " + socket.request.connection.remoteAddress + " has disconnected!");
+		this.th.gameManager.onSocketDisconnected(socket);
 
-		if (socket.player && socket.player.game) {
-			socket.player.game.playerDisconnected(socket.player);		
-		}
 		this.socketCount--;
 		this.th.menuManager.removeSocket(socket);
 		this.th.menuManager.emitMenuInfo();

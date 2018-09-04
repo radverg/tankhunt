@@ -6,6 +6,38 @@ https://freesound.org/people/EcoDTR/sounds/36847/
 
 potenciální řešení kolizního problému: separovat podle rychlejšího směru!
 
+Popis hry
+Tank hunt je 2D multiplayerová akční střílečka s tanky, běží v prohlížeči. Hra je řízena autoritativním
+serverem. Bitvy probíhají na jednoduchých bludišťových mapách, na výběr jsou 3 herní módy.
+Příznivce příběhů a originálních nápadů asi zklamu, cílem této hry totiž není projít nějakou kampaň a vyvíjet se, ale porážet soupeře, ať už štěstím nebo skillem.
+
+Poměr stran hry je 16:9, se změnou velikosti okna prohlížeče se hra automaticky škáluje. Je vždy lepší hrát na fullsceen, protože na
+16:9 monitorech se tak zbavíte nepříjemných pruhů na bocích.
+
+Tanky můžou mít 4 barvy - modrý je vždy tank hráče, červený je tank protivníka a zelený tank spoluhráče. Ještě je barva šedá, to je tank s imunitou vůči střelám.
+Ovládá se zvlášť pohyb tanku a zvlášť rotace jeho věže, je docela těžké to synchronizovat. Tank má dvě zbraně, každou se svým reloadem a každá se ovládá jinou klávesou.
+Pak je ještě zbraň třetí - speciální, ta se dá sebrat v podobě power-upů náhodně generovaných na mapě.
+Tanky mají hpčka a pancíř, který s určitou pravděpodobností kompletně zblokuje střelu. Nejsilnější pancíř je ve předu, slabší na bocích a nejslabší vzadu.
+
+Minimální systémové požadavky jsou rozporuplné. Zjistil jsem, že hra běží mnohem lépe na Windowsech než na Linuxu, můj starý notebook s Linuxem s tím
+má extrémní problémy. Zaleží rovněž na "náladě" prohlížeče. Může se stát, že
+pohyb občas nebude úplně nejplynulejší, ovšem nemělo by se stávat nic, co by způsobilo nehratelnost. Pokusím se ještě o nějaké optimalizace.
+
+Z hlediska fičur je hra víceméně dokončená, pokud ale bude čas, tak možná něco přidám.
+Zbývá udělat zvuky, optimalizace a náročnou debroukaci, tedy stále je to práce na několik dní.
+
+Herní módy:
+Aréna - Do arény se může hráč kdykoliv připojit a kdykoliv ji opustit. Bojuje se na jedné větší mapě, cílem je zničit co nejvíce tanků v řadě. S každým killem se hráč uzdraví
+a jeho maximální hpčka se zvýší, dokud nenarazí na stropní hodnotu. Pokud je hráč zničen, jeho životy se resetují a s tím i počet killů v řadě. Nicméně maximální hodnota zůstává
+ve statistikách. Kdo je zabit, je téměř okamžitě respawnut. Na dobrou řežbu stačí 4 hráči.
+Duel - mód pro dva hráče. Cílem je být první kdo vyhraje určitý počet kol. Kola jsou rychlá, střídají se mapy. Pro výhru kola je nutné zničit soupeře a poté pár sekund přežít.
+Nefunguje zde pancíř, aby to bylo méně o náhodě.
+Team fight - v této hře hrají 3 proti 3 (možná to bude ještě jinak), každý tým má půlku mapy, na které jsou vygenerované vlajky. Cílem je obsadit všechny vlajky nepřátelského týmu.
+Kdo umře, tak se po nějaké době respawne.
+
+
+
+
 Dev log:
 - Přidány ingame statistiky
 - Přidán herní mód Duel

@@ -324,7 +324,9 @@ interface PacketMenuInfo {
     duelG: number,
 
     menuP: number,
-    totalP: number
+    totalP: number,
+    teamG: number,
+    teamQ: number,
 }
 
 interface PacketChatMessage {

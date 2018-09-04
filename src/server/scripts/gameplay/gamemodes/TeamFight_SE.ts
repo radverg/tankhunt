@@ -134,6 +134,16 @@ class TeamFight_SE extends THGame_SE {
         this.players.splice(this.players.indexOf(player), 1);
         player.game = null;
 
+        // let team1count = 0;
+        // let team2Count = 0;
+        // for (let i = 0; i < this.players.length; i++) {
+        //     if (this.players[i].team == 1) team1count++;
+        //     else team2Count++;
+        // }
+
+        // if (team1count === 0) this.wholeGameEnd(2);
+        // else if (team2Count === 0) this.wholeGameEnd(1);
+
         // DEBUG !!!!!!
         this.wholeGameEnd(0);
         // if (this.players.length === 1) {

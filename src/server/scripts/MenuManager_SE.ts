@@ -18,7 +18,10 @@ class MenuManager_SE extends Room_SE {
             arenaG: this.th.gameManager.getArenaCount(),
             totalP: this.th.socketManager.socketCount,
             menuP: this.getSocketCount(),
-            duelG: this.th.gameManager.getDuelCount()
+            teamG: this.th.gameManager.getTeamFightCount(),
+            teamQ: this.th.gameManager.getTeamQueueCount(),
+            duelG: this.th.gameManager.getDuelCount(),
+
         }
         
         this.broadcast("menuInfo", menuPacket);

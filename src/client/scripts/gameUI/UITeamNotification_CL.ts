@@ -18,6 +18,7 @@ class UITeamNotification_CL extends UINotification_CL {
 
     playerHit(packet: PacketShotHit, player: Player_CL) {
         let me = this.thGame.playerGroup.me;
+        if (packet.healthAft > 0) return;
         if (me.team === player.team) {
             if (player.me) {
                this.logBig("You have been killed!", "red");

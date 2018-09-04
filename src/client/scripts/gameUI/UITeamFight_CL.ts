@@ -27,6 +27,9 @@ class UITeamFight_CL {
         this.game = phaserGame;
         this.thGame = thGame;
 
+        this.capBarMe = new Phaser.Group(phaserGame);
+        this.capBarEnemy = new Phaser.Group(phaserGame);
+
         this.centerGrp = new Phaser.Group(phaserGame);
         this.centerGrp.fixedToCamera = true;
         this.centerGrp.cameraOffset.setTo(phaserGame.camera.view.halfWidth, 0);
@@ -43,10 +46,6 @@ class UITeamFight_CL {
         this.thGame.onCapture.add(this.captureCallback, this);
         this.thGame.onHit.add(this.hitCallback, this);
         thGame.onGameStart.addOnce(this.init, this);
-
-
-        this.capBarMe = new Phaser.Group(phaserGame);
-        this.capBarEnemy = new Phaser.Group(phaserGame);
 
         this.team1List = new Phaser.Group(phaserGame);
         this.team2List = new Phaser.Group(phaserGame);
@@ -111,17 +110,17 @@ class UITeamFight_CL {
         let win: boolean = (packet.winnerTeam == this.thGame.playerGroup.me.team);
 
         let overlaySpr: Phaser.Sprite = this.centerGrp.create(0, 0, "blackRect");
-            overlaySpr.alpha = 0.5;
+            overlaySpr.alpha = 0.8;
             overlaySpr.height = this.game.camera.view.height;
             overlaySpr.width = this.game.camera.view.width * 0.8;
             overlaySpr.anchor.setTo(0.5, 0);
 
             if (win) {
                 // I have won!
-                this.centerGrp.add(TextMaker_CL.winText(0, 30));
+                this.centerGrp.add(TextMaker_CL.winText(0, 70));
             } else {
                 // I have lost!
-                this.centerGrp.add(TextMaker_CL.defText( 0, 30));
+                this.centerGrp.add(TextMaker_CL.defText( 0, 70));
 
             }
 
@@ -173,7 +172,7 @@ class UITeamFight_CL {
     }
 
     private addMainMenuButton(delay: number) {
-        let btn = this.game.make.button(0, 150, "panels", this.mainMenuCallback, this, 0, 1);
+        let btn = this.game.make.button(0, 190, "panels", this.mainMenuCallback, this, 0, 1);
         let game = this.game;
         this.centerGrp.add(btn);
 		btn.scale.setTo(0);
