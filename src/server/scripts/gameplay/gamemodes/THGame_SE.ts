@@ -186,6 +186,14 @@ abstract class THGame_SE {
         this.playerDisconnected(player);
     }
 
+    protected tidyPlayerShots(player: Player_SE) {
+        let shotsToRemove = this.shots.filter((sh) => { return sh.owner === player });
+
+        for (const shot of shotsToRemove) {
+            shot.remove = true;
+        }
+    }
+
     /**
      * Nulls the references, sets the remove property to true
      */

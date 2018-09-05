@@ -14,6 +14,8 @@ class TH {
      */
     static effects: EffectManager;
 
+    static suspended: boolean = false;
+
     static timeManager: TimeManager_CL;
 
     public socketManager: SocketManager_CL;
@@ -66,6 +68,7 @@ class TH {
         TH.effects = new EffectManager(TH.game);
         TH.game.state.start("boot");
 
+        
     }
 
     initHelpPanel() {

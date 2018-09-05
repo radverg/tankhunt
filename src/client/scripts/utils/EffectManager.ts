@@ -1,3 +1,5 @@
+
+
 class EffectManager {
 
     private game: Phaser.Game;
@@ -7,6 +9,20 @@ class EffectManager {
         this.game = game;
         this.effectGroup = game.world;
     }
+
+    should(sourceSpr?: Phaser.Sprite, tolerance: number = 0) {
+
+        if (!sourceSpr) return !TH.suspended;
+
+        let badBounds = sourceSpr.getBounds();
+        let cam = TH.game.camera;
+        return !TH.suspended && cam.view.intersects(new Phaser.Rectangle(badBounds.x + cam.x, badBounds.y + cam.y, badBounds.width, badBounds.height), tolerance);
+    }
+
+    shouldByXY(x: number, y: number) {
+        return !TH.suspended && TH.game.camera.view.contains(x, y);
+    }
+
 
     playSound(name: string, volume: number = 1, atX?: number, atY?: number)  {
         let vol = volume;
@@ -125,6 +141,8 @@ class EffectManager {
         if (!x || !y) {
             return;
         }
+
+        if (!this.shouldByXY(x, y)) return;
 
         let spr = this.game.add.sprite(x, y, "shotDamage");
         spr.anchor.setTo(0.5);

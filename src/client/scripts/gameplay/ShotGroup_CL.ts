@@ -30,4 +30,16 @@ class ShotGroup_CL extends Phaser.Group {
         this.shots = { };
         this.removeAll(true);
     }
+
+    tidyPlayerShots(player: Player_CL) {
+        let shots: Shot_CL[] = Object.keys(this.shots).map((key: string) => { return this.shots[key]; } ) ;
+        
+        for (const sh of shots) {
+            if (sh.getOwner() == player) {
+                sh.stop();
+            }
+        }
+        
+
+    }
 }

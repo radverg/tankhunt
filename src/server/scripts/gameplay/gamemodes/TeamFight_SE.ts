@@ -132,6 +132,7 @@ class TeamFight_SE extends THGame_SE {
 
     playerDisconnected(player: Player_SE) {
         this.players.splice(this.players.indexOf(player), 1);
+        this.tidyPlayerShots(player);
         player.game = null;
 
         // let team1count = 0;

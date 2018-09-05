@@ -99,8 +99,10 @@ class THGame_CL {
 		if (player.me) {
 			this.destroy();
 			this.game.state.start("menu");
-		} else 
+		} else  {
+			this.shotGroup.tidyPlayerShots(player);
 			this.playerGroup.removePlayer(playerID);
+		}
 	}
 
 	start() {
@@ -358,13 +360,10 @@ class THGame_CL {
 
 	}
 
-	/** 
-	 * Switches game state to menu state and dispatches onLeave signal
-	*/
 	leaveToMenu() {
 		this.onLeave.dispatch();
-		this.destroy();
-		TH.game.state.start("menu");
+		// this.destroy();
+		// TH.game.state.start("menu");
 	}
 
 	/**

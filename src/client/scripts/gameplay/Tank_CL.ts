@@ -146,6 +146,8 @@ abstract class Tank_CL extends Sprite {
 	}
 
 	shotExplodeEffect(shot: Shot_CL) {
+		if (!TH.effects.should(shot)) return;
+
 		let ang = (this.visible) ? this.turret.rotation + this.rotation : shot.rotation;
 		let dist = this.turret.height / 1.3;
 
@@ -165,6 +167,11 @@ abstract class Tank_CL extends Sprite {
 	}
 
 	explosionEffect() {
+
+		// Now play sound effect
+		this.game.sound.play("explosion1_sound");
+
+		if (!TH.effects.should(this)) return;
 
 		// Set up explosion animation 
 		let rnd = Math.floor(Math.random() * 5) + 1;
@@ -213,10 +220,11 @@ abstract class Tank_CL extends Sprite {
 			let twn = this.game.add.tween(turretSpr).to({ x: toPos.x, y: toPos.y, rotation: toAng, alpha: 0 }, duration);
 			twn.onComplete.add(function() { this.destroy(); }, turretSpr);
 			twn.start();
+
+			
 		}
 
-		// Now play sound effect
-		this.game.sound.play("explosion1_sound");
+		
 
 	}
 }

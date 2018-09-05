@@ -56,6 +56,7 @@ class Arena_SE extends THGame_SE {
      */
     playerDisconnected(player: Player_SE) {
         var index = this.players.indexOf(player);
+        this.tidyPlayerShots(player);
         this.emitRemove(player.socket.id);
 
         if (index !== -1) {

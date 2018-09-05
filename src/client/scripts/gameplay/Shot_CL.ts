@@ -55,6 +55,10 @@ class Shot_CL extends Sprite {
 	blast(dataPack: PacketShotHit) {
 		
 	}
+
+	getOwner() {
+		return this.ownerPl;
+	}
 }
 
 class LaserDirect_CL extends Shot_CL {
