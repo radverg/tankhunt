@@ -17,6 +17,8 @@ class UIPlayerManager_CL {
         this.thGame.onHit.add(this.hitPlayer, this);
         this.thGame.onRespawn.add(this.respawnPlayer, this);
         this.thGame.onHeal.add(this.healPlayer, this);
+        this.thGame.onItemCollect.add(this.itemCollect, this);
+        this.thGame.onMeItemUse.add(this.itemMeUse, this);
 
     }
 
@@ -55,6 +57,25 @@ class UIPlayerManager_CL {
         if (player && player.plView) {
             player.plView.updateHealthBar();
         }
+    }
+
+    itemCollect(item: Item_CL, collector: Player_CL) {
+
+        if (collector === this.thGame.playerGroup.me) {
+            // Show item icon
+            if (collector.plView) {
+                collector.plView.showItemIcon(item.getSprFrame() as number);
+            }
+        }
+    }
+
+    itemMeUse() {
+        // Hide item icon
+        let me = this.thGame.playerGroup.me;
+        if (me && me.plView) {
+            me.plView.hideItemIcon();
+        }
+
     }
 
     /**

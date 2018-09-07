@@ -145,6 +145,21 @@ abstract class Tank_CL extends Sprite {
 		grp.add(this);
 	}
 
+	isMovingBackward() {
+		//let dist = this.game.math.distance(this.previousPosition.x, this.previousPosition.y, this.x, this.y);
+		let moveAngle = this.game.math.normalizeAngle(this.game.math.angleBetweenPointsY(this.previousPosition, this.position));
+		let forwardAngle = this.game.math.normalizeAngle(this.rotation);
+	}
+
+	isMoving() {
+		return !(Math.round(this.previousPosition.x) === Math.round(this.position.x) &&
+			Math.round(this.previousPosition.y) === Math.round(this.position.y)); //  !this.previousPosition.fuzzyEquals(this.position, 0.05);
+	}
+
+	isRotating() {
+		return this.rotation !== this.previousRotation;
+	}
+
 	shotExplodeEffect(shot: Shot_CL) {
 		if (!TH.effects.should(shot)) return;
 

@@ -316,6 +316,7 @@ class DoubleMineGun_SE extends MineGun_SE {
 class Invisibility_SE extends Item_SE {
 
 	private duration: number = 12000;
+	private timeout: number = null;
 
 	constructor(owner: Player_SE) {
 		super(8);
@@ -329,12 +330,20 @@ class Invisibility_SE extends Item_SE {
 		this.owner.invisible = true;
 		game.emitDisappear(this.owner);
 
+		if (this.timeout !== null) {
+			clearTimeout(this.timeout);
+			this.timeout = null;
+		}
+
 		setTimeout(() => { 
 			if (this.owner && this.owner.game == game) {
 				this.owner.invisible = false;
 				game.emitAppear(this.owner);
+				this.timeout = null;
 			}
 		}, this.duration);
+
+		
 	}
 }
 

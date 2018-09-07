@@ -34,8 +34,8 @@ class DefaultTank_CL extends Tank_CL {
 		// Init animation of track
 		let frs = this.frameStart;
 	
-		this.onIntMoveStart.add(() => { this.animations.play(this.currAnimName); }, this);
-		this.onIntMoveStop.add(() => { this.animations.stop(this.currAnimName); }, this);
+		// this.onIntMoveStart.add(() => { this.animations.play(this.currAnimName); }, this);
+		// this.onIntMoveStop.add(() => { this.animations.stop(this.currAnimName); }, this);
 
 		
 
@@ -50,14 +50,24 @@ class DefaultTank_CL extends Tank_CL {
 		
 	}
 
+	update() {
+		super.update();
+
+		if (this.isMoving() || this.isRotating()) {
+			this.animations.play(this.currAnimName);
+		} else {
+			this.animations.stop(this.currAnimName);
+		}
+	}
+
 	initTrackAnim() {
 
 		let fps = 16;
 
-		this.animations.add("tracks1", [0, 1, 2, 3], fps, true);
-		this.animations.add("tracks2", [4, 5, 6, 7], fps, true);
-		this.animations.add("tracks3", [8, 9, 10, 11], fps, true);
-		this.animations.add("tracks4", [12, 13, 14, 15], fps, true);
+		this.animations.add("tracks1", [0, 1, 2, 3], fps); //, true);
+		this.animations.add("tracks2", [4, 5, 6, 7], fps); //, true);
+		this.animations.add("tracks3", [8, 9, 10, 11], fps); //, true);
+		this.animations.add("tracks4", [12, 13, 14, 15], fps); //, true);
 	}
 
 	adjustTrackAnim(colorIndex: number) {

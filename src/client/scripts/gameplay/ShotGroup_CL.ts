@@ -7,6 +7,8 @@ class ShotGroup_CL extends Phaser.Group {
     }
 
     newShot(data: PacketShotStart) {
+        if (TH.suspended) return; 
+        
         var type = data.type;
 		var sh = new Shots[type.toString()](data);
         sh.start();

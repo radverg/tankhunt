@@ -15688,7 +15688,7 @@ declare module Phaser {
         * @param y2 The y coordinate of the second value.
         * @return The angle, in radians.
         */
-        static angleBetween(x1: number, y1: number, x2: number, y2: number): number;
+        angleBetween(x1: number, y1: number, x2: number, y2: number): number;
 
         /**
         * Find the angle of a segment from (point1.x, point1.y) -> (point2.x, point2.y).
@@ -15697,7 +15697,7 @@ declare module Phaser {
         * @param point2 The second point.
         * @return The angle between the two points, in radians.
         */
-        static angleBetweenPoints(point1: Phaser.Point, point2: Phaser.Point): number;
+        angleBetweenPoints(point1: Phaser.Point, point2: Phaser.Point): number;
 
         /**
         * Find the angle of a segment from (x1, y1) -> (x2, y2).
@@ -15711,7 +15711,7 @@ declare module Phaser {
         * @param y2 The y coordinate of the second value.
         * @return The angle, in radians.
         */
-        static angleBetweenY(x1: number, y1: number, x2: number, y2: number): number;
+        angleBetweenY(x1: number, y1: number, x2: number, y2: number): number;
 
         /**
         * Find the angle of a segment from (point1.x, point1.y) -> (point2.x, point2.y).
@@ -15720,7 +15720,7 @@ declare module Phaser {
         * @param point2
         * @return The angle, in radians.
         */
-        static angleBetweenPointsY(point1: Phaser.Point, point2: Phaser.Point): number;
+        angleBetweenPointsY(point1: Phaser.Point, point2: Phaser.Point): number;
 
         /**
         * Averages all values passed to the function and returns the result.
@@ -16084,7 +16084,7 @@ declare module Phaser {
         * @param angleRad The angle to normalize, in radians.
         * @return The angle, fit within the [0,2pi] range, in radians.
         */
-        static normalizeAngle(angle: number, radians?: boolean): number;
+        normalizeAngle(angle: number, radians?: boolean): number;
 
         /**
         * Work out what percentage value `a` is of value `b` using the given base.

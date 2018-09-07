@@ -3,6 +3,7 @@ class Item_CL extends Sprite {
 
     private rotTween: Phaser.Tween;
     private itemSize: number = 0.9;
+    private itemSpr: Phaser.Sprite;
 
     constructor(x: number, y: number, typeIndex: number) {
         super(TH.game, x * TH.sizeCoeff, y * TH.sizeCoeff, "shadow"); // For now tits black rect, but it will be spritesheet
@@ -15,6 +16,7 @@ class Item_CL extends Sprite {
         itemSpr.scale.setTo(3);
         this.addChild(itemSpr);
         itemSpr.frame = typeIndex;
+        this.itemSpr = itemSpr;
 
         this.anchor.setTo(0.5);
 
@@ -37,5 +39,9 @@ class Item_CL extends Sprite {
         let twn = TH.game.add.tween(this);
         twn.to({ "width": 0, "height": 0 }, 300, Phaser.Easing.Back.In, true);        
 
+    }
+
+    getSprFrame()  {
+        return this.itemSpr.frame;
     }
 }

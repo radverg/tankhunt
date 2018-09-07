@@ -16,6 +16,8 @@ class THGame_CL {
 	private cameraArrowControl: boolean = false;
 	private cameraMoveSpeed: number = 4;
 
+	private camSpeed: number = 4;
+
 	remove: boolean = false;
 
 
@@ -49,6 +51,8 @@ class THGame_CL {
 
 	onLeave: Phaser.Signal = new Phaser.Signal();
 
+	onMeItemUse: Phaser.Signal = new Phaser.Signal();
+
 	onChat: Phaser.Signal = new Phaser.Signal();
 
 	constructor(socketManager: SocketManager_CL) {
@@ -64,19 +68,19 @@ class THGame_CL {
 		// Camera control
 		if (!this.game.camera.target) {
 			if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-				this.game.camera.y -= 4;
+				this.game.camera.y -= this.camSpeed;
 			}
 
 			if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-				this.game.camera.y += 4;
+				this.game.camera.y += this.camSpeed;
 			}
 
 			if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-				this.game.camera.x -= 4;
+				this.game.camera.x -= this.camSpeed;
 			}
 
 			if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-				this.game.camera.x += 4;
+				this.game.camera.x += this.camSpeed;
 			}
 		}
 	}
@@ -105,6 +109,11 @@ class THGame_CL {
 		}
 	}
 
+	processItemUse(data: any) {
+		// This player just used an item
+		this.onMeItemUse.dispatch();
+    }
+
 	start() {
 		this.running = true;
 		console.log("Game is running!");
@@ -129,7 +138,6 @@ class THGame_CL {
 	}
 
 	processItemCollect(data: PacketItemCollect) {
-		console.log("Item collected!");
 		
 		var item = this.itemGroup.getItem(data.id);
 		if (!item) return;
@@ -357,6 +365,7 @@ class THGame_CL {
 		this.onPlayerRemove.dispose();
 		this.onRespawn.dispose();
 		this.onChat.dispose();
+		this.onMeItemUse.dispose();
 
 	}
 

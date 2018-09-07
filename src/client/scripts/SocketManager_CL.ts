@@ -52,6 +52,8 @@ class SocketManager_CL {
         this.socket.on("heal", function(data: PacketHeal){ if (that.th.playManager.thGame) that.th.playManager.thGame.processHeal(data); });
         this.socket.on("gFinish", function(data: PacketGameFinish) { if (that.th.playManager.thGame) that.th.playManager.thGame.processGameFinish(data) ; });
         this.socket.on("cap", function(data: PacketCapture) { if (that.th.playManager.thGame) that.th.playManager.thGame.processCapture(data) ; });
+        this.socket.on("wo", function(data: any) { if (that.th.playManager.thGame) that.th.playManager.thGame.processItemUse(data) ; });
+
 
 
         this.socket.on("menuChat", function(data: PacketChatMessage) { that.th.menuManager.processChat(data); });

@@ -7,7 +7,10 @@ class Item_SE extends GameObject_SE {
     
     typeIndex: number;
     owner: Player_SE | null = null;
-    wornOut: boolean = false;
+
+    private _wornOut: boolean = false;
+    set wornOut(val: boolean) { this._wornOut = val; if (val && this.owner.socket.connected && this.owner.game) this.owner.socket.emit("wo"); }
+    get wornOut() { return this._wornOut };
 
     /**
      * Determines if player's key for activating this item is pressed
