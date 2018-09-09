@@ -53,6 +53,8 @@ class UIDuel_CL {
         }
 
         if (packet.subgame) {
+            
+            if (!TH.effects.should()) return;
             let winner = this.thGame.playerGroup.getPlayer(packet.winnerID);
             
             if (packet.winnerID == this.thGame.playerGroup.me.id) {

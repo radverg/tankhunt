@@ -41,7 +41,7 @@ class GameObject_SE {
     /**
      * Global ID passer
      */
-    private static getNextID(): string {
+    public static getNextID(): string {
         GameObject_SE._currentID++;
 		return "a" + GameObject_SE._currentID;
     }

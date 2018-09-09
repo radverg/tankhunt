@@ -17,6 +17,7 @@ class UITeamNotification_CL extends UINotification_CL {
     }
 
     playerHit(packet: PacketShotHit, player: Player_CL) {
+
         let me = this.thGame.playerGroup.me;
         if (packet.healthAft > 0) return;
         if (me.team === player.team) {
@@ -31,6 +32,7 @@ class UITeamNotification_CL extends UINotification_CL {
     }
 
     captureCallback(packet: PacketCapture) {
+
         let mineCap = packet.tm === this.thGame.playerGroup.me.team;
 
         if (packet.st) {
@@ -53,6 +55,8 @@ class UITeamNotification_CL extends UINotification_CL {
     }
 
     logBig(text: string, color: string) {
+        if (!TH.effects.should()) return;
+
         let offsetY = this.topGroup.children.length * 30;
         this.topGroup.add(TextMaker_CL.goTextBigUp(text, 0, offsetY, color));
     }

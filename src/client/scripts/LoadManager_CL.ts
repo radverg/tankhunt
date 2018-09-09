@@ -89,6 +89,7 @@ class LoadManager_CL extends Phaser.State  {
 			{ assetName: "laser2_sound", path: [soundsPath + "laser2.ogg", soundsPath + "laser2.wav"] },
 			{ assetName: "laser3_sound", path: [soundsPath + "laser3.ogg", soundsPath + "laser3.wav"] },
 			{ assetName: "bum1_sound", path: [soundsPath + "bum1.ogg", soundsPath + "bum1.wav"] },
+			{ assetName: "test", path: [soundsPath + "test.ogg"] },
 		]
 		// -----------------------------------------------------------------------------------	
 
@@ -169,7 +170,7 @@ class LoadManager_CL extends Phaser.State  {
 		helpText.fontSize = 35;
 
 		// Created text
-		let crText = this.add.text(centerX, 990, "2018 - Created by Radek Veverka, Dominik plachý, Vojtěch Veverka");
+		let crText = this.add.text(centerX, 990, "2018 - Created by Radek Veverka, Vojtěch Veverka, Dominik Plachý");
 		crText.anchor.setTo(0.5);
 		crText.fontSize = 19;
 		crText.fill = "white";
@@ -178,11 +179,19 @@ class LoadManager_CL extends Phaser.State  {
 		TH.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		TH.game.scale.pageAlignHorizontally = true;
 
-	
 		
 	}
 	
 	create() {
+
+		// Audio
+		let audioSpr = this.game.add.audio("test");
+		TH.effects.sounds = audioSpr;
+		audioSpr.allowMultiple = true;
+		audioSpr.addMarker("mark1", 0, 1.9);
+		audioSpr.addMarker("mark2", 2, 4.5);
+		audioSpr.addMarker("mark3", 5, 55);
+
 
 		let loadTime = Date.now() - this.startTime;
 

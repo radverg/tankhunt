@@ -52,10 +52,14 @@ class UIPlayer_CL extends Phaser.Group {
         let text = (healthDiff < 0) ? `${healthDiff} hp` : `+${healthDiff.toFixed(0)} hp`;
         let color = (healthDiff < 0) ? "#e02626" : "#139607"; 
 
+        if (!TH.effects.should()) return;
+
         this.add(TextMaker_CL.goUpText(text, this.player.tank.width / 2 + 10, 0, color));
     }
 
     blockSign() {
+        if (!TH.effects.should()) return;        
+
         this.add(TextMaker_CL.goUpText("blocked", this.player.tank.width / 2 + 10, 0, "white"));
     }
 

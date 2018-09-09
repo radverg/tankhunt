@@ -56,6 +56,7 @@ class ItemManager_SE {
 
         // Emit spawn
         this.thGame.emitItemSpawn(newItem);
+        
         return newItem;
     }
 

@@ -32,7 +32,7 @@ class PlayManager_CL extends Phaser.State  {
         this.initInput();
         this.input.keyboard.enabled = false;
 
-        // Code behind this line happens only once
+        // Code below happens only once
 
         if (!this.first) return;
 
@@ -42,12 +42,27 @@ class PlayManager_CL extends Phaser.State  {
         this.pingerTimer.loop(3000, TH.timeManager.synchronizeRequest, TH.timeManager);
         this.pingerTimer.start(1000);
 
+        this.game.onResume.add(this.gameResumed, this);
+
         this.first = false;
         
         // Everything is ready => send game request
         console.log("Requesting game...");
        
      
+    }
+
+    gameResumed() {
+        if (!this.thGame) return;
+      
+        // let twns = this.game.tweens.getAll();
+
+        // for (const twn of twns) {
+        //     if (twn.)
+        //     twn.stop(true);
+        // }
+
+        //this.time.removeAll();
     }
     
     processGameStart(packet: PacketGameStart) {

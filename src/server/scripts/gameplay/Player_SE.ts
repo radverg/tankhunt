@@ -2,11 +2,14 @@ import { Tank_SE } from "./Tank_SE";
 import { THGame_SE } from "./gamemodes/THGame_SE";
 import { Stats_SE } from "./Stats_SE";
 import { Capture_SE } from "./Capture_SE";
+import { GameObject_SE } from "./utils/GameObject_SE";
 
 class Player_SE {
 
     public socket: SocketIO.Socket;
+
     public id: string;
+    
     public name: string;
     public tank: Tank_SE;
     game: THGame_SE | null = null;
@@ -26,7 +29,7 @@ class Player_SE {
     constructor(socket: SocketIO.Socket, name: string) {
         this.socket = socket
         if (socket !== null) {
-            this.id = socket.id; 
+            this.id = GameObject_SE.getNextID(); //socket.id; 
             this.socket.player = this;
         }
         else
@@ -64,6 +67,7 @@ class Player_SE {
     getInfoPacket(): PacketPlayerInfo {
         var packet: PacketPlayerInfo = {
             id: this.id,
+            socketID: (this.socket) ? this.socket.id : this.id,
             name: this.name,
             stats: this.stats.exportPacket(),
             alive: this.alive,

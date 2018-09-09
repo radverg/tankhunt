@@ -76,7 +76,7 @@ abstract class THGame_SE {
     }
 
     emitItemSpawn(item: Item_SE) {
-        this.emitData("itemSpawn", {typeIndex: item.typeIndex, x: item.x, y: item.y, id: item.id});
+        this.emitData("itemSpawn", {typeIndex: item.typeIndex, x: parseFloat(item.x.toFixed(4)), y: parseFloat(item.y.toFixed(4)), id: item.id});
     }
 
     emitItemCollect(item: Item_SE, collector: Player_SE) {
@@ -128,7 +128,7 @@ abstract class THGame_SE {
             var plr1 = this.players[pl];
 
             var packet: PacketMovable = {} as PacketMovable;
-            packet.players = {}; 
+            packet.p = {}; 
             
             var counter = 0;
     
@@ -140,12 +140,12 @@ abstract class THGame_SE {
                 if (!this.isInView(plr2.tank, plr1.tank.x, plr1.tank.y) || !plr2.alive || !plr2.emitable || (plr2.invisible && plr2.isEnemyOf(plr1))) 
                     continue;
 
-                packet.players[plr2.id] = plr2.tank.getStatePacket();
+                packet.p[plr2.id] = plr2.tank.getTinyPacket();
                 counter++;
             }
         
             if (counter > 0)
-                this.emitDataPl("movableState", packet, plr1);
+                this.emitDataPl("ms", packet, plr1);
         }
 
     }

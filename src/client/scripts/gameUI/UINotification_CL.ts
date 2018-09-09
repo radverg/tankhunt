@@ -35,6 +35,8 @@ class UINotification_CL {
     }
 
     protected playerHit(packet: PacketShotHit, player: Player_CL) {
+        if (!TH.effects.should()) return;
+
         let attacker = this.thGame.playerGroup.getPlayer(packet.plAttID);
         
         if (packet.healthAft === 0) {

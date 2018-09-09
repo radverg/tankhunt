@@ -96,6 +96,17 @@ class Tank_SE extends GameObject_SE {
 		return pack;
 	}
 
+	getTinyPacket() : PacketTankTiny {
+		let pack: PacketTankTiny = {
+			x: parseFloat(this.x.toFixed(4)),
+			y: parseFloat(this.y.toFixed(4)),
+			r: parseFloat(this.angle.toFixed(4)),
+			t: parseFloat(this.turret.angle.toFixed(4))
+		}
+
+		return pack;
+	}
+
 	// getQuickStatePacket(): PacketTank {
 
 	// }

@@ -41,7 +41,13 @@ class UIPlayerManager_CL {
                 plHit.plView.healthChange(data.healthBef, data.healthAft);
             else 
                 plHit.plView.blockSign();
+
+            if (data.healthAft <= 0) {
+                plHit.plView.hideItemIcon();
+            }
         }
+
+       
     }
 
     healPlayer(player: Player_CL, packet: PacketHeal) {

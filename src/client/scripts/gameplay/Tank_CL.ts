@@ -35,6 +35,12 @@ abstract class Tank_CL extends Sprite {
 		this.positionServerUpdate(packet.x, packet.y);
 	}
 
+	applyTinyStatePacket(packet: PacketTankTiny) {
+		this.rotationServerUpdate(packet.r);
+		this.rotationTurretServerUpdate(packet.t);
+		this.positionServerUpdate(packet.x, packet.y);
+	}
+
 	/**
 	 * Sets immediatelly tank's position, rotation and turret rotation to remote values, without interpolation
 	 */

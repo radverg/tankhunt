@@ -71,10 +71,10 @@ class PlayerGroup_CL extends Phaser.Group {
         for (let i = 0; i < keys.length; i++) {
             let plr = this.players[keys[i]];
             
-            if (data.players[plr.id]) {
+            if (data.p[plr.id]) {
                 // This player is included in the packet
                 plr.tank.show();
-                plr.tank.applyStatePacket(data.players[plr.id]);
+                plr.tank.applyTinyStatePacket(data.p[plr.id]);
             } else {
                 // This player is not included in the packet - means that this
                 // particular client does not see it

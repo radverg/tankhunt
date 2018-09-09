@@ -5,6 +5,8 @@ class EffectManager {
     private game: Phaser.Game;
     private effectGroup: Phaser.Group;
 
+    sounds: Phaser.Sound;    
+
     constructor(game: Phaser.Game) {
         this.game = game;
         this.effectGroup = game.world;
@@ -36,6 +38,7 @@ class EffectManager {
         }
         
         this.game.sound.play(name, vol);
+    
 
 
     }

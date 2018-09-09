@@ -1,6 +1,6 @@
 import { GameObject_SE } from "./utils/GameObject_SE";
 import { Player_SE } from "./Player_SE";
-import { dist, distVec } from "./utils/MyMath_SE";
+import { dist, distVec, shortFloat } from "./utils/MyMath_SE";
 import { Tank_SE } from "./Tank_SE";
 import { Weapon_SE } from "./Weapon_SE";
 import { THGame_SE } from "./gamemodes/THGame_SE";
@@ -55,10 +55,10 @@ abstract class Shot_SE extends GameObject_SE {
 		let packet: PacketShotStart = super.getStatePacket() as PacketShotStart;
 				
 		packet.type = this.type,
-		packet.startX = this.startX,
-		packet.startY = this.startY,
+		packet.startX = parseFloat(this.startX.toFixed(4)),
+		packet.startY = parseFloat(this.startY.toFixed(4)),
 		packet.startTime = this.startTime,
-		packet.ownerID = this.owner.socket.id
+		packet.ownerID = this.owner.id
 		
 		return packet;
 	}
@@ -361,15 +361,15 @@ class Bouncer_SE extends Shot_SE {
 
 			currLength += newLength;
 
-			this.wayPoints.push({x: point.x, y: point.y, ang: Math.atan2(nextDirX, -nextDirY)});
+			this.wayPoints.push({x: shortFloat(point.x), y: shortFloat(point.y), ang: shortFloat(Math.atan2(nextDirX, -nextDirY))});
 		}
 
 	}
 
 	getStartPacket() {
 		var packet = super.getStartPacket();
-		packet.endX = this.endPoint.x;
-		packet.endY = this.endPoint.y;
+		packet.endX = shortFloat(this.endPoint.x);
+		packet.endY = shortFloat(this.endPoint.y);
 		packet.speed = this.maxSpeed;
 		packet.pts = this.wayPoints;
 		return packet;
@@ -437,7 +437,7 @@ class BouncingLaser_SE extends Bouncer_SE {
 			let pt2 = this.wayPoints[this.currentBounce + 1];
 
 			if (tank.body.lineInt(pt1.x, pt1.y, pt2.x, pt2.y)) {
-				if (i === this.currentBounce - 1) {
+				if (i === this.currentBounce) {
 					return tank.body.lineInt(pt1.x, pt2.y, this.x, this.y);
 				}
 				return true;
@@ -506,8 +506,8 @@ class Eliminator_SE extends Bouncer_SE {
 
 	getStartPacket() {
 		var packet = super.getStartPacket() as PacketEliminatorStart;
-		packet.endX = this.endPoint.x;
-		packet.endY = this.endPoint.y;
+		packet.endX = shortFloat(this.endPoint.x);
+		packet.endY = shortFloat(this.endPoint.y);
 		packet.speed = this.maxSpeed;
 		packet.spl = this.splintersData;
 		packet.splTime = this.splinterTime;

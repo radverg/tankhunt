@@ -84,4 +84,8 @@ function getLineIntPoint(x1: number, y1: number, x2: number, y2: number, x3: num
 	return false;
 }
 
-export { getRandomInt, getAngleToAxis, dist, distVec, checkIntersection, getLineIntPoint };
+function shortFloat(flt: number) {
+	return parseFloat(flt.toFixed(4));
+}
+
+export { getRandomInt, getAngleToAxis, dist, distVec, checkIntersection, getLineIntPoint, shortFloat };

@@ -312,7 +312,7 @@ class THGame_CL {
 		this.playerGroup.addPlayer(player);
 
 		// Check if its me
-		if (packet.id == this.socketManager.getID()) { // If so, make tank blue and bind camera with this
+		if (packet.socketID == this.socketManager.getID()) { // If so, make tank blue and bind camera with this
 			this.playerGroup.setMe(player);
 			this.setCameraFollow();
 		} else { 
