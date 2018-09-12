@@ -67,6 +67,8 @@ class PlayManager_CL extends Phaser.State  {
     
     processGameStart(packet: PacketGameStart) {
         this.world.removeAll(true);
+        TH.effects.stopAudio();
+        
         if (packet.gameType == "Arena") {
             console.log("Starting arena!");
             this.thGame = new Arena_CL(this.th.socketManager, packet);

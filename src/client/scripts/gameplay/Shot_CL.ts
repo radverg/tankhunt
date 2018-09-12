@@ -18,6 +18,12 @@ class Shot_CL extends Sprite {
 
 	protected shotGroup: ShotGroup_CL = TH.thGame.shotGroup;
 
+	/**
+	 * Specifies how many enemies this shot killed, used only for 
+	 * playing multikill sound
+	 */
+	killCount: number = 0;
+
 	constructor(dataPack: PacketShotStart, asset?: string) {
 		super(TH.game, dataPack.startX * TH.sizeCoeff, dataPack.startY * TH.sizeCoeff, asset || "whiteRect");
 		
@@ -86,7 +92,7 @@ class LaserDirect_CL extends Shot_CL {
 		twn.onComplete.add(function() { this.destroy(); }, this);
 		twn.start();
 
-		TH.effects.playLaser3(this.x, this.y);
+		TH.effects.playAudio(SoundNames.LASER3, this);
 	}
 }
 
@@ -121,7 +127,7 @@ class APCR_CL extends Shot_CL {
 		this.shotGroup.add(this);
 		
 		// Effects
-		TH.effects.playSound("bum1_sound", 0.4, this.x, this.y);
+		TH.effects.playAudio(SoundNames.BUM1, this);
 		this.ownerPl.tank.shotExplodeEffect(this);
 	}
 
@@ -157,7 +163,7 @@ class FlatLaser_CL extends Shot_CL {
 		twn.onComplete.add(function() { this.destroy(); }, this);
 		twn.start();
 
-		TH.effects.playLaser2(this.x, this.y);
+		TH.effects.playAudio("laser2", this);
 
 	
 	}
@@ -216,7 +222,7 @@ class Bouncer_CL extends Shot_CL {
 		this.shotGroup.add(this);
 		this.tweens[0].start();
 
-		TH.effects.playSound("bum1_sound", 0.4, this.x, this.y);
+		TH.effects.playAudio(SoundNames.BUM1, this);
 		this.ownerPl.tank.shotExplodeEffect(this);
 	}
 
@@ -245,7 +251,7 @@ class PolygonalBouncer_CL extends Bouncer_CL {
 	start() {
 		super.start();
 		// this.rotTween.start();
-		TH.effects.playSound("bum1_sound", 0.4, this.x, this.y);
+		TH.effects.playAudio("shotSmall", this);
 		this.ownerPl.tank.shotExplodeEffect(this);
 		this.shotGroup.add(this);
 	}
@@ -303,6 +309,8 @@ class Eliminator_CL extends Bouncer_CL {
 			
 		}
 
+		TH.effects.playAudio(SoundNames.SHOTMEGAEXP, this);
+
 		this.stop();
 	}
 }
@@ -320,7 +328,7 @@ class BouncingLaser_CL extends Bouncer_CL {
 	}
 
 	start() {
-		TH.effects.playLaser1(this.x, this.y);
+		TH.effects.playAudio("laser1", this);
 		this.nextLaserLine();
 	}
 
@@ -358,6 +366,8 @@ class BouncingLaser_CL extends Bouncer_CL {
 
 		twn.start();
 		this.currentBounce++;
+
+		TH.effects.playAudio(SoundNames.CLICK, null, pt1.x, pt1.y);
 	}
 
 	stop() {
@@ -378,6 +388,7 @@ class Mine_CL extends Shot_CL {
 
 	start() {
 		this.game.add.tween(this).to({ alpha: 0 }, 1000, Phaser.Easing.Default, true);
+		TH.effects.playAudio(SoundNames.MINEBEEP);
 		this.shotGroup.add(this);
 	}
 }

@@ -5,7 +5,7 @@ class EffectManager {
     private game: Phaser.Game;
     private effectGroup: Phaser.Group;
 
-    sounds: Phaser.Sound;    
+    private audioSprite: Phaser.AudioSprite;    
 
     constructor(game: Phaser.Game) {
         this.game = game;
@@ -25,34 +25,40 @@ class EffectManager {
         return !TH.suspended && TH.game.camera.view.contains(x, y);
     }
 
+    playAudio(name: string, sourceSpr?: Phaser.Sprite, x?: number, y?: number) {
 
-    playSound(name: string, volume: number = 1, atX?: number, atY?: number)  {
-        let vol = volume;
+        if (!this.audioSprite || !this.audioSprite.get(name)) return;
 
-        if (atX) {
-            vol *= this.getVolumeCoeff(atX, atY);
+        let volScale = 1;
+        let vol = this.audioSprite.config.spritemap[name].volume || 1;
+
+        if (sourceSpr) {
+            volScale = this.getVolumeCoeff(sourceSpr.x, sourceSpr.y);
+        } else if (x !== undefined && y !== undefined) {
+            volScale = this.getVolumeCoeff(x, y);
         }
 
-        if (vol == 0) {
-            return;
+        if (volScale === 0) return;
+        vol *= volScale;
+
+        this.audioSprite.play(name, vol);
+    }
+
+    playAudioLooping(name: string) {
+        let sound = this.audioSprite.get(name);
+
+        if (sound) {
+            sound.play(name, null, this.audioSprite.config.spritemap[name].volume || 1, true);
         }
-        
-        this.game.sound.play(name, vol);
-    
-
 
     }
 
-    playLaser1(atX: number, atY: number) {
-        this.playSound("laser1_sound", 0.8, atX, atY);
+    getSound(name: string) {
+        return this.audioSprite.get(name);
     }
 
-    playLaser2(atX: number, atY: number) {
-        this.playSound("laser2_sound", 0.8, atX, atY);
-    }
-
-    playLaser3(atX: number, atY: number) {
-        this.playSound("laser3_sound", 0.8, atX, atY);
+    stopAudio() {
+        this.audioSprite.stop(null);
     }
 
     private getVolumeCoeff(x: number, y: number) {
@@ -66,6 +72,12 @@ class EffectManager {
             coeff = 0;
 
         return coeff;
+    }
+
+    createAudioSprite() {
+        if (this.audioSprite) return;
+
+        this.audioSprite = this.game.add.audioSprite("audioSprite");
     }
 
 
@@ -92,6 +104,9 @@ class EffectManager {
         if (!x || !y) {
             return;
         }
+
+        if (!this.shouldByXY(x, y)) return;
+
         let debrisCount = Math.floor(Math.random() * 5) + 4;
         let duration = 300;
 
@@ -119,6 +134,10 @@ class EffectManager {
        
         let debrisCount = 10;
         let duration = 400;
+
+        this.playAudio(SoundNames.SPLASH, null, x, y);
+
+        if (!this.shouldByXY(x, y)) return;
 
         for (let i = 0; i < debrisCount; i++) {
             
@@ -155,4 +174,38 @@ class EffectManager {
         anim.onComplete.add(function() { this.destroy(); }, spr);
         anim.play();
     }
+}
+
+enum SoundNames {
+    LASER1 = "laser1",
+    LASER2 = "laser2",
+    LASER3 = "laser2",
+    LOSS = "loss",
+    MULTIKILL = "multiKill",
+    FIVE = "five",
+    TEN = "ten",
+    FIFTEEN = "fifteen",
+    SHOTSMALL = "shotSmall",
+    SPLASH = "splash",
+    TADA = "tada",
+    TICK = "tick",
+    TICKMEGA = "tickMega",
+    TWENTY = "twenty",
+    SHOTMEGAEXP = "shotMegaExplosion",
+    GUNSHOT1 = "gunShot1",
+    EXPLOSION1 = "explosion1",
+    EXPLOSION2 = "explosion2",
+    EXPLOSION3 = "explosion3",
+    CLINK = "clink",
+    CLICK = "click",
+    BUM1 = "bum1",
+    ENGINEHIGH = "engineHigh",
+    ENGINELOW = "engineLow",
+    BIM = "bim",
+    RELOAD = "reload",
+    VICTORY = "victory",
+    MINEBEEP = "mineBeep",
+    MENUSONG = "menuSong",
+    CINK = "cink",
+    WHIP = "whip"
 }

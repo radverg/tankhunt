@@ -82,16 +82,7 @@ class LoadManager_CL extends Phaser.State  {
 
 
 		];
-
-		this.audio = [
-			{ assetName: "explosion1_sound", path: [soundsPath + "explosion1.ogg", soundsPath + "explosion1.wav"] },
-			{ assetName: "laser1_sound", path: [soundsPath + "laser1.ogg", soundsPath + "laser1.wav"] },
-			{ assetName: "laser2_sound", path: [soundsPath + "laser2.ogg", soundsPath + "laser2.wav"] },
-			{ assetName: "laser3_sound", path: [soundsPath + "laser3.ogg", soundsPath + "laser3.wav"] },
-			{ assetName: "bum1_sound", path: [soundsPath + "bum1.ogg", soundsPath + "bum1.wav"] },
-			{ assetName: "test", path: [soundsPath + "test.ogg"] },
-		]
-		// -----------------------------------------------------------------------------------	
+		//-------------------------------------------	
 
 		let win = window as any;
 		win.WebFontConfig = {
@@ -123,12 +114,10 @@ class LoadManager_CL extends Phaser.State  {
 			TH.game.load.spritesheet(sheet.assetName, sheet.path, sheet.frameSizeX, sheet.frameSizeY, sheet.frameCount);
 		}
 
-		// Load audio --------------------------------
-		for (let i = 0; i < this.audio.length; i++) {
-			var audio = this.audio[i];
-			TH.game.load.audio(audio.assetName, audio.path);
-			
-		}
+		// Audio ------------------------------------------
+		this.game.load.audiosprite("audioSprite",  ["sounds/audioSprite.ogg", "sounds/audioSprite.m4a",
+			 "sounds/audioSprite.mp3", "sounds/audioSprite.ac3"], "sounds/audioSprite.json");
+		// ------------------------------------------------
 
 		// Load google web fonts
 		TH.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
@@ -184,15 +173,9 @@ class LoadManager_CL extends Phaser.State  {
 	
 	create() {
 
-		// Audio
-		let audioSpr = this.game.add.audio("test");
-		TH.effects.sounds = audioSpr;
-		audioSpr.allowMultiple = true;
-		audioSpr.addMarker("mark1", 0, 1.9);
-		audioSpr.addMarker("mark2", 2, 4.5);
-		audioSpr.addMarker("mark3", 5, 55);
-
-
+		
+		TH.effects.createAudioSprite();
+		
 		let loadTime = Date.now() - this.startTime;
 
 		if (loadTime <= this.itnetworkDelay && this.useItnetworkDelay) {

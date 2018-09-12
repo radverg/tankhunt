@@ -196,10 +196,16 @@ class THGame_CL {
 		let tank = playerHit.tank;
 		tank.health = data.healthAft;
 
-		if (data.healthAft < data.healthBef)
+		if (data.healthAft < data.healthBef) {
+			// Damage effect
 			TH.effects.shotDamageEffect(data.x * TH.sizeCoeff || tank.x , (data.y * TH.sizeCoeff) || tank.y);
-		else 
+			TH.effects.playAudio(SoundNames.SHOTSMALL, playerHit.tank);
+		}
+		else  {
+			// Bounce effect
 			TH.effects.shotDebrisEffect(data.x * TH.sizeCoeff || tank.x , (data.y * TH.sizeCoeff) || tank.y);
+			TH.effects.playAudio(SoundNames.CINK, playerHit.tank);
+		}
 
 		if (tank.health == 0) {
 			// If tank is not visible in the moment of destruction, move it to the position
@@ -209,6 +215,16 @@ class THGame_CL {
 				tank.jumpToRemote();
 			}
 			tank.kill();
+
+			// Handle multikill effect
+			if (shot && playerHit !== this.playerGroup.me) {
+				shot.killCount++;
+				if (shot.killCount > 1 && shot.getOwner() === this.playerGroup.me) {
+					shot.killCount = -100;
+					TH.game.time.events.add(700, function() { TH.effects.playAudio(SoundNames.MULTIKILL); });
+				}
+			}
+			
 		}
 
 		playerAtt.stats.countHit(playerAtt, playerHit, data.healthBef, data.healthAft);
@@ -314,6 +330,7 @@ class THGame_CL {
 		// Check if its me
 		if (packet.socketID == this.socketManager.getID()) { // If so, make tank blue and bind camera with this
 			this.playerGroup.setMe(player);
+			(player.tank as DefaultTank_CL).initEngineSound();
 			this.setCameraFollow();
 		} else { 
 			this.playerGroup.setEnemy(player);

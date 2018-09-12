@@ -77,9 +77,11 @@ class UIDuel_CL {
             if (packet.winnerID == this.thGame.playerGroup.me.id) {
                 // I have won!
                 this.centerGrp.add(TextMaker_CL.winText(0, 150));
+                TH.effects.playAudio(SoundNames.VICTORY);
             } else {
                 // I have lost!
-                this.centerGrp.add(TextMaker_CL.defText( 0, 150));
+                this.centerGrp.add(TextMaker_CL.defText(0, 150));
+                TH.effects.playAudio(SoundNames.LOSS);
 
             }
 

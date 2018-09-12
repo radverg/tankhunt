@@ -190,7 +190,9 @@ abstract class Tank_CL extends Sprite {
 	explosionEffect() {
 
 		// Now play sound effect
-		this.game.sound.play("explosion1_sound");
+		// Choose randomly
+		let soundName = (Math.random() > 0.5) ? SoundNames.EXPLOSION1 : SoundNames.EXPLOSION2;
+		TH.effects.playAudio(soundName, this);
 
 		if (!TH.effects.should(this)) return;
 

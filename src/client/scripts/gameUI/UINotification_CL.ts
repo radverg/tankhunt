@@ -52,6 +52,18 @@ class UINotification_CL {
                 this.topGroup.add(TextMaker_CL.goTextBig(`Enemy ${player.name} killed!`, 0, notifYPos));
                 if (this.displayInRow) {
                     this.topGroup.add(TextMaker_CL.goTextBig(`${attacker.stats.inRow} in a row!`, 0, notifYPos + 50, true, "lightblue"));
+
+                    // Sound effect
+                    let soundName: string = null;
+                    if (attacker.stats.inRow === 5) soundName = SoundNames.FIVE;
+                    else if (attacker.stats.inRow === 10) soundName = SoundNames.TEN;
+                    else if (attacker.stats.inRow === 15) soundName = SoundNames.FIFTEEN;
+                    else if (attacker.stats.inRow === 20) soundName = SoundNames.TWENTY;
+
+                    if (soundName) {
+                        TH.game.time.events.add(700, function() { TH.effects.playAudio(soundName); });
+                    }
+            
                 }
 
             }

@@ -9,6 +9,8 @@ class DefaultTank_CL extends Tank_CL {
 	private leftExTween: Phaser.Tween = null;
 	//-----------------------------------------
 
+	private engineSound: Phaser.Sound;
+
 	private currAnimName: string = "tracks1";
 
 	constructor() {
@@ -123,6 +125,10 @@ class DefaultTank_CL extends Tank_CL {
 		this.rightExTween = this.game.add.tween(this.rightExSpr).to({ alpha: 0.8 }, 500, Phaser.Easing.Default, true);
 		this.leftExTween = this.game.add.tween(this.leftExSpr).to({ alpha: 0.8 }, 500, Phaser.Easing.Default, true);
 
+		if (this.engineSound) {
+			this.engineSound.fadeTo(250, 0.3);
+		}
+
 	}
 
 	stopExhaustEffect() {
@@ -132,5 +138,22 @@ class DefaultTank_CL extends Tank_CL {
 		this.rightExTween = this.game.add.tween(this.rightExSpr).to({ alpha: 0.2 }, 500, Phaser.Easing.Default, true);
 		this.leftExTween = this.game.add.tween(this.leftExSpr).to({ alpha: 0.2 }, 500, Phaser.Easing.Default, true);
 
+		if (this.engineSound) {
+			this.engineSound.fadeTo(250, 0.0001);
+		}
+
+	}
+
+	initEngineSound() {
+		this.engineSound = TH.effects.getSound(SoundNames.ENGINELOW);
+		this.engineSound.loop = true;
+		this.engineSound.play(SoundNames.ENGINELOW, null, 0.0001, true);
+		//TH.effects.playAudio(SoundNames.ENGINEHIGH);
+	}
+
+	destroy() {
+		super.destroy();
+		if (this.engineSound)
+			this.engineSound.stop();
 	}
 }

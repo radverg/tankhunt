@@ -1,0 +1,170 @@
+{
+  "resources": [
+    "audioSprite.ogg",
+    "audioSprite.m4a",
+    "audioSprite.mp3",
+    "audioSprite.ac3"
+  ],
+  "spritemap": {
+    "bim": {
+      "start": 0,
+      "end": 0.6270068027210884,
+      "loop": false
+    },
+    "bum1": {
+      "start": 2,
+      "end": 2.5572789115646257,
+      "loop": false
+    },
+    "cink": {
+      "start": 4,
+      "end": 4.759002267573696,
+      "loop": false
+    },
+    "click": {
+      "start": 6,
+      "end": 6.139002267573696,
+      "loop": false
+    },
+    "clink": {
+      "start": 8,
+      "end": 8.870997732426304,
+      "loop": false
+    },
+    "engineHigh": {
+      "start": 10,
+      "end": 12.048344671201814,
+      "loop": false
+    },
+    "engineLow": {
+      "start": 14,
+      "end": 16.054943310657595,
+      "loop": false
+    },
+    "explosion1": {
+      "start": 18,
+      "end": 19.44253968253968,
+      "loop": false
+    },
+    "explosion2": {
+      "start": 21,
+      "end": 22.379002267573696,
+      "loop": false
+    },
+    "explosion3": {
+      "start": 24,
+      "end": 25.379160997732427,
+      "loop": false
+    },
+    "fifteen": {
+      "start": 27,
+      "end": 29.740000000000002,
+      "loop": false
+    },
+    "five": {
+      "start": 31,
+      "end": 33.14800453514739,
+      "loop": false
+    },
+    "gunShot1": {
+      "start": 35,
+      "end": 37.10099773242631,
+      "loop": false
+    },
+    "laser1": {
+      "start": 39,
+      "end": 42.01,
+      "loop": false
+    },
+    "laser2": {
+      "start": 44,
+      "end": 44.4490022675737,
+      "loop": false
+    },
+    "laser3": {
+      "start": 46,
+      "end": 48.209002267573695,
+      "loop": false
+    },
+    "laser4": {
+      "start": 50,
+      "end": 51.776757369614515,
+      "loop": false
+    },
+    "loss": {
+      "start": 53,
+      "end": 57.098004535147396,
+      "loop": false
+    },
+    "menuSong": {
+      "start": 59,
+      "end": 117.76399092970522,
+      "loop": false
+    },
+    "mineBeep": {
+      "start": 119,
+      "end": 119.77317460317461,
+      "loop": false
+    },
+    "multiKill": {
+      "start": 121,
+      "end": 123.36800453514739,
+      "loop": false
+    },
+    "reload": {
+      "start": 125,
+      "end": 125.44501133786848,
+      "loop": false
+    },
+    "shotMegaExplosion": {
+      "start": 127,
+      "end": 136.3641723356009,
+      "loop": false
+    },
+    "shotSmall": {
+      "start": 138,
+      "end": 138.3850113378685,
+      "loop": false
+    },
+    "splash": {
+      "start": 140,
+      "end": 140.4380045351474,
+      "loop": false
+    },
+    "tada": {
+      "start": 142,
+      "end": 143.5670068027211,
+      "loop": false
+    },
+    "ten": {
+      "start": 145,
+      "end": 146.7650113378685,
+      "loop": false
+    },
+    "tick": {
+      "start": 148,
+      "end": 149.8809977324263,
+      "loop": false
+    },
+    "tickMega": {
+      "start": 151,
+      "end": 152.64696145124717,
+      "loop": false
+    },
+    "twenty": {
+      "start": 154,
+      "end": 157.1229931972789,
+      "loop": false
+    },
+    "victory": {
+      "start": 159,
+      "end": 160.84614512471654,
+      "loop": false
+    },
+    "whip": {
+      "start": 162,
+      "end": 162.40600907029477,
+      "loop": false
+    }
+  }
+}

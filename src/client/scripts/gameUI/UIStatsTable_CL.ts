@@ -139,6 +139,7 @@ class UIStatsTable_CL {
 
     show() {
         this.refresh();
+        TH.effects.playAudio(SoundNames.WHIP);
         let $tblCont = this.$tableCont;
         let targetLeft = $(window).width() / 2 - $tblCont.width() / 2;
         let targetTop = $(window).height() / 2 - $tblCont.height() / 2;
