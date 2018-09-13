@@ -215,7 +215,7 @@ class LaserDirect_SE extends Shot_SE {
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game);
 
-		this.damage = 1000;
+		this.damage = 1500;
 		this.ignoreArmor = true;
 
 		this.type = "LaserDirect";
@@ -260,7 +260,7 @@ class FlatLaser_SE extends Shot_SE {
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game);
 
-		this.damage = 750;
+		this.damage = 900;
 		this.ignoreArmor = true;
 
 		this.type = "FlatLaser";
@@ -415,7 +415,7 @@ class BouncingLaser_SE extends Bouncer_SE {
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game);
 
-		this.damage = 900;
+		this.damage = 1100;
 		this.ignoreArmor = true;
 		this.maxSpeed = 35;
 		this.fullForward();
@@ -433,12 +433,13 @@ class BouncingLaser_SE extends Bouncer_SE {
 		// If it is someone else, check all laser lines
 		for (let i = 0; i <= this.currentBounce; i++) {
 
-			let pt1 = this.wayPoints[this.currentBounce];
-			let pt2 = this.wayPoints[this.currentBounce + 1];
+			let pt1 = this.wayPoints[i];
+			let pt2 = this.wayPoints[i + 1];
 
 			if (tank.body.lineInt(pt1.x, pt1.y, pt2.x, pt2.y)) {
 				if (i === this.currentBounce) {
-					return tank.body.lineInt(pt1.x, pt2.y, this.x, this.y);
+					
+					return tank.body.lineInt(pt1.x, pt1.y, this.x, this.y);
 				}
 				return true;
 			}
@@ -462,6 +463,8 @@ class PolygonalBouncer_SE extends Bouncer_SE {
 class Splinter_SE extends Shot_SE {
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game);
+
+		this.damage = 500;
 	}
 
 	getTankCollision(tank: Tank_SE) {
@@ -556,7 +559,7 @@ class Mine_SE extends Shot_SE {
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game);
 
-		this.damage = 300;
+		this.damage = 400;
 		this.active = false;
 		this.ignoreArmor = true;
 		

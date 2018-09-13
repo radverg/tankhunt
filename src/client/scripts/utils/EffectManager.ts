@@ -6,10 +6,28 @@ class EffectManager {
     private effectGroup: Phaser.Group;
 
     private audioSprite: Phaser.AudioSprite;    
-
+    private pool: Pool_CL;
     constructor(game: Phaser.Game) {
         this.game = game;
         this.effectGroup = game.world;
+    }
+
+    initPool() {
+        this.pool = new Pool_CL(this.game);
+
+        for (let i = 0; i < 5; i++) {
+            this.pool.createMultiple(1, `shotExplode${i + 1}`);
+            this.pool.createMultiple(1, `explosion${i + 1}`);
+        }
+
+        this.pool.createMultiple(5, "shotDamage");
+
+        this.pool.createMultiple(40, "wallDebrisDarker");
+        this.pool.createMultiple(34, "tankParts");
+    }
+
+    getPool(): Pool_CL {
+        return this.pool;
     }
 
     should(sourceSpr?: Phaser.Sprite, tolerance: number = 0) {
@@ -51,6 +69,15 @@ class EffectManager {
             sound.play(name, null, this.audioSprite.config.spritemap[name].volume || 1, true);
         }
 
+    }
+
+    fadeOutAndStop(name: string) {
+        let sound = this.audioSprite.get(name);
+
+        if (!sound || !sound.isPlaying) return;
+
+        sound.onFadeComplete.addOnce(function() { this.stop(); }, sound);
+        sound.fadeOut();
     }
 
     getSound(name: string) {

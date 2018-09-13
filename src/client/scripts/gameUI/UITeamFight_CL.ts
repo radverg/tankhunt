@@ -184,6 +184,8 @@ class UITeamFight_CL {
         let btnText = TH.game.make.text(0, 0, "Back to menu");
         btnText.anchor.setTo(0.5); 
         btn.addChild(btnText);
+        btn.onOverSound = TH.effects.getSound(SoundNames.CLICK);
+		btn.onOverSoundMarker = SoundNames.CLICK;
         
         // Animate button after a delay;;;;;;;;
         this.game.time.events.add(delay, function() {
@@ -225,6 +227,9 @@ class UITeamFight_CL {
             sqr.tint = color;
 
             // Some notification
+            if (!ourCap) {
+                TH.effects.playAudio(SoundNames.TADA);
+            }
         }
 
         if (packet.st) {

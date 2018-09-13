@@ -25,6 +25,8 @@ class Arena_CL extends THGame_CL {
 		btnExit.anchor.setTo(0.5);
 		btnText.anchor.setTo(0.5);
 		btnExit.addChild(btnText);
+		btnExit.onOverSound = TH.effects.getSound(SoundNames.CLICK);
+		btnExit.onOverSoundMarker = SoundNames.CLICK;
 		btnExit.fixedToCamera = true;
 		btnExit.alpha = 0.7;
 	  

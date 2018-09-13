@@ -51,14 +51,14 @@ class LaserGun_SE extends Weapon_SE {
 	onPress(game: THGame_SE) {
 		// Shoot here
 		if (this.canShoot()) {
-			var shps = this.owner.tank.getLaserPosition();
+			var shps = this.owner.tank.getShotPosition();
 			
 			if (!game.level.levelRect.contains(shps.x, shps.y)) {
 				return;
 			}
 			
 			this.shoot();
-			var shot = new LaserDirect_SE(this, shps.x, shps.y, this.owner.tank.angle, game);
+			var shot = new LaserDirect_SE(this, shps.x, shps.y, this.owner.tank.turret.angle, game);
 			game.shoot(shot);
 		}
 	}
@@ -213,14 +213,14 @@ class FlatLaserGun_SE extends Weapon_SE {
 	onPress(game: THGame_SE) {
 		// Shoot here
 		if (this.canShoot()) {
-			var shps = this.owner.tank.getLaserPosition();
+			var shps = this.owner.tank.getShotPosition();
 			
 			if (!game.level.levelRect.contains(shps.x, shps.y)) {
 				return;
 			}
 			
 			this.shoot();
-			var shot = new FlatLaser_SE(this, shps.x, shps.y, this.owner.tank.angle, game);
+			var shot = new FlatLaser_SE(this, shps.x, shps.y, this.owner.tank.turret.angle, game);
 			game.shoot(shot);
 		}
 	}

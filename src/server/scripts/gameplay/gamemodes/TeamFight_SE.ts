@@ -4,6 +4,7 @@ import { Player_SE } from "../Player_SE";
 import { Tank_SE } from "../Tank_SE";
 import { Capture_SE } from "../Capture_SE";
 import { getRandomInt } from "../utils/MyMath_SE";
+import { Stats_SE } from "../Stats_SE";
 
 class TeamFight_SE extends THGame_SE {
 
@@ -64,6 +65,7 @@ class TeamFight_SE extends THGame_SE {
         player.tank = new Tank_SE(player); // Bind player with new tank for this game
 
         player.alive = true;
+        player.stats = new Stats_SE();
 
         this.players.push(player);
 

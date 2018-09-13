@@ -3,6 +3,7 @@ import { Player_SE } from "../Player_SE";
 import { Tank_SE } from "../Tank_SE";
 import { Level_SE, LoadedLevels } from "../Level_SE";
 import { getRandomInt } from "../utils/MyMath_SE";
+import { Stats_SE } from "../Stats_SE";
 
 class Duel_SE extends THGame_SE {
 
@@ -13,11 +14,11 @@ class Duel_SE extends THGame_SE {
 
     private isWinPending: boolean = false;
 
-    private maxWins: number = 15;
+    private maxWins: number = 3;
    
     private currentRound: number = 0;
 
-    private duelMapCount: number = 10;
+    private duelMapCount: number = 20;
 
     private levels: Level_SE[] = [];
 
@@ -66,6 +67,7 @@ class Duel_SE extends THGame_SE {
         player.tank = new Tank_SE(player); // Bind player with new tank for this game
 
         player.alive = true;
+        player.stats = new Stats_SE();
 
         this.players.push(player);
 
@@ -122,6 +124,7 @@ class Duel_SE extends THGame_SE {
         this.isWinPending = true;
 
         setTimeout(() => {
+            if (this.remove) return;
             this.isWinPending = false;
             let winner = (winAdept.alive) ? winAdept : null;
             this.subGameRunning = false;
@@ -149,6 +152,7 @@ class Duel_SE extends THGame_SE {
             plr.tank.stopCompletely();
             plr.tank.maxHealth = rndHealt;
             plr.tank.health = rndHealt;
+            plr.tank.specialGun = null;
         }
         
     }

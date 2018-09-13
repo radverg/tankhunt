@@ -19,6 +19,7 @@ class UIPlayerManager_CL {
         this.thGame.onHeal.add(this.healPlayer, this);
         this.thGame.onItemCollect.add(this.itemCollect, this);
         this.thGame.onMeItemUse.add(this.itemMeUse, this);
+        this.thGame.onGameFinish.add(this.itemMeUse, this);
 
     }
 

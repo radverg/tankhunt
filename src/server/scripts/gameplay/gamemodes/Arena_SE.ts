@@ -4,6 +4,7 @@ import { Level_SE, LoadedLevels } from "../Level_SE";
 import { Tank_SE } from "../Tank_SE";
 import { Shot_SE } from "../Shot_SE";
 import { THGame_SE } from "./THGame_SE";
+import { Stats_SE } from "../Stats_SE";
 var Levels : Lvls = require("../../../../shared/Levels");
 /**
  * Arena game class
@@ -39,6 +40,8 @@ class Arena_SE extends THGame_SE {
 
         player.alive = false; // Player is going to be included in the game by respawn
         player.lastInput = Date.now();
+
+        player.stats = new Stats_SE();
 
         this.players.push(player);
 

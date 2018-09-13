@@ -59,6 +59,7 @@ class THGame_CL {
 		this.socketManager = socketManager;
 		TH.thGame = this;
 		this.init();
+		TH.effects.initPool();
 	
 	}
 
@@ -146,6 +147,7 @@ class THGame_CL {
 
 		if (collector === this.playerGroup.me) {
 			// This happens if item was collected by THIS player
+			TH.effects.playAudio(SoundNames.RELOAD);
 		}
 		item.getCollected();
 		this.onItemCollect.dispatch(item, collector);		
