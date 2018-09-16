@@ -21,7 +21,7 @@ class PlayManager_CL extends Phaser.State  {
         this.scale.pageAlignHorizontally = true;
         this.world.setBounds(-400, -400, 3000, 2000);
         this.stage.backgroundColor = "#D4DBE1";
-        this.stage.disableVisibilityChange = true;
+      //  this.stage.disableVisibilityChange = true;
 
         if (this.thGame && this.thGame.remove) {
             this.thGame = null;
@@ -36,7 +36,7 @@ class PlayManager_CL extends Phaser.State  {
 
         if (!this.first) return;
 
-        this.th.loadManager.precreate();
+      // this.th.loadManager.precreate();
 
         this.pingerTimer = TH.game.time.create(false);
         this.pingerTimer.loop(3000, TH.timeManager.synchronizeRequest, TH.timeManager);

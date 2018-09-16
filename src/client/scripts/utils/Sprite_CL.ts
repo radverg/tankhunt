@@ -77,6 +77,16 @@ class Sprite extends Phaser.Sprite {
     rotationServerUpdate(rot: number) {
 		this.remAngle = rot;
     }
+
+	isMoving() {
+		return !(Math.round(this.previousPosition.x) === Math.round(this.position.x) &&
+			Math.round(this.previousPosition.y) === Math.round(this.position.y)); //  !this.previousPosition.fuzzyEquals(this.position, 0.05);
+	}
+
+	isRotating() {
+		return this.rotation !== this.previousRotation;
+	}
+
     
     jumpToRemote() {
 		this.x = this.remX;

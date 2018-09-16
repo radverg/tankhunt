@@ -10,6 +10,7 @@ class DefaultTank_CL extends Tank_CL {
 	//-----------------------------------------
 
 	private engineSound: Phaser.Sound;
+	private turretEngineSound: Phaser.Sound;
 
 	private currAnimName: string = "tracks1";
 
@@ -60,6 +61,19 @@ class DefaultTank_CL extends Tank_CL {
 		} else {
 			this.animations.stop(this.currAnimName);
 		}
+
+		if (this.turretEngineSound) {
+			if (this.turret.isRotating()) {
+				if (!this.turretEngineSound.isPlaying) {
+				//	this.turretEngineSound.play()
+
+				}
+			}
+			else if (this.turretEngineSound.isPlaying) {
+				this.turretEngineSound.stop();
+			}
+		}
+
 	}
 
 	initTrackAnim() {
@@ -148,6 +162,8 @@ class DefaultTank_CL extends Tank_CL {
 		this.engineSound = TH.effects.getSound(SoundNames.ENGINELOW);
 		this.engineSound.loop = true;
 		this.engineSound.play(SoundNames.ENGINELOW, null, 0.0001, true);
+
+		this.turretEngineSound = TH.effects.getSound(SoundNames.ENGINETURRET);
 		//TH.effects.playAudio(SoundNames.ENGINEHIGH);
 	}
 

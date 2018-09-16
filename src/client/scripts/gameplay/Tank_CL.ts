@@ -157,32 +157,37 @@ abstract class Tank_CL extends Sprite {
 		let forwardAngle = this.game.math.normalizeAngle(this.rotation);
 	}
 
-	isMoving() {
-		return !(Math.round(this.previousPosition.x) === Math.round(this.position.x) &&
-			Math.round(this.previousPosition.y) === Math.round(this.position.y)); //  !this.previousPosition.fuzzyEquals(this.position, 0.05);
-	}
-
-	isRotating() {
-		return this.rotation !== this.previousRotation;
-	}
-
 	shotExplodeEffect(shot: Shot_CL) {
 		if (!TH.effects.should(shot)) return;
+
+		
+		let pool = TH.effects.getPool();
+
+		let exps = pool.getAllFreeByKey("shotExplode");
+		let explodeSpr = null;
+
+		if (exps.length == 0) {
+			explodeSpr = pool.createMultiple(1, `shotExplode${Math.floor(Math.random() * 5)}`)[0];
+			console.log("creating");
+		} else {
+			explodeSpr = exps[Math.floor(Math.random() * exps.length)];
+			
+		}
 
 		let ang = (this.visible) ? this.turret.rotation + this.rotation : shot.rotation;
 		let dist = this.turret.height / 1.3;
 
 		let x = (this.visible) ? this.x + Math.sin(ang) * dist : shot.x; 
 		let y = (this.visible) ? this.y - Math.cos(ang) * dist : shot.y;
-		let rnd = Math.floor(Math.random() * 5) + 1;
 
-		let explodeSpr = this.game.add.sprite(x, y, `shotExplode${rnd}`);
+		explodeSpr.exists = true;
+		explodeSpr.position.setTo(x, y);
 		explodeSpr.anchor.setTo(0.5);
 		explodeSpr.scale.setTo(0.4);
 		explodeSpr.rotation = ang;
 
-		let expAnim = explodeSpr.animations.add("shotExplode", null, 60);
-		expAnim.onComplete.add(function() { this.destroy(); }, explodeSpr);
+		let expAnim = explodeSpr.animations.getAnimation("allFrames");
+		expAnim.onComplete.addOnce(function() { this.exists = false; }, explodeSpr);
 		expAnim.play();
 
 	}
@@ -191,25 +196,43 @@ abstract class Tank_CL extends Sprite {
 
 		// Now play sound effect
 		// Choose randomly
-		let soundName = (Math.random() > 0.5) ? SoundNames.EXPLOSION1 : SoundNames.EXPLOSION2;
+		let soundName = `explosion${Math.floor((Math.random() * 3) + 1)}`;
 		TH.effects.playAudio(soundName, this);
 
 		if (!TH.effects.should(this)) return;
 
+		let pool = TH.effects.getPool();
+
+		let exps = pool.getAllFreeByKey("explosion");
+
+		let explosionSpr = null;
+		if (exps.length == 0) {
+			explosionSpr = pool.createMultiple(1, `explosion${Math.floor(Math.random() * 5)}`)[0];
+		} else {
+			explosionSpr = exps[Math.floor(Math.random() * exps.length)];
+			
+		}
+		
 		// Set up explosion animation 
-		let rnd = Math.floor(Math.random() * 5) + 1;
-		let explosionSpr = this.game.add.sprite(this.x, this.y, `explosion${rnd}`);
+		explosionSpr.exists = true;
+		explosionSpr.position.setTo(this.x, this.y);
 		explosionSpr.anchor.setTo(0.5);
-		let expAnim = explosionSpr.animations.add("expAnim", null, 50);
-		expAnim.onComplete.add(function() { this.destroy(); }, explosionSpr);
-		expAnim.play();
+		let expAnim = explosionSpr.animations.getAnimation("allFrames");
+		expAnim.onComplete.addOnce(function() { this.exists = false; }, explosionSpr);
+		expAnim.play(40);
 
 		// Now animate parts of tank, there are six parts of tank
 		let duration = 1000;
+		let partSprs = pool.getAllFreeByKey("tankParts");
+
 		for (let i = 0; i < 6; i++) {
 			// Create part
-			let partSpr = this.game.add.sprite(this.x, this.y, "tankParts", i + ((this.frameStart / this.framesInRow) * 6) );
+			let partSpr = partSprs[i] || pool.createMultiple(1, "tankParts")[0];
+			partSpr.frame = i + ((this.frameStart / this.framesInRow) * 6);
+			partSpr.position.setTo(this.x, this.y);
+			partSpr.exists = true;
 			partSpr.anchor.setTo(0.5);
+			partSpr.alpha = 1;
 
 			// Rotate part
 			let angDir = (Math.random() > 0.5) ? -1 : 1;
@@ -222,7 +245,7 @@ abstract class Tank_CL extends Sprite {
 			
 			// Final tween
 			let twn = this.game.add.tween(partSpr).to({ x: toPos.x, y: toPos.y, rotation: toAng, alpha: 0 }, duration);
-			twn.onComplete.add(function() { this.destroy(); }, partSpr);
+			twn.onComplete.addOnce(function() { this.exists = false; }, partSpr);
 			twn.start();
 		}
 

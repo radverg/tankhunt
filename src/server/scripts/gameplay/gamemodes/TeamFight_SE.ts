@@ -11,7 +11,7 @@ class TeamFight_SE extends THGame_SE {
     private playersPerTeam: number = 3;
     private startCountDown: number = 8000;
 
-    private capsPerTeam: number = 10;
+    private capsPerTeam: number = 7;
     private capTime: number = 4000;
 
     private team1Caps: number = 0;
@@ -264,7 +264,7 @@ class TeamFight_SE extends THGame_SE {
         
             this.emitRespawn(packet);
 
-        }, this.respawnTime);
+        }, this.countResTime());
     }
 
     countResTime() {

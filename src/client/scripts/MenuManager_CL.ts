@@ -19,7 +19,7 @@ class MenuManager_CL extends Phaser.State {
             return;
         }
 
-        $(this.game.canvas).fadeOut();
+        $(this.game.canvas).hide();
         $("#menuCont").fadeIn();
 
         TH.effects.stopAudio();
@@ -29,11 +29,12 @@ class MenuManager_CL extends Phaser.State {
 
             this.first = false;
 
-            this.th.loadManager.precreate();
+            //this.th.loadManager.precreate();
 
             $("#arenaMode").on("click", () => { this.arenaJoinClick(); });
             $("#duelMode").on("click", () => { this.duelJoinClick(); });
             $("#btnChatSubmit").on("click", () => { this.submitChat(); });
+            $("#statsCont").hide();
 
             $("#arenaMode, #duelMode, #teamMode").on("mouseenter", () => TH.effects.playAudio(SoundNames.CLICK));
             

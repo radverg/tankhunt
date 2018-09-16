@@ -156,8 +156,9 @@ class UITeamFight_CL {
             let bg = grp.create(0, 0, "whiteRect");
             bg.height = sizeY;
             bg.width = sizeX;
-            bg.tint = (plr.me) ? 0x0000ff : (plr.team == this.thGame.playerGroup.me.team) ? 0x00ff00 : 0xff0000;
+            bg.tint = (plr.me) ? 0x000777 : (plr.team == this.thGame.playerGroup.me.team) ? 0x1c7000 : 0x720000;
             let text = this.game.make.text(10, 0, plr.name);
+            text.fill = "white";
             grp.add(text);
 
             // Strip
@@ -213,7 +214,6 @@ class UITeamFight_CL {
     private mainMenuCallback() {
         // Return back to menu
         this.uiStats.hide();
-        console.log("Menu clicked!");
         this.game.state.start("menu");
     }
 
@@ -221,7 +221,7 @@ class UITeamFight_CL {
         if (packet.fin) {
             let ourCap = packet.tm === this.thGame.playerGroup.me.team;
             let grp = (ourCap) ? this.capSquareGrpMe : this.capSquareGrpEnemy;
-            let color = (ourCap) ? 0xff00000 : 0x00ff00;
+            let color = (ourCap) ? 0x720000 : 0x1c7000;
             let index = (ourCap) ? this.thGame.allyCapturedCount - 1 : this.thGame.enemyCapturedCount - 1;
             let sqr: Phaser.Sprite = grp.getChildAt(index) as Phaser.Sprite;
             sqr.tint = color;

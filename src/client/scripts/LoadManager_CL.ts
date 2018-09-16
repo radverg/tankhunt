@@ -6,8 +6,10 @@ class LoadManager_CL extends Phaser.State  {
 	private audio: AudioAsset[];
 	private th: TH;
 
-	private useItnetworkDelay: boolean = false;
-	private itnetworkDelay: number = 4000;
+	private loadingText: Phaser.Text;
+
+	private useDelay: boolean = true;
+	private delay: number = 4000;
 
 	private startTime = Date.now();
 	
@@ -71,8 +73,14 @@ class LoadManager_CL extends Phaser.State  {
 			{ assetName: "wallSideTriple", path: imagesPath + "wall_side_triple.png", frameSizeX: 1187, frameSizeY: 94, frameCount: 3 },
 			{ assetName: "wallSideTripleAdv", path: imagesPath + "side_wall_triple_adv.png", frameSizeX: 1778, frameSizeY: 108, frameCount: 3 },
 
+			// Flags
+			{ assetName: "flagRed", path: imagesPath + "flags_red.png", frameSizeX: 414, frameSizeY: 235, frameCount: 40 },
+			{ assetName: "flagGreen", path: imagesPath + "flags_green.png", frameSizeX: 414, frameSizeY: 235, frameCount: 40 },
+
+
 			// Wall test
-			{ assetName: "wallTest", path: imagesPath + "wall_test.png", frameSizeX: 580, frameSizeY: 120, frameCount: 3 },
+			{ assetName: "wallTest", path: imagesPath + "wall_test.png", frameSizeX: 580, frameSizeY: 120, frameCount: 12 },
+			{ assetName: "sideWalls", path: imagesPath + "sidewalls.png", frameSizeX: 580, frameSizeY: 120, frameCount: 12 },
 
 
 			{ assetName: "wallTriple", path: imagesPath + "wall_triple.png", frameSizeX: 272, frameSizeY: 24, frameCount: 3 },
@@ -134,10 +142,10 @@ class LoadManager_CL extends Phaser.State  {
 		TH.game.load.setPreloadSprite(preloadSprite);
 
 		// Loading text
-		let loadingText = this.add.text(centerX, preloadBg.y, "Loading...");
-		loadingText.anchor.setTo(0.5);
-		loadingText.fontSize = 20;
-		loadingText.fill = "white";
+		this.loadingText = this.add.text(centerX, preloadBg.y, "Loading...");
+		this.loadingText.anchor.setTo(0.5);
+		this.loadingText.fontSize = 20;
+		this.loadingText.fill = "white";
 
 		// Logo
 		// let logo = this.add.sprite(this.camera.view.centerX, 0, "logoBig");
@@ -175,14 +183,20 @@ class LoadManager_CL extends Phaser.State  {
 
 		
 		TH.effects.createAudioSprite();
+		this.loadingText.text = "Processing...";
+		this.precreate();
+		
+		
 		
 		let loadTime = Date.now() - this.startTime;
 
-		if (loadTime <= this.itnetworkDelay && this.useItnetworkDelay) {
-			TH.game.time.events.add(this.itnetworkDelay - loadTime, this.switchToMenu, this);
+		if (loadTime <= this.delay && this.useDelay) {
+			TH.game.time.events.add(Math.max(this.delay - loadTime, 1000), this.switchToMenu, this);
 		} else {
-			this.switchToMenu();
+			TH.game.time.events.add(1000, this.switchToMenu, this);
+			
 		}
+
 
 	}
 
@@ -197,6 +211,7 @@ class LoadManager_CL extends Phaser.State  {
 			if (!sheet.precreate) continue;
 
 			let spr = TH.game.add.sprite(0, 0, sheet.assetName);
+			spr.alpha = 0.01;
 		}
 	}
 }

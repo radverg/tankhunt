@@ -35,13 +35,14 @@
     <script type="text/javascript" src="scripts/gameplay/Duel_CL.js"></script>
     <script type="text/javascript" src="scripts/gameUI/UICountdown_CL.js"></script>
     <script type="text/javascript" src="scripts/gameUI/UIGameChat_CL.js"></script>
-    <script type="text/javascript" src="scripts/utils/Pool_CL.js"></script>
 
 
 
     <script type="text/javascript" src="scripts/TankHunt_CL.js"></script>
     <script type="text/javascript" src="scripts/gameplay/TeamFight_CL.js"></script>
     <script type="text/javascript" src="scripts/gameplay/Capture_CL.js"></script>
+    <script type="text/javascript" src="scripts/utils/Pool_CL.js"></script>
+
 
     <script type="text/javascript" src="scripts/SocketManager_CL.js"></script>
     <script type="text/javascript" src="scripts/gameUI/UIPlayerManager_CL.js"></script>
@@ -71,7 +72,10 @@
         <h2 style="margin-top:7rem; text-align:center">Select game mode:</h2>
 
         <div class="gameMode" id="arenaMode" style="position: relative">
-            <img class="modeThumb" src="assets/images/thumb_arena.png">
+            
+            <div class="modeThumb">
+                <img class="thumb" alt="Arena mode" src="assets/images/thumb_arena.png">
+            </div> 
             
             <div class="modeDesc">
                 <h3>Arena</h3>
@@ -87,7 +91,10 @@
         <div class="gameMode noTopBorder" id="duelMode">
                 <div class="pendingCover" id="coverDuel"></div>
 
-                <img class="modeThumb" src="assets/images/thumb_duel.png">
+                <div class="modeThumb">
+                    <img class="thumb" alt="Duel mode" src="assets/images/thumb_duel.png">
+                </div> 
+              
                 <div class="modeDesc">
                     <h3>Duel</h3>
                     <p>Challenge other player and try to win specified amount of rounds before him.<br></p>
@@ -102,7 +109,10 @@
         <div class="gameMode noTopBorder" id="teamMode">
                 <div class="pendingCover" id="coverTeam"></div>
 
-                <img class="modeThumb" src="assets/images/thumb_team_fight.png">
+                <div class="modeThumb">
+                    <img class="thumb" alt="Team fight mode" src="assets/images/thumb_team_fight.png">
+                </div> 
+
                 <div class="modeDesc">
                     <h3>Team fight - DEBUGGING</h3>
                     <p>Capture all of the enemy flags before enemy captures yours.<br></p>

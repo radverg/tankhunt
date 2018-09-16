@@ -100,7 +100,7 @@ class Level_CL {
         let thickness = null;
         let trim = 30;
         let borderAsset =  "wallTest"; // `wallSide${Math.floor(Math.random() * 3) + 1}`;
-        let borderNum = 0; // Math.floor(Math.random() * 3);
+        let borderNum = Math.floor(Math.random() * 4);
 
         // Horizontals
         for (let i = 0; i < borderCount; i++) {

@@ -8,20 +8,20 @@ function getAngleToAxis(centerX: number, centerY: number, pointX: number, pointY
 	
 	var dx: number = pointX - centerX;
 	var dy: number = pointY - centerY;
-	var result: number = 0;
+	// var result: number = 0;
 	
-	// Top right quadrant
-	if (dy < 0 && dx >= 0) {
-		result = Math.atan(dx / Math.abs(dy));
-	} else if (dx >= 0 && dy > 0) { // Bottom right quadrant 
-		result = Math.PI - Math.atan(dx / dy);
-	} else if (dx <= 0 && dy > 0) { // Bottom left quadrant
-		result = Math.PI + Math.atan(Math.abs(dx) / dy);
-	} else { // Top left quadrant
-		result = Math.PI * 2 - Math.atan(Math.abs(dx) / Math.abs(dy));
-	}
+	// // Top right quadrant
+	// if (dy < 0 && dx >= 0) {
+	// 	result = Math.atan(dx / Math.abs(dy));
+	// } else if (dx >= 0 && dy > 0) { // Bottom right quadrant 
+	// 	result = Math.PI - Math.atan(dx / dy);
+	// } else if (dx <= 0 && dy > 0) { // Bottom left quadrant
+	// 	result = Math.PI + Math.atan(Math.abs(dx) / dy);
+	// } else { // Top left quadrant
+	// 	result = Math.PI * 2 - Math.atan(Math.abs(dx) / Math.abs(dy));
+	// }
 	
-	return result;
+	return Math.atan2(dy, dx) + Math.PI / 2;
 	
 }
 

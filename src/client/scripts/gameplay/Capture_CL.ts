@@ -17,21 +17,23 @@ class Capture_CL extends Phaser.Group {
     constructor(sqrX: number, sqrY: number, sqrSize: number, team: number, myTeam: number, capTime: number, game: Phaser.Game) {
         super(game, null);
 
+        this.isOurs = (myTeam === team);
+
         this.x = sqrX * sqrSize + sqrSize / 2;
         this.y = sqrY * sqrSize + sqrSize / 2;
 
-        this.flag = this.create(0, 0, "whiteRect");
+        this.flag = this.create(0, 0, (this.isOurs) ? "flagGreen" : "flagRed");
 
-        this.isOurs = (myTeam === team);
-        this.flag.tint = this.isOurs ? 0x00ff00 : 0xff0000;
         this.flag.anchor.setTo(0.5);
+        this.flag.scale.setTo(0.8);
         this.team = team;
         this.capTime = capTime;
         this.id = `a${sqrX}|${sqrY}`;
 
-        this.flag.width = sqrSize * 0.4;
-        this.flag.height = sqrSize * 0.4;
-        this.flag.alpha = 0.1;
+
+        let flagAnim = this.flag.animations.add("allFrames", null, 40, true);
+        this.flag.animations.play("allFrames", 50, true);
+        flagAnim.frame = Math.floor(Math.random() * flagAnim.frameTotal);
 
         let barWidth = sqrSize * 0.8;
         let barHeight = 5;

@@ -163,7 +163,7 @@ class FlatLaser_CL extends Shot_CL {
 		twn.onComplete.add(function() { this.destroy(); }, this);
 		twn.start();
 
-		TH.effects.playAudio("laser2", this);
+		TH.effects.playAudio(SoundNames.LASER4, this);
 
 	
 	}
@@ -366,8 +366,6 @@ class BouncingLaser_CL extends Bouncer_CL {
 
 		twn.start();
 		this.currentBounce++;
-
-		TH.effects.playAudio(SoundNames.CLICK, null, pt1.x, pt1.y);
 	}
 
 	stop() {

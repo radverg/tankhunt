@@ -94,7 +94,7 @@ class EffectManager {
         if (cam.view.height / 2 > dist) 
             return 1;
 
-        let coeff = (cam.view.height / 2) / (dist * 1.3);
+        let coeff = (cam.view.height / 2) / (dist * 3);
         if (coeff < 0.03)
             coeff = 0;
 
@@ -206,7 +206,8 @@ class EffectManager {
 enum SoundNames {
     LASER1 = "laser1",
     LASER2 = "laser2",
-    LASER3 = "laser2",
+    LASER3 = "laser3",
+    LASER4 = "laser4",
     LOSS = "loss",
     MULTIKILL = "multiKill",
     FIVE = "five",
