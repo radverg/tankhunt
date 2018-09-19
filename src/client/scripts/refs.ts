@@ -24,6 +24,7 @@
 /// <reference path="utils/Sprite_CL.ts" />
 /// <reference path="utils/Color_CL.ts" />
 /// <reference path="utils/EffectManager.ts" />
+/// <reference path="utils/Pool_CL.ts" />
 
 /// <reference path="gameUI/HealthBar_CL.ts" />
 /// <reference path="gameUI/TextMaker_CL.ts" />
@@ -37,6 +38,7 @@
 /// <reference path="gameUI/UITeamFight_CL.ts" />
 /// <reference path="gameUI/UITeamNotification_CL.ts" />
 
-/// <reference path="../../shared/Packets.ts" />
+/// <reference path="../../shared/Levels.ts" />
+
 
 /// <reference path="Run_CL.ts" />
