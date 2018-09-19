@@ -118,12 +118,12 @@ class UITeamFight_CL {
             if (win) {
                 // I have won!
                 this.centerGrp.add(TextMaker_CL.winText(0, 70));
-                TH.effects.playAudio(SoundNames.VICTORY);
+                this.game.time.events.add(600, function() { TH.effects.playAudio(SoundNames.VICTORY); }, this); 
 
             } else {
                 // I have lost!
                 this.centerGrp.add(TextMaker_CL.defText( 0, 70));
-                TH.effects.playAudio(SoundNames.LOSS);
+                this.game.time.events.add(600, function() { TH.effects.playAudio(SoundNames.LOSS); }, this); 
 
             }
 

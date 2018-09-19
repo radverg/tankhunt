@@ -71,99 +71,114 @@
       "end": 37.10099773242631,
       "loop": false
     },
-    "laser1": {
+    "gunShot2": {
       "start": 39,
-      "end": 42.01,
+      "end": 40.06138321995465,
+      "loop": false
+    },
+    "laser1": {
+      "start": 42,
+      "end": 45.01,
       "loop": false
     },
     "laser2": {
-      "start": 44,
-      "end": 44.4490022675737,
+      "start": 47,
+      "end": 47.4490022675737,
       "loop": false
     },
     "laser3": {
-      "start": 46,
-      "end": 48.209002267573695,
+      "start": 49,
+      "end": 51.209002267573695,
       "loop": false
     },
     "laser4": {
-      "start": 50,
-      "end": 51.776757369614515,
+      "start": 53,
+      "end": 54.776757369614515,
       "loop": false
     },
     "loss": {
-      "start": 53,
-      "end": 57.098004535147396,
+      "start": 56,
+      "end": 60.098004535147396,
       "loop": false
     },
     "menuSong": {
-      "start": 59,
-      "end": 117.76399092970522,
+      "start": 62,
+      "end": 120.76399092970522,
       "loop": false
     },
     "mineBeep": {
-      "start": 119,
-      "end": 119.77317460317461,
+      "start": 122,
+      "end": 122.77317460317461,
       "loop": false
     },
     "multiKill": {
-      "start": 121,
-      "end": 123.36800453514739,
+      "start": 124,
+      "end": 126.36800453514739,
       "loop": false
     },
     "reload": {
-      "start": 125,
-      "end": 125.44501133786848,
+      "start": 128,
+      "end": 128.4450113378685,
       "loop": false
     },
     "shotMegaExplosion": {
-      "start": 127,
-      "end": 136.3641723356009,
+      "start": 130,
+      "end": 139.3641723356009,
       "loop": false
     },
     "shotSmall": {
-      "start": 138,
-      "end": 138.3850113378685,
+      "start": 141,
+      "end": 141.3850113378685,
       "loop": false
     },
     "splash": {
-      "start": 140,
-      "end": 140.4380045351474,
+      "start": 143,
+      "end": 143.4380045351474,
       "loop": false
     },
     "tada": {
-      "start": 142,
-      "end": 143.5670068027211,
+      "start": 145,
+      "end": 146.5670068027211,
       "loop": false
     },
     "ten": {
-      "start": 145,
-      "end": 146.7650113378685,
+      "start": 148,
+      "end": 149.7650113378685,
       "loop": false
     },
     "tick": {
-      "start": 148,
-      "end": 149.8809977324263,
+      "start": 151,
+      "end": 152.8809977324263,
       "loop": false
     },
     "tickMega": {
-      "start": 151,
-      "end": 152.64696145124717,
+      "start": 154,
+      "end": 155.64696145124717,
+      "loop": false
+    },
+    "turretEngine": {
+      "start": 157,
+      "end": 159.2870068027211,
       "loop": false
     },
     "twenty": {
-      "start": 154,
-      "end": 157.1229931972789,
+      "start": 161,
+      "end": 164.1229931972789,
       "loop": false
     },
     "victory": {
-      "start": 159,
-      "end": 160.84614512471654,
+      "start": 166,
+      "end": 167.84614512471654,
       "loop": false
     },
     "whip": {
-      "start": 162,
-      "end": 162.40600907029477,
+      "start": 169,
+      "end": 169.40600907029477,
+      "loop": false
+    },
+    "wind": {
+      "start": 171,
+      "end": 252.2357596371882,
       "loop": false
     }
   }

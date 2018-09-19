@@ -47,6 +47,10 @@ class TeamFight_CL extends THGame_CL {
             this.caps[capSpr.id] = capSpr;
         }
 
+        // Wind effect
+		TH.effects.playAudioLooping(SoundNames.WIND);
+
+
         this.onGameStart.dispatch(packet);
 
     }

@@ -1,4 +1,5 @@
 
+
 class THGame_CL {
     
 	public socketManager: SocketManager_CL;
@@ -60,6 +61,7 @@ class THGame_CL {
 		TH.thGame = this;
 		this.init();
 		TH.effects.initPool();
+
 	
 	}
 

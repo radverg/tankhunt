@@ -84,8 +84,9 @@ class EffectManager {
         return this.audioSprite.get(name);
     }
 
-    stopAudio() {
-        this.audioSprite.stop(null);
+    stopAudio(name?: string) {
+        if (!name) name = null;
+        this.audioSprite.stop(name);
     }
 
     private getVolumeCoeff(x: number, y: number) {
@@ -221,6 +222,7 @@ enum SoundNames {
     TWENTY = "twenty",
     SHOTMEGAEXP = "shotMegaExplosion",
     GUNSHOT1 = "gunShot1",
+    GUNSHOT2 = "gunShot2",
     EXPLOSION1 = "explosion1",
     EXPLOSION2 = "explosion2",
     EXPLOSION3 = "explosion3",
@@ -235,5 +237,8 @@ enum SoundNames {
     MINEBEEP = "mineBeep",
     MENUSONG = "menuSong",
     CINK = "cink",
-    WHIP = "whip"
+    WHIP = "whip",
+    ENGINETURRET = "turretEngine",
+    WIND = "wind"
+
 }

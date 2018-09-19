@@ -84,7 +84,7 @@ class Sprite extends Phaser.Sprite {
 	}
 
 	isRotating() {
-		return this.rotation !== this.previousRotation;
+		return parseFloat(this.rotation.toPrecision(5)) !== parseFloat(this.previousRotation.toPrecision(5));
 	}
 
     

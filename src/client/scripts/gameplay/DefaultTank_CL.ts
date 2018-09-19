@@ -65,12 +65,13 @@ class DefaultTank_CL extends Tank_CL {
 		if (this.turretEngineSound) {
 			if (this.turret.isRotating()) {
 				if (!this.turretEngineSound.isPlaying) {
-				//	this.turretEngineSound.play()
+					TH.effects.playAudio(SoundNames.ENGINETURRET);
 
 				}
 			}
 			else if (this.turretEngineSound.isPlaying) {
-				this.turretEngineSound.stop();
+				TH.effects.stopAudio(SoundNames.ENGINETURRET);
+				
 			}
 		}
 

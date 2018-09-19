@@ -222,7 +222,7 @@ class Bouncer_CL extends Shot_CL {
 		this.shotGroup.add(this);
 		this.tweens[0].start();
 
-		TH.effects.playAudio(SoundNames.BUM1, this);
+		TH.effects.playAudio(SoundNames.GUNSHOT2, this);
 		this.ownerPl.tank.shotExplodeEffect(this);
 	}
 
@@ -233,31 +233,15 @@ class Bouncer_CL extends Shot_CL {
 
 class PolygonalBouncer_CL extends Bouncer_CL {
 
-	private rotTween: Phaser.Tween;
-
 	constructor(dataPack: PacketBouncerShotStart) {
 		super(dataPack, "shotDarker");
 
 		this.anchor.setTo(0.5);
-		// this.width = 0.2 * TH.sizeCoeff;
-		// this.height = 0.2 * TH.sizeCoeff;
 		this.scale.setTo(0.8, 0.4);
 
-		// // This shot should be rotating
-		// this.rotTween = this.game.add.tween(this);
-		// this.rotTween.to({ rotation: 100 }, 6000);
-	}
-
-	start() {
-		super.start();
-		// this.rotTween.start();
-		TH.effects.playAudio("shotSmall", this);
-		this.ownerPl.tank.shotExplodeEffect(this);
-		this.shotGroup.add(this);
 	}
 
 	stop() {
-		// this.rotTween.stop();
 		this.destroy();
 	}
 }
@@ -279,6 +263,8 @@ class Eliminator_CL extends Bouncer_CL {
 
 	start() {
 		super.start();
+		TH.effects.stopAudio(SoundNames.GUNSHOT2);
+		TH.effects.playAudio(SoundNames.GUNSHOT1);
 	}
 
 	stop() {
