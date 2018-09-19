@@ -14,7 +14,7 @@ class Duel_SE extends THGame_SE {
 
     private isWinPending: boolean = false;
 
-    private maxWins: number = 3;
+    private maxWins: number = 15;
    
     private currentRound: number = 0;
 

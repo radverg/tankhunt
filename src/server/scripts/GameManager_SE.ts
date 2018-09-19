@@ -105,6 +105,7 @@ class GameManager_SE {
 		}
 
 		this.removeFromTeamQueue(socket);
+		this.th.menuManager.emitMenuInfo();
 	}
 
 	private removeFromTeamQueue(socket: SocketIO.Socket) {
@@ -113,6 +114,14 @@ class GameManager_SE {
 		if (teamQueueIndex !== -1) {
 			this.teamFightQueue.splice(teamQueueIndex, 1);
 		} 
+	}
+
+	private addToTeamQueue(socket: SocketIO.Socket) {
+		let index = this.teamFightQueue.indexOf(socket.player);
+		console.log(index);
+		if (index !== -1) return false;
+		this.teamFightQueue.push(socket.player); 
+		return true;
 	}
 
 	processGameRequest(player: Player_SE, packet: PacketGameRequest) {
@@ -170,34 +179,39 @@ class GameManager_SE {
 		
 		if (packet.gameType == "TeamFight") {
 
-			// Just debugging !!!!!!
-			let tGame = new TeamFight_SE();
-			tGame.addPlayer(player);
+			// // Just debugging !!!!!!
+			// let tGame = new TeamFight_SE();
+			// tGame.addPlayer(player);
 
-			// Debug - add 5 more pseudoplayers
-			for (let i = 0; i < 5; i++) {
-				tGame.addPlayer(new Player_SE(null, `comp${i}`));
+			// // Debug - add 5 more pseudoplayers
+			// for (let i = 0; i < 5; i++) {
+			// 	tGame.addPlayer(new Player_SE(null, `comp${i}`));
+			// }
+			if (!this.addToTeamQueue(player.socket)) {
+				// Already here => get him out
+				this.removeFromTeamQueue(player.socket);
 			}
 
-			this.teamFights.push(tGame);
+			console.log("In queue: " + this.teamFightQueue.length);
+			if (this.teamFightQueue.length === 4) {
+				// Start the game
+				let tGame = new TeamFight_SE();
 
-			// if (this.teamFightQueue.length === 6) {
-			// 	// Start the game
-			// 	let tGame = new TeamFight_SE();
+				for (const plr of this.teamFightQueue) {
+					this.th.menuManager.removeSocket(player.socket);
+					
+					tGame.addPlayer(plr);
+				}
 
-			// 	for (const plr of this.teamFightQueue) {
-			//		this.th.menuManager.removeSocket(player.socket);
-			//
-			// 		tGame.addPlayer(plr);
-			// 	}
+				// Clear queue
+				this.teamFightQueue = [];
 
-			// 	tGame.start();
-			// }
+				tGame.start();
+				this.teamFights.push(tGame);
+			}
 
 			this.th.menuManager.emitMenuInfo();
 			
-
-			tGame.start();
 		}
 	}
 }

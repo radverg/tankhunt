@@ -5,6 +5,7 @@ import { Tank_SE } from "../Tank_SE";
 import { Capture_SE } from "../Capture_SE";
 import { getRandomInt } from "../utils/MyMath_SE";
 import { Stats_SE } from "../Stats_SE";
+import { Packet } from "socket.io";
 
 class TeamFight_SE extends THGame_SE {
 
@@ -13,6 +14,7 @@ class TeamFight_SE extends THGame_SE {
 
     private capsPerTeam: number = 7;
     private capTime: number = 4000;
+    private teamHeal: number = 500;
 
     private team1Caps: number = 0;
     private team2Caps: number = 0;
@@ -137,18 +139,16 @@ class TeamFight_SE extends THGame_SE {
         this.tidyPlayerShots(player);
         player.game = null;
 
-        // let team1count = 0;
-        // let team2Count = 0;
-        // for (let i = 0; i < this.players.length; i++) {
-        //     if (this.players[i].team == 1) team1count++;
-        //     else team2Count++;
-        // }
+        let team1count = 0;
+        let team2Count = 0;
+        for (let i = 0; i < this.players.length; i++) {
+            if (this.players[i].team == 1) team1count++;
+            else team2Count++;
+        }
 
-        // if (team1count === 0) this.wholeGameEnd(2);
-        // else if (team2Count === 0) this.wholeGameEnd(1);
+        if (team1count === 0) this.wholeGameEnd(2);
+        else if (team2Count === 0) this.wholeGameEnd(1);
 
-        // DEBUG !!!!!!
-        this.wholeGameEnd(0);
         // if (this.players.length === 1) {
         //     this.wholeGameEnd(1);
         //     console.log("Aborting Team game!");
@@ -207,14 +207,21 @@ class TeamFight_SE extends THGame_SE {
                     let targetTank = this.players[pl].tank;
                     if (hitPack.healthAft < hitPack.healthBef && targetTank.owner.capture) {
                         // Damage done, reset capture
-                        targetTank.owner.capture.resetCapturing();
+                        let cap = targetTank.owner.capture.resetCapturing();
+                        this.emitCapture(cap);
                     }
                     
                     let wasKilled = hitPack.healthAft <= 0;
 
                     if (wasKilled) {
                         hitPack.resTime = this.countResTime();
-                        healPack = { } as any;
+                        let tmKiller = this.shots[sh].owner.team;
+                        // Heal all teammates
+                        this.healTeam(tmKiller, this.teamHeal);
+                        healPack = { };
+                        healPack.tm = tmKiller;
+                        healPack.amount = this.teamHeal;
+
                     }
 
                     this.shots[sh].owner.stats.countHit(attackerTank.owner, targetTank.owner, hitPack.healthBef, hitPack.healthAft);
@@ -222,7 +229,7 @@ class TeamFight_SE extends THGame_SE {
                     this.emitHit(hitPack);
 
                     if (healPack) {
-                       // this.emitHeal(healPack);
+                        this.emitHeal(healPack);
                     }
 
                     if (wasKilled) {
@@ -265,6 +272,15 @@ class TeamFight_SE extends THGame_SE {
             this.emitRespawn(packet);
 
         }, this.countResTime());
+    }
+
+    healTeam(team: number, amount: number) {
+
+        for (const plr of this.players) {
+            if (plr.team !== team) continue;
+
+            plr.tank.addHealth(amount);
+        }
     }
 
     countResTime() {

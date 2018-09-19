@@ -108,6 +108,20 @@ class TeamFight_CL extends THGame_CL {
         this.onGameFinish.dispatch(data);
     }
 
+    processHeal(data: PacketHeal) {
+
+        let plrs = this.playerGroup.players;
+
+        for (const id in plrs) {
+            let plr = plrs[id];
+            if (plr.team !== data.tm) continue;
+
+            plr.tank.health = Math.min(plr.tank.health + data.amount, plr.tank.maxHealth);
+            this.onHeal.dispatch(plr, data);
+        }
+        
+    }
+
     destroy() {
         super.destroy();
         this.onCapture.dispose();

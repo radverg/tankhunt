@@ -52,12 +52,17 @@ class UIPlayerManager_CL {
     }
 
     healPlayer(player: Player_CL, packet: PacketHeal) {
-        if (player && player.plView) {
-            player.plView.updateHealthBar();
+        let healthBef = (packet.healthBef === undefined) ? player.tank.health - packet.amount : packet.healthBef;
+        let healthAft = (packet.healthAft === undefined) ? player.tank.health : packet.healthAft;
 
-            if (packet.healthBef != packet.healthAft)
-                player.plView.healthChange(packet.healthBef, packet.healthAft);
-        }
+        if (!player || !player.plView) return;
+            
+        player.plView.updateHealthBar();
+
+        if (healthBef != healthAft)
+            player.plView.healthChange(healthBef, healthAft);
+
+        
     }
 
     respawnPlayer(player: Player_CL) {

@@ -130,7 +130,11 @@ interface PacketHeal {
     /**
      * Is this global team heal?
      */
-    tm?: number
+    tm?: number,
+    /**
+     * Health increase
+     */
+    amount?: number
 }
 
 interface WayPoint {

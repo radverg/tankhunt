@@ -116,6 +116,10 @@ class Tank_SE extends GameObject_SE {
 		super.stop();
 		this.turret.stopRotation();
 	}
+
+	addHealth(amount: number) {
+		this.health = Math.min(this.health += amount, this.maxHealth);
+	}
 }
 
 class Turret extends GameObject_SE {
