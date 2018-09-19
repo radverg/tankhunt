@@ -158,31 +158,41 @@ class EffectManager {
         }
     }
 
-    wallDebrisEffect(x: number, y: number) {
+    wallDebrisEffect(x: number, y: number, count: number = 10, soundName: string = SoundNames.SPLASH) {
        
-        let debrisCount = 10;
         let duration = 400;
+        let frames = 10;
 
-        this.playAudio(SoundNames.SPLASH, null, x, y);
+        if (soundName)
+            this.playAudio(SoundNames.SPLASH, null, x, y);
 
         if (!this.shouldByXY(x, y)) return;
 
-        for (let i = 0; i < debrisCount; i++) {
+        let debSprs = this.pool.getAllFreeByKey("wallDebrisDarker");
+
+        if (debSprs.length < count) {
+            debSprs.push(...this.pool.createMultiple(count - length, "wallDebrisDarker"));
+        }
+
+        for (let i = 0; i < count; i++) {
             
             let ang = Math.random() * Math.PI * 2;
             let dist = Math.random() * 90;
 
             let pos = {x:  x + Math.sin(ang) * dist, y: y - Math.cos(ang) * dist };
             
-            let debrisSpr: Phaser.Sprite = this.game.add.sprite(x, y, "wallDebrisDarker");
+            let debrisSpr: Phaser.Sprite = debSprs[i];  //  this.game.add.sprite(x, y, "wallDebrisDarker");
             debrisSpr.anchor.setTo(0.5);
             debrisSpr.scale.setTo(0.6);
-            debrisSpr.frame = i;
+            debrisSpr.alpha = 1;
+            debrisSpr.frame = Math.floor(Math.random() * frames);
+            debrisSpr.position.setTo(x, y);
+            debrisSpr.exists = true;
             debrisSpr.rotation = ang;
 
             let twn = this.game.add.tween(debrisSpr);
             twn.to({ x: pos.x, y: pos.y, alpha: 0, rotation: debrisSpr.rotation + (Math.PI * 2 * Math.random()) }, duration);
-            twn.onComplete.add(function() { this.destroy(); }, debrisSpr);
+            twn.onComplete.add(function() { this.exists = false; }, debrisSpr);
             twn.start();
         }
     }
