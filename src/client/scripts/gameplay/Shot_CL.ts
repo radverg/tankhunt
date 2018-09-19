@@ -73,7 +73,7 @@ class LaserDirect_CL extends Shot_CL {
 		super(dataPack, "lasers");
 
 		this.anchor.set(0.5, 0);
-		this.width = 14;
+		this.width = 16;
 		this.rotation += Math.PI;
 		this.speed = dataPack.speed * TH.sizeCoeff;
 
@@ -89,10 +89,16 @@ class LaserDirect_CL extends Shot_CL {
 		TH.game.add.existing(this);
 		var twn = TH.game.add.tween(this);
 		twn.to({ height: this.dist }, this.time);
-		twn.onComplete.add(function() { this.destroy(); }, this);
+		twn.onComplete.add(function() { this.stop(); }, this);
 		twn.start();
 
 		TH.effects.playAudio(SoundNames.LASER3, this);
+	}
+
+	stop() {
+		let stopTwn = this.game.add.tween(this).to({ alpha: 0 }, 500);
+		stopTwn.onComplete.add(function() { this.destroy() }, this);
+		stopTwn.start();
 	}
 }
 
@@ -104,9 +110,7 @@ class APCR_CL extends Shot_CL {
 		this.anchor.set(0.5, 0.5);
 
 		this.scale.setTo(0.5);
-		//this.width = 0.07 * TH.sizeCoeff;
-		//this.height = 0.3 * TH.sizeCoeff;
-
+		
 		this.dist = TH.game.math.distance(this.endX, this.endY, this.startX, this.startY);
 		this.time = (this.dist / this.speed) * 1000;
 
@@ -153,8 +157,6 @@ class FlatLaser_CL extends Shot_CL {
 		this.dist = TH.game.math.distance(this.endX, this.endY, this.startX, this.startY);
 		this.time = (this.dist / this.speed) * 1000;
 		this.frame = this.ownerPl.tank.defaultColorIndex;
-
-		/* this.tint = 0x7D1ADF; */
 
 		// Start this shot
 		this.shotGroup.add(this);
@@ -344,7 +346,7 @@ class BouncingLaser_CL extends Bouncer_CL {
 
 		if (currB == this.wayPoints.length - 2) { // This is the last one
 			// After it is finished, stop the shot
-			twn.onComplete.add(function() { this.stop(); }, this);
+			twn.onComplete.add(function() { this.fadeOut(); }, this);
 		} else {
 			// This is not the last one, continue with next
 			twn.onComplete.add(function() { this.nextLaserLine(); }, this);
@@ -355,8 +357,20 @@ class BouncingLaser_CL extends Bouncer_CL {
 	}
 
 	stop() {
-		this.laserLinesGrp.destroy(true, false);
+		
+		this.laserLinesGrp.destroy();
 		this.destroy();
+	
+	}
+
+	fadeOut() {
+		let stopTwn = this.game.add.tween(this.laserLinesGrp).to({ alpha: 0 }, 500);
+		stopTwn.onComplete.add(function() { 
+			this.laserLinesGrp.destroy();
+			this.destroy();
+		}, this);
+
+		stopTwn.start();
 	}
 }
 
