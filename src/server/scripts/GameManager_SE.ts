@@ -134,6 +134,7 @@ class GameManager_SE {
 		if (packet.gameType == "nogame") {
 			// Remove player from queue
 			if (player == this.plDuelPending) this.plDuelPending = null;
+			this.removeFromTeamQueue(player.socket);
 		}
 		
 		if (packet.gameType == "Arena") {
@@ -175,6 +176,8 @@ class GameManager_SE {
 			} else {
 				this.plDuelPending = player;
 			}
+			this.removeFromTeamQueue(player.socket);
+
 		}
 		
 		if (packet.gameType == "TeamFight") {
@@ -187,11 +190,8 @@ class GameManager_SE {
 			// for (let i = 0; i < 5; i++) {
 			// 	tGame.addPlayer(new Player_SE(null, `comp${i}`));
 			// }
-			if (!this.addToTeamQueue(player.socket)) {
-				// Already here => get him out
-				this.removeFromTeamQueue(player.socket);
-			}
-
+			this.addToTeamQueue(player.socket);
+			
 			console.log("In queue: " + this.teamFightQueue.length);
 			if (this.teamFightQueue.length === 4) {
 				// Start the game

@@ -65,6 +65,10 @@ class TeamFight_CL extends THGame_CL {
 		player.tank.applyStatePacket(data);
         player.tank.jumpToRemote();
         player.tank.revive();
+
+        if (player.me) {
+            TH.effects.playAudio(SoundNames.RESPAWN);
+        }
         
         this.onRespawn.dispatch(player);
     }

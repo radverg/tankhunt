@@ -92,10 +92,10 @@ class EffectManager {
     private getVolumeCoeff(x: number, y: number) {
         let cam = this.game.camera;
         let dist = TH.game.math.distance(cam.view.centerX, cam.view.centerY, x, y);
-        if (cam.view.height / 2 > dist) 
+        if (cam.view.height > dist) 
             return 1;
 
-        let coeff = (cam.view.height / 2) / (dist * 3);
+        let coeff = (cam.view.height) / (dist);
         if (coeff < 0.03)
             coeff = 0;
 
@@ -249,6 +249,9 @@ enum SoundNames {
     CINK = "cink",
     WHIP = "whip",
     ENGINETURRET = "turretEngine",
-    WIND = "wind"
+    WIND = "wind",
+    BOUNCE = "bounce",
+    RESPAWN = "respawn",
+    SONG1 = "song1"
 
 }

@@ -211,6 +211,7 @@ class Bouncer_CL extends Shot_CL {
 
 					this.rotation = this.wayPoints[this.currentBounce].ang;
 					TH.effects.wallDebrisEffect(this.x, this.y, 5, null);
+					TH.effects.playAudio(SoundNames.BOUNCE);
 					this.tweens[this.currentBounce].start();	
 				} else {
 					// No other tween - shot ends here
