@@ -95,7 +95,7 @@ class EffectManager {
         if (cam.view.height > dist) 
             return 1;
 
-        let coeff = (cam.view.height) / (dist);
+        let coeff = (cam.view.height) / (dist * 1.5);
         if (coeff < 0.03)
             coeff = 0;
 

@@ -166,6 +166,12 @@ class LoadManager_CL extends Phaser.State  {
 		helpText.fill = "#ffc58e";
 		helpText.fontSize = 35;
 
+		// IE com text
+		let ieComText = this.add.text(centerX, 910, "The game is NOT compatible with Internet Explorer yet!");
+		ieComText.anchor.setTo(0.5);
+		ieComText.fill = "red";
+		ieComText.fontSize = 35;
+
 		// Created text
 		let crText = this.add.text(centerX, 990, "2018 - Created by Radek Veverka, Vojtěch Veverka, Dominik Plachý");
 		crText.anchor.setTo(0.5);

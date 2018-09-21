@@ -12,7 +12,7 @@ var Levels : Lvls = require("../../../../shared/Levels");
 class Arena_SE extends THGame_SE {
 
     private respawnDelay: number = 1800;
-    private immunityTime: number = 3000;
+    private immunityTime: number = 5000;
     private startUpHealth: number = 500;
     private maxHealth: number = 2500;
 

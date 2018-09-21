@@ -37,6 +37,8 @@ class Arena_CL extends THGame_CL {
 		// Camera to center
 		this.game.camera.unfollow();
 		this.game.camera.setPosition(this.game.world.centerX - this.game.camera.view.halfWidth, this.game.world.centerY - this.game.camera.view.halfHeight);
+
+		TH.effects.playAudioLooping(SoundNames.SONG1);
     } 
     /**
 	 * Respawn packet contains:
@@ -58,9 +60,9 @@ class Arena_CL extends THGame_CL {
 		TH.game.time.events.add(data.respawnDelay, player.tank.revive, player.tank);
 		TH.game.time.events.add(data.respawnDelay + data.immunityTime, function() { this.setColor(this.defaultColorIndex); }, player.tank);		
 
-		if (player.me) {
-			TH.effects.playAudio(SoundNames.RESPAWN);
-		}
+		// if (player.me) {
+		// 	TH.effects.playAudio(SoundNames.RESPAWN);
+		// }
 		
 		this.onRespawn.dispatch(player);
     }

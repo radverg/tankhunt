@@ -137,7 +137,7 @@ class Turret extends GameObject_SE {
 		this._barrelDist = 1.5;
 		this.selfAngle = 0;
 
-		this.maxAngularVel = 3;
+		this.maxAngularVel = 2;
 	}
 
 	countShotPos(fromX: number,fromY: number) {

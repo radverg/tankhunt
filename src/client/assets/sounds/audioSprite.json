@@ -14,7 +14,8 @@
     "bounce": {
       "start": 2,
       "end": 2.3129931972789115,
-      "loop": false
+      "loop": false,
+      "volume": 0.4
     },
     "bum1": {
       "start": 4,
@@ -29,7 +30,8 @@
     "click": {
       "start": 8,
       "end": 8.139002267573696,
-      "loop": false
+      "loop": false,
+      "volume": 0.4
     },
     "clink": {
       "start": 10,
@@ -143,9 +145,9 @@
     },
     "song1": {
       "start": 147,
-      "end": 212.82857142857142,
+      "end": 212.85714285714286,
       "loop": false,
-      "volume": 0.1
+      "volume": 0.15
     },
     "splash": {
       "start": 214,
@@ -165,12 +167,14 @@
     "tick": {
       "start": 222,
       "end": 223.8809977324263,
-      "loop": false
+      "loop": false,
+      "volume": 0.5
     },
     "tickMega": {
       "start": 225,
       "end": 226.64696145124717,
-      "loop": false
+      "loop": false,
+      "volume": 0.5
     },
     "turretEngine": {
       "start": 228,

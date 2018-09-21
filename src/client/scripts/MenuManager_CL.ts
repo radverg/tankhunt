@@ -36,7 +36,7 @@ class MenuManager_CL extends Phaser.State {
             $("#btnChatSubmit").on("click", () => { this.submitChat(); });
             $("#statsCont").hide();
 
-            $("#arenaMode, #duelMode, #teamMode").on("mouseenter", () => TH.effects.playAudio(SoundNames.CLICK));
+            // $("#arenaMode, #duelMode, #teamMode").on("mouseenter", () => TH.effects.playAudio(SoundNames.CLICK));
             
             $("#teamMode").on("click", () => { this.teamJoinClick(); });
             $("#chatInp").on("keydown", (e) => { if (e.keyCode == 13) this.submitChat(); });

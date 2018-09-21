@@ -105,7 +105,6 @@ class GameManager_SE {
 		}
 
 		this.removeFromTeamQueue(socket);
-		this.th.menuManager.emitMenuInfo();
 	}
 
 	private removeFromTeamQueue(socket: SocketIO.Socket) {
@@ -113,6 +112,7 @@ class GameManager_SE {
 		let teamQueueIndex = this.teamFightQueue.indexOf(socket.player);
 		if (teamQueueIndex !== -1) {
 			this.teamFightQueue.splice(teamQueueIndex, 1);
+			this.th.menuManager.emitMenuInfo();
 		} 
 	}
 
@@ -135,6 +135,7 @@ class GameManager_SE {
 			// Remove player from queue
 			if (player == this.plDuelPending) this.plDuelPending = null;
 			this.removeFromTeamQueue(player.socket);
+			this.th.menuManager.emitMenuInfo();
 		}
 		
 		if (packet.gameType == "Arena") {
@@ -182,17 +183,8 @@ class GameManager_SE {
 		
 		if (packet.gameType == "TeamFight") {
 
-			// // Just debugging !!!!!!
-			// let tGame = new TeamFight_SE();
-			// tGame.addPlayer(player);
-
-			// // Debug - add 5 more pseudoplayers
-			// for (let i = 0; i < 5; i++) {
-			// 	tGame.addPlayer(new Player_SE(null, `comp${i}`));
-			// }
 			this.addToTeamQueue(player.socket);
 			
-			console.log("In queue: " + this.teamFightQueue.length);
 			if (this.teamFightQueue.length === 4) {
 				// Start the game
 				let tGame = new TeamFight_SE();
