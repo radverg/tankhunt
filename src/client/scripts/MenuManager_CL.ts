@@ -21,6 +21,7 @@ class MenuManager_CL extends Phaser.State {
 
         $(this.game.canvas).hide();
         $("#menuCont").fadeIn();
+        $("#logoCont").fadeIn();
 
         TH.effects.stopAudio();
         TH.effects.playAudioLooping(SoundNames.MENUSONG);
@@ -123,7 +124,7 @@ class MenuManager_CL extends Phaser.State {
     }
 
     getName() {
-        let name = this.validateName($("#inpName").val().toString() || `player${(Math.random()*10000).toFixed(0)}`);
+        let name = this.validateName($("#inpName").val().toString()); // || `player${(Math.random()*10000).toFixed(0)}`);
 
         if (name === false) {
             $("#inpName").addClass("wrongInput");

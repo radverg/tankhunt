@@ -155,25 +155,25 @@ class LoadManager_CL extends Phaser.State  {
 		itSplash.anchor.setTo(0.5, 0);
 
 		// Full screen text
-		let fsText = this.add.text(centerX, 810, "Set fullscreen mode - press F11 (in most browsers)");
+		let fsText = this.add.text(centerX, 800, "Set fullscreen mode - press F11 (in most browsers)");
 		fsText.anchor.setTo(0.5);
 		fsText.fill = "#ffc58e";
 		fsText.fontSize = 40;
 
 		// Help text
-		let helpText = this.add.text(centerX, 860, "Press CTRL key anytime to show info panel (controls)");
+		let helpText = this.add.text(centerX, 850, "Press CTRL key anytime to show info panel (controls)");
 		helpText.anchor.setTo(0.5);
 		helpText.fill = "#ffc58e";
 		helpText.fontSize = 35;
 
 		// IE com text
-		let ieComText = this.add.text(centerX, 910, "The game is NOT compatible with Internet Explorer yet!");
+		let ieComText = this.add.text(centerX, 900, "Compatible browsers: Chrome, Firefox, Opera, Edge, Safari (NOT Internet explorer yet!)");
 		ieComText.anchor.setTo(0.5);
 		ieComText.fill = "red";
 		ieComText.fontSize = 35;
 
 		// Created text
-		let crText = this.add.text(centerX, 990, "2018 - Created by Radek Veverka, Vojtěch Veverka, Dominik Plachý");
+		let crText = this.add.text(centerX, 980, "2018 - Created by Radek Veverka, Vojtěch Veverka, Dominik Plachý");
 		crText.anchor.setTo(0.5);
 		crText.fontSize = 19;
 		crText.fill = "white";

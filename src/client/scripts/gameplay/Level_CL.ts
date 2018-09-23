@@ -64,7 +64,7 @@ class Level_CL {
             
 
             let wallSpr = TH.game.make.sprite(x, y, "wallTriple");
-            wallSpr.autoCull = true; // !!!!!!!!!!!!!
+            // wallSpr.autoCull = true; // !!!!!!!!!!!!!
             wallSpr.frame = wallFrame;
             wallSpr.width = wallWidth;
             wallSpr.height = wallHeight;

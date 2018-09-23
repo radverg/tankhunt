@@ -9,32 +9,6 @@ body {
     display: none;
 }
 
-.mainCont {
-    position: absolute;
-    width: 35%;
-    background-color: #dfe0dd;
-    left: 0;
-    top: 12rem;
-    right: 0;
-    margin: auto;
-    border-radius: 10px;
-    border: 2px solid #5452ff;
-    box-shadow: 0px 0px 30px #000000;
-
-}
-
-.queueCont {
-    margin: 5rem auto 0 auto;
-    width: 30%;
-    height: 100%;
-    background-color: #dfe0dd;
-    border-radius: 10px;
-    border: 0px solid #5452ff;
-    box-shadow: 0px 0px 30px #000000;
-    display: none;
-    font-size: 3rem;
-}
-
 .statsRowMe {
     background-image: linear-gradient(blue, darkblue);
 }
@@ -67,22 +41,18 @@ body {
 }
 
 .bestCell {
-
    font-weight: bold;
    text-decoration: underline;
-  
 }
 
 #menuCont {
     margin: 0 auto;
-    min-width: 65rem;
-    width: 45%;
+    min-width: 75rem;
+    width: 60%;
     height: 100%;
-    background-color: white;
-    border: 2px solid lightblue;
-    border-radius: 10px;
+    background-color: rgb(221, 221, 221);
+    border: 1px solid black; 
     padding: 2rem 3rem 1rem 3rem;
-    margin-top: 3rem;
     display: none;
 }
 
@@ -101,6 +71,8 @@ body {
 }
 
 h1 {
+    display: none;
+    margin: 0 auto;
     text-align: center;
     font-family: Orbitron;
 }
@@ -114,12 +86,8 @@ h1 {
     cursor: pointer;
 }
 
-.gameMode:hover {
+.gameMode:hover, .gameModeItem:hover {
     background-color: burlywood;
-}
-
-.noTopBorder {
-    border-top: 0px;
 }
 
 .modeThumb {
@@ -127,12 +95,17 @@ h1 {
     max-width: 10rem;
 }
 
+.strong {
+    font-weight: bold;
+}
+
 .thumb {
     width: 8rem;
 }
 
 .modeDesc {
-    width: 65%;
+    width: 80%;
+    text-align: center;
 }
 
 .modeEnd {
@@ -147,9 +120,8 @@ h1 {
 }
 
 #chatCont {
-    margin-top: 3rem;
-    padding: 2rem;
-    border: 2px solid #000000;
+    margin-top: 2rem;
+    padding: 1rem;
     background-color: rgb(221, 221, 221);
     border-radius: 5px;
 }
@@ -163,22 +135,50 @@ h1 {
 
 .pendingCover {
     display: none;
-    position: absolute;
     width: 100%;
-    height: 100%;
     background-color: rgba(107, 63, 25, 0.9);
     text-align: center;
     color: white;
     font-weight: bold;
+
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
+
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-size: 1.5rem;
 }
 
 .pendingCover::before{
     content: "Waiting for player(s)...";
 }
 
+#gameModeCont {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.gameModeItem {
+    border-right: 1px solid black;
+    
+    flex-basis: 33%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0rem 0rem 1rem 0rem;
+    height: 27rem;
+
+    cursor: pointer;
+}
+
+h3 {
+    text-align: center;
+}
+
+.noRightBorder {
+    border-right: none;
+}
 
 #footer {
     margin-top: 1rem;

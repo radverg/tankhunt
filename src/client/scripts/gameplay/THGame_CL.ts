@@ -94,8 +94,8 @@ class THGame_CL {
 
 		 //TH.game.debug.cameraInfo(TH.game.camera, 10, 500, "black");
 
-		if (TH.timeManager.ping)
-			TH.game.debug.text(TH.timeManager.ping.toString(), 10, 1000); 
+		// if (TH.timeManager.ping)
+		// 	TH.game.debug.text(TH.timeManager.ping.toString(), 10, 1000); 
     }
 
 

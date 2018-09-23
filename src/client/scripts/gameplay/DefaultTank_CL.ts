@@ -79,7 +79,7 @@ class DefaultTank_CL extends Tank_CL {
 
 	initTrackAnim() {
 
-		let fps = 16;
+		let fps = 20;
 
 		this.animations.add("tracks1", [0, 1, 2, 3], fps); //, true);
 		this.animations.add("tracks2", [4, 5, 6, 7], fps); //, true);
@@ -141,7 +141,7 @@ class DefaultTank_CL extends Tank_CL {
 		this.leftExTween = this.game.add.tween(this.leftExSpr).to({ alpha: 0.8 }, 500, Phaser.Easing.Default, true);
 
 		if (this.engineSound) {
-			this.engineSound.fadeTo(250, 0.3);
+			this.engineSound.fadeTo(250, 0.15);
 		}
 
 	}

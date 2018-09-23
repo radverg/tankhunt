@@ -21,7 +21,7 @@ class PlayManager_CL extends Phaser.State  {
         this.scale.pageAlignHorizontally = true;
         this.world.setBounds(-400, -400, 3000, 2000);
         this.stage.backgroundColor = "#D4DBE1";
-       this.stage.disableVisibilityChange = true;
+    //    this.stage.disableVisibilityChange = true;
 
         if (this.thGame && this.thGame.remove) {
             this.thGame = null;
@@ -88,6 +88,8 @@ class PlayManager_CL extends Phaser.State  {
 
         $(this.game.canvas).show();
         $("#menuCont").hide();
+        $("#logoCont").hide();
+
         this.input.keyboard.enabled = true;
     }
 
