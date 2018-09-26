@@ -53,12 +53,7 @@ class UITeamFight_CL {
         this.capBarMe.fixedToCamera = true;
         this.capBarEnemy.fixedToCamera = true;
 
-        // this.countDownText = phaserGame.make.text(0, 200, "1");
-        // this.countDownText.anchor.set(0.5);
-        // this.countDownText.fontSize = 40;
-        // this.centerGrp.add(this.countDownText);
-        
-
+        this.thGame.onPlayerRemove.add(this.playerRemove, this);
     }
 
     init(packet: PacketTeamGameStart) {
@@ -209,6 +204,14 @@ class UITeamFight_CL {
         }
 
        
+    }
+
+    private playerRemove(player: Player_CL) {
+        if (player.me) return;
+
+        let searchGrp = (player.team == 1) ? this.team1List : this.team2List;
+        let item: Phaser.Group = searchGrp.filter((child: Phaser.Group) => { return child.name === player.id }).first;
+        item.alpha = 0.2;
     }
 
     private mainMenuCallback() {

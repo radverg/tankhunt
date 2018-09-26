@@ -185,7 +185,7 @@ class GameManager_SE {
 
 			this.addToTeamQueue(player.socket);
 			
-			if (this.teamFightQueue.length === 4) {
+			if (this.teamFightQueue.length === 6) {
 				// Start the game
 				let tGame = new TeamFight_SE();
 

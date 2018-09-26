@@ -139,6 +139,8 @@ class TeamFight_SE extends THGame_SE {
         this.tidyPlayerShots(player);
         player.game = null;
 
+        this.emitRemove(player.id);
+
         let team1count = 0;
         let team2Count = 0;
         for (let i = 0; i < this.players.length; i++) {

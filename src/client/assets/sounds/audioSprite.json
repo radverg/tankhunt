@@ -168,7 +168,7 @@
       "start": 222,
       "end": 223.8809977324263,
       "loop": false,
-      "volume": 0.5
+      "volume": 0.4
     },
     "tickMega": {
       "start": 225,
@@ -202,7 +202,7 @@
       "start": 242,
       "end": 323.2357596371882,
       "loop": false,
-      "volume": 0.8
+      "volume": 0.6
     }
   }
 }
