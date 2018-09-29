@@ -21,7 +21,6 @@ class UIStatsTable_CL {
         suic: { thead: "Suicides:", asc: true },
         blockC: { thead: "Blocked shots:" },
         caps: { thead: "Captures:" },
-
     }
 
     private allowedItems: string[];
@@ -79,7 +78,6 @@ class UIStatsTable_CL {
         }, this);
         this.thGame.onHit.add(this.onChange, this);
         this.thGame.onLeave.add(this.closeKeyHandler, this);
-        
     }
 
     onChange() {
@@ -156,6 +154,5 @@ class UIStatsTable_CL {
 
         $tblCont.stop();
         $tblCont.fadeOut(300);
-        
     }
 }

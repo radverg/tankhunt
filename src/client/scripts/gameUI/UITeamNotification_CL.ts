@@ -1,4 +1,3 @@
-
 class UITeamNotification_CL extends UINotification_CL {
 
     private plMe: Player_CL;
@@ -50,7 +49,6 @@ class UITeamNotification_CL extends UINotification_CL {
             } else {
                 this.logBig("Enemy base has been captured!", "green");
             }
-
         }
     }
 

@@ -10,7 +10,6 @@ class PlayManager_CL extends Phaser.State  {
 	constructor(tankhunt: TH) {
         super();
 		this.th = tankhunt;
-
 	}
 
 	preload() { }
@@ -21,7 +20,6 @@ class PlayManager_CL extends Phaser.State  {
         this.scale.pageAlignHorizontally = true;
         this.world.setBounds(-400, -400, 3000, 2000);
         this.stage.backgroundColor = "#D4DBE1";
-    //    this.stage.disableVisibilityChange = true;
 
         if (this.thGame && this.thGame.remove) {
             this.thGame = null;
@@ -33,10 +31,7 @@ class PlayManager_CL extends Phaser.State  {
         this.input.keyboard.enabled = false;
 
         // Code below happens only once
-
         if (!this.first) return;
-
-      // this.th.loadManager.precreate();
 
         this.pingerTimer = TH.game.time.create(false);
         this.pingerTimer.loop(3000, TH.timeManager.synchronizeRequest, TH.timeManager);
@@ -48,26 +43,12 @@ class PlayManager_CL extends Phaser.State  {
         
         // Everything is ready => send game request
         console.log("Requesting game...");
-       
-     
     }
 
-    gameResumed() {
-        if (!this.thGame) return;
-      
-        // let twns = this.game.tweens.getAll();
-
-        // for (const twn of twns) {
-        //     if (twn.)
-        //     twn.stop(true);
-        // }
-
-        //this.time.removeAll();
-    }
+    gameResumed() { }
     
     processGameStart(packet: PacketGameStart) {
         this.world.removeAll(true);
-       // TH.effects.stopAudio();
         // Fade out music
         TH.effects.fadeOutAndStop(SoundNames.MENUSONG);
         

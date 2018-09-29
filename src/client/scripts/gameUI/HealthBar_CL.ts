@@ -7,7 +7,9 @@ class HealthBar_CL {
     private group: Phaser.Group;
 
     constructor(group: Phaser.Group, offsetY: number, barThickness: number = 13) {
+
         this.group = group;
+
         // Create health bar
         this.backgroundSpr = group.create(0, offsetY, "blackRect");
         this.backgroundSpr.anchor.setTo(0.5);
@@ -29,13 +31,10 @@ class HealthBar_CL {
         this.textRep = text;
         text.anchor.setTo(0.5, 0.35);
         group.add(text);
-
     }
 
-    
-
-
     updateHealthBar(maxHealth: number, health: number = maxHealth, maxMaxHealth?: number) {
+        
         let healthRatio = health / maxHealth;
 
         let barColor = (maxMaxHealth) ? Color.Spectrum[Math.floor(Color.Spectrum.length * ((maxHealth - 0.0001) / maxMaxHealth))] : 

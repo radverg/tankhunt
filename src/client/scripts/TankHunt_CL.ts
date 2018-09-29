@@ -15,18 +15,16 @@ class TH {
     static effects: EffectManager;
 
     static suspended: boolean = false;
-
     static timeManager: TimeManager_CL;
-
     public socketManager: SocketManager_CL;
 
-    // States
+    // Managers ---------------------------
     public bootManager: BootManager_CL;
     public menuManager: MenuManager_CL;
     public loadManager: LoadManager_CL;
     public playManager: PlayManager_CL;
-
     public tManager: TimeManager_CL;
+    // ------------------------------------
 
     static sizeCoeff: number;
     
@@ -53,11 +51,11 @@ class TH {
         var phaserConfig = {
             width: 1920,
             height: 1080,
-            /* forceSetTimeOut: true, */
             renderer: Phaser.CANVAS
         }
 
         TH.game = new Phaser.Game(phaserConfig);
+
         // Game states
         TH.game.state.add("boot", this.bootManager);
         TH.game.state.add("menu", this.menuManager);
@@ -66,9 +64,7 @@ class TH {
 
         TH.sizeCoeff = 70;
         TH.effects = new EffectManager(TH.game);
-        TH.game.state.start("boot");
-
-        
+        TH.game.state.start("boot");   
     }
 
     initHelpPanel() {
@@ -89,10 +85,7 @@ class TH {
                 $hp.show();
                 $hp.attr("data-hidden", "false");
                 $hp.animate({ left: 0 }, 400);
-            }
-
-            
-            
+            }  
         });
     }
 }

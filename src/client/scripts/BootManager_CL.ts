@@ -11,10 +11,7 @@ class BootManager_CL extends Phaser.State {
         this.load.image("logoBig", "images/logo_big.png");
 
         TH.game.onPause.add(() => { TH.suspended = true; });
-        TH.game.onResume.add(() => { TH.suspended = false; TH.game.camera.flash(0x000000, 1500); });
-
-
-       
+        TH.game.onResume.add(() => { TH.suspended = false; TH.game.camera.flash(0x000000, 1500); });      
     }
 
     create() {

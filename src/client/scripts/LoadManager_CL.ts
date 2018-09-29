@@ -37,8 +37,6 @@ class LoadManager_CL extends Phaser.State  {
 			{ assetName: "mine", path: imagesPath + "mine.png" },
 			
 			{ assetName: "ball", path: imagesPath + "ball.png" },
-
-
 		];
 		
 		this.spritesheets = [
@@ -81,7 +79,6 @@ class LoadManager_CL extends Phaser.State  {
 			// Wall test
 			{ assetName: "wallTest", path: imagesPath + "wall_test.png", frameSizeX: 580, frameSizeY: 120, frameCount: 12 },
 			{ assetName: "sideWalls", path: imagesPath + "sidewalls.png", frameSizeX: 580, frameSizeY: 120, frameCount: 12 },
-
 
 			{ assetName: "wallTriple", path: imagesPath + "wall_triple.png", frameSizeX: 272, frameSizeY: 24, frameCount: 3 },
 
@@ -131,7 +128,7 @@ class LoadManager_CL extends Phaser.State  {
 		TH.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
 		let centerX = this.camera.view.centerX;
-		// Loading screen -
+		// Loading screen -------------------------------------------------------------
 		let preloadBg = TH.game.add.sprite(0, 950, "loadBar");
 		let loadBarWidth = preloadBg.width; //TH.game.width / 0.8;
 		preloadBg.x = TH.game.world.centerX - loadBarWidth / 2;
@@ -147,9 +144,6 @@ class LoadManager_CL extends Phaser.State  {
 		this.loadingText.fontSize = 20;
 		this.loadingText.fill = "white";
 
-		// Logo
-		// let logo = this.add.sprite(this.camera.view.centerX, 0, "logoBig");
-		
 		// Itnetwork splash
 		let itSplash = this.add.sprite(centerX, 20, "itSplash");
 		itSplash.anchor.setTo(0.5, 0);
@@ -181,18 +175,13 @@ class LoadManager_CL extends Phaser.State  {
 
 		TH.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		TH.game.scale.pageAlignHorizontally = true;
-
-		
 	}
 	
 	create() {
 
-		
 		TH.effects.createAudioSprite();
 		this.loadingText.text = "Processing...";
 		this.precreate();
-		
-		
 		
 		let loadTime = Date.now() - this.startTime;
 
@@ -200,10 +189,7 @@ class LoadManager_CL extends Phaser.State  {
 			TH.game.time.events.add(Math.max(this.delay - loadTime, 1000), this.switchToMenu, this);
 		} else {
 			TH.game.time.events.add(1000, this.switchToMenu, this);
-			
 		}
-
-
 	}
 
 	private switchToMenu() {

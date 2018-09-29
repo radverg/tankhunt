@@ -1,17 +1,11 @@
-
 abstract class Tank_CL extends Sprite {
+
 	public player: Player_CL | null = null;
-
-	public frameStart: number = 1;
-
-	protected turret: Sprite;
-	shadow: Phaser.Sprite;
-
 	protected tankSpr: Phaser.Sprite;
-
+	protected turret: Sprite;
 	
-	private showTween: Phaser.Tween;
-	private hideTween: Phaser.Tween;
+	public shadow: Phaser.Sprite;
+	public frameStart: number = 1;
 
 	constructor(asset: string) {
 		super(TH.game, 0, 0, asset);
@@ -21,13 +15,11 @@ abstract class Tank_CL extends Sprite {
 
 		this.shadow = this.game.make.sprite(0, 0, "shadow");
 		this.shadow.anchor.setTo(0.5);
-		
 	}
 
 	rotationTurretServerUpdate(rot: number) {
 		this.turret.rotationServerUpdate(rot - this.remAngle);
 	}
-
 
 	applyStatePacket(packet: PacketTank) {
 		this.rotationServerUpdate(packet.rot);
@@ -42,15 +34,12 @@ abstract class Tank_CL extends Sprite {
 	}
 
 	/**
-	 * Sets immediatelly tank's position, rotation and turret rotation to remote values, without interpolation
+	 * Sets immediatelly tank's position and rotation to remote values without interpolation
 	 */
 	jumpToRemote() {
 		this.x = this.remX;
 		this.y = this.remY;
 		this.rotation = this.remAngle;
-		
-		//this.turret.jumpToRemote();
-		//this.updateTurret();
 	}
 
 	setColor(colorIndex: number) {
@@ -64,6 +53,7 @@ abstract class Tank_CL extends Sprite {
 	}
 
 	kill(): any {
+
 		this.visible = false;
 		this.turret.visible = false;
 		this.shadow.visible = false;
@@ -96,12 +86,12 @@ abstract class Tank_CL extends Sprite {
 		this.turret.destroy();
 	}
 
-	hide(animate: boolean = true) {
+	hide() {
 		this.visible = false;
 		this.turret.visible = false;
 	}
 
-	show(animate: boolean = true) {
+	show() {
 		this.visible = true;
 		this.turret.visible = true;
 	}
@@ -119,7 +109,6 @@ abstract class Tank_CL extends Sprite {
 	interpolationUpdate() {
 		this.interpolate();
 		this.interpolateAngle();
-		//this.updateTurret();
 		this.turret.interpolateAngle();
 	}
 
@@ -151,16 +140,10 @@ abstract class Tank_CL extends Sprite {
 		grp.add(this);
 	}
 
-	isMovingBackward() {
-		//let dist = this.game.math.distance(this.previousPosition.x, this.previousPosition.y, this.x, this.y);
-		let moveAngle = this.game.math.normalizeAngle(this.game.math.angleBetweenPointsY(this.previousPosition, this.position));
-		let forwardAngle = this.game.math.normalizeAngle(this.rotation);
-	}
-
 	shotExplodeEffect(shot: Shot_CL) {
+
 		if (!TH.effects.should(shot)) return;
 
-		
 		let pool = TH.effects.getPool();
 
 		let exps = pool.getAllFreeByKey("shotExplode");
@@ -169,8 +152,7 @@ abstract class Tank_CL extends Sprite {
 		if (exps.length == 0) {
 			explodeSpr = pool.createMultiple(1, `shotExplode${Math.floor(Math.random() * 5) + 1}`)[0];
 		} else {
-			explodeSpr = exps[Math.floor(Math.random() * exps.length)];
-			
+			explodeSpr = exps[Math.floor(Math.random() * exps.length)];	
 		}
 
 		let ang = (this.visible) ? this.turret.rotation + this.rotation : shot.rotation;
@@ -188,12 +170,11 @@ abstract class Tank_CL extends Sprite {
 		let expAnim = explodeSpr.animations.getAnimation("allFrames");
 		expAnim.onComplete.addOnce(function() { this.exists = false; }, explodeSpr);
 		expAnim.play();
-
 	}
 
 	explosionEffect() {
 
-		// Now play sound effect
+		// Play sound effect
 		// Choose randomly
 		let soundName = `explosion${Math.floor((Math.random() * 3) + 1)}`;
 		TH.effects.playAudio(soundName, this);
@@ -209,7 +190,6 @@ abstract class Tank_CL extends Sprite {
 			explosionSpr = pool.createMultiple(1, `explosion${Math.floor(Math.random() * 5)}`)[0];
 		} else {
 			explosionSpr = exps[Math.floor(Math.random() * exps.length)];
-			
 		}
 		
 		// Set up explosion animation 
@@ -265,11 +245,6 @@ abstract class Tank_CL extends Sprite {
 			let twn = this.game.add.tween(turretSpr).to({ x: toPos.x, y: toPos.y, rotation: toAng, alpha: 0 }, duration);
 			twn.onComplete.add(function() { this.destroy(); }, turretSpr);
 			twn.start();
-
-			
-		}
-
-		
-
+		}	
 	}
 }

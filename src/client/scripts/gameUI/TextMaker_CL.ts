@@ -1,6 +1,5 @@
 class TextMaker_CL {
 
-
     static playerName(text: string, x: number, y: number): Phaser.Text {
 
         let textSprite = TH.game.make.text(x, y,  text);
@@ -10,7 +9,6 @@ class TextMaker_CL {
         textSprite.anchor.setTo(0.5);
 
         return textSprite;
-
     }
 
     static goUpText(text: string, x: number, y: number, color: string = "#e02626"): Phaser.Text {
@@ -34,6 +32,7 @@ class TextMaker_CL {
     }
 
     static goTextBigUp(text: string, x: number, y: number, color: string = "#216ae0") {
+
         let offsetInitial = 30;
         let offset = 300;
         let middleOffset = 2;
@@ -60,11 +59,11 @@ class TextMaker_CL {
 
         firstTwn.start();
 
-
         return textSpr;
     }
 
     static goTextBig(text: string, x: number, y: number, goRight: boolean = false, color: string = "#216ae0"): Phaser.Text {
+
         let offsetInitial = 500;
         let offset = 300;
         let middleOffset = 50;
@@ -97,11 +96,11 @@ class TextMaker_CL {
 
         firstTwn.start();
 
-
         return textSpr;
     }
 
     static log(text: string) {
+
         let offset = 200;
         let textSpr = TH.game.make.text(offset, 0, text);
         
@@ -123,17 +122,16 @@ class TextMaker_CL {
     }
 
     static rankNumber(rank: number, x: number, y: number) {
+
         let textSpr = TH.game.make.text(x, y, `${rank}.`);
         
         textSpr.font = "Sans Serif";
-       // textSpr.anchor.setTo(0.5);
         textSpr.fill = "white";
         textSpr.fontSize = 40;
         textSpr.stroke = "black";
         textSpr.strokeThickness = 2;
 
         return textSpr;
-
     }
 
     static winText(x: number, y: number) {
@@ -170,5 +168,4 @@ class TextMaker_CL {
 
         return textSpr;
     }
-
 }

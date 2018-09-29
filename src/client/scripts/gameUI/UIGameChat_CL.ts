@@ -67,12 +67,6 @@ class UIGameChat_CL {
         let twnTimer = this.game.add.tween(newMess).to({alpha: 0.98}, 6000, Phaser.Easing.Default);
         twnTimer.onComplete.add(function() { this.destroy(); }, newMess);
         twnTimer.start();
-
-        // Beep sound
-
-        // ---
-
-
     }
 
     private destroy() {
@@ -80,6 +74,7 @@ class UIGameChat_CL {
     }
 
     private showInput() {
+
         this.game.input.keyboard.enabled = false;
         let $cont = $("#gameChatCont");
 
@@ -93,6 +88,7 @@ class UIGameChat_CL {
     }
 
     private hideInput() {
+        
         this.game.input.keyboard.enabled = true;
         let $cont = $("#gameChatCont");
         $cont.hide();

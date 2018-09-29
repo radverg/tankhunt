@@ -1,4 +1,3 @@
-
 class UIPlayerManager_CL {
 
     private game: Phaser.Game;
@@ -20,7 +19,6 @@ class UIPlayerManager_CL {
         this.thGame.onItemCollect.add(this.itemCollect, this);
         this.thGame.onMeItemUse.add(this.itemMeUse, this);
         this.thGame.onGameFinish.add(this.itemMeUse, this);
-
     }
 
     createPlayerView(player: Player_CL) {
@@ -47,11 +45,10 @@ class UIPlayerManager_CL {
                 plHit.UIpl.hideItemIcon();
             }
         }
-
-       
     }
 
     healPlayer(player: Player_CL, packet: PacketHeal) {
+        
         let healthBef = (packet.healthBef === undefined) ? player.tank.health - packet.amount : packet.healthBef;
         let healthAft = (packet.healthAft === undefined) ? player.tank.health : packet.healthAft;
 
@@ -61,7 +58,6 @@ class UIPlayerManager_CL {
 
         if (healthBef != healthAft)
             player.UIpl.healthChange(healthBef, healthAft);
-
         
     }
 
@@ -87,7 +83,6 @@ class UIPlayerManager_CL {
         if (me && me.UIpl) {
             me.UIpl.hideItemIcon();
         }
-
     }
 
     /**
@@ -102,5 +97,4 @@ class UIPlayerManager_CL {
             plr.UIpl.updateHealthBar();
         }
     }
-
 }

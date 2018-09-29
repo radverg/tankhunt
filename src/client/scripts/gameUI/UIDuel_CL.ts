@@ -1,14 +1,19 @@
 class UIDuel_CL {
+
     private game: Phaser.Game;
     private thGame: Duel_CL;
+
+    // Other UI references --------------------------------
     private uiLadder: UILadderDuel_CL;
     private uiCountDown: UICountdown_CL;
     private uiStats: UIStatsTable_CL;
     private uiChat: UIGameChat_CL;
     private uiPlayerManager: UIPlayerManager_CL;
     private centerGrp: Phaser.Group;
+    // ----------------------------------------------
 
     constructor(phaserGame: Phaser.Game, thGame: Duel_CL) {
+        
         this.game = phaserGame;
         this.thGame = thGame;
         this.uiCountDown = new UICountdown_CL(TH.game);
@@ -65,7 +70,6 @@ class UIDuel_CL {
             this.centerGrp.add(this.uiCountDown.startNew(packet.nextDelay, 0, 250, 100));
 
         } else {
-
             // This is actually end of the game
             // Create overlay in the center
             let overlaySpr: Phaser.Sprite = this.centerGrp.create(0, 0, "blackRect");
@@ -90,10 +94,10 @@ class UIDuel_CL {
             
         }
         this.uiLadder.update();
-
     }
 
     private addMainMenuButton(delay: number) {
+
         let btn = this.game.make.button(0, 280, "panels", this.mainMenuCallback, this, 0, 1);
         let game = this.game;
         this.centerGrp.add(btn);
@@ -106,7 +110,7 @@ class UIDuel_CL {
         btn.onOverSound = TH.effects.getSound(SoundNames.CLICK);
 		btn.onOverSoundMarker = SoundNames.CLICK;
         
-        // Animate button after a delay;;;;;;;;
+        // Animate button after a delay
         this.game.time.events.add(delay, function() {
             game.add.tween(btn.scale).to({ x: 1.2, y: 1 }, 500, Phaser.Easing.Default, true);
         }, this);

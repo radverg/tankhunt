@@ -1,30 +1,34 @@
-
-
 class THGame_CL {
     
+	public game: Phaser.Game = TH.game;
 	public socketManager: SocketManager_CL;
 	public running: boolean = false;
 	public level: Level_CL = new Level_CL();
-	public game: Phaser.Game = TH.game;
+	public remove: boolean = false;
 
 	protected background: Phaser.TileSprite = null;
 	protected levelGroup: Phaser.Group = null;
 	protected itemGroup: ItemGroup_CL = null;
 
-	shotGroup: ShotGroup_CL = null;
-	playerGroup: PlayerGroup_CL = null;
+	public shotGroup: ShotGroup_CL = null;
+	public playerGroup: PlayerGroup_CL = null;
 
 	private cameraArrowControl: boolean = false;
 	private cameraMoveSpeed: number = 4;
 
 	private camSpeed: number = 4;
 
-	remove: boolean = false;
-
-
-	// Phaser signals - game interface can listen to them and react
-	onPlayerRemove: Phaser.Signal = new Phaser.Signal();
+	// Phaser signals - game interface can listen to them and react -------------------------------------
 	onItemSpawn: Phaser.Signal = new Phaser.Signal();
+	onPlayerRemove: Phaser.Signal = new Phaser.Signal();
+	onRespawn: Phaser.Signal = new Phaser.Signal();
+	onNewPlayer: Phaser.Signal = new Phaser.Signal();
+	onGameFinish: Phaser.Signal = new Phaser.Signal();
+	onGameInfo: Phaser.Signal = new Phaser.Signal();
+	onGameStart: Phaser.Signal = new Phaser.Signal();
+	onLeave: Phaser.Signal = new Phaser.Signal();
+	onMeItemUse: Phaser.Signal = new Phaser.Signal();
+	onChat: Phaser.Signal = new Phaser.Signal();
 	/**
 	 * First argument is item that was collecte and second argument is collector (player object)
 	 */
@@ -33,36 +37,22 @@ class THGame_CL {
 	 * Hit packet from the server is passed as argument, second argument is player that was hit
 	 */
 	onHit: Phaser.Signal = new Phaser.Signal();
-	onRespawn: Phaser.Signal = new Phaser.Signal();
 	/**
 	 * Player_CL object is passed as an argument
 	 */
-	onNewPlayer: Phaser.Signal = new Phaser.Signal();
 	onNewPlayerConnected: Phaser.Signal = new Phaser.Signal();
 	/**
 	 * Player_CL object is first argument, PacketHeal second
 	 */
 	onHeal: Phaser.Signal = new Phaser.Signal();
-
-	onGameFinish: Phaser.Signal = new Phaser.Signal();
-
-	onGameInfo: Phaser.Signal = new Phaser.Signal();
-
-	onGameStart: Phaser.Signal = new Phaser.Signal();
-
-	onLeave: Phaser.Signal = new Phaser.Signal();
-
-	onMeItemUse: Phaser.Signal = new Phaser.Signal();
-
-	onChat: Phaser.Signal = new Phaser.Signal();
+	// ----------------------------------------------------------------------------------------------------
 
 	constructor(socketManager: SocketManager_CL) {
+		
 		this.socketManager = socketManager;
 		TH.thGame = this;
 		this.init();
 		TH.effects.initPool();
-
-	
 	}
 
 	update() {
@@ -89,15 +79,9 @@ class THGame_CL {
 	}
 
 	debug()  {
-		//  if (this.playerGroup.me)
-		// 	TH.game.debug.spriteInfo(this.playerGroup.me.tank, 10, 10, "black");
-
-		 //TH.game.debug.cameraInfo(TH.game.camera, 10, 500, "black");
-
 		// if (TH.timeManager.ping)
 		// 	TH.game.debug.text(TH.timeManager.ping.toString(), 10, 1000); 
     }
-
 
 	processPlayerRemove(playerID: string) {
 		let player = this.playerGroup.getPlayer(playerID);
@@ -115,7 +99,7 @@ class THGame_CL {
 	processItemUse(data: any) {
 		// This player just used an item
 		this.onMeItemUse.dispatch();
-    }
+    };
 
 	start() {
 		this.running = true;
@@ -123,18 +107,20 @@ class THGame_CL {
 	}
 
 	processStateInfo(data: PacketMovable) {
+
 		if (!this.running) return;
-		this.playerGroup.stateUpdate(data);
-		
+		this.playerGroup.stateUpdate(data);	
 	}
 
 	processNewShot(data: PacketShotStart) {
+
 		if (!this.running) return;
 		data.ownerObj = this.playerGroup.getPlayer(data.ownerID);
 		this.shotGroup.newShot(data);
 	};
 
 	processNewItem(data: PacketItem) {
+
 		let newItem = new Item_CL(data.x, data.y, data.typeIndex);
 		this.itemGroup.addItem(newItem, data.id);
 		this.onItemSpawn.dispatch(newItem);
@@ -153,10 +139,6 @@ class THGame_CL {
 		}
 		item.getCollected();
 		this.onItemCollect.dispatch(item, collector);		
-		// Collector id is in data.playerID
-		// if (this.items[data.id]) {
-		// 	this.items[data.id].getCollected();
-		// }
 	}
 
 	processGameInfo(data: PacketGameInfo) {
@@ -178,11 +160,13 @@ class THGame_CL {
 	}
 
 	processNewPlayer(data: PacketPlayerInfo) {
+
 		if (this.playerGroup.getPlayer(data.id)) return;
 		this.newPlayerFromPacket(data);
 	}
 
 	processHit(data: PacketShotHit) {
+
 		let shot = this.shotGroup.getShot(data.shotID);
 		let playerHit = this.playerGroup.getPlayer(data.plID);
 		let playerAtt = this.playerGroup.getPlayer(data.plAttID);
@@ -228,13 +212,11 @@ class THGame_CL {
 					TH.game.time.events.add(700, function() { TH.effects.playAudio(SoundNames.MULTIKILL); });
 				}
 			}
-			
 		}
 
 		playerAtt.stats.countHit(playerAtt, playerHit, data.healthBef, data.healthAft);
 
 		this.onHit.dispatch(data, playerHit);
-		
 	}
 
 	processChatMessage(data: PacketChatMessage) {
@@ -268,14 +250,13 @@ class THGame_CL {
 		console.log(`Level is here! Payload: ${JSON.stringify(data).length} characters | bytes`);
 	};
 
-	processRespawn(data: PacketRespawn) { };
 
 	processAppear(data: PacketAppear) {
 		let plr = this.playerGroup.getPlayer(data.plID);
 		if (!plr) return;
 
 		if (plr.isEnemyOf(this.playerGroup.me)) {
-			plr.tank.show(true);
+			plr.tank.show();
 			plr.tank.positionServerUpdate(data.atX * TH.sizeCoeff, data.atY * TH.sizeCoeff)
 			plr.tank.jumpToRemote();
 		} else {
@@ -285,22 +266,22 @@ class THGame_CL {
 	}
 
 	processDisappear(data: PacketDisappear) {
+
 		let plr = this.playerGroup.getPlayer(data.plID);
 		if (!plr) return;
 
 		if (plr.isEnemyOf(this.playerGroup.me)) {
-			plr.tank.hide(true);
+
+			plr.tank.hide();
 		} else {
+
 			plr.tank.alphaHide();
-			
 		}
 	}
 
-	processGameFinish(data: PacketGameFinish) {
-	}
-	processCapture(data: PacketCapture) {   
-    }
-
+	processRespawn(data: PacketRespawn) { };
+	processGameFinish(data: PacketGameFinish) { };
+	processCapture(data: PacketCapture) { };
 
 	setCameraFollow() {
 		this.cameraArrowControl = false;
@@ -314,9 +295,8 @@ class THGame_CL {
 	}
 
 	newPlayerFromPacket(packet: PacketPlayerInfo, dispatchConnected: boolean = true) {
-		// Handle tank type in future
-		var tank = new DefaultTank_CL();
 
+		var tank = new DefaultTank_CL();
 		var player = new Player_CL(packet.id, tank, packet.name);
 		player.team = packet.team || null;
 		player.stats.importPacket(packet.stats);
@@ -350,8 +330,7 @@ class THGame_CL {
 
 		this.onNewPlayer.dispatch(player);
 
-		return player;
-				
+		return player;	
 	}
 
 	/**
@@ -362,7 +341,11 @@ class THGame_CL {
 		this.itemGroup.clear();
 	}
 
+	/**
+	 * Stops the game, nulls the references and disposes signals
+	 */
 	destroy() {
+
 		TH.thGame = null;
 		this.remove = true;
 		this.running = false;
@@ -387,13 +370,10 @@ class THGame_CL {
 		this.onRespawn.dispose();
 		this.onChat.dispose();
 		this.onMeItemUse.dispose();
-
 	}
 
 	leaveToMenu() {
 		this.onLeave.dispatch();
-		// this.destroy();
-		// TH.game.state.start("menu");
 	}
 
 	/**
@@ -401,6 +381,7 @@ class THGame_CL {
 	 * this have to be called after phaser instance in TH.game is initialized
 	 */
 	init() {
+
 		// Create first layer level
 		this.levelGroup = TH.game.add.group();
 		// Then we have items
@@ -409,7 +390,6 @@ class THGame_CL {
 		this.playerGroup = new PlayerGroup_CL();
 		// Than we have shots 
 		this.shotGroup = new ShotGroup_CL();
-		
 	}
 
 }

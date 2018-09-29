@@ -1,4 +1,3 @@
-
 class UINotification_CL {
 
     protected topGroup: Phaser.Group;
@@ -18,9 +17,7 @@ class UINotification_CL {
         this.topGroup.fixedToCamera = true;
         this.topGroup.cameraOffset.x = this.game.camera.view.width / 2;
         this.topGroup.cameraOffset.y = 100;
-
         
-
         this.logGroup = new Phaser.Group(game);
         this.logGroup.fixedToCamera = true;
         this.logGroup.cameraOffset.setTo(20, this.game.camera.view.height - 50);
@@ -35,6 +32,7 @@ class UINotification_CL {
     }
 
     protected playerHit(packet: PacketShotHit, player: Player_CL) {
+
         if (!TH.effects.should()) return;
 
         let attacker = this.thGame.playerGroup.getPlayer(packet.plAttID);
@@ -63,19 +61,16 @@ class UINotification_CL {
                     if (soundName) {
                         TH.game.time.events.add(700, function() { TH.effects.playAudio(soundName); });
                     }
-            
                 }
-
             }
 
             // Log kill
             let logText = (attacker === player && this.thGame.playerGroup.me === player) ?
                 `Player ${attacker.name} killed himself!` :
                 `Player ${attacker.name} killed ${player.name}!` ;
-                
+         
             this.logText(logText);
         }
-        
     }
 
     logText(text: string) {

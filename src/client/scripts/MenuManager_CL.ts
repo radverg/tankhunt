@@ -8,8 +8,6 @@ class MenuManager_CL extends Phaser.State {
     constructor(tankhunt: TH) {
         super();    
         this.th = tankhunt;
-
-
     }
 
     create() {
@@ -29,16 +27,11 @@ class MenuManager_CL extends Phaser.State {
         if (this.first) {
 
             this.first = false;
-
-            //this.th.loadManager.precreate();
-
             $("#arenaMode").on("click", () => { this.arenaJoinClick(); });
             $("#duelMode").on("click", () => { this.duelJoinClick(); });
             $("#btnChatSubmit").on("click", () => { this.submitChat(); });
             $("#statsCont").hide();
 
-            // $("#arenaMode, #duelMode, #teamMode").on("mouseenter", () => TH.effects.playAudio(SoundNames.CLICK));
-            
             $("#teamMode").on("click", () => { this.teamJoinClick(); });
             $("#chatInp").on("keydown", (e) => { if (e.keyCode == 13) this.submitChat(); });
 
@@ -46,11 +39,12 @@ class MenuManager_CL extends Phaser.State {
 
         $("#coverDuel").css("display", "none");
         $("#coverTeam").css("display", "none");
-       // this.time.events.add(500, function() { this.state.start("play"); }, this);
+
         this.game.state.start("play");
     }
 
     processMenuInfo(packet: PacketMenuInfo) {
+
         $("#totalPlayers").text(packet.totalP);
         $("#menuPlayers").text(packet.menuP);
         $("#gamePlayers").text(packet.totalP - packet.menuP);
@@ -58,10 +52,10 @@ class MenuManager_CL extends Phaser.State {
         $("#duelGames").text(packet.duelG);
         $("#teamGames").text(packet.teamG);
         $("#teamQueue").text(packet.teamQ);
-
     }
 
     submitChat() {
+
         let mess = $("#chatInp").val().toString();
         if (mess == "") {
             return;
@@ -75,6 +69,7 @@ class MenuManager_CL extends Phaser.State {
     }
 
     processChat(packet: PacketChatMessage) {
+
         let $messCont = $("#messCont");
         let date = new Date();
         let $newMess = $("<div class='mess'><div>").text(`${date.toLocaleTimeString()} [${packet.name || "unnamed"}] - ${packet.mess}`)
@@ -82,15 +77,15 @@ class MenuManager_CL extends Phaser.State {
     }
 
     arenaJoinClick() {
+
         let name = this.getName();
         if (name === false) return;
 
         this.th.socketManager.emitGameRequest({ playerName: name, gameType: "Arena" });
-        
-
     }
 
     duelJoinClick() {
+
         $("#coverTeam").hide();
 
         let name = this.getName();
@@ -104,10 +99,10 @@ class MenuManager_CL extends Phaser.State {
 
         this.th.socketManager.emitGameRequest({ playerName: name, gameType: "Duel" });
         $("#coverDuel").css("display", "flex");
-
     }
 
     teamJoinClick() {
+
         $("#coverDuel").hide();
 
         let name = this.getName();
@@ -124,6 +119,7 @@ class MenuManager_CL extends Phaser.State {
     }
 
     getName() {
+        
         let name = this.validateName($("#inpName").val().toString()); // || `player${(Math.random()*10000).toFixed(0)}`);
 
         if (name === false) {

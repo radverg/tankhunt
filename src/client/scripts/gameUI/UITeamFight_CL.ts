@@ -5,10 +5,12 @@ class UITeamFight_CL {
 
     private centerGrp: Phaser.Group;
 
+    // Other UI references -------------------------------
     private uiStats: UIStatsTable_CL;
     private uiNotification: UITeamNotification_CL;
     private uiChat: UIGameChat_CL;
     private uiPlayerManager: UIPlayerManager_CL;
+    // ---------------------------------------------------
 
     private team1List: Phaser.Group;
     private team2List: Phaser.Group;
@@ -106,26 +108,23 @@ class UITeamFight_CL {
         let win: boolean = (packet.winnerTeam == this.thGame.playerGroup.me.team);
 
         let overlaySpr: Phaser.Sprite = this.centerGrp.create(0, 0, "blackRect");
-            overlaySpr.alpha = 0.8;
-            overlaySpr.height = this.game.camera.view.height;
-            overlaySpr.width = this.game.camera.view.width * 0.8;
-            overlaySpr.anchor.setTo(0.5, 0);
+        overlaySpr.alpha = 0.8;
+        overlaySpr.height = this.game.camera.view.height;
+        overlaySpr.width = this.game.camera.view.width * 0.8;
+        overlaySpr.anchor.setTo(0.5, 0);
 
-            if (win) {
-                // I have won!
-                this.centerGrp.add(TextMaker_CL.winText(0, 70));
-                this.game.time.events.add(600, function() { TH.effects.playAudio(SoundNames.VICTORY); }, this); 
+        if (win) {
+            // I have won!
+            this.centerGrp.add(TextMaker_CL.winText(0, 70));
+            this.game.time.events.add(600, function() { TH.effects.playAudio(SoundNames.VICTORY); }, this); 
+        } else {
+            // I have lost!
+            this.centerGrp.add(TextMaker_CL.defText( 0, 70));
+            this.game.time.events.add(600, function() { TH.effects.playAudio(SoundNames.LOSS); }, this); 
+        }
 
-            } else {
-                // I have lost!
-                this.centerGrp.add(TextMaker_CL.defText( 0, 70));
-                this.game.time.events.add(600, function() { TH.effects.playAudio(SoundNames.LOSS); }, this); 
-
-            }
-
-            this.addMainMenuButton(1500);
-
-            this.uiStats.show();
+        this.addMainMenuButton(1500);
+        this.uiStats.show();
     }
 
     private generatePlayerList() {
@@ -139,8 +138,6 @@ class UITeamFight_CL {
 
         this.team2List.fixedToCamera = true;
         this.team2List.cameraOffset.setTo(this.game.camera.view.width - sizeX, 0);
-
-        
 
         for (const key in plrs) {
             let plr = plrs[key];
@@ -166,8 +163,6 @@ class UITeamFight_CL {
             fgStrip.height = 7;
             fgStrip.width = sizeX;
             fgStrip.anchor.y = 1;
-
-
         }
     }
 
@@ -204,9 +199,7 @@ class UITeamFight_CL {
             let barB = stripGrp.getChildAt(2) as Phaser.Sprite;
             barF.width = 0;
             this.game.add.tween(barF).to( { width: barB.width }, packet.resTime, Phaser.Easing.Default, true);
-        }
-
-       
+        }   
     }
 
     private playerRemove(player: Player_CL) {

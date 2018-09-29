@@ -22,6 +22,7 @@ class Capture_CL extends Phaser.Group {
         this.x = sqrX * sqrSize + sqrSize / 2;
         this.y = sqrY * sqrSize + sqrSize / 2;
 
+        // Create and setup flag sprite
         this.flag = this.create(0, 0, (this.isOurs) ? "flagGreen" : "flagRed");
 
         this.flag.anchor.setTo(0.5);
@@ -38,12 +39,14 @@ class Capture_CL extends Phaser.Group {
         let barHeight = 5;
         let barYOffset = -sqrSize * 0.4;
 
+        // Bar background sprite
         this.capBarB = this.create(0, barYOffset, "blackRect");
 
         this.capBarB.anchor.setTo(0.5);
         this.capBarB.width = barWidth;
         this.capBarB.height = barHeight;
 
+        // Bar foreground sprite
         this.capBarF = this.create(-this.capBarB.width / 2, barYOffset, "whiteRect");
 
         this.capBarF.anchor.setTo(0, 0.5);

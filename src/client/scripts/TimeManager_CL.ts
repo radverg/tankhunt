@@ -13,7 +13,6 @@ class TimeManager_CL {
 
     constructor(sm: SocketManager_CL) {
         this.sm = sm;
-
     }
 
     synchronizeRequest() {
@@ -26,16 +25,8 @@ class TimeManager_CL {
         this.pingEnd = Date.now();
         this._ping = this.pingEnd - this.pingStart;
 
-        // if (this._ping > 500) {
-        //     // Try again in case of lag
-        //     this.synchronizeRequest();
-        //     return;
-        
-        // }
-
         this.clockDiff = serverTime - (this.pingStart + this._ping / 2);
         this.lastSync = this.pingEnd;
-
     }
 
     getDelay(serverTime: number) {

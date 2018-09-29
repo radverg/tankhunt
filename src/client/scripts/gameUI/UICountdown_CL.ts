@@ -1,5 +1,3 @@
-
-
 class UICountdown_CL {
 
     private game: Phaser.Game;
@@ -27,8 +25,7 @@ class UICountdown_CL {
                 cdText.destroy();
                 return;
             }
-
-           
+              
             cdText.text = current.toString();
 
             if (current == 0) {
@@ -41,8 +38,6 @@ class UICountdown_CL {
             cdText.scale.set(1);
 
             let twn = game.add.tween(this.scale).to({ x: 0.25, y: 0.25 }, milisecStep / 1.5, Phaser.Easing.Default);
-           // let fadeTwn = game.add.tween(this).to({ alpha: 0 }, milisecStep - milisecStep / 1.5);
-            //wn.chain(fadeTwn);
             twn.start();
 
         }, cdText);

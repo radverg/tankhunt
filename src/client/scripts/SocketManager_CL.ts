@@ -15,8 +15,8 @@ class SocketManager_CL {
      * Creates websocket connection via socket.io and calls initSocket()
      */
     connect() {
+
         this.socket = io.connect();
-        
         this.initSocket();
     }
 
@@ -54,13 +54,9 @@ class SocketManager_CL {
         this.socket.on("cap", function(data: PacketCapture) { if (that.th.playManager.thGame) that.th.playManager.thGame.processCapture(data) ; });
         this.socket.on("wo", function(data: any) { if (that.th.playManager.thGame) that.th.playManager.thGame.processItemUse(data) ; });
 
-
-
         this.socket.on("menuChat", function(data: PacketChatMessage) { that.th.menuManager.processChat(data); });
         this.socket.on("gameChat", function(data: PacketChatMessage) { if (that.th.playManager.thGame) that.th.playManager.thGame.processChatMessage(data); });
         this.socket.on("menuInfo", function(data: PacketMenuInfo) { that.th.menuManager.processMenuInfo(data); });
-
-
 
         this.socket.on("pongg", function(data: number) { that.th.tManager.onSynchronizeResponse(data); });
     } 

@@ -1,5 +1,3 @@
-
-
 class UILadder_CL {
 
     private thGame: THGame_CL;
@@ -17,7 +15,6 @@ class UILadder_CL {
         this.thGame = thGame;
         this.game = game;
         this.slots = slots;
-        
 
         this.initialize();
     }
@@ -35,7 +32,6 @@ class UILadder_CL {
             panel.height = this.groupHeight;
             panel.alpha = 0.6;
             panel.frame = 1;
-          //  panel.tint = 0xff0000;
 
             // Create rank number
             let rankPos = { x: 7, y: 7 };
@@ -56,10 +52,8 @@ class UILadder_CL {
                 fontSize: 22,
                 fill: "white",
                 fontStyle: "bold"
-                // stroke: "white",
-                // strokeThickness: 1,
-
             }
+
             let nameSpr = this.game.make.text(offsetX, 5, "0", style);
             grp.add(nameSpr);
 
@@ -81,6 +75,7 @@ class UILadder_CL {
     }
 
     update() {
+
         let players = this.thGame.playerGroup.players;
         let me = this.thGame.playerGroup.me;
 
@@ -91,15 +86,12 @@ class UILadder_CL {
             let grp = this.rankGroups[i];
             let player = (keys[i]) ? players[keys[i]] : null;
 
-            
-
             let nameText = this.getStatsText1(player);
             let statsText = this.getStatsText2(player);
 
             (grp.getChildAt(0) as Phaser.Sprite).frame = (player) ? ((player.me) ? 0 : 1) : 1;
             (grp.getChildAt(2) as Phaser.Text).text = nameText;
             (grp.getChildAt(3) as Phaser.Text).text = statsText;
-
        }
 
        if (!me) return;
@@ -107,6 +99,7 @@ class UILadder_CL {
 
        let myGrp = this.rankGroups[this.rankGroups.length - 1];
        if (myRank > this.slots - 1) {
+
            myGrp.visible = true;
            let nameText = this.getStatsText1(me);
             let statsText = this.getStatsText2(me);
@@ -137,7 +130,6 @@ class UILadderDuel_CL extends UILadder_CL {
         super(game, thGame, 3);
 
         this.sortKey = "wins";
-        
     }
 
     protected getStatsText1(player: Player_CL) {

@@ -1,5 +1,3 @@
-
-
 class UIPlayer_CL extends Phaser.Group {
 
     private thGame: THGame_CL;
@@ -44,8 +42,8 @@ class UIPlayer_CL extends Phaser.Group {
         this.healthBar.updateHealthBar(this.player.tank.maxHealth, this.player.tank.health);
     }
 
-
     healthChange(healthBef: number, healthAft:number) {
+
         this.updateHealthBar();
         let healthDiff = healthAft - healthBef;
 
@@ -64,14 +62,12 @@ class UIPlayer_CL extends Phaser.Group {
     }
 
     showItemIcon(frame: number) {
+
         this.itemIcon.revive();
         this.itemIcon.frame = frame;
-
     }
 
     hideItemIcon() {
         this.itemIcon.kill();
     }
-
-
 }
