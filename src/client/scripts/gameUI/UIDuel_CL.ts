@@ -115,7 +115,6 @@ class UIDuel_CL {
     private mainMenuCallback() {
         // Return back to menu
         this.uiStats.hide();
-        console.log("Menu clicked!");
         this.game.state.start("menu");
     }
 }

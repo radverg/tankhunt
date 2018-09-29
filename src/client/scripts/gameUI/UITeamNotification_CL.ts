@@ -38,7 +38,7 @@ class UITeamNotification_CL extends UINotification_CL {
         if (packet.st) {
 
             if (mineCap) {
-                this.logBig("An enemy is capturing!", "red");
+                this.logBig("Enemy is capturing!", "red");
             } else {
                 this.logBig("Our team is capturing!", "green");
             }

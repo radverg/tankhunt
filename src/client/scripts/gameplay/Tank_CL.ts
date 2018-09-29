@@ -168,7 +168,6 @@ abstract class Tank_CL extends Sprite {
 
 		if (exps.length == 0) {
 			explodeSpr = pool.createMultiple(1, `shotExplode${Math.floor(Math.random() * 5) + 1}`)[0];
-			console.log("creating");
 		} else {
 			explodeSpr = exps[Math.floor(Math.random() * exps.length)];
 			

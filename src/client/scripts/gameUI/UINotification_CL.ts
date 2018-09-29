@@ -45,7 +45,7 @@ class UINotification_CL {
                 if (player === attacker) 
                     this.topGroup.add(TextMaker_CL.goTextBig("You killed yourself!", 0, notifYPos, false, "#e51414"));
                 else 
-                    this.topGroup.add(TextMaker_CL.goTextBig(`You got killed by ${attacker.name}!`, 0, notifYPos, false, "#e51414"));
+                    this.topGroup.add(TextMaker_CL.goTextBig(`You've been killed by ${attacker.name}!`, 0, notifYPos, false, "#e51414"));
 
             } else if (attacker === this.thGame.playerGroup.me) {
 

@@ -119,11 +119,11 @@ class PulsarGun_SE extends Weapon_SE {
 		this.wasPressed = true;
 
 		// Start stack
-		this.shootNext();
+		this.shootNext(game);
 		
 	}
 
-	shootNext() {
+	shootNext(game: THGame_SE) {
 
 		if (!this.wornOut && this.owner && this.owner.alive) {
 			
@@ -131,6 +131,12 @@ class PulsarGun_SE extends Weapon_SE {
 			
 			// Create shot 
 			let shps = this.owner.tank.getShotPosition();
+
+			if (!game.level.levelRect.contains(shps.x, shps.y)) {
+				this.wornOut = true;
+				return;
+			}
+
 			let dispDir = (Math.random() > 0.5) ? 1 : -1;
 
 			// Apply angle dispersion
@@ -140,7 +146,7 @@ class PulsarGun_SE extends Weapon_SE {
 
 			this.game.shoot(shot);
 
-			setTimeout(() => { this.shootNext(); }, this._reloadTime);
+			setTimeout(() => { this.shootNext(game); }, this._reloadTime);
 		} 
 
 	}

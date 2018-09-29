@@ -124,11 +124,7 @@ class Arena_SE extends THGame_SE {
                 continue;
             }
             
-            this.players[pl].tank.update(deltaSec);
-            this.players[pl].tank.wallCollide(this.level);
-
-            // Check players against items
-            this.itemManager.checkForTank(this.players[pl].tank);
+           
             
             // Update shots
             for (let sh = 0; sh < this.shots.length; sh++) {
@@ -187,6 +183,12 @@ class Arena_SE extends THGame_SE {
                     }
                 }  
             }
+
+            this.players[pl].tank.update(deltaSec);
+            this.players[pl].tank.wallCollide(this.level);
+
+            // Check players against items
+            this.itemManager.checkForTank(this.players[pl].tank);
 
             firstTank = false;
         }

@@ -84,7 +84,7 @@ class LaserDirect_CL extends Shot_CL {
 
 		// Start laser
 		// Move laser forwards according to delay
-		this.height = (this.speed / 1000) * this.delay;
+		this.height = 0; //  (this.speed / 1000) * this.delay;
 
 		TH.game.add.existing(this);
 		var twn = TH.game.add.tween(this);

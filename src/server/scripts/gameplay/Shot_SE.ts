@@ -379,7 +379,14 @@ class Bouncer_SE extends Shot_SE {
 		if (tank.body.rectCircleVSCircle((this.x + this.prevBody.cX) / 2, (this.y + this.prevBody.cY) / 2, dist(this.x, this.y, this.prevBody.cX,
 			this.prevBody.cY) / 2)) {
 
-			return tank.body.whichSideLineInt(this.x, this.y, this.prevBody.cX, this.prevBody.cY);
+			let res = tank.body.whichSideLineInt(this.x, this.y, this.prevBody.cX, this.prevBody.cY);
+
+			if (res) {
+				console.log(res);
+			}
+
+			return res;
+
 		}
 
 		return false;
