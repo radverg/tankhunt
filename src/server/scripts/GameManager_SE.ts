@@ -4,7 +4,6 @@ import { Player_SE } from "./gameplay/Player_SE";
 import { TankHunt_SE } from "./TankHunt_SE";
 import { Duel_SE } from "./gameplay/gamemodes/Duel_SE";
 import { TeamFight_SE } from "./gameplay/gamemodes/TeamFight_SE";
-import { Stats_SE } from "./gameplay/Stats_SE";
 
 class GameManager_SE {
 
@@ -202,8 +201,7 @@ class GameManager_SE {
 				this.teamFights.push(tGame);
 			}
 
-			this.th.menuManager.emitMenuInfo();
-			
+			this.th.menuManager.emitMenuInfo();			
 		}
 	}
 }

@@ -8,8 +8,7 @@ class MenuManager_SE extends Room_SE {
     constructor(th: TankHunt_SE) {
         super();
 
-        this.th = th;
-        
+        this.th = th;     
     } 
 
     emitMenuInfo() {
@@ -20,8 +19,7 @@ class MenuManager_SE extends Room_SE {
             menuP: this.getSocketCount(),
             teamG: this.th.gameManager.getTeamFightCount(),
             teamQ: this.th.gameManager.getTeamQueueCount(),
-            duelG: this.th.gameManager.getDuelCount(),
-
+            duelG: this.th.gameManager.getDuelCount()
         }
         
         this.broadcast("menuInfo", menuPacket);
@@ -29,8 +27,7 @@ class MenuManager_SE extends Room_SE {
 
     processMenuChat(data: PacketChatMessage) {   
         this.broadcast("menuChat", data);
-    }
-    
+    }  
 }
 
 export { MenuManager_SE }

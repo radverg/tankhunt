@@ -7,7 +7,6 @@ import { THGame_SE } from "./gamemodes/THGame_SE";
 import { Vec2 } from "./utils/Geometry_SE";
 
 // Shot constructor takes the weapon it was shot from as a parameter
-// This class is abstract (it is not included in module.exports)
 abstract class Shot_SE extends GameObject_SE {
 
 	protected startX: number;
@@ -143,7 +142,6 @@ abstract class Shot_SE extends GameObject_SE {
 		}
 
 		return hitPack;
-
 	}
 
 	/**
@@ -168,7 +166,6 @@ abstract class Shot_SE extends GameObject_SE {
 
 		return packet;
 	}
-
 }
 
 // APCR ------------------------------------------------------------------------------------
@@ -274,7 +271,6 @@ class FlatLaser_SE extends Shot_SE {
 		this.endPoint = points[0];
 
 		this.setPoints();
-
 	}
 
 	private setPoints() {
@@ -324,7 +320,6 @@ class Bouncer_SE extends Shot_SE {
 
 		if (findPath)
 			this.createWayPoints();
-
 		
 	}
 
@@ -363,7 +358,6 @@ class Bouncer_SE extends Shot_SE {
 
 			this.wayPoints.push({x: shortFloat(point.x), y: shortFloat(point.y), ang: shortFloat(Math.atan2(nextDirX, -nextDirY))});
 		}
-
 	}
 
 	getStartPacket() {
@@ -379,14 +373,7 @@ class Bouncer_SE extends Shot_SE {
 		if (tank.body.rectCircleVSCircle((this.x + this.prevBody.cX) / 2, (this.y + this.prevBody.cY) / 2, dist(this.x, this.y, this.prevBody.cX,
 			this.prevBody.cY) / 2)) {
 
-			let res = tank.body.whichSideLineInt(this.x, this.y, this.prevBody.cX, this.prevBody.cY);
-
-			if (res) {
-				console.log(res);
-			}
-
-			return res;
-
+			return tank.body.whichSideLineInt(this.x, this.y, this.prevBody.cX, this.prevBody.cY);
 		}
 
 		return false;
@@ -411,8 +398,6 @@ class Bouncer_SE extends Shot_SE {
 			this.setPos(this.wayPoints[this.currentBounce].x, this.wayPoints[this.currentBounce].y);
 			this.angle = this.wayPoints[this.currentBounce].ang;
 		}
-
-		
 	}
 }
 
@@ -422,7 +407,7 @@ class BouncingLaser_SE extends Bouncer_SE {
 	constructor(weapon: Weapon_SE, startX: number, startY: number, startAng: number, game: THGame_SE) {
 		super(weapon, startX, startY, startAng, game);
 
-		this.damage = 1100;
+		this.damage = 1500;
 		this.ignoreArmor = true;
 		this.maxSpeed = 35;
 		this.fullForward();
@@ -449,12 +434,10 @@ class BouncingLaser_SE extends Bouncer_SE {
 					return tank.body.lineInt(pt1.x, pt1.y, this.x, this.y);
 				}
 				return true;
-			}
-			
+			}	
 		}
 
 		return false;
-		
 	}
 }
 
@@ -515,6 +498,7 @@ class Eliminator_SE extends Bouncer_SE {
 	}
 
 	getStartPacket() {
+
 		var packet = super.getStartPacket() as PacketEliminatorStart;
 		packet.endX = shortFloat(this.endPoint.x);
 		packet.endY = shortFloat(this.endPoint.y);
@@ -525,6 +509,7 @@ class Eliminator_SE extends Bouncer_SE {
 	}
 
 	blast() {
+		
 		for (let i = 0; i < this.splintersData.length; i++) {
 
 			let newSpl = new Splinter_SE(this.weapon, this.x, this.y, this.splintersData[i].ang, this.game);
@@ -543,7 +528,6 @@ class Eliminator_SE extends Bouncer_SE {
 		} 
 
 		this.game.emitHit(hitPacket);
-
 	}
 
 	isHittingTank() {
@@ -556,8 +540,7 @@ class Eliminator_SE extends Bouncer_SE {
 		if (this.remove) {
 			this.blast();
 			this.weapon.wornOut = true;
-		}
-		
+		}	
 	}
 }
 
@@ -575,7 +558,6 @@ class Mine_SE extends Shot_SE {
 		this.removeAfterHit = true;
 
 		setTimeout(() => { this.active = true; }, 1000); // Activate after one second
-
 	}
 
 	getTankCollision(tank: Tank_SE) {
@@ -587,9 +569,6 @@ class Mine_SE extends Shot_SE {
 		return false;
 	}
 }
-
-
-
 
 var Shots: { [key: string]:  any } = {
  	APCR_SE: APCR_SE,

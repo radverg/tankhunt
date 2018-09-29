@@ -15,7 +15,6 @@ interface PacketGameObject {
      * Rotation in RADIANS
      */
     rot: number
-
 }
 
 interface PacketTank extends PacketGameObject {

@@ -107,10 +107,6 @@ class Tank_SE extends GameObject_SE {
 		return pack;
 	}
 
-	// getQuickStatePacket(): PacketTank {
-
-	// }
- 
 	stopCompletely() {
 		this.stopRotation();
 		super.stop();

@@ -21,7 +21,7 @@ class Player_SE {
 
     capture: Capture_SE = null;
 
-    team: any = null;
+    team: number = 0;
     stats: Stats_SE;
 
     lastInput: number;
@@ -42,8 +42,7 @@ class Player_SE {
         this.alive = true;
         this.emitable = true;
         
-        this.stats = new Stats_SE();
-       
+        this.stats = new Stats_SE();      
     }
 
     die() {
@@ -51,7 +50,6 @@ class Player_SE {
         this.tank.health = 0;
         this.alive = false;
         this.tank.specialGun = null;
-       // this.emitable = false;
     }
     
     /**

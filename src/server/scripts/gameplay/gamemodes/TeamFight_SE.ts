@@ -3,9 +3,7 @@ import { Level_SE } from "../Level_SE";
 import { Player_SE } from "../Player_SE";
 import { Tank_SE } from "../Tank_SE";
 import { Capture_SE } from "../Capture_SE";
-import { getRandomInt } from "../utils/MyMath_SE";
 import { Stats_SE } from "../Stats_SE";
-import { Packet } from "socket.io";
 
 class TeamFight_SE extends THGame_SE {
 
@@ -36,7 +34,6 @@ class TeamFight_SE extends THGame_SE {
         this.itemManager.startSpawning();
         this.itemManager.maxItems = 20;
 
-
         this.level = new Level_SE();
         this.level.parseJSONLevel("team1");
 
@@ -55,7 +52,6 @@ class TeamFight_SE extends THGame_SE {
 
         console.log("Generating caps...");
         console.log("Starting TeamFight game...");
-
     }
 
      /**
@@ -73,7 +69,6 @@ class TeamFight_SE extends THGame_SE {
 
         let index = this.players.length - 1;
         player.team = (index < this.playersPerTeam) ? 1 : 2;
-
     }
 
     start() {
@@ -90,14 +85,11 @@ class TeamFight_SE extends THGame_SE {
             plr.tank.randomizeAngle();
             plr.tank.maxHealth = this.health;
             plr.tank.health = this.health;
-          
         }
-
-        
+  
         this.emitGameStart();
     }
     
-
     emitGameStart() {
         
         let packet: PacketTeamGameStart = {
@@ -121,7 +113,6 @@ class TeamFight_SE extends THGame_SE {
         }
  
         this.emitData("gameStart", packet);
- 
     }
 
     wholeGameEnd(winnerTeam: number) {
@@ -135,6 +126,7 @@ class TeamFight_SE extends THGame_SE {
     }
 
     playerDisconnected(player: Player_SE) {
+
         this.players.splice(this.players.indexOf(player), 1);
         this.tidyPlayerShots(player);
         player.game = null;
@@ -150,11 +142,6 @@ class TeamFight_SE extends THGame_SE {
 
         if (team1count === 0) this.wholeGameEnd(2);
         else if (team2Count === 0) this.wholeGameEnd(1);
-
-        // if (this.players.length === 1) {
-        //     this.wholeGameEnd(1);
-        //     console.log("Aborting Team game!");
-        // }
     }
 
      /**
@@ -314,7 +301,6 @@ class TeamFight_SE extends THGame_SE {
                     return cap.finishCapturing();   
                 }
             }
-
         }
         else {
             // Player is not standing in a cap or the cap is different
@@ -338,11 +324,7 @@ class TeamFight_SE extends THGame_SE {
         setTimeout(() => {
             this.wholeGameEnd(winnerTeam);
         }, 500);
-      
     }
-
-
-
 }
 
 export { TeamFight_SE };

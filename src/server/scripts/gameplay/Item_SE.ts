@@ -21,8 +21,7 @@ class Item_SE extends GameObject_SE {
     constructor(typeIndex: number) {
         super(0,0, 0.9, 0.9);
 
-        this.typeIndex = typeIndex;
-       
+        this.typeIndex = typeIndex;   
     }
 
     overlapsTank(tank: Tank_SE) {
@@ -52,9 +51,7 @@ class Item_SE extends GameObject_SE {
         this.pressed = false;
     }
 
-    onHold(game: THGame_SE): void {
-
-    }
+    onHold(game: THGame_SE): void { }
 }
 
 export {Item_SE};

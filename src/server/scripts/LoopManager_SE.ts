@@ -12,7 +12,6 @@ class LoopManager_SE {
 
 		this.th = tankhunt;
 		this.gm = tankhunt.gameManager;
-
 	}
 
 	start() {
@@ -28,7 +27,6 @@ class LoopManager_SE {
        	this.gm.loopTick(deltaSec);
 
 		this.lastTick += deltaSec * 1000;
-
     }
 }
 

@@ -3,7 +3,7 @@ import { Player_SE } from "./Player_SE";
 
 class Capture_SE extends GameObject_SE {
 
-    team: number;
+    public team: number;
 
     private lastCapStart: number = null;
     private lastCapStop: number = 0;
@@ -57,7 +57,6 @@ class Capture_SE extends GameObject_SE {
         pack.rs = true;
 
         return pack;
-
     }
 
     finishCapturing(): PacketCapture {
@@ -84,7 +83,6 @@ class Capture_SE extends GameObject_SE {
         }
 
         return res;
-
     }
 
     getPacket() {

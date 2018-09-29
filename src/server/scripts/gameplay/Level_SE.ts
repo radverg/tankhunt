@@ -200,7 +200,6 @@ class Level_SE {
             var squareY = Math.floor(y1 / this.squareSize);
 
             // Check the square of the first point
-          //  var res1 = this.doubleWallPointCheck(squareX, squareY, dirX, dirY, x1, y1, x2, y2);
             var res1 = this.quadWallPointCheck(squareX, squareY, x1, y1, x2, y2);
             if (res1.length > 0) points.push(...res1);
            
@@ -213,7 +212,6 @@ class Level_SE {
             } else { // No? Check the next square then
                 squareX = Math.floor(x2 / this.squareSize);
                 squareY = Math.floor(y2 / this.squareSize);
-               // var res2 = this.doubleWallPointCheck(squareX, squareY, -dirX, -dirY, x1, y1, x2, y2);
             var res2 = this.quadWallPointCheck(squareX, squareY, x1, y1, x2, y2);
                 if (res2.length > 0) points.push(...res2);
             }
@@ -291,7 +289,6 @@ class Level_SE {
         }
 
         return points;
-
     }
 
     squareLineWallColl(sqrX: number, sqrY: number, tank: Tank_SE) {
@@ -351,7 +348,6 @@ class Level_SE {
                 this.verticalLineSeparation(tank, pts, sqrX, sqrY);
             }
         }
-
     }
 
     horizontalLineSeparation(tank: Tank_SE, points: Vec2[], sqrX: number, sqrY: number) {
@@ -409,7 +405,6 @@ class Level_SE {
         }
 
         tank.body.updateVertices();
-
     }
 
     determineLeft(sqrX: number, sqrY: number, tank: Tank_SE) {
@@ -427,6 +422,7 @@ class Level_SE {
             return (sqrX + 1) * this.squareSize;
         }
     }
+
     determineTop(sqrX: number, sqrY: number, tank: Tank_SE) {
         if (sqrX <= 0 || sqrX > this.tilesCountX - 1 || sqrY == 0 || this.walls[sqrX][sqrY - 1][1]) {
             return (sqrY - 1) * this.squareSize;
@@ -434,6 +430,7 @@ class Level_SE {
             return (sqrY) * this.squareSize;
         }
     }
+
     determineBottom(sqrX: number, sqrY: number, tank: Tank_SE) {
         if (sqrX <= 0 || sqrX > this.tilesCountX - 1 || sqrY == this.tilesCountY - 1 || this.walls[sqrX][sqrY + 1][1]) {
             return (sqrY + 2) * this.squareSize;
@@ -453,11 +450,6 @@ class Level_SE {
         let offset = this.wallThickness / 2;
 
         return (((x - offset) % this.squareSize) == 0) || (((x + offset) % this.squareSize) == 0) || x == 0 || x == this.levelRect.right;
-
-        // let left = this.getSqrX(x) + offset;
-        // let right = this.getSqrX(x) + this.squareSize - offset;
-
-        // return x === left || x === right;
     }
 
     getRandomSpawnPos(sqrX: number, sqrY: number, width: number, height: number) {

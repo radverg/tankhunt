@@ -42,9 +42,7 @@ abstract class THGame_SE {
         player.game = this;
     }
 
-    update(deltaSec: number) {
-    
-    }
+    update(deltaSec: number) { }
 
     abstract playerDisconnected(player: Player_SE): void;
 
@@ -120,7 +118,7 @@ abstract class THGame_SE {
         this.emitData("removePlayer", id);
     }
 
-    // Creates and sends packet that contains positions, rotations and velocities of the tanks
+    // Creates and sends packet that contains positions and rotations of the tanks
     emitMovable() {
     
         // Add players to the packet
@@ -154,18 +152,6 @@ abstract class THGame_SE {
         let rectX = fromX - this.hViewWidth;
         let rectY = fromY - this.hViewHeight;
 
-        // if (rectX < -this.viewOffset) {
-        //     rectX = -this.viewOffset; 
-        // } else if (fromX + this.hViewWidth > this.level.levelRect.w + this.viewOffset) {
-        //     rectX = this.level.levelRect.w + this.viewOffset - this.hViewWidth * 2;
-        // }
-
-        // if (rectY < -this.viewOffset) {
-        //     rectY = -this.viewOffset; 
-        // } else if (fromY + this.hViewHeight > this.level.levelRect.h + this.viewOffset) {
-        //     rectY = this.level.levelRect.h + this.viewOffset - this.hViewHeight * 2;
-        // }
-
         return gameobj.body.right > rectX && gameobj.body.left < rectX + this.hViewWidth * 2
             && gameobj.body.top < rectY + this.hViewHeight * 2 && gameobj.body.bottom > rectY;
     }
@@ -198,6 +184,7 @@ abstract class THGame_SE {
      * Nulls the references, sets the remove property to true
      */
     destroy() {
+
         this.remove = true;
         this.level = null;
 
@@ -211,7 +198,6 @@ abstract class THGame_SE {
         this.shots = null;
         this.running = false;
         this.blockInput = true;
-        
     }
 
     processChatMessage(data: PacketChatMessage, senderPl: Player_SE) {
@@ -260,17 +246,14 @@ abstract class THGame_SE {
 
     inpLeftOff(player: Player_SE) {
         if (player.tank.angularVel < 0) player.tank.stopRotation();
-
     }
 
     inpRightOn(player: Player_SE) {
         player.tank.fullRightRotate();
-        
     }
 
     inpRightOff(player: Player_SE) {
         if (player.tank.angularVel > 0) player.tank.stopRotation();
-        
     }
 
     inpTurrLeftOn(player: Player_SE) {
@@ -319,5 +302,3 @@ abstract class THGame_SE {
 }
 
 export { THGame_SE };
-
-// --------------------------------------------------------------------------

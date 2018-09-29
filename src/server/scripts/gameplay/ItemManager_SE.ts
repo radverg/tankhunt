@@ -76,7 +76,6 @@ class ItemManager_SE {
                 
             }
         }
-
     }
 
     getItemsPacket(): PacketItem[] {

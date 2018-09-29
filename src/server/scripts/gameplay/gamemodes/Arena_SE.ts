@@ -1,11 +1,8 @@
 import { Player_SE } from "../Player_SE";
-import { ItemManager_SE } from "../ItemManager_SE";
 import { Level_SE, LoadedLevels } from "../Level_SE";
 import { Tank_SE } from "../Tank_SE";
-import { Shot_SE } from "../Shot_SE";
 import { THGame_SE } from "./THGame_SE";
 import { Stats_SE } from "../Stats_SE";
-var Levels : Lvls = require("../../../../shared/Levels");
 /**
  * Arena game class
  */
@@ -22,8 +19,8 @@ class Arena_SE extends THGame_SE {
         this.capacity = capacity || 10;
         this.running = true;
         this.itemManager.startSpawning();
-        //this.level = new Level_SE();
-        //this.level.parseJSONLevel("arena2");
+        
+        // Level 
         let ll: any = LoadedLevels;  
         this.level = ll["arena2"];
 
@@ -35,6 +32,7 @@ class Arena_SE extends THGame_SE {
      * @param {Player_SE} player 
      */
     addPlayer(player: Player_SE) {
+
         player.game = this; // Bind player with this game
         player.tank = new Tank_SE(player); // Bind player with new tank for this game
 
@@ -58,6 +56,7 @@ class Arena_SE extends THGame_SE {
      * @param {Player_SE} player 
      */
     playerDisconnected(player: Player_SE) {
+
         var index = this.players.indexOf(player);
         this.tidyPlayerShots(player);
         this.emitRemove(player.id);
@@ -66,8 +65,7 @@ class Arena_SE extends THGame_SE {
             this.players.splice(index, 1);
         }
 
-        player.game = null;
-        
+        player.game = null; 
     }
 
     /**
@@ -78,6 +76,7 @@ class Arena_SE extends THGame_SE {
      * @param {player} player Player to perform respawn on
      */
     respawn(player: Player_SE) {
+
         var spawnPos = this.level.getRandomSpawn1(player.tank.body.hDiagonal, player.tank.body.hDiagonal);
         player.tank.randomizeAngle();
         player.tank.turret.randomizeAngle();
@@ -123,9 +122,7 @@ class Arena_SE extends THGame_SE {
                 pl--;
                 continue;
             }
-            
            
-            
             // Update shots
             for (let sh = 0; sh < this.shots.length; sh++) {
                 
@@ -141,7 +138,6 @@ class Arena_SE extends THGame_SE {
                 }
                 
                 // Shot hitting players
-
                 if (this.shots[sh].isHittingTank(this.players[pl].tank)) {
                     let hitPack = this.shots[sh].hit(this.players[pl].tank);
                     let healPack: PacketHeal = null;
@@ -164,8 +160,7 @@ class Arena_SE extends THGame_SE {
                         attackerTank.health = attackerTank.maxHealth;
 
                         healPack.healthAft = attackerTank.health;
-                        healPack.maxHealthAft = attackerTank.maxHealth
-                    
+                        healPack.maxHealthAft = attackerTank.maxHealth     
                     }
 
                     this.shots[sh].owner.stats.countHit(attackerTank.owner, targetTank.owner, hitPack.healthBef, hitPack.healthAft);
@@ -236,7 +231,6 @@ class Arena_SE extends THGame_SE {
            packet.players.push(this.players[i].getInfoPacket());
         }
         this.emitDataPl("gameStart", packet, player);
-
     }
 
     /**
@@ -246,7 +240,6 @@ class Arena_SE extends THGame_SE {
     emitNewPl(player: Player_SE) {
         this.emitData("newPlayer", player.getInfoPacket());
     }
-
 }
 
 export { Arena_SE };

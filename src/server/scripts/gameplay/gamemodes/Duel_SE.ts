@@ -8,16 +8,11 @@ import { Stats_SE } from "../Stats_SE";
 class Duel_SE extends THGame_SE {
 
     private playerCount: number = 2;
-
     private startDelay: number = 2000;
     private endDelay: number = 3500;
-
     private isWinPending: boolean = false;
-
     private maxWins: number = 15;
-   
     private currentRound: number = 0;
-
     private duelMapCount: number = 20;
 
     private levels: Level_SE[] = [];
@@ -34,9 +29,6 @@ class Duel_SE extends THGame_SE {
 
         // Generate levels
         for (let i = 0; i < this.duelMapCount; i++) {
-            // let newLvl = new Level_SE();
-            // newLvl.parseJSONLevel(`duel${i+1}`);
-            // this.levels.push(newLvl);
             let ll: any = LoadedLevels;
             this.levels.push(ll[`duel${i+1}`]);
         }
@@ -70,7 +62,6 @@ class Duel_SE extends THGame_SE {
         player.stats = new Stats_SE();
 
         this.players.push(player);
-
     }
 
     subgameEnd(winner: Player_SE) {
@@ -116,7 +107,6 @@ class Duel_SE extends THGame_SE {
         setTimeout(() => { this.subGameRunning = true; this.blockInput = false; this.itemManager.spawning = true; }, this.startDelay);
 
         this.emitData("gFinish", packet);
-
     }
 
     winPending(winAdept: Player_SE) {
@@ -175,7 +165,6 @@ class Duel_SE extends THGame_SE {
         }
 
         this.emitData("gameStart", packet);
-
     }
 
     start() {
@@ -272,7 +261,6 @@ class Duel_SE extends THGame_SE {
         super.destroy();
         this.levels = null;
     }
-
 }
 
 export { Duel_SE }

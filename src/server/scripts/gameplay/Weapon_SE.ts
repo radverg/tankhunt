@@ -119,8 +119,7 @@ class PulsarGun_SE extends Weapon_SE {
 		this.wasPressed = true;
 
 		// Start stack
-		this.shootNext(game);
-		
+		this.shootNext(game);		
 	}
 
 	shootNext(game: THGame_SE) {
@@ -148,7 +147,6 @@ class PulsarGun_SE extends Weapon_SE {
 
 			setTimeout(() => { this.shootNext(game); }, this._reloadTime);
 		} 
-
 	}
 }
 
@@ -231,7 +229,6 @@ class FlatLaserGun_SE extends Weapon_SE {
 		}
 	}
 }
-
 // -----------------------------------------------------------
 
 // Multi bouncer gun -----------------
@@ -347,9 +344,7 @@ class Invisibility_SE extends Item_SE {
 				game.emitAppear(this.owner);
 				this.timeout = null;
 			}
-		}, this.duration);
-
-		
+		}, this.duration);	
 	}
 }
 
@@ -365,6 +360,5 @@ var Guns = {
 	MineGun: MineGun_SE,
 	DoubleMineGun: DoubleMineGun_SE
 }
-
 
 export { Guns, APCRGun_SE, LaserGun_SE, Weapon_SE, FlatLaserGun_SE, BouncerGun_SE, MineGun_SE, DoubleMineGun_SE, Invisibility_SE };
