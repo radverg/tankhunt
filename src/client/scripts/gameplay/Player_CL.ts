@@ -1,16 +1,29 @@
-
 class Player_CL {
 
 	public id: string;
-	
 	public name: string = "unnamed";
-	public tank: Tank_CL | null = null;
 
+	/**
+	 * Reference for the player's tank
+	 */
+	public tank: Tank_CL = null;
+
+	/**
+	 * Specifies whether this player object belongs to this client
+	 */
 	public me: boolean = false;
 
 	public stats: Stats_CL = new Stats_CL();
-	public team: any = null;
-	public plView: UIPlayer_CL | null = null;
+	
+	/**
+	 * Player's team. 0 means no team => everyone is an opponent
+	 */
+	public team: number = 0;
+
+	/**
+	 * Reference for player's UI, is updated each frame if exists
+	 */
+	public UIpl: UIPlayer_CL | null = null;
 
 	constructor(id: string, tank?: Tank_CL, name?: string) {
 		this.id = id;
@@ -27,12 +40,20 @@ class Player_CL {
 		tank.player = this;
 	};
 
+	/**
+	 * Destroys player's tank and nulls the reference
+	 */
 	removeTank() {
 		if (!this.tank) return;
 		this.tank.destroy();
 		this.tank = null;
 	};
 
+	/**
+	 * Compares the team of this player to team of another player and
+	 * determines whether they are opponents
+	 * @param player Another player for comparison
+	 */
 	isEnemyOf(player: Player_CL) {
 
 		if (this == player) return false;
@@ -41,14 +62,6 @@ class Player_CL {
 		
 		return this.team !== player.team;
 	}
-
-	// /**
-	//  * Sets properties of this player and his tank according to the player info packet received from the server
-	//  * @param {*} packet Player packet from the server
-	//  */
-	// applyPacket(packet) {
-
-	// }
 }
 
 

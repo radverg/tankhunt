@@ -17,7 +17,7 @@ class UIPlayer_CL extends Phaser.Group {
 
         this.thGame = thGame;
         this.player = player;
-        this.player.plView = this;
+        this.player.UIpl = this;
         
         // Create nick
         let offsetY = -this.player.tank.height;

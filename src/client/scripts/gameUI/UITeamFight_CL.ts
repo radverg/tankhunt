@@ -1,5 +1,3 @@
-
-
 class UITeamFight_CL {
 
     private game: Phaser.Game;
@@ -24,6 +22,7 @@ class UITeamFight_CL {
     private countDownTimer: Phaser.Timer;
 
     constructor(phaserGame: Phaser.Game, thGame: TeamFight_CL) {
+
         this.game = phaserGame;
         this.thGame = thGame;
 
@@ -57,6 +56,7 @@ class UITeamFight_CL {
     }
 
     init(packet: PacketTeamGameStart) {
+
         this.capBarMe.cameraOffset.setTo(850, 10);
         let text = this.game.make.text(-180, 5, "Our caps:");
         this.capBarMe.add(text);
@@ -102,6 +102,7 @@ class UITeamFight_CL {
     }
 
     gameFinish(packet: PacketGameFinish) {
+
         let win: boolean = (packet.winnerTeam == this.thGame.playerGroup.me.team);
 
         let overlaySpr: Phaser.Sprite = this.centerGrp.create(0, 0, "blackRect");
@@ -171,6 +172,7 @@ class UITeamFight_CL {
     }
 
     private addMainMenuButton(delay: number) {
+
         let btn = this.game.make.button(0, 190, "panels", this.mainMenuCallback, this, 0, 1);
         let game = this.game;
         this.centerGrp.add(btn);
@@ -183,13 +185,14 @@ class UITeamFight_CL {
         btn.onOverSound = TH.effects.getSound(SoundNames.CLICK);
 		btn.onOverSoundMarker = SoundNames.CLICK;
         
-        // Animate button after a delay;;;;;;;;
+        // Animate button after a delay
         this.game.time.events.add(delay, function() {
             game.add.tween(btn.scale).to({ x: 1.2, y: 1 }, 500, Phaser.Easing.Default, true);
         }, this);
     }
 
     private hitCallback(packet: PacketShotHit) {
+
         let pl = this.thGame.playerGroup.getPlayer(packet.plID);
         if (!pl) return;
 
@@ -207,6 +210,7 @@ class UITeamFight_CL {
     }
 
     private playerRemove(player: Player_CL) {
+
         if (player.me) return;
 
         let searchGrp = (player.team == 1) ? this.team1List : this.team2List;
@@ -221,6 +225,7 @@ class UITeamFight_CL {
     }
 
     private captureCallback(packet: PacketCapture) {
+
         if (packet.fin) {
             let ourCap = packet.tm === this.thGame.playerGroup.me.team;
             let grp = (ourCap) ? this.capSquareGrpMe : this.capSquareGrpEnemy;

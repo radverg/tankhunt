@@ -1,4 +1,3 @@
-
 class DefaultTank_CL extends Tank_CL {
 
 	// Properties for exhaust effect management
@@ -9,6 +8,7 @@ class DefaultTank_CL extends Tank_CL {
 	private leftExTween: Phaser.Tween = null;
 	//-----------------------------------------
 
+	// Sound instance references
 	private engineSound: Phaser.Sound;
 	private turretEngineSound: Phaser.Sound;
 
@@ -27,6 +27,7 @@ class DefaultTank_CL extends Tank_CL {
 		this.framesInRow = 4;
 		this.frameStart = 0;
 
+		// Create and setup turret
 		this.turret = new Sprite(TH.game, this.x, this.y, "defaultTurrets");
 		this.turret.anchor.setTo(0.5, 0.8453);
 		this.turret.width = 0.825 * TH.sizeCoeff;
@@ -34,15 +35,6 @@ class DefaultTank_CL extends Tank_CL {
 
 		this.addChild(this.turret);
 
-		// Init animation of track
-		let frs = this.frameStart;
-	
-		// this.onIntMoveStart.add(() => { this.animations.play(this.currAnimName); }, this);
-		// this.onIntMoveStop.add(() => { this.animations.stop(this.currAnimName); }, this);
-
-		
-
-		
 		this.onColorChange.add((val: number) => { this.adjustTrackAnim(val); }, this);
 
 		this.initExhaustAnim();
@@ -50,10 +42,14 @@ class DefaultTank_CL extends Tank_CL {
 
 		this.onIntMoveStart.add(this.startExhaustEffect, this);
 		this.onIntMoveStop.add(this.stopExhaustEffect, this);
-		
 	}
 
+	/**
+	 * Tank's core update method, responsible for interpolating angles and positions,
+	 * playing audio and animations, etc...
+	 */
 	update() {
+
 		super.update();
 
 		if (this.isMoving() || this.isRotating()) {
@@ -65,18 +61,18 @@ class DefaultTank_CL extends Tank_CL {
 		if (this.turretEngineSound) {
 			if (this.turret.isRotating()) {
 				if (!this.turretEngineSound.isPlaying) {
-					TH.effects.playAudio(SoundNames.ENGINETURRET);
 
+					TH.effects.playAudio(SoundNames.ENGINETURRET);
 				}
 			}
 			else if (this.turretEngineSound.isPlaying) {
-				TH.effects.stopAudio(SoundNames.ENGINETURRET);
-				
+
+				TH.effects.stopAudio(SoundNames.ENGINETURRET);	
 			}
 		}
-
 	}
 
+	// Tracks management ---------------------------------------
 	initTrackAnim() {
 
 		let fps = 20;
@@ -99,10 +95,15 @@ class DefaultTank_CL extends Tank_CL {
 			this.animations.play(this.currAnimName);
 
 	}
+	// ----------------------------------------------------
 
+	// Exhaust management ---------------------------------
 	initExhaustAnim() {
+
 		let exLeftSpr = this.game.make.sprite(TH.sizeCoeff * 0.3 + TH.sizeCoeff * 1.5, TH.sizeCoeff * 3.6, "exhaust");
 		let exRightSpr = this.game.make.sprite(-TH.sizeCoeff * 0.3 + TH.sizeCoeff * 1.5, TH.sizeCoeff * 3.6, "exhaust2");
+
+		// Set blend mode so the smokes do not overlap but mix
 		exLeftSpr.blendMode = PIXI.blendModes.MULTIPLY;
 		exRightSpr.blendMode = PIXI.blendModes.MULTIPLY;
 
@@ -111,29 +112,24 @@ class DefaultTank_CL extends Tank_CL {
 
 		exLeftSpr.rotation = Math.PI;
 		exRightSpr.rotation = Math.PI;
-		
-		
-		
+			
 		exLeftSpr.alpha = 0.2;
 		exRightSpr.alpha = 0.2;
 
 		this.leftExTween = this.game.add.tween(exLeftSpr);
 		this.rightExTween = this.game.add.tween(exRightSpr);
 
-
-		let lAnim = exLeftSpr.animations.add("blow", null, 20, true);
-		let rAnim = exRightSpr.animations.add("blow", null, 40, true);
-
+		exLeftSpr.animations.add("blow", null, 20, true);
+		exRightSpr.animations.add("blow", null, 40, true);
 
 		exLeftSpr.animations.play("blow");
 		exRightSpr.animations.play("blow");
 
 		this.addChild(exLeftSpr);
 		this.addChild(exRightSpr);
-
 	}
 
-	startExhaustEffect() {
+	private startExhaustEffect() {
 		this.rightExTween.stop();
 		this.leftExTween.stop();
 
@@ -143,10 +139,9 @@ class DefaultTank_CL extends Tank_CL {
 		if (this.engineSound) {
 			this.engineSound.fadeTo(250, 0.15);
 		}
-
 	}
 
-	stopExhaustEffect() {
+	private stopExhaustEffect() {
 		this.rightExTween.stop();
 		this.leftExTween.stop();
 
@@ -156,16 +151,18 @@ class DefaultTank_CL extends Tank_CL {
 		if (this.engineSound) {
 			this.engineSound.fadeTo(250, 0.0001);
 		}
-
 	}
+	// -----------------------------------------------------
 
+	/**
+	 * Called only for current players' tank, others have no sounds
+	 */
 	initEngineSound() {
 		this.engineSound = TH.effects.getSound(SoundNames.ENGINELOW);
 		this.engineSound.loop = true;
 		this.engineSound.play(SoundNames.ENGINELOW, null, 0.0001, true);
 
 		this.turretEngineSound = TH.effects.getSound(SoundNames.ENGINETURRET);
-		//TH.effects.playAudio(SoundNames.ENGINEHIGH);
 	}
 
 	destroy() {

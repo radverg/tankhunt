@@ -5,26 +5,43 @@ class Stats_SE implements PlayerStats {
     wins: number = 0;
     kills:number = 0;
     deaths: number = 0;
+    
+    /**
+     * Suicides
+     */
     suic: number = 0;
+    /**
+     * Team kills
+     */
     teamK: number = 0;
-
+    /**
+     * Current kills in a row
+     */
     inRow: number = 0;
+    /**
+     * Maximum kills in a row
+     */
     maxRow: number = 0;
-
+    /**
+     * Damage dealt to the opponents
+     */
     dmgD: number = 0;
+    /**
+     * Damage received from the opponents
+     */
     dmgR: number = 0;
-
+    /**
+     * Number of shots blocked by armor
+     */
     blockC: number = 0;
-
+    /**
+     * Amount of captured enemy bases 
+     */
     caps: number = 0;
 
-    
-    importPacket(packet: PlayerStats) {
-        for (const key in packet) {
-            (<any>this)[key] = packet[key];
-        }
-    }
-
+    /**
+     * Generates packet from this stats object
+     */
     exportPacket(): PlayerStats {
         return {
             deaths: this.deaths,

@@ -125,9 +125,6 @@ class APCR_CL extends Shot_CL {
 		}, this);
 		this.moveTween.start();
 
-		let anim = this.animations.add("shotFlight", null, 20, true);
-		anim.play();
-
 		this.shotGroup.add(this);
 		
 		// Effects

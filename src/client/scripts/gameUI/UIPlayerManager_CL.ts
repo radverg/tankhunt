@@ -28,23 +28,23 @@ class UIPlayerManager_CL {
     }
 
     removePlayer(player: Player_CL) {
-        if (player.plView) {
-            player.plView.destroy(true);
-            player.plView = null;
+        if (player.UIpl) {
+            player.UIpl.destroy(true);
+            player.UIpl = null;
         }
     }
 
     hitPlayer(data: PacketShotHit) {
         let plHit = this.thGame.playerGroup.getPlayer(data.plID);
 
-        if (plHit && plHit.plView) {
+        if (plHit && plHit.UIpl) {
             if (data.healthAft != data.healthBef)
-                plHit.plView.healthChange(data.healthBef, data.healthAft);
+                plHit.UIpl.healthChange(data.healthBef, data.healthAft);
             else 
-                plHit.plView.blockSign();
+                plHit.UIpl.blockSign();
 
             if (data.healthAft <= 0) {
-                plHit.plView.hideItemIcon();
+                plHit.UIpl.hideItemIcon();
             }
         }
 
@@ -55,19 +55,19 @@ class UIPlayerManager_CL {
         let healthBef = (packet.healthBef === undefined) ? player.tank.health - packet.amount : packet.healthBef;
         let healthAft = (packet.healthAft === undefined) ? player.tank.health : packet.healthAft;
 
-        if (!player || !player.plView) return;
+        if (!player || !player.UIpl) return;
             
-        player.plView.updateHealthBar();
+        player.UIpl.updateHealthBar();
 
         if (healthBef != healthAft)
-            player.plView.healthChange(healthBef, healthAft);
+            player.UIpl.healthChange(healthBef, healthAft);
 
         
     }
 
     respawnPlayer(player: Player_CL) {
-        if (player && player.plView) {
-            player.plView.updateHealthBar();
+        if (player && player.UIpl) {
+            player.UIpl.updateHealthBar();
         }
     }
 
@@ -75,8 +75,8 @@ class UIPlayerManager_CL {
 
         if (collector === this.thGame.playerGroup.me) {
             // Show item icon
-            if (collector.plView) {
-                collector.plView.showItemIcon(item.getSprFrame() as number);
+            if (collector.UIpl) {
+                collector.UIpl.showItemIcon(item.getSprFrame() as number);
             }
         }
     }
@@ -84,8 +84,8 @@ class UIPlayerManager_CL {
     itemMeUse() {
         // Hide item icon
         let me = this.thGame.playerGroup.me;
-        if (me && me.plView) {
-            me.plView.hideItemIcon();
+        if (me && me.UIpl) {
+            me.UIpl.hideItemIcon();
         }
 
     }
@@ -98,8 +98,8 @@ class UIPlayerManager_CL {
 
         for (const id in plrs) {
             let plr = plrs[id];
-            if (!plr || !plr.plView) continue;
-            plr.plView.updateHealthBar();
+            if (!plr || !plr.UIpl) continue;
+            plr.UIpl.updateHealthBar();
         }
     }
 

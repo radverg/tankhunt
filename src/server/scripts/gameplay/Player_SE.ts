@@ -53,7 +53,12 @@ class Player_SE {
         this.tank.specialGun = null;
        // this.emitable = false;
     }
-
+    
+    /**
+	 * Compares the team of this player to team of another player and
+	 * determines whether they are opponents
+	 * @param player Another player for comparison
+	 */
     isEnemyOf(player: Player_SE) {
         if (player == this) return false;
 

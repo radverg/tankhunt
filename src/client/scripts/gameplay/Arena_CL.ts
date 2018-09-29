@@ -1,19 +1,21 @@
-
 class Arena_CL extends THGame_CL {
 
-	private arenaView: UIPlayerManager_CL;
-	private notifView: UINotification_CL;
+	// UI for Arena ------
+	private uiArena: UIPlayerManager_CL;
+	private uiNotification: UINotification_CL;
 	private uiLadder: UILadder_CL;
 	private uiStats: UIStatsTable_CL;
 	private uiChat: UIGameChat_CL;
+	// -------------------
 
 	private tabKey: Phaser.Key;
 
     constructor(socketManager: SocketManager_CL, packet: PacketGameStart) {
 		super(socketManager);
 		
-		this.arenaView = new UIPlayerManager_CL(TH.game, this);
-		this.notifView = new UINotification_CL(TH.game, this);
+		// UI
+		this.uiArena = new UIPlayerManager_CL(TH.game, this);
+		this.uiNotification = new UINotification_CL(TH.game, this);
 		this.uiLadder = new UILadder_CL(TH.game, this);
 		this.uiStats = new UIStatsTable_CL(this, ["inRow", "maxRow", "kills", "deaths", "suic", "blockC", "dmgD", "dmgR",], "inRow");
 		this.uiChat = new UIGameChat_CL(TH.game, this);
@@ -30,6 +32,7 @@ class Arena_CL extends THGame_CL {
 		btnExit.fixedToCamera = true;
 		btnExit.alpha = 0.7;
 	  
+		// Level
 		this.processLevel(packet.level);
 		this.processGameInfo(packet);
 		this.running = true;
@@ -38,6 +41,7 @@ class Arena_CL extends THGame_CL {
 		this.game.camera.unfollow();
 		this.game.camera.setPosition(this.game.world.centerX - this.game.camera.view.halfWidth, this.game.world.centerY - this.game.camera.view.halfHeight);
 
+		// Background music theme
 		TH.effects.playAudioLooping(SoundNames.SONG1);
     } 
     /**
@@ -47,6 +51,7 @@ class Arena_CL extends THGame_CL {
 	 * @param {*} data Packet
 	 */
 	processRespawn(data: PacketRespawn) {
+
 		let player: Player_CL = this.playerGroup.getPlayer(data.plID);
 		if (!player) return;
 		
@@ -60,14 +65,6 @@ class Arena_CL extends THGame_CL {
 		TH.game.time.events.add(data.respawnDelay, player.tank.revive, player.tank);
 		TH.game.time.events.add(data.respawnDelay + data.immunityTime, function() { this.setColor(this.defaultColorIndex); }, player.tank);		
 
-		// if (player.me) {
-		// 	TH.effects.playAudio(SoundNames.RESPAWN);
-		// }
-		
 		this.onRespawn.dispatch(player);
     }
-    
-    
-
-
 }

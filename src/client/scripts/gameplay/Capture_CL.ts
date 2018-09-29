@@ -1,11 +1,11 @@
 class Capture_CL extends Phaser.Group {
 
-    team: number;
+    public team: number;
     private myTeam: number;
 
     private isOurs: boolean;
 
-    id: string;
+    public id: string;
     private capTime: number;
 
     private capBarB: Phaser.Sprite;
@@ -30,7 +30,6 @@ class Capture_CL extends Phaser.Group {
         this.capTime = capTime;
         this.id = `a${sqrX}|${sqrY}`;
 
-
         let flagAnim = this.flag.animations.add("allFrames", null, 40, true);
         this.flag.animations.play("allFrames", 50, true);
         flagAnim.frame = Math.floor(Math.random() * flagAnim.frameTotal);
@@ -48,33 +47,31 @@ class Capture_CL extends Phaser.Group {
         this.capBarF = this.create(-this.capBarB.width / 2, barYOffset, "whiteRect");
 
         this.capBarF.anchor.setTo(0, 0.5);
-       
         this.capBarF.width = 0;
         this.capBarF.height = this.capBarB.height;
-
         this.capBarF.tint = (!this.isOurs) ? 0x00ff00: 0xff0000;
-
-        // this.growTween = game.add.tween(this.capBarF.scale);
-        
     }
 
     startCapturing() {
+
         this.cancelCapturing();
-        this.growTween = this.game.add.tween(this.capBarF).to({ width: this.capBarB.width }, this.capTime, Phaser.Easing.Default, true );
-        
+        this.growTween = this.game.add.tween(this.capBarF).to({ width: this.capBarB.width }, this.capTime, Phaser.Easing.Default, true );   
     }
 
+    /**
+     * Stops capturing and resets bar to initial position
+     */
     cancelCapturing() {
+
         if (this.growTween && this.growTween.isRunning) {
             this.growTween.stop();
         }
 
         this.capBarF.width = 0;
-
     }
 
     /**
-     * Destroys this capture flag with an effect
+     * Destroys this capture flag with a fade out effect
      */
     fadeOut() {
         this.capBarB.destroy();
@@ -84,6 +81,4 @@ class Capture_CL extends Phaser.Group {
         twn.onComplete.add(function() { this.destroy(); }, this);
         twn.start();
     }
-
-    
 }

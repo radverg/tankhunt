@@ -127,12 +127,12 @@ abstract class Tank_CL extends Sprite {
 		this.interpolationUpdate();
 
 		// Update player view, if any
-		if (this.player.plView) {
+		if (this.player.UIpl) {
 
-			this.player.plView.x = this.x;
-			this.player.plView.y = this.y;
+			this.player.UIpl.x = this.x;
+			this.player.UIpl.y = this.y;
 
-			this.player.plView.visible = this.visible;
+			this.player.UIpl.visible = this.visible;
 		}
 
 		// Update shadow if any so it follows the tank and rotates

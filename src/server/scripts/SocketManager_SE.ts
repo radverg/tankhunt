@@ -8,6 +8,7 @@ class SocketManager_SE {
 	io: SocketIO.Server;
 
 	socketCount: number = 0;
+	private totalConnectionCount: number = 0;
 
 	constructor(tankhunt: TankHunt_SE, io: SocketIO.Server) {
 
@@ -20,9 +21,12 @@ class SocketManager_SE {
 	onConnection(socket: SocketIO.Socket) {
 
     	console.log("New client has connected from " + socket.request.connection.remoteAddress + 
-    		" with id " + socket.id +  "!");
+			" with id " + socket.id +  "!");
+		console.log("Total connections: " + this.totalConnectionCount);
 
 		this.socketCount++;
+		this.totalConnectionCount++;
+
 		this.th.menuManager.addSocket(socket);
 		this.th.menuManager.emitMenuInfo();
 		this.initSocket(socket);

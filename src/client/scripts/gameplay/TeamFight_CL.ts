@@ -1,21 +1,29 @@
-
 class TeamFight_CL extends THGame_CL {
 
+    // UI reference
     private uiTeamFight: UITeamFight_CL;
     private capTime: number;
-
-    onCapture: Phaser.Signal = new Phaser.Signal();
-
+    
     private caps: { [key: string]: Capture_CL } = { };
-
-    allyCapturedCount: number = 0;
-    enemyCapturedCount: number = 0;
+    
+    /**
+     * Dispatched when information about a base change is received from the server
+     */
+    public onCapture: Phaser.Signal = new Phaser.Signal();
+    /**
+     * The amount of our bases taken by the enemies
+     */
+    public allyCapturedCount: number = 0;
+    /**
+     * The amount of enemy bases taken by us
+     */
+    public enemyCapturedCount: number = 0;
 
     constructor(sm: SocketManager_CL, packet: PacketTeamGameStart) {
         super(sm);
 
+        // UI
         this.uiTeamFight = new UITeamFight_CL(this.game, this);
-
         this.processGameInfo(packet);
 
         // Set colors
@@ -29,11 +37,9 @@ class TeamFight_CL extends THGame_CL {
             }
         }
 
+        // Level
         this.processLevel(packet.level);
 
-        
-
-        this.running = true;
         this.capTime = packet.capTime;
 
         // Generate caps
@@ -50,9 +56,9 @@ class TeamFight_CL extends THGame_CL {
         // Wind effect
 		TH.effects.playAudioLooping(SoundNames.WIND);
 
-
+        // Start the game
+        this.running = true;
         this.onGameStart.dispatch(packet);
-
     }
 
     processRespawn(data: PacketRespawn) {
@@ -123,7 +129,6 @@ class TeamFight_CL extends THGame_CL {
             plr.tank.health = Math.min(plr.tank.health + data.amount, plr.tank.maxHealth);
             this.onHeal.dispatch(plr, data);
         }
-        
     }
 
     destroy() {
