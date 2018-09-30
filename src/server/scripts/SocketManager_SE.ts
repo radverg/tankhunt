@@ -23,11 +23,10 @@ class SocketManager_SE {
 		this.socketCount++;
 		this.totalConnectionCount++;
 
-    	console.log("New client has connected from " + socket.request.connection.remoteAddress + 
+    	console.log("New client has connected from " + socket.handshake.headers['x-forwarded-for'] || socket.request.connection.remoteAddress + 
 			" with id " + socket.id +  "!");
 		console.log("Total connections: " + this.totalConnectionCount);
-		console.log(socket.handshake.headers);
-	
+		
 		this.th.menuManager.addSocket(socket);
 		this.th.menuManager.emitMenuInfo();
 		this.initSocket(socket);
@@ -84,5 +83,3 @@ class SocketManager_SE {
 }
 
 export {SocketManager_SE};
-
-
