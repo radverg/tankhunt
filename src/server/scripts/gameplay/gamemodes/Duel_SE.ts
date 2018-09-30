@@ -11,7 +11,7 @@ class Duel_SE extends THGame_SE {
     private startDelay: number = 2000;
     private endDelay: number = 3500;
     private isWinPending: boolean = false;
-    private maxWins: number = 15;
+    private maxWins: number = 3;
     private currentRound: number = 0;
     private duelMapCount: number = 20;
 
@@ -59,6 +59,7 @@ class Duel_SE extends THGame_SE {
         player.tank = new Tank_SE(player); // Bind player with new tank for this game
 
         player.alive = true;
+        player.invisible = false;
         player.stats = new Stats_SE();
 
         this.players.push(player);

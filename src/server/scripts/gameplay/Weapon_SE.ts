@@ -131,7 +131,7 @@ class PulsarGun_SE extends Weapon_SE {
 			// Create shot 
 			let shps = this.owner.tank.getShotPosition();
 
-			if (!game.level.levelRect.contains(shps.x, shps.y)) {
+			if (!game || !game.level || !game.level.levelRect.contains(shps.x, shps.y)) {
 				this.wornOut = true;
 				return;
 			}

@@ -106,8 +106,6 @@ class TeamFight_CL extends THGame_CL {
             } else {
                 this.enemyCapturedCount++;
             }
-            
-            console.log("Captured!");
         }
 
         this.onCapture.dispatch(data);

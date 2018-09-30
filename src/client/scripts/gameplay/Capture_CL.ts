@@ -52,7 +52,7 @@ class Capture_CL extends Phaser.Group {
         this.capBarF.anchor.setTo(0, 0.5);
         this.capBarF.width = 0;
         this.capBarF.height = this.capBarB.height;
-        this.capBarF.tint = (!this.isOurs) ? 0x00ff00: 0xff0000;
+        this.capBarF.tint = (!this.isOurs) ? 0x1c7000 : 0x720000;
     }
 
     startCapturing() {

@@ -11,6 +11,9 @@ class UICountdown_CL {
         let game = this.game;
     
         let cdText = this.game.make.text(x, y, current.toString(), { font: "Orbitron", fontSize: size * 4 });
+        cdText.setShadow(0, 0, "black", 10);
+        cdText.strokeThickness = 2;
+        cdText.stroke = "white";
         cdText.anchor.setTo(0.5);
 
         let timer = this.game.time.create(false);

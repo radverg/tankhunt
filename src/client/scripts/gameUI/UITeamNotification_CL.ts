@@ -1,6 +1,7 @@
 class UITeamNotification_CL extends UINotification_CL {
 
     private plMe: Player_CL;
+    private lastCapNotification: number = Date.now();
     
     constructor(game: Phaser.Game, thGame: TeamFight_CL) {
         super(game, thGame);
@@ -12,7 +13,6 @@ class UITeamNotification_CL extends UINotification_CL {
         this.thGame.onPlayerRemove.add(function(player: Player_CL) { this.logText(`Player ${player.name} has left the game!`)}, this);
         this.thGame.onHit.add(this.playerHit, this);
         (this.thGame as TeamFight_CL).onCapture.add(this.captureCallback, this);
-
     }
 
     playerHit(packet: PacketShotHit, player: Player_CL) {
@@ -36,11 +36,10 @@ class UITeamNotification_CL extends UINotification_CL {
 
         if (packet.st) {
 
-            if (mineCap) {
+            if (mineCap && Date.now() - this.lastCapNotification > 2000) {
+                this.lastCapNotification = Date.now();
                 this.logBig("Enemy is capturing!", "red");
-            } else {
-                this.logBig("Our team is capturing!", "green");
-            }
+            } 
 
         } else if (packet.fin) {
 

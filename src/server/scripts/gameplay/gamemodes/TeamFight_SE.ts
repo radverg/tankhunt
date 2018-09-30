@@ -11,7 +11,7 @@ class TeamFight_SE extends THGame_SE {
     private startCountDown: number = 8000;
 
     private capsPerTeam: number = 7;
-    private capTime: number = 4000;
+    private capTime: number = 6000;
     private teamHeal: number = 500;
 
     private team1Caps: number = 0;
@@ -64,6 +64,7 @@ class TeamFight_SE extends THGame_SE {
 
         player.alive = true;
         player.stats = new Stats_SE();
+        player.invisible = false;
 
         this.players.push(player);
 
@@ -194,13 +195,19 @@ class TeamFight_SE extends THGame_SE {
                     let healPack: PacketHeal = null;
                     let attackerTank = this.shots[sh].owner.tank;  
                     let targetTank = this.players[pl].tank;
+                    let wasKilled = hitPack.healthAft <= 0;
+
                     if (hitPack.healthAft < hitPack.healthBef && targetTank.owner.capture) {
                         // Damage done, reset capture
-                        let cap = targetTank.owner.capture.resetCapturing();
+                        let cap;
+                        if (wasKilled) 
+                            cap = targetTank.owner.capture.cancelCapturing();
+                        else 
+                            cap = targetTank.owner.capture.resetCapturing();
+
                         this.emitCapture(cap);
                     }
                     
-                    let wasKilled = hitPack.healthAft <= 0;
 
                     if (wasKilled) {
                         hitPack.resTime = this.countResTime();
@@ -276,7 +283,7 @@ class TeamFight_SE extends THGame_SE {
         let delta = Date.now() - this.startTime;
         let halfMins = Math.round(delta / 30000);
 
-        return Math.min(3 + halfMins, 40) * 1000;
+        return Math.min(3 + halfMins, 15) * 1000;
     }
 
     handleCapture(player: Player_SE): PacketCapture | null {

@@ -117,7 +117,7 @@ class GameManager_SE {
 
 	private addToTeamQueue(socket: SocketIO.Socket) {
 		let index = this.teamFightQueue.indexOf(socket.player);
-		console.log(index);
+
 		if (index !== -1) return false;
 		this.teamFightQueue.push(socket.player); 
 		return true;

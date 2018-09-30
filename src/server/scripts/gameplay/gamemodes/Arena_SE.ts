@@ -38,6 +38,7 @@ class Arena_SE extends THGame_SE {
 
         player.alive = false; // Player is going to be included in the game by respawn
         player.lastInput = Date.now();
+        player.invisible = false;
 
         player.stats = new Stats_SE();
 

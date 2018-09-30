@@ -1,9 +1,8 @@
 Tankhunt is a fast-paced multiplayer game. Players control their tanks to dominate the battlefield in various game modes. Several weapons are available in collectable and randomly generated power-ups. The game is created for browsers in Javascript, uses nodejs for the server, Phaser.io for a client and socket.io for both, but yet it is playable only on computers/laptops due to it's keyboard-only control.
 
-First version of this game will participate in a small competition held by itnetwork.cz
+First version of this game will participate in a competition held by itnetwork.cz
 
-The game is developed by Radek Veverka
-Graphics is made by Dominik Plachý and Vojtěch Veverka
+The game is developed by Radek Veverka, graphics is made by Dominik Plachý and Vojtěch Veverka.
 
 How to built the game so the server can be run and clients can connect:
 1) Install nodejs and npm package manager

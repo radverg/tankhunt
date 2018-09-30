@@ -273,7 +273,6 @@ class Eliminator_CL extends Bouncer_CL {
 	}
 
 	blast(dataPack: PacketShotHit) {
-		console.log("Eliminator blasted!");
 
 		for (let i = 0; i < this.splintersData.length; i++) {
 			let spd = this.splintersData[i].speed * TH.sizeCoeff;

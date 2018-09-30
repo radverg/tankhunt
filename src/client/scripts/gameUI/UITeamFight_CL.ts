@@ -31,10 +31,6 @@ class UITeamFight_CL {
         this.capBarMe = new Phaser.Group(phaserGame);
         this.capBarEnemy = new Phaser.Group(phaserGame);
 
-        this.centerGrp = new Phaser.Group(phaserGame);
-        this.centerGrp.fixedToCamera = true;
-        this.centerGrp.cameraOffset.setTo(phaserGame.camera.view.halfWidth, 0);
-
         this.uiStats = new UIStatsTable_CL(thGame, ["kills", "deaths", "suic", "blockC", "dmgD", "dmgR", "caps"], "dmgD");
         this.thGame.onCapture.add(this.uiStats.refresh, this.uiStats);
 
@@ -53,6 +49,10 @@ class UITeamFight_CL {
 
         this.capBarMe.fixedToCamera = true;
         this.capBarEnemy.fixedToCamera = true;
+
+        this.centerGrp = new Phaser.Group(phaserGame);
+        this.centerGrp.fixedToCamera = true;
+        this.centerGrp.cameraOffset.setTo(phaserGame.camera.view.halfWidth, 0);
 
         this.thGame.onPlayerRemove.add(this.playerRemove, this);
     }
@@ -106,6 +106,8 @@ class UITeamFight_CL {
     gameFinish(packet: PacketGameFinish) {
 
         let win: boolean = (packet.winnerTeam == this.thGame.playerGroup.me.team);
+
+        (this.centerGrp.parent as Phaser.Group).bringToTop(this.centerGrp);
 
         let overlaySpr: Phaser.Sprite = this.centerGrp.create(0, 0, "blackRect");
         overlaySpr.alpha = 0.8;

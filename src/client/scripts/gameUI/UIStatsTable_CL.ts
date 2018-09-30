@@ -47,12 +47,12 @@ class UIStatsTable_CL {
         $thead.append(`<td data-key="name">Player</td>`);
 
         for (let i = 0; i < allowedItems.length; i++) {
+            
             let key = allowedItems[i];
             let thead = this.items[allowedItems[i]].thead;
 
             let $thd = $(`<td data-key=${key}>${thead}</td>`);
             $thead.append($thd);
-
         }
 
         this.$tbody = $("<tbody></tbody>");

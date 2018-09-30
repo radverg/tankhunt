@@ -72,6 +72,8 @@ class UIDuel_CL {
         } else {
             // This is actually end of the game
             // Create overlay in the center
+            (this.centerGrp.parent as Phaser.Group).bringToTop(this.centerGrp);
+
             let overlaySpr: Phaser.Sprite = this.centerGrp.create(0, 0, "blackRect");
             overlaySpr.alpha = 0.5;
             overlaySpr.height = this.game.camera.view.height;
