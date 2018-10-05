@@ -11,7 +11,7 @@ class Duel_SE extends THGame_SE {
     private startDelay: number = 2000;
     private endDelay: number = 3500;
     private isWinPending: boolean = false;
-    private maxWins: number = 3;
+    private maxWins: number = 15;
     private currentRound: number = 0;
     private duelMapCount: number = 20;
 
