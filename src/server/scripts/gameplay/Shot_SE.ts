@@ -82,7 +82,7 @@ abstract class Shot_SE extends GameObject_SE {
 	 * @param tank 
 	 */
 	isHittingTank(tank: Tank_SE): any {
-		if (this.remove || !this.active || !tank.alive || tank.owner.invulnerable) return false;
+		if (this.remove || !this.active || !tank.alive || tank.owner.invulnerable || tank.health <= 0) return false;
 		if (this.tanksHit.length > 0) {
 			// Check whether this tank was already hit by this shot
 			if (this.tanksHit.indexOf(tank) !== -1) return false;
