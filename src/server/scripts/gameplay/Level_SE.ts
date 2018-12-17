@@ -500,6 +500,10 @@ class Level_SE {
        return final;
     }
 
+    getRandomSquare() {
+        return new Vec2(getRandomInt(0, this.tilesCountX - 1), getRandomInt(0, this.tilesCountY - 1));
+    }
+
     getRandomSpawnItems(width: number, height: number) {
         var index = Math.floor(Math.random() * this.spawnsItems.length);
         return this.getRandomSpawnPos(this.spawnsItems[index].x, this.spawnsItems[index].y, width, height);

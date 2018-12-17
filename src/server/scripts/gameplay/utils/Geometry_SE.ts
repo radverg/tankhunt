@@ -315,6 +315,10 @@ class Vec2 {
         this.x = x || 0;
         this.y = y || 0;
     }
+
+    equals(other: Vec2) {
+        return this.x === other.x && this.y === other.y;
+    }
 }
 
 export { Vec2, Rect }
