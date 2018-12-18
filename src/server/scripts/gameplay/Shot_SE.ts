@@ -337,7 +337,14 @@ class Bouncer_SE extends Shot_SE {
 
 		while (currLength < this.maxLength)
 		{
-			let point = this.game.level.wallCheckLoop(nextStartX, nextStartY, nextDirX, nextDirY);
+			let point = null;
+			try { // This is dangerous and needs to be fixed
+				point = this.game.level.wallCheckLoop(nextStartX, nextStartY, nextDirX, nextDirY);
+			} catch {
+				console.log("EXCEPTION CAUGHT!");
+				return;
+			}
+
 			let newLength = dist(point.x, point.y, nextStartX, nextStartY);
 
 			if (currLength + newLength > this.maxLength) {
