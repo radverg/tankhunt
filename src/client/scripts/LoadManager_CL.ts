@@ -7,10 +7,6 @@ class LoadManager_CL extends Phaser.State  {
 	private th: TH;
 
 	private loadingText: Phaser.Text;
-
-	private useDelay: boolean = true;
-	private delay: number = 4000;
-
 	private startTime = Date.now();
 	
 	constructor(th: TH) {
@@ -144,9 +140,21 @@ class LoadManager_CL extends Phaser.State  {
 		this.loadingText.fontSize = 20;
 		this.loadingText.fill = "white";
 
-		// Itnetwork splash
-		let itSplash = this.add.sprite(centerX, 20, "itSplash");
-		itSplash.anchor.setTo(0.5, 0);
+		// Logo
+		let logo = this.add.sprite(centerX, 500, "logoSmall");
+		logo.anchor.setTo(0.5);
+
+		// Tankhunt text
+		let thText = this.add.text(centerX, 150, "TANK HUNT ONLINE");
+		thText.anchor.setTo(0.5);
+		thText.fontSize = 120;
+		thText.fontWeight = "bold";
+		thText.stroke = "blue";
+		thText.strokeThickness = 5;
+		let grd = thText.context.createLinearGradient(0, 0, 0, thText.height);
+		grd.addColorStop(0, '#8ed7ff');   
+		grd.addColorStop(1, '#004cb2');
+		thText.fill = grd;
 
 		// Full screen text
 		let fsText = this.add.text(centerX, 800, "Set fullscreen mode - press F11 (in most browsers)");
@@ -183,13 +191,7 @@ class LoadManager_CL extends Phaser.State  {
 		this.loadingText.text = "Processing...";
 		this.precreate();
 		
-		let loadTime = Date.now() - this.startTime;
-
-		if (loadTime <= this.delay && this.useDelay) {
-			TH.game.time.events.add(Math.max(this.delay - loadTime, 1000), this.switchToMenu, this);
-		} else {
-			TH.game.time.events.add(1000, this.switchToMenu, this);
-		}
+		TH.game.time.events.add(1000, this.switchToMenu, this);
 	}
 
 	private switchToMenu() {
