@@ -184,6 +184,13 @@ class THGame_CL {
 		let tank = playerHit.tank;
 		tank.health = data.healthAft;
 
+		// If tank is not visible at the moment of destruction, move it to the position
+		// received from packet hit
+		if (!tank.visible) {
+			tank.positionServerUpdate(data.xTank, data.yTank);
+			tank.jumpToRemote();
+		}
+
 		if (data.healthAft < data.healthBef) {
 			// Damage effect
 			TH.effects.shotDamageEffect(data.x * TH.sizeCoeff || tank.x , (data.y * TH.sizeCoeff) || tank.y);
@@ -196,12 +203,7 @@ class THGame_CL {
 		}
 
 		if (tank.health == 0) {
-			// If tank is not visible in the moment of destruction, move it to the position
-			// sent in packet hit
-			if (!tank.visible && data.xTank) {
-				tank.positionServerUpdate(data.xTank, data.yTank);
-				tank.jumpToRemote();
-			}
+			
 			tank.kill();
 
 			// Handle multikill effect
