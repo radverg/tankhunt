@@ -134,10 +134,8 @@ class MenuManager_CL extends Phaser.State {
 
     validateName(name: string) {
         let trimmed = name.trim();
-        if (trimmed.length < 3) return false;
-        if (trimmed.length > 12) {
-            return trimmed.substr(0, 12);
-        }
+        if (trimmed.length < 2) return false;
+        
         return trimmed;
     }
 }

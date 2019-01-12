@@ -7,7 +7,7 @@ class UILadder_CL {
     private groupHeight: number = 64;
     private slots: number;
 
-    sortKey: string = "inRow";
+    sortKey: string = "kills";
     sortAsc: boolean = false;
 
     constructor(game: Phaser.Game, thGame: THGame_CL, slots: number = 4) {

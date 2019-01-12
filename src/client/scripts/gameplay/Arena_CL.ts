@@ -17,7 +17,7 @@ class Arena_CL extends THGame_CL {
 		this.uiArena = new UIPlayerManager_CL(TH.game, this);
 		this.uiNotification = new UINotification_CL(TH.game, this);
 		this.uiLadder = new UILadder_CL(TH.game, this);
-		this.uiStats = new UIStatsTable_CL(this, ["inRow", "maxRow", "kills", "deaths", "suic", "blockC", "dmgD", "dmgR",], "inRow");
+		this.uiStats = new UIStatsTable_CL(this, ["inRow", "maxRow", "kills", "deaths", "suic", "blockC", "dmgD", "dmgR",], "kills");
 		this.uiChat = new UIGameChat_CL(TH.game, this);
 
 		// Leave button
