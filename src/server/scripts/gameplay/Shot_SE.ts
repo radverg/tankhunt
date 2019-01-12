@@ -342,6 +342,7 @@ class Bouncer_SE extends Shot_SE {
 				point = this.game.level.wallCheckLoop(nextStartX, nextStartY, nextDirX, nextDirY);
 			} catch {
 				console.log("EXCEPTION CAUGHT!");
+				this.remove = true;
 				return;
 			}
 

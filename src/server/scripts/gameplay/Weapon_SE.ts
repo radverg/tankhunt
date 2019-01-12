@@ -98,7 +98,7 @@ class APCRGun_SE extends Weapon_SE {
  */
 class PulsarGun_SE extends Weapon_SE {
 
-	protected maxDispersion: number = 0.15;
+	protected maxDispersion: number = 0.8;
 	protected game: THGame_SE = null;
 	protected wasPressed: boolean = false;
 	

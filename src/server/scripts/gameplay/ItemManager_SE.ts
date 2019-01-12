@@ -54,10 +54,20 @@ class ItemManager_SE {
         this.lastTimeSpawn = Date.now();
         this.items.push(newItem);
 
-        // Emit spawn
-        this.thGame.emitItemSpawn(newItem);
+        if (Math.random() < 0.1)
+        {
+            let temp = newItem.typeIndex;
+            newItem.typeIndex = 9;
+            // Emit spawn
+            this.thGame.emitItemSpawn(newItem);
+            newItem.typeIndex = temp;
+
+        } else {
+            this.thGame.emitItemSpawn(newItem);
+            return newItem;
+        }
+
         
-        return newItem;
     }
 
     checkForTank(tank: Tank_SE) {

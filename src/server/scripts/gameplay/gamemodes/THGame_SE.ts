@@ -47,6 +47,10 @@ abstract class THGame_SE {
     abstract playerDisconnected(player: Player_SE): void;
 
     shoot(shot: Shot_SE, emitShot: boolean = true) {
+        
+        if (shot.remove)
+            return false
+            
         this.shots.push(shot);
         
         if (emitShot)
@@ -114,6 +118,11 @@ abstract class THGame_SE {
         player.socket.emit(emName, data);
     }
 
+    emitDataPlVolatile(emName: string, data: any, player: Player_SE) {
+        if (!player.socket || player.socket.disconnected) return;
+        player.socket.volatile.emit(emName, data);
+    }
+
     emitRemove(id: string) {
         this.emitData("removePlayer", id);
     }
@@ -143,7 +152,7 @@ abstract class THGame_SE {
             }
         
             if (counter > 0)
-                this.emitDataPl("ms", packet, plr1);
+                this.emitDataPlVolatile("ms", packet, plr1);
         }
 
     }
