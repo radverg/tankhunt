@@ -1,5 +1,6 @@
 import { Player_SE } from "./gameplay/Player_SE";
 import { TankHunt_SE } from "./TankHunt_SE";
+import { SocketWithPlayer } from "./GameManager_SE"
 
 // Manage clients and their sockets
 class SocketManager_SE {
@@ -15,10 +16,10 @@ class SocketManager_SE {
 		this.th = tankhunt;
 		this.io = io;
 
-		io.sockets.on("connection", (socket) => { this.onConnection(socket) });
+		io.sockets.on("connection", (socket) => { this.onConnection(socket as SocketWithPlayer) });
 	}
 
-	onConnection(socket: SocketIO.Socket) {
+	onConnection(socket: SocketWithPlayer) {
 
 		this.socketCount++;
 		this.totalConnectionCount++;
@@ -32,7 +33,7 @@ class SocketManager_SE {
 		this.initSocket(socket);
 	}
 
-	initSocket(socket: SocketIO.Socket) {
+	initSocket(socket: SocketWithPlayer) {
 		socket.on("disconnect", () => this.onDisconnect(socket));
 		socket.on("input", (data: string) => this.onInput(socket, data));
 		socket.on("leave", () => this.onLeave(socket));
@@ -43,7 +44,7 @@ class SocketManager_SE {
 	}
 
 	// Socket emit callbacks -------------------------
-	onDisconnect(socket: SocketIO.Socket) {
+	onDisconnect(socket: SocketWithPlayer) {
 		console.log("Client " + socket.request.connection.remoteAddress + " has disconnected!");
 		this.th.gameManager.onSocketDisconnected(socket);
 
@@ -52,13 +53,13 @@ class SocketManager_SE {
 		this.th.menuManager.emitMenuInfo();
 	}
 
-	onInput(socket: SocketIO.Socket, data: string) {
+	onInput(socket: SocketWithPlayer, data: string) {
 		if (socket.player && socket.player.game) {
 		    socket.player.game.handleInput(data, socket.player);
 		}
 	}
 
-	onLeave(socket:SocketIO.Socket) {
+	onLeave(socket:SocketWithPlayer) {
 		console.log("Player left a game!");
 		if (socket.player && socket.player.game) {
 			socket.player.game.playerDisconnected(socket.player);	
@@ -67,7 +68,7 @@ class SocketManager_SE {
 		}
 	}
 
-	onGameRequest(socket: SocketIO.Socket, data: PacketGameRequest) {
+	onGameRequest(socket: SocketWithPlayer, data: PacketGameRequest) {
 
 		let name = data.playerName.trim();
 		if (name.length < 3 || name.length > 12) 

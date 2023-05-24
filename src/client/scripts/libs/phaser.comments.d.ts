@@ -16569,6 +16569,8 @@ declare module Phaser {
     }
 
 
+    class MSPointerEvent { } // !!!!!!!!!!!
+    
     /**
     * The MSPointer class handles {@link https://developers.google.com/web/updates/2016/10/pointer-events Pointer-event} interactions with the game via a dedicated {@link Phaser.Pointer}. (It's named after the nonstandard {@link https://msdn.microsoft.com/library/hh673557(v=vs.85).aspx MSPointerEvent} since that was the first browser implementation.)
     * 

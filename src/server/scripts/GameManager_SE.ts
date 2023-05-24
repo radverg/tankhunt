@@ -5,6 +5,8 @@ import { TankHunt_SE } from "./TankHunt_SE";
 import { Duel_SE } from "./gameplay/gamemodes/Duel_SE";
 import { TeamFight_SE } from "./gameplay/gamemodes/TeamFight_SE";
 
+export type SocketWithPlayer = SocketIO.Socket & { player: any }
+
 class GameManager_SE {
 
 	private th: TankHunt_SE;
@@ -94,8 +96,9 @@ class GameManager_SE {
 	getTeamQueueCount() {
 		return this.teamFightQueue.length;
 	}
-
-	onSocketDisconnected(socket: SocketIO.Socket) {
+	
+	onSocketDisconnected(socket: SocketWithPlayer) {
+	
 		if (!socket.player) return;
 
 		if (socket.player.game) {
@@ -106,7 +109,7 @@ class GameManager_SE {
 		this.removeFromTeamQueue(socket);
 	}
 
-	private removeFromTeamQueue(socket: SocketIO.Socket) {
+	private removeFromTeamQueue(socket: SocketWithPlayer) {
 
 		let teamQueueIndex = this.teamFightQueue.indexOf(socket.player);
 		if (teamQueueIndex !== -1) {
@@ -115,7 +118,7 @@ class GameManager_SE {
 		} 
 	}
 
-	private addToTeamQueue(socket: SocketIO.Socket) {
+	private addToTeamQueue(socket: SocketWithPlayer) {
 		let index = this.teamFightQueue.indexOf(socket.player);
 
 		if (index !== -1) return false;

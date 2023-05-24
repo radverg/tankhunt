@@ -3,10 +3,11 @@ import { THGame_SE } from "./gamemodes/THGame_SE";
 import { Stats_SE } from "./Stats_SE";
 import { Capture_SE } from "./Capture_SE";
 import { GameObject_SE } from "./utils/GameObject_SE";
+import { SocketWithPlayer } from "../GameManager_SE"
 
 class Player_SE {
 
-    public socket: SocketIO.Socket;
+    public socket: SocketWithPlayer;
 
     public id: string;
     
@@ -26,7 +27,7 @@ class Player_SE {
 
     lastInput: number;
     
-    constructor(socket: SocketIO.Socket, name: string) {
+    constructor(socket: SocketWithPlayer, name: string) {
         this.socket = socket
         if (socket !== null) {
             this.id = GameObject_SE.getNextID(); //socket.id; 
