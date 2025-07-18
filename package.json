@@ -1,18 +1,30 @@
 {
   "name": "tankhuntonline",
-  "version": "1.0.0",
-  "description": "2d multiplayer tank fighting game based on node js and socked io",
-  "main": "src/server/app.js",
+  "version": "2.0.0",
+  "description": "2d multiplayer tank fighting game based on node js and socked io - 2025 modernized version",
+  "main": "built/server/app.js",
   "scripts": {
+    "prebuild": "npm run clean",
+    "build": "npm run copy-src && tsc",
+    "copy-src": "cp -R src built || xcopy src built /E /I",
+    "clean": "rm -rf built || rmdir /s /q built 2>nul || echo 'No built directory to clean'",
+    "start": "node built/server/app.js",
+    "dev": "npm run build && npm run start",
+    "dev:watch": "npm run build && nodemon built/server/app.js --watch built",
+    "postinstall": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Radek Veverka",
+  "author": "Radek Veverka (Original), Luke Jones (2025 Version)",
   "license": "ISC",
   "dependencies": {
+    "express": "*",
+    "socket.io": "*"
+  },
+  "devDependencies": {
     "@types/jquery": "^3.3.6",
     "@types/socket.io": "^1.4.36",
     "@types/socket.io-client": "^1.4.32",
-    "express": "*",
-    "socket.io": "*"
+    "typescript": "^5.0.0",
+    "nodemon": "^3.0.0"
   }
 }

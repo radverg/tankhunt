@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "firebase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "firebase-tools@latest", 
+        "experimental:mcp",
+        "--dir", "/Users/lukejoneslwj/Desktop/phaser2",
+        "--only", "hosting,auth,firestore,storage"
+      ]
+    }
+  }
+} 
