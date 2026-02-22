@@ -1,0 +1,208 @@
+{
+  "resources": [
+    "audioSprite.ogg",
+    "audioSprite.m4a",
+    "audioSprite.mp3",
+    "audioSprite.ac3"
+  ],
+  "spritemap": {
+    "bim": {
+      "start": 0,
+      "end": 0.6270068027210884,
+      "loop": false
+    },
+    "bounce": {
+      "start": 2,
+      "end": 2.3129931972789115,
+      "loop": false,
+      "volume": 0.4
+    },
+    "bum1": {
+      "start": 4,
+      "end": 4.557278911564626,
+      "loop": false
+    },
+    "cink": {
+      "start": 6,
+      "end": 6.759002267573696,
+      "loop": false
+    },
+    "click": {
+      "start": 8,
+      "end": 8.139002267573696,
+      "loop": false,
+      "volume": 0.4
+    },
+    "clink": {
+      "start": 10,
+      "end": 10.870997732426304,
+      "loop": false
+    },
+    "engineHigh": {
+      "start": 12,
+      "end": 14.048344671201814,
+      "loop": false
+    },
+    "engineLow": {
+      "start": 16,
+      "end": 18.054943310657595,
+      "loop": false
+    },
+    "explosion1": {
+      "start": 20,
+      "end": 21.44253968253968,
+      "loop": false
+    },
+    "explosion2": {
+      "start": 23,
+      "end": 24.379002267573696,
+      "loop": false
+    },
+    "explosion3": {
+      "start": 26,
+      "end": 27.379160997732427,
+      "loop": false
+    },
+    "fifteen": {
+      "start": 29,
+      "end": 31.740000000000002,
+      "loop": false
+    },
+    "five": {
+      "start": 33,
+      "end": 35.14800453514739,
+      "loop": false
+    },
+    "gunShot1": {
+      "start": 37,
+      "end": 39.10099773242631,
+      "loop": false
+    },
+    "gunShot2": {
+      "start": 41,
+      "end": 42.06138321995465,
+      "loop": false
+    },
+    "laser1": {
+      "start": 44,
+      "end": 47.01,
+      "loop": false
+    },
+    "laser2": {
+      "start": 49,
+      "end": 49.4490022675737,
+      "loop": false
+    },
+    "laser3": {
+      "start": 51,
+      "end": 53.209002267573695,
+      "loop": false
+    },
+    "laser4": {
+      "start": 55,
+      "end": 56.776757369614515,
+      "loop": false
+    },
+    "loss": {
+      "start": 58,
+      "end": 62.098004535147396,
+      "loop": false
+    },
+    "menuSong": {
+      "start": 64,
+      "end": 122.76399092970522,
+      "loop": false
+    },
+    "mineBeep": {
+      "start": 124,
+      "end": 124.77317460317461,
+      "loop": false
+    },
+    "multiKill": {
+      "start": 126,
+      "end": 128.3680045351474,
+      "loop": false
+    },
+    "reload": {
+      "start": 130,
+      "end": 130.4450113378685,
+      "loop": false
+    },
+    "respawn": {
+      "start": 132,
+      "end": 132.55700680272108,
+      "loop": false
+    },
+    "shotMegaExplosion": {
+      "start": 134,
+      "end": 143.3641723356009,
+      "loop": false
+    },
+    "shotSmall": {
+      "start": 145,
+      "end": 145.3850113378685,
+      "loop": false
+    },
+    "song1": {
+      "start": 147,
+      "end": 212.85714285714286,
+      "loop": false,
+      "volume": 0.1
+    },
+    "splash": {
+      "start": 214,
+      "end": 214.4380045351474,
+      "loop": false
+    },
+    "tada": {
+      "start": 216,
+      "end": 217.5670068027211,
+      "loop": false
+    },
+    "ten": {
+      "start": 219,
+      "end": 220.7650113378685,
+      "loop": false
+    },
+    "tick": {
+      "start": 222,
+      "end": 223.8809977324263,
+      "loop": false,
+      "volume": 0.4
+    },
+    "tickMega": {
+      "start": 225,
+      "end": 226.64696145124717,
+      "loop": false,
+      "volume": 0.5
+    },
+    "turretEngine": {
+      "start": 228,
+      "end": 230.2870068027211,
+      "volume": 0.2,
+      "loop": false
+    },
+    "twenty": {
+      "start": 232,
+      "end": 235.1229931972789,
+      "loop": false
+    },
+    "victory": {
+      "start": 237,
+      "end": 238.84614512471654,
+      "loop": false
+    },
+    "whip": {
+      "start": 240,
+      "end": 240.40600907029477,
+      "loop": false,
+      "volume": 0.5
+    },
+    "wind": {
+      "start": 242,
+      "end": 323.2357596371882,
+      "loop": false,
+      "volume": 0.6
+    }
+  }
+}

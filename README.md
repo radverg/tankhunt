@@ -1,18 +1,24 @@
-Tankhunt is a fast-paced multiplayer game. Players control their tanks to dominate the battlefield in various game modes. Several weapons are available in collectable and randomly generated power-ups. The game is created for browsers in Javascript, uses nodejs for the server, Phaser.io for a client and socket.io for both, but yet it is playable only on computers/laptops due to it's keyboard-only control.
+# Tankhunt
 
-First version of this game will participate in a competition held by itnetwork.cz
+**Tankhunt** is a fast-paced multiplayer game where players control tanks and compete to dominate the battlefield across various game modes. A range of weapons is available through collectible and randomly generated power-ups.
 
-The game is developed by Radek Veverka, graphics is made by Dominik Plachý and Vojtěch Veverka.
+The game is built for web browsers using **TypeScript**. It uses **Node.js** for the server, **Phaser.io** for the client, and **Socket.IO** for real-time communication.  
+Currently, the game is playable only on desktop and laptop computers due to keyboard-only controls.
 
-How to built the game so the server can be run and clients can connect:
+This game participated in a competition held by itnetwork.cz.
+
+## Authors
+
+- Development: Radek Veverka  
+- Graphics: Dominik Plachý, Vojtěch Veverka  
+
+## Download and run
+
 1) Install nodejs and npm package manager
-2) Clone the repository
-3) Fetch node modules 
-    $ npm install
-3) Copy src folder and rename it to built 
-    $ cp src built -R
-4) Install typescript on your computer
-    $ npm install typescript -g
-5) Run typescript compiler
-    $ tsc
-6) All is ready to be used, server runs on port 8080 by default
+2) Clone the repository, precompiled and ready version is in dist folder
+3) Fetch dependencies from package-lock.json: 
+    `npm ci`
+4) Server will listen on port 8080 by default, **set environment variable `TANKHUNT_PORT` to change it**
+5) Run the server:
+    `node dist/server/app.js`
+
