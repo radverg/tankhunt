@@ -1,0 +1,13 @@
+node_modules
+built
+src
+.git
+.gitignore
+.vscode
+.idea
+TankHuntNode.code-workspace
+TankHuntNode.sublime-project
+TankHuntNode.sublime-workspace
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

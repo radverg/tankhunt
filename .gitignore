@@ -6,3 +6,7 @@
 /built/
 /node_modules/
 /src/client/assets/preparing
+/npm-debug.log*
+/yarn-debug.log*
+/yarn-error.log*
+/tankhunt.log
