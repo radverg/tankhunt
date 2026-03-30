@@ -22,3 +22,23 @@ This game participated in a competition held by itnetwork.cz.
 5) Run the server:
     `node dist/server/app.js`
 
+## Docker
+
+Build the image locally from the repository root:
+
+```bash
+docker build -t tankhunt:local .
+```
+
+Run the container and publish the game on port 8080:
+
+```bash
+docker run --rm -p 8080:8080 tankhunt:local
+```
+
+To use a different host port, change only the published port on the left side. For example, this exposes the game on port 8090:
+
+```bash
+docker run --rm -p 8090:8080 tankhunt:local
+```
+
